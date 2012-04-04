@@ -1,0 +1,20 @@
+{% extends 'LibbitFrameworkBundle::layout.html.twig' %}
+
+{% block content %}
+<form action="{{ path('_libbit_framework_login_check') }}" method="POST">
+
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+    <div class="form_row">
+        <label for="_username">{% trans %}Username{% endtrans %}</label>
+        <input autofocus="autofocus" type="text" id="_username" name="_username" required="required" value="{{ last_username }}" />
+    </div>
+
+    <div class="form_row">
+        <label for="_password">{% trans %}Password{% endtrans %}</label>
+        <input type="password" id="_password" name="_password" required="required" value="" />
+    </div>
+
+    <input type="submit" id="_submit" name="_submit" value="{% trans %}Login{% endtrans %}" />
+</form>
+{% endblock %}
