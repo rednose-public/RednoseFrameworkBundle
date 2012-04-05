@@ -29,6 +29,11 @@ class UserAdmin extends Admin
         $this->userManager->updatePassword($user);
     }
     
+    public function prePersist($user)
+    {
+        $this->preUpdate($user);
+    }
+    
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper

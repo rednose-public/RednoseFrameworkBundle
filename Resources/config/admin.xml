@@ -13,7 +13,7 @@
       <argument>%libbit.framework.admin.user.entity%</argument>
       <argument>%libbit.framework.admin.user.controller%</argument>
       <call method="setUserManager">
-        <argument type="service" id="fos_user.user_manager"/>
+          <argument type="service" id="fos_user.user_manager"/>
       </call>
     </service>
   </services>
