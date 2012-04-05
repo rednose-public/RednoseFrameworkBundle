@@ -20,7 +20,6 @@ class User extends BaseUser
 
     public function __construct()
     {
-        die('?');
         parent::__construct();
     }
 }
