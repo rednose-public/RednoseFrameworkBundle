@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Validator\ErrorElement;
 
 use FOS\UserBundle\Model\UserManagerInterface;
@@ -34,6 +35,8 @@ class UserAdmin extends Admin
             ->addIdentifier('username')
             ->add('email')
             ->add('enabled')
+            ->add('locked')
+            ->add('expired')
             ->add('superAdmin', 'boolean')
             ->add('lastLogin')
 
@@ -46,6 +49,23 @@ class UserAdmin extends Admin
         ;
     }
 
+    public function configureShowFields(ShowMapper $showMapper)
+    {
+        $showMapper
+            ->add('username')
+            ->add('username_canonical')
+            ->add('email')
+            ->add('email_canonical')
+            ->add('enabled')
+            ->add('locked')
+            ->add('expired')
+            ->add('expiresAt')
+            ->add('passwordRequestedAt')
+            ->add('credentialsExpired')
+            ->add('credentialsExpireAt')
+        ;
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -55,6 +75,7 @@ class UserAdmin extends Admin
                 ->add('plainPassword', 'text', array('required' => false))
             ->with('Management')
                 ->add('enabled')
+                ->add('locked')
                 ->add('superAdmin', 'checkbox')
 
             ->setHelps(array(
