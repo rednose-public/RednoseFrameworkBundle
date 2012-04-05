@@ -8,17 +8,35 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Validator\ErrorElement;
 
+use FOS\UserBundle\Model\UserManagerInterface;
+
 class UserAdmin extends Admin
 {
+    /**
+     * @var UserManagerInterface
+     */
+    protected $userManager;
+
+    public function setUserManager(UserManagerInterface $userManager)
+    {
+        $this->userManager = $userManager;
+    }
+
+    public function preUpdate($user)
+    {
+        $this->userManager->updateCanonicalFields($user);
+        $this->userManager->updatePassword($user);
+    }
+    
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->addIdentifier('username')
             ->add('email')
             ->add('enabled')
+            ->add('superAdmin', 'boolean')
             ->add('lastLogin')
 
-            // add custom action links
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'view' => array(),
@@ -31,11 +49,14 @@ class UserAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('username')
-            ->add('enabled')
-            ->add('email')
+            ->with('General')
+                ->add('username')
+                ->add('email')
+                ->add('plainPassword', 'text', array('required' => false))
+            ->with('Management')
+                ->add('enabled')
+                ->add('superAdmin', 'checkbox')
 
-            // you can define help messages like this
             ->setHelps(array(
                'username' => $this->trans('help_user_username')
             ))
