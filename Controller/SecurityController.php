@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\SecurityContext;
 
 class SecurityController extends Controller
 {
-    public function indexAction()
+    public function loginAction()
     {
         $request = $this->get('request');
         
@@ -25,9 +25,14 @@ class SecurityController extends Controller
             'error' => $error
         ));
     }
-    
+
+    public function checkAction()
+    {
+        throw new \RuntimeException('You must configure the check path to be handled by the firewall using form_login in your security firewall configuration.');
+    }
+
     public function logoutAction()
     {
-        
+        throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
     }
 }
