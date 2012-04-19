@@ -16,8 +16,11 @@ class UserFixture extends AbstractFixture implements OrderedFixtureInterface, Co
     
     public function load(ObjectManager $em)
     {
-        $this->userUtil->create('admin', 'libbitadmin', 'info@libbit.org', true, true);
-        $this->userUtil->create('user', 'libbituser', 'user@libbit.org', true, false);
+        $admin = $this->userUtil->create('admin', 'libbitadmin', 'info@libbit.org', true, true);
+        $user = $this->userUtil->create('user', 'libbituser', 'user@libbit.org', true, false);
+        
+        //$user->addGroup();
+        //$user->addGroup();
     }
 
     public function setContainer(ContainerInterface $container = null)
@@ -28,6 +31,6 @@ class UserFixture extends AbstractFixture implements OrderedFixtureInterface, Co
     
     public function getOrder()
     {
-        return 0;
+        return 1;
     }
 }
