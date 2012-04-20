@@ -18,11 +18,9 @@ class GroupFixture extends AbstractFixture implements OrderedFixtureInterface, C
     
     public function load(ObjectManager $em)
     {
-        $groupIndividual = new Group('Individual', array('E_USER_HIMSELF'));
-        $groupUser = new Group('User', array('E_USER'));
-        $groupAdministrator = new Group('Administrator', array('E_USER', 'E_ADMIN'));
+        $groupUser = new Group('User', array('ROLE_USER'));
+        $groupAdministrator = new Group('Administrator', array('ROLE_USER', 'ROLE_ADMIN'));
         
-        $this->groupManager->updateGroup($groupIndividual, false);
         $this->groupManager->updateGroup($groupUser, false);
         $this->groupManager->updateGroup($groupAdministrator, false);
         
