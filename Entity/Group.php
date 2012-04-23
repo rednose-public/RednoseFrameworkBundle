@@ -18,9 +18,9 @@ class Group extends BaseGroup
      */
     protected $id;
 
-    public function __construct()
+    public function __construct($name, $roles)
     {
-        parent::__construct(null);
+        parent::__construct($name, $roles);
     }
 
     public function __toString()
