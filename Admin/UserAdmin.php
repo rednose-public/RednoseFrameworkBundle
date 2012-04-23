@@ -44,11 +44,11 @@ class UserAdmin extends Admin
             ->add('expired')
             ->add('superAdmin', 'boolean')
             ->add('lastLogin')
-
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'view' => array(),
                     'edit' => array(),
+                    'delete' => array(),
                 )
             ))
         ;
