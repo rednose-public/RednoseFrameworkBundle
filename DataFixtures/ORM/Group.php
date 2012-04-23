@@ -14,14 +14,22 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class GroupFixture extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     private $container;
+
     private $groupManager;
     
     public function load(ObjectManager $em)
     {
         $groupUser = new Group('User', array('ROLE_USER'));
+        $this->addReference('group-user', $groupUser);
+
         $groupAdministrator = new Group('Administrator', array('ROLE_USER', 'ROLE_ADMIN'));
+        $this->addReference('group-admin', $groupAdministrator);
         
+        $groupTest = new Group('Test', array('ROLE_USER'));
+        $this->addReference('group-test', $groupTest);
+
         $this->groupManager->updateGroup($groupUser, false);
+        $this->groupManager->updateGroup($groupTest, false);
         $this->groupManager->updateGroup($groupAdministrator, false);
         
         $em->flush();

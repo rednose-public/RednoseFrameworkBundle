@@ -18,18 +18,21 @@ class UserFixture extends AbstractFixture implements OrderedFixtureInterface, Co
     public function load(ObjectManager $em)
     {
         $admin = $this->userUtil->create('admin', 'libbitadmin', 'info@libbit.org', true, true);
-        $user = $this->userUtil->create('user', 'libbituser', 'user@libbit.org', true, false);
-        
-        foreach ($this->groupManager->findGroups() as $group) {
-            $admin->addGroup($group);
-            
-            if ($group->getName() != 'Administrator') {
-                $user->addGroup($group);
-            }
-        }
-        
+        $admin->addGroup($this->getReference('group-admin'));
         $em->persist($admin);
+
+        $user = $this->userUtil->create('user', 'libbituser', 'user@libbit.org', true, false);
+        $user->addGroup($this->getReference('group-user'));
         $em->persist($user);
+
+        $test1 = $this->userUtil->create('test1', 'test1', 'test1@libbit.org', true, false);
+        $test1->addGroup($this->getReference('group-test'));
+        $em->persist($test1);
+
+        $test2 = $this->userUtil->create('test2', 'test2', 'test2@libbit.org', true, false);
+        $test2->addGroup($this->getReference('group-test'));
+        $em->persist($test2);
+        
         $em->flush();
     }
 
