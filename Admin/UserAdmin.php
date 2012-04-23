@@ -79,6 +79,7 @@ class UserAdmin extends Admin
                 ->add('email')
                 ->add('plainPassword', 'text', array('required' => false))
             ->with('Management')
+                ->add('groups') 
                 ->add('enabled')
                 ->add('locked')
                 ->add('superAdmin', 'checkbox')

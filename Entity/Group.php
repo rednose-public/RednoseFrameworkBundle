@@ -22,4 +22,9 @@ class Group extends BaseGroup
     {
         parent::__construct($name, $roles);
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
