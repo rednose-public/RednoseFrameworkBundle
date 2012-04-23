@@ -18,21 +18,15 @@ class User extends BaseUser
      */
     protected $id;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
-    *
-    * @ORM\ManyToMany(targetEntity="Libbit\FrameworkBundle\Entity\Group")
-    *
-    * @ORM\joinTable(name="libbit_framework_user_group",
-    *   joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-    *   inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
-    * )
-    */
-    protected $groups;
+     *
+     * @ORM\ManyToMany(targetEntity="Libbit\FrameworkBundle\Entity\Group")
+     *
+     * @ORM\joinTable(name="libbit_framework_user_group",
+     *   joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *   inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
+     * )
+     */ protected $groups;
     
     public function getExpiresAt()
     {
