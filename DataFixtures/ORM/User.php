@@ -12,8 +12,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class UserFixture extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     private $container;
+
     private $userUtil;
-    private $groupManager;
     
     public function load(ObjectManager $em)
     {
@@ -40,7 +40,6 @@ class UserFixture extends AbstractFixture implements OrderedFixtureInterface, Co
     {
         $this->container = $container;
         $this->userUtil = $this->container->get('fos_user.util.user_manipulator');
-        $this->groupManager = $this->container->get('fos_user.group_manager');
     }
     
     public function getOrder()
