@@ -42,6 +42,7 @@ class UserAdmin extends Admin
             ->add('enabled')
             ->add('locked')
             ->add('expired')
+            ->add('admin', 'boolean')
             ->add('superAdmin', 'boolean')
             ->add('lastLogin')
             ->add('_action', 'actions', array(
@@ -82,6 +83,7 @@ class UserAdmin extends Admin
                 ->add('groups') 
                 ->add('enabled')
                 ->add('locked')
+                ->add('Admin', 'checkbox')
                 ->add('superAdmin', 'checkbox')
 
             ->setHelps(array(

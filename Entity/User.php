@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class User extends BaseUser
 {
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -26,7 +28,8 @@ class User extends BaseUser
      *   joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *   inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
      * )
-     */ protected $groups;
+     */
+    protected $groups;
     
     public function getExpiresAt()
     {
@@ -36,5 +39,29 @@ class User extends BaseUser
     public function getCredentialsExpireAt()
     {
         return $this->credentialsExpireAt;
+    }
+
+    /**
+     * Tells if the the given user has super admin role.
+     *
+     * @return Boolean
+     */
+    public function isAdmin()
+    {
+        return $this->hasRole(static::ROLE_ADMIN);
+    }
+
+    /**
+     * Sets the admin status
+     *
+     * @param Boolean $boolean
+     */
+    public function setAdmin($boolean)
+    {
+        if (true === $boolean) {
+            $this->addRole(static::ROLE_ADMIN);
+        } else {
+            $this->removeRole(static::ROLE_ADMIN);
+        }
     }
 }
