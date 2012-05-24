@@ -80,11 +80,11 @@ class UserAdmin extends Admin
                 ->add('email')
                 ->add('plainPassword', 'text', array('required' => false))
             ->with('Management')
-                ->add('groups') 
-                ->add('enabled')
-                ->add('locked')
-                ->add('Admin', 'checkbox')
-                ->add('superAdmin', 'checkbox')
+                ->add('groups', null, array('required' => false)) 
+                ->add('enabled', 'checkbox', array('required' => false))
+                ->add('locked', 'checkbox', array('required' => false))
+                ->add('Admin', 'checkbox', array('required' => false))
+                ->add('superAdmin', 'checkbox', array('required' => false))
 
             ->setHelps(array(
                'username' => $this->trans('help_user_username')
