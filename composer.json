@@ -1,0 +1,37 @@
+{
+    "name": "libbit/framework-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony LibbitFrameworkBundle",
+    "keywords": ["framework"],
+    "homepage": "http://www.libbit.eu",
+    "license": "EUPL",
+    "authors": [
+        {
+            "name": "Marc Bontje",
+            "email": "marc@rednose.nl",
+            "homepage": "www.rednose.nl"
+        },
+        {
+            "name": "Sven Hagemann",
+            "email": "sven@rednose.nl",
+            "homepage": "www.rednose.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packagist.rednose.nl/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+         "symfony/symfony": "2.0.*",
+         "symfony/framework-bundle": "2.0.*",
+         "symfony/security-bundle": "2.0.*",
+    },
+    "autoload": {
+        "psr-0": { "Libbit\\FrameworkBundle": "" }
+    },
+    "target-dir": "Libbit/FrameworkBundle"
+}
