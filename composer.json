@@ -30,6 +30,7 @@
         "symfony/framework-bundle": "2.0.*",
         "symfony/security-bundle": "2.0.*",
         "doctrine/doctrine-fixtures-bundle": "2.0.*",
+        "friendsofsymfony/user-bundle": "2.0-dev",
         "sonata-project/doctrine-orm-admin-bundle": "*",
         "sonata-project/intl-bundle": "*"
     },
