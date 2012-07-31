@@ -15,10 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class LibbitFrameworkExtension extends Extension
 {
     /**
-     * Build the extension services.
-     *
-     * @param array $configs
-     * @param ContainerBuilder $container
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {

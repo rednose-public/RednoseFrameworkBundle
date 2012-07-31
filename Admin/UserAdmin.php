@@ -4,11 +4,8 @@ namespace Libbit\FrameworkBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\AdminBundle\Validator\ErrorElement;
-
 use FOS\UserBundle\Model\UserManagerInterface;
 
 class UserAdmin extends Admin
@@ -28,12 +25,12 @@ class UserAdmin extends Admin
         $this->userManager->updateCanonicalFields($user);
         $this->userManager->updatePassword($user);
     }
-    
+
     public function prePersist($user)
     {
         $this->preUpdate($user);
     }
-    
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -51,8 +48,7 @@ class UserAdmin extends Admin
                     'edit' => array(),
                     'delete' => array(),
                 )
-            ))
-        ;
+            ));
     }
 
     public function configureShowFields(ShowMapper $showMapper)
@@ -68,8 +64,7 @@ class UserAdmin extends Admin
             ->add('expiresAt')
             ->add('passwordRequestedAt')
             ->add('credentialsExpired')
-            ->add('credentialsExpireAt')
-        ;
+            ->add('credentialsExpireAt');
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -80,7 +75,7 @@ class UserAdmin extends Admin
                 ->add('email')
                 ->add('plainPassword', 'text', array('required' => false))
             ->with('Management')
-                ->add('groups', null, array('required' => false)) 
+                ->add('groups', null, array('required' => false))
                 ->add('enabled', 'checkbox', array('required' => false))
                 ->add('locked', 'checkbox', array('required' => false))
                 ->add('Admin', 'checkbox', array('required' => false))
@@ -88,7 +83,6 @@ class UserAdmin extends Admin
 
             ->setHelps(array(
                'username' => $this->trans('help_user_username')
-            ))
-        ;
+            ));
     }
 }

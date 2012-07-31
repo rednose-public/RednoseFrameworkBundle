@@ -5,6 +5,8 @@ namespace Libbit\FrameworkBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
+ * The general LiBBiT Framework.
+ * 
  * @author Marc Bontje <marc@rednose.nl>
  * @author Sven Hagemann <sven@rednose.nl>
  */

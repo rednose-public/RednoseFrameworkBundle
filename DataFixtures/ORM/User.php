@@ -1,7 +1,7 @@
 <?php
 
 namespace Libbit\FrameworkBundle\DataFixtures\ORM;
- 
+
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -14,7 +14,7 @@ class UserFixture extends AbstractFixture implements OrderedFixtureInterface, Co
     private $container;
 
     private $userUtil;
-    
+
     public function load(ObjectManager $em)
     {
         $admin = $this->userUtil->create('admin', 'libbitadmin', 'info@libbit.org', true, true);
@@ -32,7 +32,7 @@ class UserFixture extends AbstractFixture implements OrderedFixtureInterface, Co
         $test2 = $this->userUtil->create('test2', 'test2', 'test2@libbit.org', true, false);
         $test2->addGroup($this->getReference('group-test'));
         $em->persist($test2);
-        
+
         $em->flush();
     }
 
@@ -41,7 +41,7 @@ class UserFixture extends AbstractFixture implements OrderedFixtureInterface, Co
         $this->container = $container;
         $this->userUtil = $this->container->get('fos_user.util.user_manipulator');
     }
-    
+
     public function getOrder()
     {
         return 1;

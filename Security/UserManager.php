@@ -25,17 +25,17 @@ class UserManager extends BaseUserManager
 
         return parent::loadUserByUsername($username);
     }
-    
-    public function randomPassword($length = 9)
+
+    protected function randomPassword($length = 9)
     {
         $vowels = 'aeuy';
 
         $consonants = 'bdghjmnpqrstvz';
         $consonants .= '@#$%';
-     
+
         $password = '';
         $alt = time() % 2;
-        
+
         for ($i = 0; $i < $length; $i++) {
             if ($alt == 1) {
                 $password .= $consonants[(rand() % strlen($consonants))];
@@ -45,7 +45,7 @@ class UserManager extends BaseUserManager
                 $alt = 1;
             }
         }
-        
+
         return $password;
     }
 }

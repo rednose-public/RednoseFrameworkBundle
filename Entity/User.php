@@ -6,6 +6,8 @@ use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * A LiBBiT framework user
+ * 
  * @ORM\Entity
  * @ORM\Table(name="libbit_framework_user")
  */
@@ -30,7 +32,7 @@ class User extends BaseUser
      * )
      */
     protected $groups;
-    
+
     public function getExpiresAt()
     {
         return $this->expiresAt;
