@@ -26,7 +26,7 @@
         "doctrine/doctrine-fixtures-bundle": "2.0.*",
         "friendsofsymfony/user-bundle": "1.1.0",
         "sonata-project/intl-bundle": "dev-master",
-        "sonata-project/doctrine-orm-admin-bundle": "*"
+        "sonata-project/doctrine-orm-admin-bundle": "2.0.*"
     },
     "autoload": {
         "psr-0": { "Libbit\\FrameworkBundle": "" }
