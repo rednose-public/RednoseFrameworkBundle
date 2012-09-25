@@ -3,11 +3,9 @@
   <services>
     <service id="libbit_framework.user_manager" class="Libbit\FrameworkBundle\Security\UserManager" public="false">
       <argument type="service" id="security.encoder_factory"/>
-      <argument>%fos_user.encoder.algorithm%</argument>
       <argument type="service" id="fos_user.util.username_canonicalizer"/>
       <argument type="service" id="fos_user.util.email_canonicalizer"/>
       <argument type="service" id="fos_user.entity_manager"/>
-      <argument>%fos_user.model.user.class%</argument>
     </service>
   </services>
 </container>
