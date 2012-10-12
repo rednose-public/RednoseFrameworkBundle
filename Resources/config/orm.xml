@@ -6,6 +6,7 @@
       <argument type="service" id="fos_user.util.username_canonicalizer"/>
       <argument type="service" id="fos_user.util.email_canonicalizer"/>
       <argument type="service" id="fos_user.entity_manager"/>
+      <argument>Libbit\FrameworkBundle\Entity\User</argument>
     </service>
   </services>
 </container>
