@@ -69,9 +69,11 @@ class UserAdmin extends Admin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $user = $this->getSubject();
+
         $formMapper
             ->with('General')
-                ->add('username')
+                ->add('username', 'text', array('data' => $user->getUsername(false), 'required' => true))
                 ->add('email')
                 ->add('plainPassword', 'text', array('required' => false))
             ->with('Management')

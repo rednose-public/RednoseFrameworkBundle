@@ -33,6 +33,27 @@ class User extends BaseUser
      */
     protected $groups;
 
+    /**
+     * Gets the username
+     *
+     * Will automaticly return the username in lowercase for
+     * framework compatibility.
+     *
+     * if forceLowercase is set to false it will return the
+     * username as it has been set by setUsername().
+     *
+     * @param $forceLowercase
+     * @return string
+     */
+    public function getUsername($forceLowercase = true)
+    {
+        if ($forceLowercase) {
+            return strtolower($this->username);
+        }
+
+        return $this->username;
+    }
+
     public function getExpiresAt()
     {
         return $this->expiresAt;
