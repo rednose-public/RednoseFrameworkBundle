@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use FOS\UserBundle\Model\UserManagerInterface;
 
 class UserAdmin extends Admin
@@ -29,6 +30,14 @@ class UserAdmin extends Admin
     public function prePersist($user)
     {
         $this->preUpdate($user);
+    }
+
+    public function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('username')
+            ->add('email')
+            ->add('roles', '', array(), 'choice', array('choices' => array('ROLE_ADMIN' => 'Admin', 'ROLE_SUPER_ADMIN' => 'SuperAdmin')));
     }
 
     protected function configureListFields(ListMapper $listMapper)
