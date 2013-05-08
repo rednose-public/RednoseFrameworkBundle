@@ -2,7 +2,7 @@
 
 namespace Libbit\FrameworkBundle\Security;
 
-use FOS\UserBundle\Entity\UserManager as BaseUserManager;
+use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 
 /**
  * Creates a user if it doesn't exist already.
