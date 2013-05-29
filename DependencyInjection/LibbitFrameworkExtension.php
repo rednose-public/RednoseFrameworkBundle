@@ -21,7 +21,7 @@ class LibbitFrameworkExtension extends Extension
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        $serviceFiles = array('admin', 'orm');
+        $serviceFiles = array('admin', 'orm', 'services');
 
         foreach ($serviceFiles as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
