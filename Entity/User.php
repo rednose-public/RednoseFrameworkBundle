@@ -1,6 +1,6 @@
 <?php
 
-namespace Libbit\FrameworkBundle\Entity;
+namespace Libbit\FrameworkBundle\Model;
 
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
