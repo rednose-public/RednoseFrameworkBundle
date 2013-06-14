@@ -1,6 +1,6 @@
 <?php
 
-namespace Libbit\FrameworkBundle\DataFixtures\ORM;
+namespace Rednose\FrameworkBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -17,21 +17,13 @@ class UserFixture extends AbstractFixture implements OrderedFixtureInterface, Co
 
     public function load(ObjectManager $em)
     {
-        $admin = $this->userUtil->create('admin', 'libbitadmin', 'info@libbit.org', true, true);
+        $admin = $this->userUtil->create('admin', 'adminpasswd', 'info@libbit.org', true, true);
         $admin->addGroup($this->getReference('group-admin'));
         $em->persist($admin);
 
-        $user = $this->userUtil->create('user', 'libbituser', 'user@libbit.org', true, false);
+        $user = $this->userUtil->create('user', 'userpasswd', 'user@libbit.org', true, false);
         $user->addGroup($this->getReference('group-user'));
         $em->persist($user);
-
-        $test1 = $this->userUtil->create('test1', 'test1', 'test1@libbit.org', true, false);
-        $test1->addGroup($this->getReference('group-test'));
-        $em->persist($test1);
-
-        $test2 = $this->userUtil->create('test2', 'test2', 'test2@libbit.org', true, false);
-        $test2->addGroup($this->getReference('group-test'));
-        $em->persist($test2);
 
         $em->flush();
     }

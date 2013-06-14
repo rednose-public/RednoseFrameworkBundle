@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
   <services>
-    <service id="libbit_framework.user_manager" class="Libbit\FrameworkBundle\Security\UserManager" public="false">
+    <service id="libbit_framework.user_manager" class="Rednose\FrameworkBundle\Security\UserManager" public="false">
       <argument type="service" id="security.encoder_factory"/>
       <argument type="service" id="fos_user.util.username_canonicalizer"/>
       <argument type="service" id="fos_user.util.email_canonicalizer"/>
       <argument type="service" id="fos_user.entity_manager"/>
-      <argument>Libbit\FrameworkBundle\Entity\User</argument>
+      <argument>Rednose\FrameworkBundle\Entity\User</argument>
     </service>
   </services>
 </container>

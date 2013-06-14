@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
   <parameters>
-      <parameter key="libbit_framework.doctrine_object_constructor.class">Libbit\FrameworkBundle\Serializer\Construction\DoctrineObjectConstructor</parameter>
+      <parameter key="rednose._framework.doctrine_object_constructor.class">Rednose\FrameworkBundle\Serializer\Construction\DoctrineObjectConstructor</parameter>
   </parameters>
 
   <services>
-     <service id="libbit_framework.doctrine_object_constructor" class="%libbit_framework.doctrine_object_constructor.class%" public="false">
+     <service id="rednose._framework.doctrine_object_constructor" class="%rednose._framework.doctrine_object_constructor.class%" public="false">
          <argument type="service" id="doctrine"/>
          <argument type="service" id="jms_serializer.unserialize_object_constructor"/>
      </service>
@@ -14,7 +14,7 @@
     <service id="jms_serializer.serializer" class="%jms_serializer.serializer.class%" public="false">
       <argument type="service" id="jms_serializer.metadata_factory"/>
       <argument type="service" id="jms_serializer.handler_registry"/>
-      <argument type="service" id="libbit_framework.doctrine_object_constructor"/>
+      <argument type="service" id="rednose._framework.doctrine_object_constructor"/>
       <argument type="collection"/>
       <!-- Serialization Visitors -->
       <argument type="collection"/>

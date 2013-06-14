@@ -1,6 +1,6 @@
 <?php
 
-namespace Libbit\FrameworkBundle\DependencyInjection;
+namespace Rednose\FrameworkBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Marc Bontje <marc@rednose.nl>
  */
-class LibbitFrameworkExtension extends Extension
+class RednoseFrameworkExtension extends Extension
 {
     /**
      * {@inheritdoc}

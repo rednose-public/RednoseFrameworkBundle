@@ -1,21 +1,21 @@
 <?php
 
-namespace Libbit\FrameworkBundle;
+namespace Rednose\FrameworkBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * The general LiBBiT Framework.
+ * The general RedNose Framework.
  * 
  * @author Marc Bontje <marc@rednose.nl>
  * @author Sven Hagemann <sven@rednose.nl>
  */
-class LibbitFrameworkBundle extends Bundle
+class RednoseFrameworkBundle extends Bundle
 {
     /**
      * Current Bundle version.
      *
      * @var string
      */
-    const VERSION = '0.1';
+    const VERSION = '1.2';
 }

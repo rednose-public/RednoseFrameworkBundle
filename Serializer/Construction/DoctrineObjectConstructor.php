@@ -18,7 +18,7 @@
  * Forked by RedNose 2013, fixing the object referencing.
  */
 
-namespace Libbit\FrameworkBundle\Serializer\Construction;
+namespace Rednose\FrameworkBundle\Serializer\Construction;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use JMS\Serializer\VisitorInterface;

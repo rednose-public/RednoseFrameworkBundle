@@ -1,6 +1,6 @@
 <?php
 
-namespace Libbit\FrameworkBundle\HttpFoundation;
+namespace Rednose\FrameworkBundle\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\Response;
 

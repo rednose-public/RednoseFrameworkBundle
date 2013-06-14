@@ -1,8 +1,8 @@
 <?php
 
-namespace Libbit\FrameworkBundle\DataFixtures\ORM;
+namespace Rednose\FrameworkBundle\DataFixtures\ORM;
 
-use Libbit\FrameworkBundle\Entity\Group;
+use Rednose\FrameworkBundle\Entity\Group;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Libbit\FrameworkBundle\Security;
+namespace Rednose\FrameworkBundle\Security;
 
 use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 

@@ -1,15 +1,15 @@
 <?php
 
-namespace Libbit\FrameworkBundle\Entity;
+namespace Rednose\FrameworkBundle\Entity;
 
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * A LiBBiT framework user
+ * A RedNose framework user
  *
  * @ORM\Entity
- * @ORM\Table(name="libbit_framework_user")
+ * @ORM\Table(name="rednose_framework_user")
  */
 class User extends BaseUser
 {
@@ -24,7 +24,7 @@ class User extends BaseUser
 
     /**
      *
-     * @ORM\ManyToMany(targetEntity="Libbit\FrameworkBundle\Entity\Group")
+     * @ORM\ManyToMany(targetEntity="Rednose\FrameworkBundle\Entity\Group")
      *
      * @ORM\JoinTable(name="libbit_framework_user_group",
      *   joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
