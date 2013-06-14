@@ -2,12 +2,12 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
   <parameters>
     <parameter key="rednose.framework.admin.user.class">Rednose\FrameworkBundle\Admin\UserAdmin</parameter>
-    <parameter key="rednose.framework.admin.user.controller">LibbitFrameworkBundle:UserAdmin</parameter>
+    <parameter key="rednose.framework.admin.user.controller">RednoseFrameworkBundle:UserAdmin</parameter>
     <parameter key="rednose.framework.admin.user.entity">Rednose\FrameworkBundle\Entity\User</parameter>
     <parameter key="rednose.framework.admin.group.class">Rednose\FrameworkBundle\Admin\GroupAdmin</parameter>
-    <parameter key="rednose.framework.admin.group.controller">LibbitFrameworkBundle:GroupAdmin</parameter>
+    <parameter key="rednose.framework.admin.group.controller">RednoseFrameworkBundle:GroupAdmin</parameter>
     <parameter key="rednose.framework.admin.group.entity">Rednose\FrameworkBundle\Entity\Group</parameter>
-    <parameter key="rednose.framework.admin.groupname">libbit_framework</parameter>
+    <parameter key="rednose.framework.admin.groupname">rednose_framework</parameter>
   </parameters>
   <services>
     <service id="rednose.framework.admin.user" class="%rednose.framework.admin.user.class%">

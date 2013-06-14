@@ -17,11 +17,11 @@ class UserFixture extends AbstractFixture implements OrderedFixtureInterface, Co
 
     public function load(ObjectManager $em)
     {
-        $admin = $this->userUtil->create('admin', 'adminpasswd', 'info@libbit.org', true, true);
+        $admin = $this->userUtil->create('admin', 'adminpasswd', 'info@rednose.nl', true, true);
         $admin->addGroup($this->getReference('group-admin'));
         $em->persist($admin);
 
-        $user = $this->userUtil->create('user', 'userpasswd', 'user@libbit.org', true, false);
+        $user = $this->userUtil->create('user', 'userpasswd', 'user@rednose.nl', true, false);
         $user->addGroup($this->getReference('group-user'));
         $em->persist($user);
 
