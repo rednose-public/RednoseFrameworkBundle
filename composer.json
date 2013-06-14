@@ -1,9 +1,9 @@
 {
-    "name": "libbit/framework-bundle",
+    "name": "rednose/framework-bundle",
     "type": "symfony-bundle",
-    "description": "Symfony LibbitFrameworkBundle",
+    "description": "Symfony RednoseFrameworkBundle",
     "keywords": ["framework"],
-    "homepage": "http://www.libbit.eu",
+    "homepage": "http://www.rednose.nl",
     "license": "EUPL-1.1",
     "authors": [
         {
@@ -30,7 +30,7 @@
         "jms/serializer-bundle": "0.12.*@dev"
     },
     "autoload": {
-        "psr-0": { "Libbit\\FrameworkBundle": "" }
+        "psr-0": { "Rednose\\FrameworkBundle": "" }
     },
-    "target-dir": "Libbit/FrameworkBundle"
+    "target-dir": "Rednose/FrameworkBundle"
 }
