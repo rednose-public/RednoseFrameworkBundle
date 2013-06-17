@@ -23,6 +23,11 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @ORM\Column(type="string", length=128, nullable=true)
+     */
+    protected $realname;
+
+    /**
      *
      * @ORM\ManyToMany(targetEntity="Rednose\FrameworkBundle\Entity\Group")
      *
@@ -52,6 +57,41 @@ class User extends BaseUser
         }
 
         return $this->username;
+    }
+
+    /**
+     * Get the realname (full name)
+     *
+     * @param string $realName
+     */
+    public function setRealname($realName)
+    {
+        $this->realname = $realName;
+    }
+
+    /**
+     * Gets the realname (full name)
+     *
+     * @return string
+     */
+    public function getRealname()
+    {
+        return $this->realname;
+    }
+
+    /**
+     * Returns the realname if set, otherwise uses
+     * the username
+     *
+     * @return string
+     */
+    public function getBestname()
+    {
+        if ($this->getRealname()) {
+            return $this->getRealname();
+        }
+
+        return $this->getUsername();
     }
 
     public function getExpiresAt()
