@@ -10,6 +10,23 @@ use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 class UserManager extends BaseUserManager
 {
     /**
+     * Return all users, sorted
+     *
+     * @param $field
+     * @param $ascending = true
+     */
+    public function findUsersSorted($ascending = true)
+    {
+        if ($ascending) {
+            $direction = 'asc';
+        } else {
+            $direction = 'desc';
+        }
+
+        return $this->repository->findBy(array(), array('username' => $direction));
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function loadUserByUsername($username)
