@@ -4,9 +4,6 @@ namespace Rednose\FrameworkBundle\Security;
 
 use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 
-/**
- * Creates a user if it doesn't exist already.
- */
 class UserManager extends BaseUserManager
 {
     /**
