@@ -9,8 +9,21 @@ class SecurityController extends Controller
 {
     public function loginAction()
     {
+        $userManager = $this->get('rednose_framework.user_manager');
         $request = $this->get('request');
 
+        // Token authentication
+        if ($userManager->tokenAuthentication($this->container)) {
+            if ($request->get('redirect')) {
+                return $this->redirect($request->get('redirect'));
+            }
+
+            if ($request->get('route')) {
+                return $this->redirect($this->generateUrl($request->get('route')));
+            }
+        }
+
+        // Form authentication
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
         } else {

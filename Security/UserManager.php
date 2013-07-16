@@ -3,13 +3,13 @@
 namespace Rednose\FrameworkBundle\Security;
 
 use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserManager extends BaseUserManager
 {
     /**
      * Return all users, sorted
      *
-     * @param $field
      * @param $ascending = true
      */
     public function findUsersSorted($ascending = true)
@@ -21,6 +21,52 @@ class UserManager extends BaseUserManager
         }
 
         return $this->repository->findBy(array(), array('username' => $direction));
+    }
+
+    /**
+     * Attempt to authenticate using a daily logic token.
+     * This method looks in the request object for the following
+     * post or get variables: 'token' and 'username'
+     *
+     * The token is a sha1 of the sha1 username of the supplied username and
+     * a sha1 of the date (notation: 01-01-1970) followed by
+     * the secret in the parameters(.ini|.yml|.xml).
+     * Example: sha1(sha1('username') . sha1(date('d-m-Y') . 'token'));
+     *
+     * Warning: The application secret is used as a private key between application
+     * and must therefor remain secret!
+     *
+     * @param Container $container
+     * @return boolean
+     */
+    public function tokenAuthentication($container)
+    {
+        $request = $container->get('request');
+        $secret = trim($container->getParameter('secret'));
+
+        if ($request->get('token') && $request->get('username')) {
+            if ($secret === '' || $secret === 'ThisTokenIsNotSoSecretChangeIt') {
+                throw new \InvalidArgumentException('Secret parameter invalid');
+            }
+
+            $token = sha1(
+                sha1($request->get('username')) .
+                sha1(date('d-m-Y') . $secret)
+            );
+
+            if ($token !== trim($request->get('token'))) {
+                throw new AccessDeniedException('Token not accepted');
+            }
+
+            $container->get('fos_user.security.login_manager')->loginUser(
+                $container->getParameter('fos_user.firewall_name'),
+                $this->loadUserByUsername($request->get('username'))
+            );
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
