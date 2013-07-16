@@ -31,7 +31,7 @@ class User extends BaseUser
      *
      * @ORM\ManyToMany(targetEntity="Rednose\FrameworkBundle\Entity\Group")
      *
-     * @ORM\JoinTable(name="libbit_framework_user_group",
+     * @ORM\JoinTable(name="rednose_framework_user_group",
      *   joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *   inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
      * )
