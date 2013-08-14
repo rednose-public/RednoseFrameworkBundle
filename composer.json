@@ -24,6 +24,7 @@
         "symfony/framework-bundle": "*@stable",
         "symfony/security-bundle": "*@stable",
         "symfony/monolog-bundle": "*@stable",
+        "symfony/swiftmailer-bundle": "@stable",
         "doctrine/doctrine-fixtures-bundle": "*@dev",
         "friendsofsymfony/user-bundle": "1.3.1",
         "sonata-project/intl-bundle": "2.1.0",
