@@ -4,17 +4,17 @@
     "description": "Symfony RednoseFrameworkBundle",
     "keywords": ["framework"],
     "homepage": "http://www.rednose.nl",
-    "license": "EUPL-1.1",
+    "license": "proprietary",
     "authors": [
         {
             "name": "Marc Bontje",
             "email": "marc@rednose.nl",
-            "homepage": "www.rednose.nl"
+            "homepage": "http://www.rednose.nl"
         },
         {
             "name": "Sven Hagemann",
             "email": "sven@rednose.nl",
-            "homepage": "www.rednose.nl"
+            "homepage": "http://www.rednose.nl"
         }
     ],
     "minimum-stability": "dev",
@@ -23,6 +23,7 @@
         "symfony/symfony": "2.1.*@stable",
         "symfony/framework-bundle": "*@stable",
         "symfony/security-bundle": "*@stable",
+        "symfony/monolog-bundle": "*@stable",
         "doctrine/doctrine-fixtures-bundle": "*@dev",
         "friendsofsymfony/user-bundle": "1.3.1",
         "sonata-project/intl-bundle": "2.1.0",
