@@ -33,7 +33,7 @@
         "sonata-project/admin-bundle": "2.1.0",
         "jms/serializer-bundle": "0.12.*@dev",
         "friendsofsymfony/rest-bundle": "dev-master",
-        "nelmio/api-doc-bundle": "2.3.*"
+        "nelmio/api-doc-bundle": "2.3.*@stable"
     },
     "autoload": {
         "psr-0": { "Rednose\\FrameworkBundle": "" }
