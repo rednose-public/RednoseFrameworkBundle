@@ -31,7 +31,9 @@
         "sonata-project/doctrine-orm-admin-bundle": "2.1.*@dev",
         "knplabs/knp-menu-bundle": "v1.1.1",
         "sonata-project/admin-bundle": "2.1.0",
-        "jms/serializer-bundle": "0.12.*@dev"
+        "jms/serializer-bundle": "0.12.*@dev",
+        "friendsofsymfony/rest-bundle": "dev-master",
+        "nelmio/api-doc-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Rednose\\FrameworkBundle": "" }
