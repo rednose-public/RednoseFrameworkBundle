@@ -1,0 +1,29 @@
+html, body {
+	background-color: #eee;
+}
+
+input {
+	width: 385px;
+}
+
+.content {
+	width: 400px;
+	background: #fff;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -350px 0 0 -200px;
+	-webkit-border-radius: 8px 8px 8px 8px;
+	-moz-border-radius: 8px 8px 8px 8px;
+	border-radius: 8px 8px 8px 8px;
+	-webkit-box-shadow: 0 0 10px 0 #999999;
+	-moz-box-shadow: 0 0 10px 0 #999999;
+	box-shadow: 0 0 10px 0 #999999;
+	z-index: 1000;
+	padding: 15px 20px 0 20px;
+}
+
+.footer {
+	margin-top: 10px;
+	height: 40px;
+}

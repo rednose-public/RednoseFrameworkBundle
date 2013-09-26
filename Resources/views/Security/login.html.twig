@@ -1,30 +1,39 @@
 {% extends 'RednoseFrameworkBundle::layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link href="{{ asset('bundles/rednoseframework/css/login.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block title %}{% trans %}Sign in with your RedNose ID{% endtrans %}{% endblock %}
+
 {% block content %}
 
-{% if error %}
-    <div>{{ error.message }}</div>
-{% endif %}
+    <div class="content">
+      <h2>{% trans %}Sign in{% endtrans %}</h2>
+        <form action="{{ path('_rednose_framework_security_check') }}" method="POST">
 
-<form action="{{ path('_rednose_framework_security_check') }}" method="POST">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        {% if error %}
+            <div class="alert alert-error"><strong>{% trans %}Error{% endtrans %}!</strong> {{ error.message }}</div>
+        {% endif %}
 
-    <div class="form_row">
-        <label for="_username">{% trans %}Username{% endtrans %}</label>
-        <input autofocus="autofocus" type="text" id="_username" name="_username" required="required" value="{{ last_username }}" />
+          <div>
+            <input id="username" name="_username" required="required" value="{{ last_username }}" autofocus="autofocus" type="text" placeholder="{% trans %}Username{% endtrans %}">
+          </div>
+          <div>
+            <input id="password" name="_password" required="required" type="password" placeholder="{% trans %}Password{% endtrans %}">
+          </div>
+          <div>
+              <label class="checkbox"><input type="checkbox" id="remember_me" name="_remember_me">{% trans %}Remember me{% endtrans %}</label>
+          </div>
+          <div class="footer">
+              {#<a class="pull-left" href="#">{% trans %}Forgot your password?{% endtrans %}</a>#}
+              <input class="btn btn-primary pull-right" type="submit" id="_submit" name="_submit" value="{% trans %}Sign in{% endtrans %}" />
+          </div>
+      </form>
     </div>
 
-    <div class="form_row">
-        <label for="_password">{% trans %}Password{% endtrans %}</label>
-        <input type="password" id="_password" name="_password" required="required" value="" />
-    </div>
-
-    <div class="form_row">
-        <input type="checkbox" id="remember_me" name="_remember_me" />
-        <label for="remember_me">{% trans %}Remember me{% endtrans %}</label>
-    </div>
-
-    <input type="submit" id="_submit" name="_submit" value="{% trans %}Login{% endtrans %}" />
-</form>
 {% endblock %}
