@@ -42,7 +42,7 @@ class UserManager extends BaseUserManager
     public function tokenAuthentication($container)
     {
         $request = $container->get('request');
-        $secret = trim($container->getParameter('secret'));
+        $secret = trim($container->getParameter('kernel.secret'));
 
         if ($request->get('token') && $request->get('username')) {
             if ($secret === '' || $secret === 'ThisTokenIsNotSoSecretChangeIt') {
