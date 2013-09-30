@@ -61,8 +61,9 @@ class ClientAdmin extends Admin
                     'choices'           => array(
                         'authorization_code' => 'Authorization code',
                         'token'              => 'Token',
-                        'password'           => 'Password'
+                        'password'           => 'Password',
                     ),
+                    'expanded'          => true,
                     'label'             => 'Grant types',
                     'multiple'          => true,
                     'required'          => true,
