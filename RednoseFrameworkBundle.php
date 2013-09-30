@@ -6,7 +6,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * The general RedNose Framework.
- * 
+ *
  * @author Marc Bontje <marc@rednose.nl>
  * @author Sven Hagemann <sven@rednose.nl>
  */

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A Usergroup
- * 
+ *
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_group")
  */

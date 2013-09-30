@@ -1,0 +1,11 @@
+<div class="form">
+    <form class="vertical" action="{{ path('rednose_framework_oauth2_authorize', app.request.query.all )}}" method="POST">
+        <div class="form_title">
+            Grant access to {{ client.name }}?
+        </div>
+        {{ form_widget(form) }}
+        <div class="form_button">
+            <input type="submit" value="Authorize" />
+        </div>
+    </form>
+</div>
