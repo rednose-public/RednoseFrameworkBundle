@@ -64,7 +64,7 @@ class AuthorizeController extends Controller
      * @RequestParam(name="client_id", strict=true, requirements="String", description="The unique id for the client application.")
      * @RequestParam(name="client_secret", strict=true, requirements="String", description="The secret for the client application.")
      * @RequestParam(name="username", strict=true, requirements="String", description="The user's username.")
-     * @RequestParam(name="passwd", strict=true, requirements="String", description="The user's password.")
+     * @RequestParam(name="password", strict=true, requirements="String", description="The user's password.")
      *
      * @ApiDoc(
      *     section="OAuth 2.0"
