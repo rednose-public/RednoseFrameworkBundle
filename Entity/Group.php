@@ -27,6 +27,6 @@ class Group extends BaseGroup
 
     public function __toString()
     {
-        return $this->name;
+        return (string) $this->name;
     }
 }

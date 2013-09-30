@@ -15,8 +15,8 @@ class GroupAdmin extends Admin
             ->addIdentifier('name')
             ->add('_action', 'actions', array(
                 'actions' => array(
-                    'view' => array(),
-                    'edit' => array(),
+                    'view'   => array(),
+                    'edit'   => array(),
                     'delete' => array(),
                 )
             ));
@@ -25,7 +25,8 @@ class GroupAdmin extends Admin
     public function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('name');
+            ->with('General')
+                ->add('name');
     }
 
     protected function configureFormFields(FormMapper $formMapper)

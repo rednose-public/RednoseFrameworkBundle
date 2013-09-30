@@ -53,9 +53,9 @@ class UserAdmin extends Admin
             ->add('lastLogin')
             ->add('_action', 'actions', array(
                 'actions' => array(
-                    'view' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
+                    'view'    => array(),
+                    'edit'    => array(),
+                    'delete'  => array(),
                 )
             ));
     }
@@ -63,17 +63,19 @@ class UserAdmin extends Admin
     public function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('username')
-            ->add('username_canonical')
-            ->add('email')
-            ->add('email_canonical')
-            ->add('enabled')
-            ->add('locked')
-            ->add('expired')
-            ->add('expiresAt')
-            ->add('passwordRequestedAt')
-            ->add('credentialsExpired')
-            ->add('credentialsExpireAt');
+            ->with('General')
+                ->add('username')
+                ->add('username_canonical')
+                ->add('email')
+                ->add('email_canonical')
+            ->with('Details')
+                ->add('enabled')
+                ->add('locked')
+                ->add('expired')
+                ->add('expiresAt')
+                ->add('passwordRequestedAt')
+                ->add('credentialsExpired')
+                ->add('credentialsExpireAt');
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -85,7 +87,7 @@ class UserAdmin extends Admin
                 ->add('username', 'text', array('data' => $user->getUsername(false), 'required' => true))
                 ->add('email')
                 ->add('plainPassword', 'text', array('required' => false))
-            ->with('Management')
+            ->with('Details')
                 ->add('groups', null, array('required' => false))
                 ->add('enabled', 'checkbox', array('required' => false))
                 ->add('locked', 'checkbox', array('required' => false))

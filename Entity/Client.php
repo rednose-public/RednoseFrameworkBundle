@@ -35,4 +35,14 @@ class Client extends BaseClient
     {
         $this->name = $name;
     }
+
+    public function getPublicId()
+    {
+        return $this->getRandomId();
+    }
+
+    public function __toString()
+    {
+        return (string) $this->name;
+    }
 }
