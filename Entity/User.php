@@ -4,6 +4,8 @@ namespace Rednose\FrameworkBundle\Entity;
 
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * A RedNose framework user
@@ -11,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_user")
  */
-class User extends BaseUser
+class User extends BaseUser implements EquatableInterface
 {
     const ROLE_ADMIN = 'ROLE_ADMIN';
 
@@ -126,5 +128,13 @@ class User extends BaseUser
         } else {
             $this->removeRole(static::ROLE_ADMIN);
         }
+    }
+
+    /**
+     * Symfony\Component\Security\Core\User\EquatableInterface::isEqualTo()
+     */
+    public function isEqualTo(UserInterface $user)
+    {
+        return $this->getUsername() === $user->getUsername();
     }
 }
