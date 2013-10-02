@@ -1,6 +1,6 @@
 <?php
 
-namespace Rednose\FrameworkBundle\Security;
+namespace Rednose\FrameworkBundle\Doctrine;
 
 use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;

@@ -2,6 +2,7 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
   <parameters>
     <parameter key="rednose._framework.doctrine_object_constructor.class">Rednose\FrameworkBundle\Serializer\Construction\DoctrineObjectConstructor</parameter>
+    <parameter key="rednose_framework.doctrine_listener.class">Rednose\FrameworkBundle\EventListener\DoctrineListener</parameter>
   </parameters>
 
   <services>
@@ -22,7 +23,7 @@
     <argument type="service" id="jms_serializer.event_dispatcher"/>
   </service>
 
-   <!-- OAuth 2.0 -->
+  <!-- OAuth 2.0 -->
   <service id="rednose_framework.authorize.form_type" class="Rednose\FrameworkBundle\Form\Type\AuthorizeFormType">
   </service>
 
@@ -38,10 +39,17 @@
     <argument type="service" id="fos_oauth_server.server" />
   </service>
 
-   <!-- Override the default FOS OAuth 2.0 client manager for now, eventually we want to configure our own services instead of overriding. -->
+  <!-- Override the default FOS OAuth 2.0 client manager for now, eventually we want to configure our own services instead of overriding. -->
   <service id="fos_oauth_server.client_manager.default" class="Rednose\FrameworkBundle\Entity\ClientManager">
-      <argument type="service" id="fos_oauth_server.entity_manager" />
-      <argument>%fos_oauth_server.model.client.class%</argument>
+    <argument type="service" id="fos_oauth_server.entity_manager" />
+    <argument>%fos_oauth_server.model.client.class%</argument>
+  </service>
+
+  <service id="rednose_framework.doctrine_listener" class="%rednose_framework.doctrine_listener.class%">
+    <argument type="service" id="event_dispatcher" />
+    <tag name="doctrine.event_listener" event="postPersist" />
+    <tag name="doctrine.event_listener" event="postUpdate" />
+    <tag name="doctrine.event_listener" event="postRemove" />
   </service>
 
 </services>
