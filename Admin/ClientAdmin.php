@@ -62,6 +62,7 @@ class ClientAdmin extends Admin
                         'authorization_code' => 'Authorization code',
                         'token'              => 'Token',
                         'password'           => 'Password',
+                        'refresh_token'      => 'Refresh token',
                     ),
                     'expanded'          => true,
                     'label'             => 'Grant types',
