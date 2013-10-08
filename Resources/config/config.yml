@@ -1,0 +1,17 @@
+fos_oauth_server:
+    db_driver:  orm
+    client_class:        Rednose\FrameworkBundle\Entity\Client
+    access_token_class:  Rednose\FrameworkBundle\Entity\AccessToken
+    refresh_token_class: Rednose\FrameworkBundle\Entity\RefreshToken
+    auth_code_class:     Rednose\FrameworkBundle\Entity\AuthCode
+
+    service:
+        user_provider: rednose_framework.user_manager
+        
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: Rednose\FrameworkBundle\Entity\User
+    group:
+        group_class: Rednose\FrameworkBundle\Entity\Group
+        group_manager: fos_user.group_manager.default
