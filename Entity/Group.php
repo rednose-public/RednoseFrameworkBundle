@@ -20,9 +20,24 @@ class Group extends BaseGroup
      */
     protected $id;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Rednose\FrameworkBundle\Entity\User", mappedBy="groups")
+     */
+    protected $users;
+
     public function __construct($name = null, $roles = array())
     {
         parent::__construct($name, $roles);
+    }
+
+    public function setUsers($users)
+    {
+        $this->users = $users;
+    }
+
+    public function getUsers()
+    {
+        return $this->users;
     }
 
     public function __toString()
