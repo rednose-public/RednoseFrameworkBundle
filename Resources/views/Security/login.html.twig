@@ -6,32 +6,32 @@
     <link href="{{ asset('bundles/rednoseframework/css/login.css') }}" rel="stylesheet" />
 {% endblock %}
 
-{% block title %}{% trans %}Sign in with your RedNose ID{% endtrans %}{% endblock %}
+{% block title %}{% trans %}sign_in_title{% endtrans %}{% endblock %}
 
 {% block content %}
 
     <div class="content">
-      <h2>{% trans %}Sign in{% endtrans %}</h2>
+      <h2>{% trans %}sign_in{% endtrans %}</h2>
         <form action="{{ path('_rednose_framework_security_check') }}" method="POST">
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
         {% if error %}
-            <div class="alert alert-error"><strong>{% trans %}Error{% endtrans %}!</strong> {{ error.message }}</div>
+            <div class="alert alert-error"><strong>{% trans %}error{% endtrans %}!</strong> {{ error.message }}</div>
         {% endif %}
 
           <div>
-            <input id="username" name="_username" required="required" value="{{ last_username }}" autofocus="autofocus" type="text" placeholder="{% trans %}Username{% endtrans %}">
+            <input id="username" name="_username" required="required" value="{{ last_username }}" autofocus="autofocus" type="text" placeholder="{% trans %}username{% endtrans %}">
           </div>
           <div>
-            <input id="password" name="_password" required="required" type="password" placeholder="{% trans %}Password{% endtrans %}">
+            <input id="password" name="_password" required="required" type="password" placeholder="{% trans %}password{% endtrans %}">
           </div>
           <div>
-              <label class="checkbox"><input type="checkbox" id="remember_me" name="_remember_me">{% trans %}Remember me{% endtrans %}</label>
+              <label class="checkbox"><input type="checkbox" id="remember_me" name="_remember_me">{% trans %}remember_me{% endtrans %}</label>
           </div>
           <div class="footer">
-              {#<a class="pull-left" href="#">{% trans %}Forgot your password?{% endtrans %}</a>#}
-              <input class="btn btn-primary pull-right" type="submit" id="_submit" name="_submit" value="{% trans %}Sign in{% endtrans %}" />
+              {#<a class="pull-left" href="#">{% trans %}forgot_password{% endtrans %}</a>#}
+              <input class="btn btn-primary pull-right" type="submit" id="_submit" name="_submit" value="{% trans %}sign_in_button{% endtrans %}" />
           </div>
       </form>
     </div>
