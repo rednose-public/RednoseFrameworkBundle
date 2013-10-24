@@ -12,8 +12,8 @@ class DeviceController extends Controller
     {
         $em = $this->get('doctrine.orm.entity_manager');
 
-        $identifier = $this->get('request')->query->get('device_identifier');
-        $token      = $this->get('request')->query->get('device_token');
+        $identifier = $this->get('request')->request->get('device_identifier');
+        $token      = $this->get('request')->request->get('device_token');
         $user       = $this->get('security.context')->getToken()->getUser();
 
         $device = $em->getRepository('Rednose\FrameworkBundle\Entity\Device')->findOneBy(array('user' => $user, 'identifier' => $identifier));
@@ -39,7 +39,7 @@ class DeviceController extends Controller
     {
         $em = $this->get('doctrine.orm.entity_manager');
 
-        $identifier = $this->get('request')->query->get('device_identifier');
+        $identifier = $this->get('request')->request->get('device_identifier');
         $user       = $this->get('security.context')->getToken()->getUser();
 
         $devices = $em->getRepository('Rednose\FrameworkBundle\Entity\Device')->findBy(array('user' => $user, 'identifier' => $identifier));
