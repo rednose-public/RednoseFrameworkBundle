@@ -7,12 +7,13 @@ input {
 }
 
 .content {
+    height: 240px;
 	width: 400px;
 	background: #fff;
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin: -350px 0 0 -200px;
+    margin: -140px 0 0 -200px;
 	-webkit-border-radius: 8px 8px 8px 8px;
 	-moz-border-radius: 8px 8px 8px 8px;
 	border-radius: 8px 8px 8px 8px;
