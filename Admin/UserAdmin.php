@@ -32,14 +32,6 @@ class UserAdmin extends Admin
         $this->preUpdate($user);
     }
 
-    public function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
-        $datagridMapper
-            ->add('username')
-            ->add('email')
-            ->add('roles', '', array(), 'choice', array('choices' => array('ROLE_ADMIN' => 'Admin', 'ROLE_SUPER_ADMIN' => 'SuperAdmin')));
-    }
-
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
