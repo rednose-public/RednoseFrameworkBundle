@@ -2,12 +2,13 @@
 
 namespace Rednose\FrameworkBundle\Admin;
 
+use FOS\UserBundle\Model\UserManagerInterface;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use FOS\UserBundle\Model\UserManagerInterface;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class UserAdmin extends Admin
 {
@@ -30,6 +31,11 @@ class UserAdmin extends Admin
     public function prePersist($user)
     {
         $this->preUpdate($user);
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('export');
     }
 
     protected function configureListFields(ListMapper $listMapper)
