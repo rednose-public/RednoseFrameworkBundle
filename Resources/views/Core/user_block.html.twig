@@ -1,0 +1,11 @@
+{% block user_block %}
+    {% if app.user %}
+        {{ app.user.bestname }}
+
+        {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+            <a href="{{ app.request.getBaseURL() }}?_switch_user=_exit">(exit)</a>
+        {% endif %}
+
+        - <a href="{{ url('_rednose_framework_security_logout') }}">{{ 'user_block_logout'|trans({}, 'SonataAdminBundle') }}</a>
+    {% endif %}
+{% endblock %}

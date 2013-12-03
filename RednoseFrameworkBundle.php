@@ -18,4 +18,9 @@ class RednoseFrameworkBundle extends Bundle
      * @var string
      */
     const VERSION = '1.2';
+
+    public function getParent()
+    {
+        return 'SonataAdminBundle';
+    }
 }

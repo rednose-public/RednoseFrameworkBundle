@@ -50,6 +50,13 @@ class UserAdmin extends Admin
                     'delete'  => array(),
                 )
             ));
+
+             if ($this->isGranted('ROLE_ALLOWED_TO_SWITCH')) {
+                 $listMapper
+                     ->add('impersonating', 'string', array('template' => 'RednoseFrameworkBundle:Field:impersonating.html.twig'))
+                 ;
+          }
+
     }
 
     public function configureShowFields(ShowMapper $showMapper)
