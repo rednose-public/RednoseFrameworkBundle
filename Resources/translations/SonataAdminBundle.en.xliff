@@ -14,6 +14,10 @@
         <source>oauth</source>
         <target>OAuth 2.0</target>
       </trans-unit>
+      <trans-unit id="user_block_logout">
+        <source>user_block_logout</source>
+        <target>Sign out</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
