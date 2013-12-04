@@ -50,7 +50,7 @@ class EntityToIntTransformer implements DataTransformerInterface
     public function reverseTransform($id)
     {
         if (!$id) {
-            throw new TransformationFailedException('No $this->entityType id was submitted');
+            throw new TransformationFailedException('No id was submitted');
         }
 
         $entity = $this->om->getRepository($this->entityRepository)->findOneBy(array('id' => $id));
