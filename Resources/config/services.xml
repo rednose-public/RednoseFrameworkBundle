@@ -7,12 +7,19 @@
   </parameters>
 
   <services>
+    <!-- Notifications -->
     <service id="rednose_framework.notification.factory" class="%rednose_framework.notification.factory.class%">
       <argument type="service" id="service_container"/>
     </service>
 
+    <!-- Formatting -->
     <service id="rednose_framework.datetime_formatter" class="%rednose_framework.datetime_formatter.class%">
       <argument type="service" id="service_container"/>
+    </service>
+
+    <!-- Form extensions -->
+    <service id="form.type.label_extension" class="Rednose\DocgenClientBundle\Form\Extension\LabelFormTypeExtension">
+        <tag name="form.type_extension" alias="field" />
     </service>
 
     <!-- OAuth 2.0 -->
@@ -44,6 +51,7 @@
     </service>
     <service id="jms_serializer.object_constructor" alias="rednose_framework.doctrine_object_constructor" public="false"/>
 
+    <!-- Doctrine event listener -->
     <service id="rednose_framework.doctrine_listener" class="%rednose_framework.doctrine_listener.class%">
       <argument type="service" id="event_dispatcher" />
       <tag name="doctrine.event_listener" event="postPersist" />
