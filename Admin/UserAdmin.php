@@ -57,12 +57,11 @@ class UserAdmin extends Admin
                 )
             ));
 
-          // if ($this->isGranted('ROLE_ALLOWED_TO_SWITCH')) {
-          //     $listMapper
-          //         ->add('impersonating', 'string', array('template' => 'RednoseFrameworkBundle:Field:impersonating.html.twig'))
-          //     ;
-          // }
-
+          if ($this->isGranted('ROLE_ALLOWED_TO_SWITCH')) {
+              $listMapper
+                  ->add('impersonating', 'string', array('template' => 'RednoseFrameworkBundle:Field:impersonating.html.twig'))
+              ;
+          }
     }
 
     public function configureShowFields(ShowMapper $showMapper)
