@@ -18,7 +18,7 @@
     </service>
 
     <!-- Form extensions -->
-    <service id="form.type.label_extension" class="Rednose\DocgenClientBundle\Form\Extension\LabelFormTypeExtension">
+    <service id="form.type.label_extension" class="Rednose\FrameworkBundle\Form\Extension\LabelFormTypeExtension">
         <tag name="form.type_extension" alias="field" />
     </service>
 

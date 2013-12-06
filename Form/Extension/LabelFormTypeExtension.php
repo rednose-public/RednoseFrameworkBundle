@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Rednose\DocgenClientBundle\Form\Extension;
+namespace Rednose\FrameworkBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
