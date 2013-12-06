@@ -42,7 +42,7 @@ class UserAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('username')
-            ->add('email')
+            ->add('realname')
             ->add('enabled')
             ->add('locked')
             ->add('expired')
@@ -71,6 +71,7 @@ class UserAdmin extends Admin
             ->with('General')
                 ->add('username')
                 ->add('username_canonical')
+                ->add('realname')
                 ->add('email')
                 ->add('email_canonical')
             ->with('Details')
@@ -90,6 +91,7 @@ class UserAdmin extends Admin
         $formMapper
             ->with('General')
                 ->add('username', 'text', array('data' => $user->getUsername(false), 'required' => true))
+                ->add('realname')
                 ->add('email')
                 ->add('plainPassword', 'text', array('required' => false))
             ->with('Details')
