@@ -14,11 +14,18 @@ interface ContentDefinitionInterface
     const TYPE_DROPDOWN = 'dropdown';
 
     /**
-     * Gets the unique identifier for this item.
+     * Gets the unique identifier for the content item this object defines.
      *
      * @return mixed The id.
      */
-    public function getId();
+    public function getContentId();
+
+    /**
+     * Gets the content item this object defines.
+     *
+     * @return mixed The item.
+     */
+    public function getContentItem();
 
     /**
      * Gets the caption for this item.
