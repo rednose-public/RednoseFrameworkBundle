@@ -5,7 +5,7 @@ namespace Rednose\FrameworkBundle\Form\Type;
 use Rednose\FrameworkBundle\Form\DataTransformer\ContentSectionValueToArrayTransformer;
 use Rednose\FrameworkBundle\Model\ContentDefinitionInterface;
 use Rednose\FrameworkBundle\Model\ContentSectionInterface;
-use Rednose\FrameworkBundle\Model\ContenSectionValueInterface;
+use Rednose\FrameworkBundle\Model\ContentSectionValueInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -17,8 +17,14 @@ class ContentSectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // TODO: We can possibly retrieve the definition object from the value object.
-        $contentSection = $options['content_section'];
+        // Data needs to be passed on form type construction.
+        assert(isset($options['data']));
+
+        $data = $options['data'];
+
+        assert($data instanceof ContentSectionValueInterface);
+
+        $contentSection = $data->getContentSection();
 
         assert($contentSection instanceof ContentSectionInterface);
 
@@ -64,15 +70,7 @@ class ContentSectionType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            /**
-             * Array
-             */
             'data_class' => null,
-
-            /**
-             * ContentSectionInterface object
-             */
-            'content_section' => null,
         ));
     }
 
