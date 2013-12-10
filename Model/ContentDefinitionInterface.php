@@ -7,8 +7,18 @@ namespace Rednose\FrameworkBundle\Model;
  */
 interface ContentDefinitionInterface
 {
-    const TYPE_TEXT = 'text';
-    const TYPE_HTML = 'html';
+    const TYPE_TEXT     = 'text';
+    const TYPE_TEXTAREA = 'textarea';
+    const TYPE_HTML     = 'html';
+    const TYPE_DATE     = 'date';
+    const TYPE_DROPDOWN = 'dropdown';
+
+    /**
+     * Gets the unique identifier for this item.
+     *
+     * @return mixed The id.
+     */
+    public function getId();
 
     /**
      * Gets the caption for this item.
