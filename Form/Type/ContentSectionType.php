@@ -15,6 +15,7 @@ use Rednose\FrameworkBundle\Form\DataTransformer\ContentSectionValueToArrayTrans
 use Rednose\FrameworkBundle\Model\ContentDefinitionInterface;
 use Rednose\FrameworkBundle\Model\ContentSectionInterface;
 use Rednose\FrameworkBundle\Model\ContentSectionValueInterface;
+use Rednose\FrameworkBundle\Model\ExtrinsicObjectInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -47,6 +48,14 @@ class ContentSectionType extends AbstractType
                 'required' => $contentDefinition->isRequired(),
                 'help'     => $contentDefinition->getHelp(),
             );
+
+            if ($contentDefinition->getContentItem() instanceof ExtrinsicObjectInterface) {
+                $baseOptions = array_merge($baseOptions, array(
+                    'attr' => array(
+                        'data-id' => $contentDefinition->getContentItem()->getForeignId(),
+                    ),
+                ));
+            }
 
             switch ($contentDefinition->getType()) {
                 case ContentDefinitionInterface::TYPE_TEXT:
