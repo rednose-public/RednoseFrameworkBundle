@@ -47,4 +47,11 @@ interface ContentDefinitionInterface
      * @return array Array of rules.
      */
     public function getProperties();
+
+    /**
+     * Wether a value is required for this content item.
+     *
+     * @return bool Required.
+     */
+    public function isRequired();
 }
