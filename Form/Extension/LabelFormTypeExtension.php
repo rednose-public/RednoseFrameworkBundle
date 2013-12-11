@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the RednoseDocgenClientBundle package.
+ * This file is part of the RednoseFrameworkBundle package.
  *
  * (c) RedNose <info@rednose.nl>
  *

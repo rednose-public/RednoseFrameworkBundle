@@ -35,6 +35,20 @@ interface ContentDefinitionInterface
     public function getCaption();
 
     /**
+     * Gets the help text for this item.
+     *
+     * @return string The caption.
+     */
+    public function getHelp();
+
+    /**
+     * Gets the default value for this item.
+     *
+     * @return string The caption.
+     */
+    public function getDefaultValue();
+
+    /**
      * Gets the content type for this item.
      *
      * @return string The type.

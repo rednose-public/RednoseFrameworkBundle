@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the RednoseFrameworkBundle package.
+ *
+ * (c) RedNose <info@rednose.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Rednose\FrameworkBundle\Form\Type;
 
 use Rednose\FrameworkBundle\Form\DataTransformer\ContentSectionValueToArrayTransformer;
@@ -35,13 +44,18 @@ class ContentSectionType extends AbstractType
 
             $baseOptions = array(
                 'label'    => $contentDefinition->getCaption(),
-                // TODO: Add required to ContentDefinitionInterface
-                'required' => false,
+                'required' => $contentDefinition->isRequired(),
+                'help'     => $contentDefinition->getHelp(),
             );
 
             switch ($contentDefinition->getType()) {
                 case ContentDefinitionInterface::TYPE_TEXT:
                     $type = 'text';
+
+                    break;
+
+                case ContentDefinitionInterface::TYPE_HTML:
+                    $type = 'rednose_widget_editor';
 
                     break;
 
