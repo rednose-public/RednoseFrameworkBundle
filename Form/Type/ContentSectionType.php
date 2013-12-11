@@ -59,7 +59,7 @@ class ContentSectionType extends AbstractType
 
             switch ($contentDefinition->getType()) {
                 case ContentDefinitionInterface::TYPE_TEXT:
-                    $type = 'rednose_date';
+                    $type = 'text';
 
                     break;
 

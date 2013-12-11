@@ -35,9 +35,9 @@ class ContentSectionValueToArrayTransformer implements DataTransformerInterface
      */
     public function transform($contentSectionValue)
     {
-        // if ($contentSectionValue === null) {
+        if ($contentSectionValue === null) {
             return array();
-        // }
+        }
 
         assert($contentSectionValue instanceof ContentSectionValueInterface);
 
