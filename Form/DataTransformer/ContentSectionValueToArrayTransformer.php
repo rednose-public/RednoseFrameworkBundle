@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the RednoseFrameworkBundle package.
+ *
+ * (c) RedNose <info@rednose.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Rednose\FrameworkBundle\Form\DataTransformer;
 
 use Rednose\FrameworkBundle\Model\ContentDefinitionInterface;
@@ -26,9 +35,9 @@ class ContentSectionValueToArrayTransformer implements DataTransformerInterface
      */
     public function transform($contentSectionValue)
     {
-        if ($contentSectionValue === null) {
+        // if ($contentSectionValue === null) {
             return array();
-        }
+        // }
 
         assert($contentSectionValue instanceof ContentSectionValueInterface);
 
