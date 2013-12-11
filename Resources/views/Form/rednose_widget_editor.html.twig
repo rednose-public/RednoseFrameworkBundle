@@ -5,6 +5,8 @@
         // CKEDITOR.disableAutoInline = true;
 
         CKEDITOR.inline('{{ id }}', {
+            extraPlugins: 'confighelper',
+
             toolbar: {{ toolbar|json_encode|raw }},
 
             {% if scayt %}
