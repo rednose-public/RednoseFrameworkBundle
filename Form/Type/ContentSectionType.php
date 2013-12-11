@@ -66,6 +66,12 @@ class ContentSectionType extends AbstractType
                 case ContentDefinitionInterface::TYPE_HTML:
                     $type = 'rednose_widget_editor';
 
+                    $options = array(
+                        'attr' => array(
+                            'placeholder' => 'Type here...',
+                        )
+                    );
+
                     break;
 
                 case ContentDefinitionInterface::TYPE_DROPDOWN:
@@ -75,7 +81,7 @@ class ContentSectionType extends AbstractType
 
                     $options = array(
                         'choices'     => array_combine($properties['choices'], $properties['choices']),
-                        'empty_value' => 'Choose an option',
+                        'empty_value' => 'Choose an option...',
                     );
 
                     break;

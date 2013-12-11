@@ -2,7 +2,9 @@
     {{ block ('textarea_widget') }}
 
     <script>
-        CKEDITOR.replace('{{ id }}', {
+        // CKEDITOR.disableAutoInline = true;
+
+        CKEDITOR.inline('{{ id }}', {
             toolbar: {{ toolbar|json_encode|raw }},
 
             {% if scayt %}
