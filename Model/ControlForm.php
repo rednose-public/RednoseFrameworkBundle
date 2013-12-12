@@ -8,22 +8,22 @@ use Rednose\FrameworkBundle\Model\ContentSectionInterface;
 /**
  * The abstract controlform.
  */
-abstract class ControlForm implements ContentSectionInterface
+abstract class ControlForm implements ContentSectionInterface, ControlFormInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinitions()
-    {
-        return $this->controls;
-    }
-
     /**
      * Default constructor.
      */
     public function __construct()
     {
         $this->controls = new ArrayCollection();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefinitions()
+    {
+        return $this->controls;
     }
 
     /**
@@ -81,7 +81,7 @@ abstract class ControlForm implements ContentSectionInterface
      *
      * @param \Control $control
      */
-    public function addControl(Control $control)
+    public function addControl(ControlInterface $control)
     {
         $control->setControlForm($this);
 

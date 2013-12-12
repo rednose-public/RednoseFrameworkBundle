@@ -8,7 +8,7 @@ use Rednose\FrameworkBundle\Model\ContentDefinitionInterface;
 /**
  * The abstract control class.
  */
-abstract class Control implements ContentDefinitionInterface
+abstract class Control implements ContentDefinitionInterface, ControlInterface
 {
     public function __construct()
     {
@@ -209,7 +209,7 @@ abstract class Control implements ContentDefinitionInterface
      *
      * @param \ControlForm $form
      */
-    public function setControlForm(ControlForm $form)
+    public function setControlForm(ControlFormInterface $form)
     {
         $this->controlForm = $form;
     }
