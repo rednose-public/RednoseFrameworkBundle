@@ -1,0 +1,11 @@
+{% block rednose_date_widget %}
+    {{ block ('hidden_widget') }}
+    <span id="input_{{ id }}" data-value="{{ value }}" data-disableable="{{ disable }}" class="formControl_calendar"></span>
+
+    <script language="javascript">
+        YUI().use('calendar', function(Y) {
+            formCalendar.Y = Y;
+            formCalendar.renderCalendar();
+        });
+    </script>
+{% endblock rednose_date_widget %}

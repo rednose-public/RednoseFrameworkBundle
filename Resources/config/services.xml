@@ -27,9 +27,18 @@
       </service>
 
       <!-- Form types -->
+      <service id="rednose_framework.form.type.content_section" class="Rednose\FrameworkBundle\Form\Type\ContentSectionType">
+          <tag name="form.type" alias="content_section" />
+      </service>
+
       <service id="form.type.rednose_widget_editor" class="Rednose\FrameworkBundle\Form\Type\EditorType">
           <argument type="service" id="request" strict="false" />
           <tag name="form.type" alias="rednose_widget_editor" />
+      </service>
+
+      <service id="form.type.rednose_date" class="Rednose\FrameworkBundle\Form\Type\DateType">
+          <argument type="service" id="request" strict="false" />
+          <tag name="form.type" alias="rednose_date" />
       </service>
 
       <!-- OAuth 2.0 -->
@@ -67,11 +76,6 @@
           <tag name="doctrine.event_listener" event="postPersist" />
           <tag name="doctrine.event_listener" event="postUpdate" />
           <tag name="doctrine.event_listener" event="postRemove" />
-      </service>
-
-      <!-- Control Form -->
-      <service id="rednose_framework.form.type.content_section" class="Rednose\FrameworkBundle\Form\Type\ContentSectionType">
-          <tag name="form.type" alias="content_section" />
       </service>
 
     </services>

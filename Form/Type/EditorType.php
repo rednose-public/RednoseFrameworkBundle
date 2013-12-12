@@ -89,9 +89,7 @@ class EditorType extends AbstractType
             // WYSIWYG features. Options are carefully chosen, keeping dictated corporate identity guidelines and multi-device support
             // in mind.
             'toolbar'  => array(
-                // Font choice is only here to correct pasted stuff from other sources,
-                // ideally the font and the size are handled by the configured template for this particular document.
-                array('name' => 'styles', 'items' => array('Font', 'FontSize')),
+                array('name' => 'styles', 'items' => array('Styles')),
 
                 // Standard bold, italic, underline. Remove format is only here to clean up the mess from pasted stuff.
                 array('name' => 'basicstyles', 'items' => array('Bold', 'Italic', 'Underline', '-', 'RemoveFormat')),
