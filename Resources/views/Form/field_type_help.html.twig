@@ -8,9 +8,9 @@
 {% spaceless %}
     <div>
         {{ form_label(form, label|default(null)) }}
+        {{ block('field_help') }}
         {{ form_errors(form) }}
         {{ form_widget(form) }}
-        {{ block('field_help') }}
     </div>
 {% endspaceless %}
 {% endblock field_row %}
