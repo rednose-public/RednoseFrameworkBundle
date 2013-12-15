@@ -4,79 +4,85 @@
         <parameter key="rednose_framework.doctrine_listener.class">Rednose\FrameworkBundle\EventListener\DoctrineListener</parameter>
         <parameter key="rednose_framework.datetime_formatter.class">Rednose\FrameworkBundle\DateTimeFormatter\DateTimeFormatter</parameter>
         <parameter key="rednose_framework.notification.factory.class">Rednose\FrameworkBundle\Notification\NotificationFactory</parameter>
+
+        <!-- HTML purifier -->
+        <parameter key="rednose_framework.purifier.factory.class">Rednose\FrameworkBundle\Purifier\PurifierFactory</parameter>
     </parameters>
 
     <services>
-      <!-- Notifications -->
-      <service id="rednose_framework.notification.factory" class="%rednose_framework.notification.factory.class%">
-          <argument type="service" id="service_container"/>
-      </service>
+        <!-- Notifications -->
+        <service id="rednose_framework.notification.factory" class="%rednose_framework.notification.factory.class%">
+            <argument type="service" id="service_container"/>
+        </service>
 
-      <!-- Formatting -->
-      <service id="rednose_framework.datetime_formatter" class="%rednose_framework.datetime_formatter.class%">
-          <argument type="service" id="service_container"/>
-      </service>
+        <!-- Formatting -->
+        <service id="rednose_framework.datetime_formatter" class="%rednose_framework.datetime_formatter.class%">
+            <argument type="service" id="service_container"/>
+        </service>
 
-      <!-- Form extensions -->
-      <service id="form.type.label_extension" class="Rednose\FrameworkBundle\Form\Extension\LabelFormTypeExtension">
-          <tag name="form.type_extension" alias="field" />
-      </service>
+        <!-- Form extensions -->
+        <service id="form.type.label_extension" class="Rednose\FrameworkBundle\Form\Extension\LabelFormTypeExtension">
+            <tag name="form.type_extension" alias="field" />
+        </service>
 
-      <service id="form.type.help_extionsion" class="Rednose\FrameworkBundle\Form\Extension\HelpFormTypeExtension">
-          <tag name="form.type_extension" alias="field" />
-      </service>
+        <service id="form.type.help_extionsion" class="Rednose\FrameworkBundle\Form\Extension\HelpFormTypeExtension">
+            <tag name="form.type_extension" alias="field" />
+        </service>
 
-      <!-- Form types -->
-      <service id="rednose_framework.form.type.content_section" class="Rednose\FrameworkBundle\Form\Type\ContentSectionType">
-          <tag name="form.type" alias="content_section" />
-      </service>
+        <!-- Form types -->
+        <service id="rednose_framework.form.type.content_section" class="Rednose\FrameworkBundle\Form\Type\ContentSectionType">
+            <tag name="form.type" alias="content_section" />
+        </service>
 
-      <service id="form.type.rednose_widget_editor" class="Rednose\FrameworkBundle\Form\Type\EditorType">
-          <argument type="service" id="request" strict="false" />
-          <tag name="form.type" alias="rednose_widget_editor" />
-      </service>
+        <service id="form.type.rednose_widget_editor" class="Rednose\FrameworkBundle\Form\Type\EditorType">
+            <argument type="service" id="request" strict="false" />
+            <tag name="form.type" alias="rednose_widget_editor" />
+        </service>
 
-      <service id="form.type.rednose_date" class="Rednose\FrameworkBundle\Form\Type\DateType">
-          <argument type="service" id="request" strict="false" />
-          <tag name="form.type" alias="rednose_date" />
-      </service>
+        <service id="form.type.rednose_date" class="Rednose\FrameworkBundle\Form\Type\DateType">
+            <argument type="service" id="request" strict="false" />
+            <tag name="form.type" alias="rednose_date" />
+        </service>
 
-      <!-- OAuth 2.0 -->
-      <service id="rednose_framework.authorize.form_type" class="Rednose\FrameworkBundle\Form\Type\AuthorizeFormType">
-      </service>
+        <!-- OAuth 2.0 -->
+        <service id="rednose_framework.authorize.form_type" class="Rednose\FrameworkBundle\Form\Type\AuthorizeFormType"/>
 
-      <service id="rednose_framework.authorize.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
-          <argument>rednose_framework_authorize</argument>
-          <argument type="service" id="rednose_framework.authorize.form_type" />
-      </service>
+        <service id="rednose_framework.authorize.form" factory-method="createNamed" factory-service="form.factory" class="Symfony\Component\Form\Form">
+            <argument>rednose_framework_authorize</argument>
+            <argument type="service" id="rednose_framework.authorize.form_type" />
+        </service>
 
-      <service id="rednose_framework.authorize.form_handler" class="Rednose\FrameworkBundle\Form\Handler\AuthorizeFormHandler" scope="request">
-          <argument type="service" id="rednose_framework.authorize.form" />
-          <argument type="service" id="request" />
-          <argument type="service" id="security.context" />
-          <argument type="service" id="fos_oauth_server.server" />
-      </service>
+        <service id="rednose_framework.authorize.form_handler" class="Rednose\FrameworkBundle\Form\Handler\AuthorizeFormHandler" scope="request">
+            <argument type="service" id="rednose_framework.authorize.form" />
+            <argument type="service" id="request" />
+            <argument type="service" id="security.context" />
+            <argument type="service" id="fos_oauth_server.server" />
+        </service>
 
-      <!-- Override the default FOS OAuth 2.0 client manager for now, eventually we want to configure our own services instead of overriding. -->
-      <service id="fos_oauth_server.client_manager.default" class="Rednose\FrameworkBundle\Entity\ClientManager">
-          <argument type="service" id="fos_oauth_server.entity_manager" />
-          <argument>%fos_oauth_server.model.client.class%</argument>
-      </service>
+        <!-- Override the default FOS OAuth 2.0 client manager for now, eventually we want to configure our own services instead of overriding. -->
+        <service id="fos_oauth_server.client_manager.default" class="Rednose\FrameworkBundle\Entity\ClientManager">
+            <argument type="service" id="fos_oauth_server.entity_manager" />
+            <argument>%fos_oauth_server.model.client.class%</argument>
+        </service>
 
-      <!-- JMS Object constructor alias -->
-      <service id="rednose_framework.doctrine_object_constructor" class="Rednose\FrameworkBundle\Serializer\Construction\DoctrineObjectConstructor" public="false">
-          <argument type="service" id="doctrine"/>
-          <argument type="service" id="jms_serializer.unserialize_object_constructor"/>
-      </service>
-      <service id="jms_serializer.object_constructor" alias="rednose_framework.doctrine_object_constructor" public="false"/>
+        <!-- JMS Object constructor alias -->
+        <service id="rednose_framework.doctrine_object_constructor" class="Rednose\FrameworkBundle\Serializer\Construction\DoctrineObjectConstructor" public="false">
+            <argument type="service" id="doctrine"/>
+            <argument type="service" id="jms_serializer.unserialize_object_constructor"/>
+        </service>
 
-      <!-- Doctrine event listener -->
-      <service id="rednose_framework.doctrine_listener" class="%rednose_framework.doctrine_listener.class%">
-          <argument type="service" id="event_dispatcher" />
-          <tag name="doctrine.event_listener" event="postPersist" />
-          <tag name="doctrine.event_listener" event="postUpdate" />
-          <tag name="doctrine.event_listener" event="postRemove" />
-      </service>
+        <service id="jms_serializer.object_constructor" alias="rednose_framework.doctrine_object_constructor" public="false"/>
 
+        <!-- Doctrine event listener -->
+        <service id="rednose_framework.doctrine_listener" class="%rednose_framework.doctrine_listener.class%">
+            <argument type="service" id="event_dispatcher" />
+            <tag name="doctrine.event_listener" event="postPersist" />
+            <tag name="doctrine.event_listener" event="postUpdate" />
+            <tag name="doctrine.event_listener" event="postRemove" />
+        </service>
+
+        <!-- HTML purifier -->
+        <service id="rednose_framework.purifier.factory" class="%rednose_framework.purifier.factory.class%"/>
+        <service id="rednose_framework.purifier" factory-method="create" factory-service="rednose_framework.purifier.factory" class="%rednose_framework.purifier.factory.class%"/>
     </services>
 </container>
