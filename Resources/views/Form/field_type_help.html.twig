@@ -7,8 +7,10 @@
 {% block field_row %}
 {% spaceless %}
     <div>
-        {{ form_label(form, label|default(null)) }}
-        {{ block('field_help') }}
+        <div class="labelspan">
+            {{ form_label(form, label|default(null)) }}
+            {{ block('field_help') }}
+        </div>
         {{ form_errors(form) }}
         {{ form_widget(form) }}
     </div>
