@@ -19,9 +19,22 @@ use Rednose\FrameworkBundle\Model\ExtrinsicObjectInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class ContentSectionType extends AbstractType
 {
+    protected $translator;
+
+    /**
+     * Constructor.
+     *
+     * @param TranslatorInterface $translator A translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -68,7 +81,7 @@ class ContentSectionType extends AbstractType
 
                     $options = array(
                         'attr' => array(
-                            'placeholder' => 'Type here...',
+                            'placeholder' => $this->translator->trans('Type here...')
                         )
                     );
 
@@ -81,7 +94,7 @@ class ContentSectionType extends AbstractType
 
                     $options = array(
                         'choices'     => array_combine($properties['choices'], $properties['choices']),
-                        'empty_value' => 'Choose an option...',
+                        'empty_value' => $this->translator->trans('Choose an option...')
                     );
 
                     break;
