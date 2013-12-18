@@ -63,7 +63,7 @@ interface ContentDefinitionInterface
     public function getProperties();
 
     /**
-     * Wether a value is required for this content item.
+     * Whether a value is required for this content item.
      *
      * @return bool Required.
      */
