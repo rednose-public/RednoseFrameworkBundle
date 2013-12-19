@@ -80,7 +80,8 @@ class ContentSectionType extends AbstractType
                     $type = 'rednose_widget_editor';
 
                     $options = array(
-                        'attr' => array(
+                        'required' => false,
+                        'attr'     => array(
                             'placeholder' => $this->translator->trans('Type here...')
                         )
                     );
