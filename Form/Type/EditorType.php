@@ -83,7 +83,7 @@ class EditorType extends AbstractType
     {
         $resolver->setDefaults(array(
             'required' => false,
-            'scayt'    => false,
+            'scayt'    => true,
             'height'   => 250,
 
             // WYSIWYG features. Options are carefully chosen, keeping dictated corporate identity guidelines and multi-device support

@@ -11,12 +11,12 @@
 
             {% if scayt %}
                 scayt_autoStartup: true,
+                disableNativeSpellChecker: true,
             {% endif %}
 
             removePlugins: 'elementspath',
             resize_enabled: false,
 
-            disableNativeSpellChecker: false,
             scayt_sLang: '{{ locale }}',
             language: '{{ locale }}',
             height: '{{ height }}',
@@ -32,7 +32,7 @@
 
             var disableEvent = function (evt) {
                 evt.cancelBubble = true;
-                evt.returnValue  = false;
+                evt.returnValue = false;
 
                 evt.preventDefault();
                 evt.stopPropagation();
@@ -45,7 +45,7 @@
                 editor.document.$.addEventListener('drop', disableEvent, true);
             } else if (editor.document.$.attachEvent) {
                 editor.document.$.attachEvent('ondragover', disableEvent, true);
-                editor.document.$.attachEvent('ondrop', disableEvent, true );
+                editor.document.$.attachEvent('ondrop', disableEvent, true);
             }
         });
     </script>
