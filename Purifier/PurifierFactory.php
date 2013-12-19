@@ -18,8 +18,6 @@ class PurifierFactory
      */
     public function create()
     {
-        new HTMLPurifier_Bootstrap;
-
         $cache = sys_get_temp_dir() . '/fgHtmlPurify';
 
         if (is_dir($cache) === false) {
