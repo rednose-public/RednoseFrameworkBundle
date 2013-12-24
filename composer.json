@@ -31,7 +31,6 @@
         "sonata-project/doctrine-orm-admin-bundle": "2.1.*@dev",
         "knplabs/knp-menu-bundle": "v1.1.1",
         "sonata-project/admin-bundle": "2.1.0",
-        "simplethings/entity-audit-bundle": "*",
         "jms/serializer-bundle": "0.12.*@dev",
         "knplabs/knp-time-bundle": "dev-master",
         "friendsofsymfony/rest-bundle": "0.13.1",
