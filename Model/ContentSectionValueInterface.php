@@ -2,8 +2,6 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * A data object containing multiple ContentValue objects for a single ContentSection.
  */
@@ -12,14 +10,14 @@ interface ContentSectionValueInterface
     /**
      * Gets the Content Section Definition for this Value instance.
      *
-     * @return ContentDefinitionInterface A definition object.
+     * @return ContentSectionInterface A definition object.
      */
     public function getContentSection();
 
     /**
      * Gets the content values for this section.
      *
-     * @return ArrayCollection<ContentValueInterface> The traversable values.
+     * @return ContentValueInterface[] The traversable values.
      */
     public function getContents();
 
