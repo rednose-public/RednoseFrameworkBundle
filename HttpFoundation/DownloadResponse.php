@@ -22,7 +22,7 @@ class DownloadResponse extends Response
     {
         $headers = array(
             'Content-Type' => $mimetype,
-            'Content-Disposition' => 'filename="'.$filename.'"',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
         );
 
         parent::__construct($content, 200, $headers);
