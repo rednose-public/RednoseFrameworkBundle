@@ -11,8 +11,6 @@
 
 namespace Rednose\FrameworkBundle\Form\DataTransformer;
 
-use Rednose\FrameworkBundle\Model\ContentDefinitionInterface;
-use Rednose\FrameworkBundle\Model\ContentSectionInterface;
 use Rednose\FrameworkBundle\Model\ContentSectionValueInterface;
 use Rednose\FrameworkBundle\Model\ContentValueInterface;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -28,10 +26,12 @@ class ContentSectionValueToArrayTransformer implements DataTransformerInterface
      *
      * @var ContentSectionValueInterface
      */
-    protected $contenSectionValue;
+    protected $contentSectionValue;
 
     /**
-     * {@inheritdoc}
+     * @param ContentSectionValueInterface $contentSectionValue
+     *
+     * @return array
      */
     public function transform($contentSectionValue)
     {
@@ -56,7 +56,9 @@ class ContentSectionValueToArrayTransformer implements DataTransformerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param array $data
+     *
+     * @return ContentSectionValueInterface
      */
     public function reverseTransform($data)
     {

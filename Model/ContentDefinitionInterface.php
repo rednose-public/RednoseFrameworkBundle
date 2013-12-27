@@ -12,6 +12,7 @@ interface ContentDefinitionInterface
     const TYPE_HTML     = 'html';
     const TYPE_DATE     = 'date';
     const TYPE_DROPDOWN = 'dropdown';
+    const TYPE_RADIO    = 'radio';
 
     /**
      * Gets the unique identifier for the content item this object defines.

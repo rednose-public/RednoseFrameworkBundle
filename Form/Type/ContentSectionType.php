@@ -43,6 +43,7 @@ class ContentSectionType extends AbstractType
         // Data needs to be passed on form type construction.
         assert(isset($options['data']));
 
+        /** @var ContentSectionValueInterface $data */
         $data = $options['data'];
 
         assert($data instanceof ContentSectionValueInterface);
@@ -89,13 +90,15 @@ class ContentSectionType extends AbstractType
                     break;
 
                 case ContentDefinitionInterface::TYPE_DROPDOWN:
+                case ContentDefinitionInterface::TYPE_RADIO:
                     $type = 'choice';
 
                     $properties = $contentDefinition->getProperties();
 
                     $options = array(
-                        'choices'     => array_combine($properties['choices'], $properties['choices']),
-                        'empty_value' => $this->translator->trans('Choose an option...')
+                        'choices'     => $properties['choices'],
+                        'empty_value' => $this->translator->trans('Choose an option...'),
+                        'expanded'    => $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO,
                     );
 
                     break;
