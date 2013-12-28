@@ -3,10 +3,19 @@
 namespace Rednose\FrameworkBundle\Doctrine;
 
 use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
+use Rednose\FrameworkBundle\Entity\User;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserManager extends BaseUserManager
 {
+    /**
+     * @return User
+     */
+    public function createUser()
+    {
+        return parent::createUser();
+    }
+
     /**
      * Return all users, sorted
      *

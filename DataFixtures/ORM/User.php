@@ -5,14 +5,17 @@ namespace Rednose\FrameworkBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use FOS\UserBundle\Util\UserManipulator;
 
 class UserFixture extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     private $container;
 
+    /**
+     * @var UserManipulator
+     */
     private $userUtil;
 
     public function load(ObjectManager $em)
