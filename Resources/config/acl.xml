@@ -6,7 +6,9 @@
         <parameter key="security.acl.security_identity_retrieval_strategy.class">Rednose\FrameworkBundle\Acl\Domain\GroupSecurityIdentityRetrievalStrategy</parameter>
 
         <parameter key="rednose_framework.acl.manipulator.class">Rednose\FrameworkBundle\Acl\AclManipulator</parameter>
-        <!--<parameter key="rednose_framework.acl.mask_builder.class">Rednose\FrameworkBundle\Acl\Permission\MaskBuilder</parameter>-->
+        <parameter key="rednose_framework.acl.object_manipulator.class">Rednose\FrameworkBundle\Acl\ObjectAclManipulator</parameter>
+
+        <parameter key="rednose_framework.acl.mask_builder.class">Rednose\FrameworkBundle\Acl\Permission\MaskBuilder</parameter>
     </parameters>
     <services>
         <service id="security.acl.security_identity_retrieval_strategy" class="%security.acl.security_identity_retrieval_strategy.class%">
@@ -22,7 +24,11 @@
 
         <service id="rednose_framework.acl.manipulator" class="%rednose_framework.acl.manipulator.class%">
             <argument type="service" id="security.acl.provider"/>
-            <!--<argument>%rednose_framework.acl.mask_builder.class%</argument>-->
+        </service>
+
+        <service id="rednose_framework.acl.object_manipulator" class="%rednose_framework.acl.object_manipulator.class%">
+            <argument type="service" id="rednose_framework.acl.manipulator"/>
+            <argument>%rednose_framework.acl.mask_builder.class%</argument>
         </service>
     </services>
 </container>
