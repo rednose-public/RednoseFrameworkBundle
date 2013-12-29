@@ -4,6 +4,7 @@ namespace Rednose\FrameworkBundle\Entity;
 
 use FOS\UserBundle\Entity\Group as BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
+use Rednose\FrameworkBundle\Model\GroupInterface;
 
 /**
  * A Usergroup
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_group")
  */
-class Group extends BaseGroup
+class Group extends BaseGroup implements GroupInterface
 {
     /**
      * @ORM\Id
@@ -25,6 +26,14 @@ class Group extends BaseGroup
      */
     protected $users;
 
+    /**
+     * Constructor.
+     *
+     * Override of the superclass so we can construct this object without specifying a name.
+     *
+     * @param string $name
+     * @param array  $roles
+     */
     public function __construct($name = null, $roles = array())
     {
         parent::__construct($name, $roles);

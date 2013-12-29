@@ -1,12 +1,13 @@
 <?php
 
-namespace Rednose\FrameworkBundle\Doctrine;
+namespace Rednose\FrameworkBundle\Entity;
 
-use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
+use FOS\UserBundle\Entity\UserManager as BaseUserManager;
 use Rednose\FrameworkBundle\Entity\User;
+use Rednose\FrameworkBundle\Model\UserManagerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class UserManager extends BaseUserManager
+class UserManager extends BaseUserManager implements UserManagerInterface
 {
     /**
      * @return User
@@ -19,7 +20,7 @@ class UserManager extends BaseUserManager
     /**
      * Return all users, sorted
      *
-     * @param $ascending = true
+     * @param $ascending
      */
     public function findUsersSorted($ascending = true)
     {
@@ -95,6 +96,11 @@ class UserManager extends BaseUserManager
         return parent::loadUserByUsername($username);
     }
 
+    /**
+     * @param int $length
+     *
+     * @return string
+     */
     protected function randomPassword($length = 9)
     {
         $vowels = 'aeuy';

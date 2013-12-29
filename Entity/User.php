@@ -4,8 +4,8 @@ namespace Rednose\FrameworkBundle\Entity;
 
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\EquatableInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Rednose\FrameworkBundle\Model\UserInterface;
+use Symfony\Component\Security\Core\User\UserInterface as CoreUserInterface;
 
 /**
  * A RedNose framework user
@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_user")
  */
-class User extends BaseUser implements EquatableInterface
+class User extends BaseUser implements UserInterface
 {
     const ROLE_ADMIN = 'ROLE_ADMIN';
 
@@ -50,6 +50,7 @@ class User extends BaseUser implements EquatableInterface
      * username as it has been set by setUsername().
      *
      * @param $forceLowercase
+     *
      * @return string
      */
     public function getUsername($forceLowercase = true)
@@ -109,7 +110,7 @@ class User extends BaseUser implements EquatableInterface
     /**
      * Tells if the the given user has super admin role.
      *
-     * @return Boolean
+     * @return boolean
      */
     public function isAdmin()
     {
@@ -119,7 +120,7 @@ class User extends BaseUser implements EquatableInterface
     /**
      * Sets the admin status
      *
-     * @param Boolean $boolean
+     * @param boolean $boolean
      */
     public function setAdmin($boolean)
     {
@@ -133,7 +134,7 @@ class User extends BaseUser implements EquatableInterface
     /**
      * Symfony\Component\Security\Core\User\EquatableInterface::isEqualTo()
      */
-    public function isEqualTo(UserInterface $user)
+    public function isEqualTo(CoreUserInterface $user)
     {
         return $this->getUsername() === $user->getUsername();
     }

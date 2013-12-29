@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="security.acl.permission.map.class">Rednose\FrameworkBundle\Acl\Permission\PermissionMap</parameter>
+        <parameter key="security.acl.security_identity_retrieval_strategy.class">Rednose\FrameworkBundle\Acl\Domain\GroupSecurityIdentityRetrievalStrategy</parameter>
+
+        <parameter key="rednose_framework.acl.manipulator.class">Rednose\FrameworkBundle\Acl\AclManipulator</parameter>
+        <!--<parameter key="rednose_framework.acl.mask_builder.class">Rednose\FrameworkBundle\Acl\Permission\MaskBuilder</parameter>-->
+    </parameters>
+    <services>
+        <service id="security.acl.security_identity_retrieval_strategy" class="%security.acl.security_identity_retrieval_strategy.class%">
+            <argument type="service" id="security.role_hierarchy" />
+            <argument type="service" id="security.authentication.trust_resolver" />
+        </service>
+
+        <service id="security.acl.collection_cache" class="%security.acl.collection_cache.class%">
+            <argument type="service" id="security.acl.provider" />
+            <argument type="service" id="security.acl.object_identity_retrieval_strategy" />
+            <argument type="service" id="security.acl.security_identity_retrieval_strategy" />
+        </service>
+
+        <service id="rednose_framework.acl.manipulator" class="%rednose_framework.acl.manipulator.class%">
+            <argument type="service" id="security.acl.provider"/>
+            <!--<argument>%rednose_framework.acl.mask_builder.class%</argument>-->
+        </service>
+    </services>
+</container>
