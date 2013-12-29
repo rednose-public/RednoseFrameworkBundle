@@ -30,5 +30,9 @@
             <argument type="service" id="rednose_framework.acl.manipulator"/>
             <argument>%rednose_framework.acl.mask_builder.class%</argument>
         </service>
+
+        <service id="rednose_framework.form.type.acl" class="Rednose\FrameworkBundle\Form\Type\ObjectAclDataType">
+            <tag name="form.type" alias="rednose_framework_acl" />
+        </service>
     </services>
 </container>
