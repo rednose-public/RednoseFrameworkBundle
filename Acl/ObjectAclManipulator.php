@@ -64,7 +64,7 @@ class ObjectAclManipulator
         $data = array();
 
         foreach ($identities as $identity) {
-            $securityIdentity = new UserSecurityIdentity($identity->getName(), get_class($identity));
+            $securityIdentity = new UserSecurityIdentity($identity, get_class($identity));
 
             $entry = array();
 
@@ -89,7 +89,7 @@ class ObjectAclManipulator
         $data = $objectAclData->getData();
 
         foreach ($objectAclData->getIdentities() as $identity) {
-            $securityIdentity = new UserSecurityIdentity($identity->getName(), get_class($identity));
+            $securityIdentity = new UserSecurityIdentity($identity, get_class($identity));
 
             /** @var \Rednose\FrameworkBundle\Acl\Permission\MaskBuilder $maskBuilder */
             $maskBuilder = new $this->maskBuilderClass();
