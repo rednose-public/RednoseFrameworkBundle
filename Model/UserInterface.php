@@ -8,9 +8,6 @@ use FOS\UserBundle\Model\GroupableInterface;
 
 /**
  * A RedNose framework user
- *
- * @ORM\Entity
- * @ORM\Table(name="rednose_framework_user")
  */
 interface UserInterface extends BaseUserInterface, GroupableInterface, EquatableInterface
 {
