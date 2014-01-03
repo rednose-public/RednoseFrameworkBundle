@@ -6,6 +6,8 @@ use Rednose\FrameworkBundle\Exception;
 
 abstract class ExtrinsicObject implements ExtrinsicObjectInterface
 {
+    protected $foreignId;
+
     /**
      * Returns the id.
      *
@@ -20,11 +22,13 @@ abstract class ExtrinsicObject implements ExtrinsicObjectInterface
      * Sets and cleans the foreignId.
      *
      * @param string $id
+     *
+     * @throws \InvalidArgumentException when the id is attempted to be changed.
      */
     final public function setForeignId($id)
     {
-        if ($this->id !== null || $id === null) {
-            throw new Exception\InvalidArgument(
+        if ($this->foreignId !== null || $id === null) {
+            throw new \InvalidArgumentException(
                 'Error: Invalid value: foreignId is write-once and value can\'t be `null`.'
             );
         }

@@ -24,7 +24,7 @@ interface ContentValueInterface
     /**
      * Sets the current content value this instance stores.
      *
-     * @param string A value.
+     * @param string $value A value.
      */
     public function setContent($value);
 }
