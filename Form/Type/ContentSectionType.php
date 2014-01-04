@@ -70,6 +70,10 @@ class ContentSectionType extends AbstractType
                 'read_only' => $contentDefinition->isProtected(),
             );
 
+            if ($contentDefinition->isVisible() === false) {
+                $baseOptions['attr'] = array('style' => 'display: none;');
+            }
+
             if ($contentDefinition->getContentItem() instanceof ExtrinsicObjectInterface) {
                 $baseOptions = array_merge($baseOptions, array(
                     'attr' => array(
