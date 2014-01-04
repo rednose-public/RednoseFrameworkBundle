@@ -16,6 +16,8 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
         $this->properties = array();
         $this->weight     = 0;
         $this->required   = false;
+        $this->visible    = true;
+        $this->protected  = false;
     }
 
     /**
@@ -244,6 +246,46 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     public function setHelp($help)
     {
         $this->help = $help;
+    }
+
+    /**
+     * Whether this value can be edited from the user-interface.
+     *
+     * @return boolean
+     */
+    public function isProtected()
+    {
+        return $this->protected;
+    }
+
+    /**
+     * Whether this value can be edited from the user-interface.
+     *
+     * @param boolean $protected
+     */
+    public function setProtected($protected)
+    {
+        $this->protected = $protected;
+    }
+
+    /**
+     * Whether this control is visible from the user-interface.
+     *
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        return $this->visible;
+    }
+
+    /**
+     * Whether this control is visible from the user-interface.
+     *
+     * @param boolean $visible
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
     }
 
     // TODO: Deprecate getValue and setValue in favor of these interface methods.

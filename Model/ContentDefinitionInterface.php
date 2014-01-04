@@ -66,7 +66,42 @@ interface ContentDefinitionInterface
     /**
      * Whether a value is required for this content item.
      *
-     * @return bool Required.
+     * @return boolean
      */
     public function isRequired();
+
+    /**
+     * Whether a value is required for this content item.
+     *
+     * @param boolean $required.
+     */
+    public function setRequired($required);
+
+    /**
+     * Whether this value can be edited from the user-interface.
+     *
+     * @return boolean
+     */
+    public function isProtected();
+
+    /**
+     * Whether this value can be edited from the user-interface.
+     *
+     * @param boolean $protected
+     */
+    public function setProtected($protected);
+
+    /**
+     * Whether this control is visible from the user-interface.
+     *
+     * @return boolean
+     */
+    public function isVisible();
+
+    /**
+     * Whether this control is visible from the user-interface.
+     *
+     * @param boolean $visible
+     */
+    public function setVisible($visible);
 }
