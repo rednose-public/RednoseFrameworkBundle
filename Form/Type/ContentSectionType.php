@@ -42,28 +42,32 @@ class ContentSectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // Data needs to be passed on form type construction.
-        assert(isset($options['data']));
+        if (isset($options['data']) === false) {
+            throw new \InvalidArgumentException('Data needs to be passed on form type construction.');
+        }
 
-        /** @var ContentSectionValueInterface $data */
         $data = $options['data'];
 
-        assert($data instanceof ContentSectionValueInterface);
+        if (!$data instanceof ContentSectionValueInterface) {
+            throw new \InvalidArgumentException('Form data must implement ContentSectionValueInterface');
+        }
 
         $contentSection = $data->getContentSection();
 
-        assert($contentSection instanceof ContentSectionInterface);
+        if (!$contentSection instanceof ContentSectionInterface) {
+            throw new \InvalidArgumentException('Content section must implement ContentSectionInterface');
+        }
 
         foreach ($contentSection->getDefinitions() as $contentDefinition) {
-            // Control implements ContentDefinitionInterface
             $type    = null;
             $options = array();
 
             $baseOptions = array(
-                'label'    => $contentDefinition->getCaption(),
-                'required' => $contentDefinition->isRequired(),
-                'help'     => $contentDefinition->getHelp(),
-                'data'     => $this->getValue($contentDefinition),
+                'label'     => $contentDefinition->getCaption(),
+                'required'  => $contentDefinition->isRequired(),
+                'help'      => $contentDefinition->getHelp(),
+                'data'      => $this->getValue($contentDefinition),
+                'read_only' => $contentDefinition->isProtected(),
             );
 
             if ($contentDefinition->getContentItem() instanceof ExtrinsicObjectInterface) {

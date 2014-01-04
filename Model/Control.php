@@ -10,6 +10,16 @@ use Rednose\FrameworkBundle\Model\ContentDefinitionInterface;
  */
 abstract class Control implements ContentDefinitionInterface, ControlInterface
 {
+    protected $id;
+    protected $value;
+    protected $caption;
+    protected $type;
+    protected $properties;
+    protected $weight;
+    protected $required;
+    protected $visible;
+    protected $protected;
+
     public function __construct()
     {
         $this->type       = ContentDefinitionInterface::TYPE_TEXT;
