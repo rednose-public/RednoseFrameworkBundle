@@ -94,8 +94,9 @@ class ContentSectionType extends AbstractType
                     $options = array(
                         'required' => false,
                         'attr'     => array(
-                            'data-id'     => $contentDefinition->getContentItem()->getForeignId(),
-                            'placeholder' => $this->translator->trans('Type here...')
+                            'data-id'       => $contentDefinition->getContentItem()->getForeignId(),
+                            'placeholder'   => $this->translator->trans('Type here...'),
+                            'data-required' => $contentDefinition->isRequired()
                         )
                     );
 
