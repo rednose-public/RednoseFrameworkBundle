@@ -66,7 +66,6 @@ class ContentSectionType extends AbstractType
                 'label'     => $contentDefinition->getCaption(),
                 'required'  => $contentDefinition->isRequired(),
                 'help'      => $contentDefinition->getHelp(),
-                'data'      => $this->getValue($contentDefinition),
                 'read_only' => $contentDefinition->isProtected(),
             );
 
@@ -86,6 +85,10 @@ class ContentSectionType extends AbstractType
                 case ContentDefinitionInterface::TYPE_TEXT:
                     $type = 'text';
 
+                    $options = array(
+                        'data' => $this->getValue($contentDefinition)
+                    );
+
                     break;
 
                 case ContentDefinitionInterface::TYPE_HTML:
@@ -93,6 +96,7 @@ class ContentSectionType extends AbstractType
 
                     $options = array(
                         'required' => false,
+                        'data'     => $this->getValue($contentDefinition),
                         'attr'     => array(
                             'data-id'       => $contentDefinition->getContentItem()->getForeignId(),
                             'placeholder'   => $this->translator->trans('Type here...'),
