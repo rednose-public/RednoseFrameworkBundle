@@ -2,8 +2,8 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
-use FOS\UserBundle\Entity\UserManager as BaseUserManager;
-use Rednose\FrameworkBundle\Entity\User;
+use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
+use Rednose\FrameworkBundle\Model\UserInterface;
 use Rednose\FrameworkBundle\Model\UserManagerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -20,7 +20,9 @@ class UserManager extends BaseUserManager implements UserManagerInterface
     /**
      * Return all users, sorted
      *
-     * @param $ascending
+     * @param bool $ascending
+     *
+     * @return UserInterface[]
      */
     public function findUsersSorted($ascending = true)
     {
@@ -46,8 +48,12 @@ class UserManager extends BaseUserManager implements UserManagerInterface
      * Warning: The application secret is used as a private key between application
      * and must therefor remain secret!
      *
-     * @param Container $container
+     * @param object $container
+     *
      * @return boolean
+     *
+     * @throws \InvalidArgumentException when the secret parameter is invalid.
+     * @throws AccessDeniedException when the token is invalid.
      */
     public function tokenAuthentication($container)
     {
