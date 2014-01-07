@@ -23,6 +23,8 @@
         "symfony/symfony": "2.3.*@stable",
         "symfony/framework-bundle": "*@stable",
         "symfony/security-bundle": "*@stable",
+        "symfony/swiftmailer-bundle": "*@stable",
+        "symfony/monolog-bundle": "*@stable",
         "doctrine/doctrine-fixtures-bundle": "*@dev",
         "friendsofsymfony/user-bundle": "*@stable",
         "sonata-project/doctrine-orm-admin-bundle": "*@stable",
