@@ -38,7 +38,7 @@
         "sonata-project/doctrine-orm-admin-bundle": "*@stable",
         "jms/serializer-bundle": "0.12.*@dev",
         "knplabs/knp-time-bundle": "dev-master",
-        "friendsofsymfony/rest-bundle": "@stable",
+        "friendsofsymfony/rest-bundle": "0.13.1",
         "friendsofsymfony/oauth-server-bundle": "*@stable",
         "ezyang/htmlpurifier": "dev-master",
         "rednose/api-doc-bundle": "dev-master"
