@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->booleanNode('oauth')->defaultFalse()->end()
+                ->booleanNode('acl')->defaultFalse()->end()
             ->end();
     }
 }
