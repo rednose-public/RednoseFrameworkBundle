@@ -31,7 +31,7 @@ class RednoseFrameworkExtension extends Extension
             $loader->load('oauth.xml');
         }
 
-        if ($config['oauth']) {
+        if ($config['acl']) {
             $loader->load('acl.xml');
         }
 
