@@ -31,7 +31,11 @@ class RednoseFrameworkExtension extends Extension
             $loader->load('oauth.xml');
         }
 
-        $serviceFiles = array('acl', 'admin', 'grid', 'orm', 'services');
+        if ($config['oauth']) {
+            $loader->load('acl.xml');
+        }
+
+        $serviceFiles = array('admin', 'grid', 'orm', 'services');
 
         foreach ($serviceFiles as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
