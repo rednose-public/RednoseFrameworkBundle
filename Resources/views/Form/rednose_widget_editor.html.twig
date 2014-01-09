@@ -2,16 +2,15 @@
     {{ block ('textarea_widget') }}
 
     <script>
-        // CKEDITOR.disableAutoInline = true;
-
-        CKEDITOR.inline('{{ id }}', {
+        {# Initializer method depends on the 'inline' setting #}
+        CKEDITOR.{% if inline %}inline{% else %}replace{% endif %}('{{ id }}', {
             extraPlugins: 'confighelper',
 
             toolbar: {{ toolbar|json_encode|raw }},
 
             {% if scayt %}
-                scayt_autoStartup: true,
-                disableNativeSpellChecker: true,
+            scayt_autoStartup: true,
+            disableNativeSpellChecker: true,
             {% endif %}
 
             removePlugins: 'elementspath',

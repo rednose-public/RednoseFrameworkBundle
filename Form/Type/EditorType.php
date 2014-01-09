@@ -45,7 +45,9 @@ class EditorType extends AbstractType
         $builder
             ->setAttribute('toolbar', $options['toolbar'])
             ->setAttribute('scayt', $options['scayt'])
-            ->setAttribute('height', $options['height']);
+            ->setAttribute('height', $options['height'])
+            ->setAttribute('inline', $options['inline'])
+        ;
     }
 
     /**
@@ -53,12 +55,13 @@ class EditorType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view
-            ->set('toolbar', $form->getAttribute('toolbar'))
-            ->set('scayt', $form->getAttribute('scayt'))
-            ->set('height', $form->getAttribute('height'))
-            ->set('locale', $this->request->getLocale());
+        $view->vars['toolbar'] = $form->getConfig()->getAttribute('toolbar');
+        $view->vars['scayt']   = $form->getConfig()->getAttribute('scayt');
+        $view->vars['height']  = $form->getConfig()->getAttribute('height');
+        $view->vars['inline']  = $form->getConfig()->getAttribute('inline');
+        $view->vars['locale']  = $this->request->getLocale();
     }
+
 
     /**
      * {@inheritdoc}
@@ -83,6 +86,7 @@ class EditorType extends AbstractType
     {
         $resolver->setDefaults(array(
             'required' => false,
+            'inline'   => false,
             'scayt'    => true,
             'height'   => 250,
 
