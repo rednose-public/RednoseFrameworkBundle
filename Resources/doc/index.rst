@@ -26,3 +26,4 @@ Security configuration
     # app/config/config.yml
     rednose_framework:
         oauth: true (Enables Oauth2 authentication)
+        acl: true (Enables ACL services and permission maps)
