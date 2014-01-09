@@ -108,7 +108,7 @@ class EditorType extends AbstractType
                 array('name' => 'clipboard', 'items' => array('Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord')),
 
                 // Nice to have. All clients should implement this.
-                array('name' => 'tools', 'items' => array('Maximize')),
+                array('name' => 'tools', 'items' => array('Maximize', 'Scayt')),
             ),
         ));
     }
