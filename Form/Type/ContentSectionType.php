@@ -74,7 +74,7 @@ class ContentSectionType extends AbstractType
             }
 
             if ($contentDefinition->getContentItem() instanceof ExtrinsicObjectInterface) {
-                $baseOptions = array_merge($baseOptions, array(
+                $baseOptions = array_merge_recursive($baseOptions, array(
                     'attr' => array(
                         'data-id' => $contentDefinition->getContentItem()->getForeignId(),
                     ),
