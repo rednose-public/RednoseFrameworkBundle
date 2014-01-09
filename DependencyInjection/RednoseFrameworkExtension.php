@@ -35,7 +35,7 @@ class RednoseFrameworkExtension extends Extension
             $loader->load('acl.xml');
         }
 
-        $serviceFiles = array('admin', 'grid', 'orm', 'services');
+        $serviceFiles = array('admin', 'graph', 'grid', 'orm', 'services');
 
         foreach ($serviceFiles as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
