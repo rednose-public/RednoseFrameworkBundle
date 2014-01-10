@@ -26,6 +26,41 @@ interface ControlInterface
     public function setCaption($caption);
 
     /**
+     * Sets the required flag
+     *
+     * @param boolean $required
+     */
+    public function setRequired($required);
+
+    /**
+     * Gets the required flag
+     *
+     * @param boolean
+     */
+    public function getRequired();
+
+    /**
+     * Sets the readonly flag
+     *
+     * @param boolean $readonly
+     */
+    public function setReadonly($readonly);
+
+    /**
+     * Gets the readonly flag
+     *
+     * @return boolean
+     */
+    public function getReadonly();
+
+    /**
+     * Is the readonly flag set?
+     *
+     * @return boolean $readonly
+     */
+    public function isReadonly();
+
+    /**
      * Gets the handle of the control
      *
      * @return string
