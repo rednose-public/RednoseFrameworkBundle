@@ -25,6 +25,7 @@
         "symfony/security-bundle": "*@stable",
         "symfony/monolog-bundle": "*@stable",
         "symfony/swiftmailer-bundle": "2.1",
+        "jms/security-extra-bundle": "*@stable",
         "twig/extensions": "1.0.*@dev",
         "symfony/assetic-bundle": "2.1.*",
         "doctrine/doctrine-fixtures-bundle": "*@dev",
