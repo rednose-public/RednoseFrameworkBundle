@@ -4,7 +4,7 @@
     <script>
         {# Initializer method depends on the 'inline' setting #}
         CKEDITOR.{% if inline %}inline{% else %}replace{% endif %}('{{ id }}', {
-            extraPlugins: 'confighelper',
+            {% if track_changes %}extraPlugins: 'lite,',{% endif %}
 
             toolbar: {{ toolbar|json_encode|raw }},
 
@@ -23,29 +23,6 @@
             // Helvetica and Verdana is all we allow. Font choice is only here to correct pasted stuff from other sources,
             // ideally the font and the size are dictated by the configured template for this particular document.
             font_names: 'Helvetica; Verdana'
-        });
-
-        // TODO: Document this. What does it do and why?
-        CKEDITOR.on('instanceReady', function (ev) {
-            var editor = ev.editor;
-
-            var disableEvent = function (evt) {
-                evt.cancelBubble = true;
-                evt.returnValue = false;
-
-                evt.preventDefault();
-                evt.stopPropagation();
-
-                return false;
-            };
-
-            if (editor.document.$.addEventListener) {
-                editor.document.$.addEventListener('dragover', disableEvent, true);
-                editor.document.$.addEventListener('drop', disableEvent, true);
-            } else if (editor.document.$.attachEvent) {
-                editor.document.$.attachEvent('ondragover', disableEvent, true);
-                editor.document.$.attachEvent('ondrop', disableEvent, true);
-            }
         });
     </script>
 {% endblock rednose_widget_editor_widget %}
