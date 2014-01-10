@@ -1,0 +1,29 @@
+﻿UPGRADE FROM 1.2 to 1.3
+=======================
+
+Config
+------
+
+ * Oauth is now an optional configuration.
+ * ACL is now an optional configuration.
+ * CKEditor inline is now a form option.
+
+Features
+--------
+
+ * Added Graphviz to the framework.
+
+Deprecations
+------------
+
+ * Removed sonata admin bundle extend, templates now need to be overridden through configuration.
+ * Removed the CKEditor 'confighelper' plugin, due to incompatibilities with other plugins.
+
+Bundles
+--------
+
+ * Added Restbundle to the framework for standardization.
+ * Added JSRouting to the framework.
+ * Added Doctrine migrations to the framework.
+ * Added Assetic and twig extensions to the framework.
+

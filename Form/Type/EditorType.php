@@ -44,6 +44,7 @@ class EditorType extends AbstractType
 
         $builder
             ->setAttribute('toolbar', $options['toolbar'])
+            ->setAttribute('track_changes', $options['track_changes'])
             ->setAttribute('scayt', $options['scayt'])
             ->setAttribute('height', $options['height'])
             ->setAttribute('inline', $options['inline'])
@@ -55,11 +56,12 @@ class EditorType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['toolbar'] = $form->getConfig()->getAttribute('toolbar');
-        $view->vars['scayt']   = $form->getConfig()->getAttribute('scayt');
-        $view->vars['height']  = $form->getConfig()->getAttribute('height');
-        $view->vars['inline']  = $form->getConfig()->getAttribute('inline');
-        $view->vars['locale']  = $this->request->getLocale();
+        $view->vars['toolbar']       = $form->getConfig()->getAttribute('toolbar');
+        $view->vars['scayt']         = $form->getConfig()->getAttribute('scayt');
+        $view->vars['track_changes'] = $form->getConfig()->getAttribute('track_changes');
+        $view->vars['height']        = $form->getConfig()->getAttribute('height');
+        $view->vars['inline']        = $form->getConfig()->getAttribute('inline');
+        $view->vars['locale']        = $this->request->getLocale();
     }
 
 
@@ -85,14 +87,15 @@ class EditorType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'required' => false,
-            'inline'   => false,
-            'scayt'    => true,
-            'height'   => 250,
+            'required'      => false,
+            'inline'        => false,
+            'track_changes' => true,
+            'scayt'         => true,
+            'height'        => 250,
 
             // WYSIWYG features. Options are carefully chosen, keeping dictated corporate identity guidelines and multi-device support
             // in mind.
-            'toolbar'  => array(
+            'toolbar'       => array(
                 array('name' => 'styles', 'items' => array('Styles')),
 
                 // Standard bold, italic, underline. Remove format is only here to clean up the mess from pasted stuff.
@@ -107,7 +110,7 @@ class EditorType extends AbstractType
                 // Essential and no reason to not implement them.
                 array('name' => 'clipboard', 'items' => array('Undo', 'Redo')),
 
-                // Cut / copy / paste. These features are limited to clients running on a desktop, as other devices have these implemented into their basic
+                // Cut / copy / paste. These features are limited to web browsers, as other devices have these implemented into their basic
                 // text input API's.
                 array('name' => 'clipboard', 'items' => array('Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord')),
 
