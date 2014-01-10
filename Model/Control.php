@@ -19,6 +19,7 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     protected $required;
     protected $visible;
     protected $protected;
+    protected $readonly;
 
     public function __construct()
     {
@@ -28,6 +29,7 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
         $this->required   = false;
         $this->visible    = true;
         $this->protected  = false;
+        $this->readonly   = false;
     }
 
     /**
@@ -84,6 +86,30 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     public function setCaption($caption)
     {
         $this->caption = $caption;
+    }
+
+    /**
+     * @see ControlInterface
+     */
+    public function getReadonly()
+    {
+        return $this->readonly;
+    }
+
+    /**
+     * @see ControlInterface
+     */
+    public function isReadonly()
+    {
+        return ($this->readonly === true);
+    }
+
+    /**
+     * @see ControlInterface
+     */
+    public function setReadonly($readonly)
+    {
+        $this->readonly = $readonly;
     }
 
     /**
@@ -237,9 +263,17 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     /**
      * {@inheritdoc}
      */
-    public function isRequired()
+    public function getRequired()
     {
         return $this->required;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRequired()
+    {
+        return ($this->required === true);
     }
 
     /**
