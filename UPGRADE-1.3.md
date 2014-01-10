@@ -13,11 +13,17 @@ Features
 
  * Added Graphviz to the framework.
 
+Deprecations
+------------
+
+ * Removed sonata admin bundle extend, templates now need to be overridden through configuration.
+ * Removed the CKEditor 'confighelper' plugin, due to incompatibilities with other plugins.
+
 Bundles
 --------
 
- * Removed sonata admin bundle extend, templates now need to be overriden through configuration.
  * Added Restbundle to the framework for standardization.
  * Added JSRouting to the framework.
  * Added Doctrine migrations to the framework.
  * Added Assetic and twig extensions to the framework.
+
