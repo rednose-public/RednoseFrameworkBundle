@@ -44,6 +44,7 @@ class EditorType extends AbstractType
 
         $builder
             ->setAttribute('toolbar', $options['toolbar'])
+            ->setAttribute('track_changes', $options['track_changes'])
             ->setAttribute('scayt', $options['scayt'])
             ->setAttribute('height', $options['height']);
     }
@@ -56,6 +57,7 @@ class EditorType extends AbstractType
         $view
             ->set('toolbar', $form->getAttribute('toolbar'))
             ->set('scayt', $form->getAttribute('scayt'))
+            ->set('track_changes', $form->getAttribute('track_changes'))
             ->set('height', $form->getAttribute('height'))
             ->set('locale', $this->request->getLocale());
     }
@@ -82,13 +84,14 @@ class EditorType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'required' => false,
-            'scayt'    => true,
-            'height'   => 250,
+            'required'      => false,
+            'track_changes' => true,
+            'scayt'         => true,
+            'height'        => 250,
 
             // WYSIWYG features. Options are carefully chosen, keeping dictated corporate identity guidelines and multi-device support
             // in mind.
-            'toolbar'  => array(
+            'toolbar'       => array(
                 array('name' => 'styles', 'items' => array('Styles')),
 
                 // Standard bold, italic, underline. Remove format is only here to clean up the mess from pasted stuff.
@@ -103,7 +106,7 @@ class EditorType extends AbstractType
                 // Essential and no reason to not implement them.
                 array('name' => 'clipboard', 'items' => array('Undo', 'Redo')),
 
-                // Cut / copy / paste. These features are limited to clients running on a desktop, as other devices have these implemented into their basic
+                // Cut / copy / paste. These features are limited to web browsers, as other devices have these implemented into their basic
                 // text input API's.
                 array('name' => 'clipboard', 'items' => array('Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord')),
 
