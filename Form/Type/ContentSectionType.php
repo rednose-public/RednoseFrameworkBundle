@@ -67,6 +67,7 @@ class ContentSectionType extends AbstractType
                 'required'  => $contentDefinition->isRequired(),
                 'help'      => $contentDefinition->getHelp(),
                 'read_only' => $contentDefinition->isProtected(),
+                'disabled'  => $contentDefinition->isReadonly(),
             );
 
             if ($contentDefinition->isVisible() === false) {
