@@ -667,6 +667,7 @@
 		 */
         _moveRangeToValidTrackingPos: function (range) {
             var onEdge = false;
+            var lastVoidEl = null;
             var voidEl = this._getVoidElement(range.endContainer);
             while (voidEl) {
                 // Move end of range to position it inside of any potential adjacent containers
@@ -683,7 +684,16 @@
                     range.collapse(true);
                     break;
                 }
+
+                lastVoidEl = voidEl;
+
                 voidEl = this._getVoidElement(range.endContainer);
+
+                if (lastVoidEl == voidEl) {
+                    range.setStartAfter(voidEl);
+                    break;
+                }
+                
                 if (voidEl) {
                     range.setEnd(range.endContainer, 0);
                     range.moveEnd(ice.dom.CHARACTER_UNIT, ice.dom.getNodeCharacterLength(range.endContainer));
