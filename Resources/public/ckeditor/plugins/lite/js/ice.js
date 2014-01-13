@@ -327,46 +327,41 @@
 		 * the range first if needed. If range is undefined, then the range from the Selection object
 		 * is used. If the range is in a parent delete node, then the range is positioned after the delete.
 		 */
-		insert: function (node, range) {
-			// If the node is not defined, then we need to insert an
-			// invisible space and force propagation to the browser.
-			var isPropagating = !node;
-			node || (node = '\uFEFF');
-	
-			if (range) {
-				this.selection.addRange(range);
-			}
-			else {
-				range = this.getCurrentRange();
-			}
-			if (typeof node === "string") {
-				node = document.createTextNode(node);
-			}
-	
-			var changeid = this._batchChangeid ? null : this.startBatchChange();
-		// If we have any nodes selected, then we want to delete them before inserting the new text.
-			if (!range.collapsed) {
-				this.deleteContents(false, null, true); //don't trigger text changed
-			// Update the range
-				range = this.getCurrentRange();
-				if (range.startContainer === range.endContainer && this.element === range.startContainer) {
-					// The whole editable element is selected. Need to remove everything and init its contents.
-					ice.dom.empty(this.element);
-					var firstSelectable = range.getLastSelectableChild(this.element);
-					range.setStartAfter(firstSelectable);
-					range.collapse(true);
-				}
-			}
-	
-			// If we are in a non-tracking/void element, move the range to the end/outside.
-			this._moveRangeToValidTrackingPos(range);
-	
-			// Send a dummy node to be inserted, if node is undefined
-			this._insertNode(node, range, isPropagating);
-			this.pluginsManager.fireNodeInserted(node, range);
-			this.endBatchChange(changeid);
-			return isPropagating;
-		},
+        insert: function (node, range) {
+            // If the node is not defined, then we need to insert an
+            // invisible space and force propagation to the browser.
+            var isPropagating = !node;
+            node || (node = '\uFEFF');
+
+            if (range) this.selection.addRange(range);
+            else range = this.getCurrentRange();
+
+            if (typeof node === "string") node = document.createTextNode(node);
+
+            // If we have any nodes selected, then we want to delete them before inserting the new text.
+            if (!range.collapsed) {
+                this.deleteContents();
+                // Update the range
+                range = this.getCurrentRange();
+                if (range.startContainer === range.endContainer && this.element === range.startContainer) {
+                    // The whole editable element is selected. Need to remove everything and init its contents.
+                    ice.dom.empty(this.element);
+                    var firstSelectable = range.getLastSelectableChild(this.element);
+                    range.setStartAfter(firstSelectable);
+                    range.collapse(true);
+                }
+            }
+            // If we are in a non-tracking/void element, move the range to the end/outside.
+            this._moveRangeToValidTrackingPos(range);
+
+            var changeid = this.startBatchChange();
+            // Send a dummy node to be inserted, if node is undefined
+            this._insertNode(node, range, isPropagating);
+            this.pluginsManager.fireNodeInserted(node, range);
+            this.endBatchChange(changeid);
+            return isPropagating;
+        },
+
 	
 		/**
 		 * This command will drop placeholders in place of delete tags in the element
@@ -670,43 +665,35 @@
 		 * Sets the given `range` to the first position, to the right, where it is outside of
 		 * void elements.
 		 */
-		_moveRangeToValidTrackingPos: function (range) {
-			var onEdge = false;
-			var voidEl = this._getVoidElement(range.endContainer);
-			while (voidEl) {
-				// Move end of range to position it inside of any potential adjacent containers
-				// E.G.:	test|<em>text</em>	->	test<em>|text</em>
-				try {
-					range.moveEnd(ice.dom.CHARACTER_UNIT, 1);
-					//dfl				range.moveEnd(ice.dom.CHARACTER_UNIT, -1);					
-					
-					range.moveEnd(ice.dom.CHARACTER_UNIT, -1);
-				} catch (e) {
-					// Moving outside of the element and nothing is left on the page
-					onEdge = true;
-				}
-				if (onEdge || ice.dom.onBlockBoundary(range.endContainer, range.startContainer, this.blockEls)) {
-					range.setStartAfter(voidEl);
-					range.collapse(true);
-					break;
-				}
-
-				var newVoidEl = this._getVoidElement(range.endContainer);
-
-				if (newVoidEl == voidEl || newVoidEl === null) {
-					voidEl = null;
-				}
-
-				if (voidEl){
-					range.setEnd(range.endContainer, 0);
-					range.moveEnd(ice.dom.CHARACTER_UNIT, ice.dom.getNodeCharacterLength(range.endContainer));
-					range.collapse();
-				} else {
-					range.setStart(range.endContainer, 0);
-					range.collapse(true);
-				}
-			}
-		},
+        _moveRangeToValidTrackingPos: function (range) {
+            var onEdge = false;
+            var voidEl = this._getVoidElement(range.endContainer);
+            while (voidEl) {
+                // Move end of range to position it inside of any potential adjacent containers
+                // E.G.:  test|<em>text</em>  ->  test<em>|text</em>
+                try {
+                    range.moveEnd(ice.dom.CHARACTER_UNIT, 1);
+                    range.moveEnd(ice.dom.CHARACTER_UNIT, -1);
+                } catch (e) {
+                    // Moving outside of the element and nothing is left on the page
+                    onEdge = true;
+                }
+                if (onEdge || ice.dom.onBlockBoundary(range.endContainer, range.startContainer, this.blockEls)) {
+                    range.setStartAfter(voidEl);
+                    range.collapse(true);
+                    break;
+                }
+                voidEl = this._getVoidElement(range.endContainer);
+                if (voidEl) {
+                    range.setEnd(range.endContainer, 0);
+                    range.moveEnd(ice.dom.CHARACTER_UNIT, ice.dom.getNodeCharacterLength(range.endContainer));
+                    range.collapse();
+                } else {
+                    range.setStart(range.endContainer, 0);
+                    range.collapse(true);
+                }
+            }
+        },
 	
 		/**
 		 * Returns the given `node` or the first parent node that matches against the list of no track elements.
@@ -1572,14 +1559,13 @@
 				return true;
 			}
 	
-		    // Inside a br - most likely in a placeholder of a new block - delete before handling.
-		    var range = this.getCurrentRange();
-		    var br = range && ice.dom.parents(range.startContainer, 'br')[0] || null;
-		    if (br) {
-			    //range.moveToNextEl(br); // << XXX Rednose: This method is non-existant (
-			
-			    br.parentNode.removeChild(br);
-		    }
+		// Inside a br - most likely in a placeholder of a new block - delete before handling.
+		var range = this.getCurrentRange();
+		var br = range && ice.dom.parents(range.startContainer, 'br')[0] || null;
+		if (br) {
+			range.moveToNextEl(br);
+			br.parentNode.removeChild(br);
+		}
 	
 			// Ice will ignore the keyPress event if CMD or CTRL key is also pressed
 			if (c !== null && e.ctrlKey !== true && e.metaKey !== true) {
@@ -1591,7 +1577,7 @@
 						return this._handleEnter();
 					default:
 						// If we are in a deletion, move the range to the end/outside.
-						this._moveRangeToValidTrackingPos(range);
+						this._moveRangeToValidTrackingPos(range, range.startContainer);
 						return this.insert(c);
 				}
 			}
