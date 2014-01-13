@@ -690,10 +690,13 @@
 					range.collapse(true);
 					break;
 				}
+
 				var newVoidEl = this._getVoidElement(range.endContainer);
-				if (newVoidEl == voidEl) {
+
+				if (newVoidEl == voidEl || newVoidEl === null) {
 					voidEl = null;
 				}
+
 				if (voidEl){
 					range.setEnd(range.endContainer, 0);
 					range.moveEnd(ice.dom.CHARACTER_UNIT, ice.dom.getNodeCharacterLength(range.endContainer));
@@ -1569,13 +1572,14 @@
 				return true;
 			}
 	
-		// Inside a br - most likely in a placeholder of a new block - delete before handling.
-		var range = this.getCurrentRange();
-		var br = range && ice.dom.parents(range.startContainer, 'br')[0] || null;
-		if (br) {
-			range.moveToNextEl(br);
-			br.parentNode.removeChild(br);
-		}
+		    // Inside a br - most likely in a placeholder of a new block - delete before handling.
+		    var range = this.getCurrentRange();
+		    var br = range && ice.dom.parents(range.startContainer, 'br')[0] || null;
+		    if (br) {
+			    //range.moveToNextEl(br); // << XXX Rednose: This method is non-existant (
+			
+			    br.parentNode.removeChild(br);
+		    }
 	
 			// Ice will ignore the keyPress event if CMD or CTRL key is also pressed
 			if (c !== null && e.ctrlKey !== true && e.metaKey !== true) {
@@ -1587,7 +1591,7 @@
 						return this._handleEnter();
 					default:
 						// If we are in a deletion, move the range to the end/outside.
-						this._moveRangeToValidTrackingPos(range, range.startContainer);
+						this._moveRangeToValidTrackingPos(range);
 						return this.insert(c);
 				}
 			}

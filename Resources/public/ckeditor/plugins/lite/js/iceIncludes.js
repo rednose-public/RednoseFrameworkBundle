@@ -665,7 +665,7 @@ rangy.createModule("DomUtil", function(api, module) {
 	var dom = api.dom;
 	var DomPosition = dom.DomPosition;
 	var DOMException = api.DOMException;
-	
+
 	/*----------------------------------------------------------------------------------------------------------------*/
 
 	// Utility functions
@@ -3414,7 +3414,7 @@ startTracking: function () {
 		if (this.element) {
 			ice.dom.unbind(this.element, 'keyup.ice keydown.ice keypress.ice mousedown.ice mouseup.ice');
 		}
-			
+
 		if (! onlyICE) {
 			this.element.setAttribute('contentEditable', !this.contentEditable);
 			 this.pluginsManager.fireDisabled(this.element);
@@ -4105,7 +4105,7 @@ startTracking: function () {
 		elements = ice.dom.getElementsBetween(bookmark.start, bookmark.end),
 		b1 = ice.dom.parents(range.startContainer, this.blockEls.join(', '))[0],
 		b2 = ice.dom.parents(range.endContainer, this.blockEls.join(', '))[0],
-		betweenBlocks = new Array(); 
+		betweenBlocks = new Array();
 
 	  for (var i = 0; i < elements.length; i++) {
 		var elem = elements[i];
@@ -4706,14 +4706,14 @@ startTracking: function () {
 
 
 	  // Inside a br - most likely in a placeholder of a new block - delete before handling.
-	  
+
 	  var range = this.getCurrentRange();
 	  var br = ice.dom.parents(range.startContainer, 'br')[0] || null;
 	  if (br) {
 		range.moveToNextEl(br);
 		br.parentNode.removeChild(br);
 	  }
-	  
+
 	  // Ice will ignore the keyPress event if CMD or CTRL key is also pressed
 	  if (c !== null && e.ctrlKey !== true && e.metaKey !== true) {
 		switch (e.keyCode) {
@@ -4991,7 +4991,7 @@ startTracking: function () {
 	  } catch(e){}
 
 	  // Handling jQuery bug (which may be fixed in the official release later)
-	  // http://bugs.jquery.com/ticket/13401 
+	  // http://bugs.jquery.com/ticket/13401
 	  if(ret.length === 0){
 		$this.remove();
 	  }
@@ -6473,33 +6473,33 @@ exports.IcePluginManager = IcePluginManager;
 	   * test <em>|it</em> out
 	   * test| <em>it</em> out
 	   * tes|t <em>it</em> out
-	   * 
+	   *
 	   * A range could be mapped in one of two ways:
-	   * 
+	   *
 	   * (1) If a startContainer is a Node of type Text, Comment, or CDATASection, then startOffset
 	   * is the number of characters from the start of startNode. For example, the following
 	   * are the range properties for `<p>te|st</p>` (where "|" is the collapsed range):
-	   * 
+	   *
 	   * startContainer: <TEXT>test<TEXT>
 	   * startOffset: 2
 	   * endContainer: <TEXT>test<TEXT>
 	   * endOffset: 2
-	   * 
+	   *
 	   * (2) For other Node types, startOffset is the number of child nodes between the start of
 	   * the startNode. Take the following html fragment:
-	   * 
+	   *
 	   * `<p>some <span>test</span> text</p>`
-	   * 
+	   *
 	   * If we were working with the following range properties:
-	   * 
+	   *
 	   * startContainer: <p>
 	   * startOffset: 2
 	   * endContainer: <p>
 	   * endOffset: 2
-	   * 
+	   *
 	   * Since <p> is an Element node, the offsets are based on the offset in child nodes of <p> and
 	   * the range is selecting the second child - the <span> tag.
-	   * 
+	   *
 	   * <p><TEXT>some </TEXT><SPAN>test</SPAN><TEXT> text</TEXT></p>
 	   */
 	  rangy.rangePrototype.moveCharLeft = function (moveStart, units) {
@@ -6568,33 +6568,33 @@ exports.IcePluginManager = IcePluginManager;
 	   * test <em>i|t</em> out
 	   * test <em>it|</em> out
 	   * test <em>it</em> |out
-	   * 
+	   *
 	   * A range could be mapped in one of two ways:
-	   * 
+	   *
 	   * (1) If a startContainer is a Node of type Text, Comment, or CDATASection, then startOffset
 	   * is the number of characters from the start of startNode. For example, the following
 	   * are the range properties for `<p>te|st</p>` (where "|" is the collapsed range):
-	   * 
+	   *
 	   * startContainer: <TEXT>test<TEXT>
 	   * startOffset: 2
 	   * endContainer: <TEXT>test<TEXT>
 	   * endOffset: 2
-	   * 
+	   *
 	   * (2) For other Node types, startOffset is the number of child nodes between the start of
 	   * the startNode. Take the following html fragment:
-	   * 
+	   *
 	   * `<p>some <span>test</span> text</p>`
-	   * 
+	   *
 	   * If we were working with the following range properties:
-	   * 
+	   *
 	   * startContainer: <p>
 	   * startOffset: 2
 	   * endContainer: <p>
 	   * endOffset: 2
-	   * 
+	   *
 	   * Since <p> is an Element node, the offsets are based on the offset in child nodes of <p> and
 	   * the range is selecting the second child - the <span> tag.
-	   * 
+	   *
 	   * <p><TEXT>some </TEXT><SPAN>test</SPAN><TEXT> text</TEXT></p>
 	   */
 	  rangy.rangePrototype.moveCharRight = function (moveStart, units) {
