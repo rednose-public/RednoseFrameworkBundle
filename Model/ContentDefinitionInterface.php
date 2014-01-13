@@ -104,4 +104,18 @@ interface ContentDefinitionInterface
      * @param boolean $visible
      */
     public function setVisible($visible);
+
+    /**
+     * Whether this value can be edited from the user-interface and will be submitted in forms.
+     *
+     * @return boolean
+     */
+    public function isReadonly();
+
+    /**
+     * Whether this value can be edited from the user-interface and will be submitted in forms.
+     *
+     * @param boolean $readonly
+     */
+    public function setReadonly($readonly);
 }
