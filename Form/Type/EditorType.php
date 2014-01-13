@@ -42,6 +42,12 @@ class EditorType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
+        if ($options['track_changes']) {
+            $options['toolbar'][] = array(
+                'name' => 'lite', 'items' => array('lite_ToggleTracking', 'lite_ToggleShow', 'lite_AcceptAll', 'lite_rejectAll', 'lite_AcceptOne', 'lite_RejectOne'),
+            );
+        }
+
         $builder
             ->setAttribute('toolbar', $options['toolbar'])
             ->setAttribute('track_changes', $options['track_changes'])
