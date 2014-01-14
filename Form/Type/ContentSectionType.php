@@ -71,7 +71,7 @@ class ContentSectionType extends AbstractType
             );
 
             if ($contentDefinition->isVisible() === false) {
-                //$baseOptions['attr'] = array('style' => 'display: none;');
+                $baseOptions['attr'] = array('style' => 'display: none;');
             }
 
             if ($contentDefinition->getContentItem() instanceof ExtrinsicObjectInterface) {
