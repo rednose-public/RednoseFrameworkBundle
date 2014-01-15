@@ -42,15 +42,8 @@ class EditorType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-        if ($options['track_changes']) {
-            $options['toolbar'][] = array(
-                'name' => 'lite', 'items' => array('lite_ToggleTracking', 'lite_ToggleShow', 'lite_AcceptAll', 'lite_rejectAll', 'lite_AcceptOne', 'lite_RejectOne'),
-            );
-        }
-
         $builder
             ->setAttribute('toolbar', $options['toolbar'])
-            ->setAttribute('track_changes', $options['track_changes'])
             ->setAttribute('scayt', $options['scayt'])
             ->setAttribute('height', $options['height']);
     }
@@ -63,7 +56,6 @@ class EditorType extends AbstractType
         $view
             ->set('toolbar', $form->getAttribute('toolbar'))
             ->set('scayt', $form->getAttribute('scayt'))
-            ->set('track_changes', $form->getAttribute('track_changes'))
             ->set('height', $form->getAttribute('height'))
             ->set('locale', $this->request->getLocale());
     }
@@ -91,7 +83,6 @@ class EditorType extends AbstractType
     {
         $resolver->setDefaults(array(
             'required'      => false,
-            'track_changes' => true,
             'scayt'         => true,
             'height'        => 250,
 

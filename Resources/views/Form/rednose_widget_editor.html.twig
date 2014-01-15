@@ -2,9 +2,7 @@
     {{ block ('textarea_widget') }}
 
     <script>
-        var editor = CKEDITOR.replace('{{ id }}', {
-            {% if track_changes %}extraPlugins: 'lite,',{% endif %}
-
+        var editor = CKEDITOR.inline('{{ id }}', {
             toolbar: {{ toolbar|json_encode|raw }},
 
             {% if scayt %}
@@ -28,13 +26,6 @@
             id  : '{{ app.user.id }}',
             name: '{{ app.user.bestname }}'
         };
-
-        editor.on(LITE.Events.INIT, function(e) {
-            var lite = e.data.lite;
-
-            lite.toggleShow(true);
-            lite.setUserInfo(user);
-        });
 
     </script>
 {% endblock rednose_widget_editor_widget %}
