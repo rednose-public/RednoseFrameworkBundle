@@ -2,10 +2,7 @@
     {{ block ('textarea_widget') }}
 
     <script>
-        {# Initializer method depends on the 'inline' setting #}
-        CKEDITOR.{% if inline %}inline{% else %}replace{% endif %}('{{ id }}', {
-            {% if track_changes %}extraPlugins: 'lite,',{% endif %}
-
+        var editor = CKEDITOR.replace('{{ id }}', {
             toolbar: {{ toolbar|json_encode|raw }},
 
             {% if scayt %}

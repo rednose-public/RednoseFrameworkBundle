@@ -59,7 +59,7 @@ class UserAdmin extends Admin
 
           if ($this->isGranted('ROLE_ALLOWED_TO_SWITCH')) {
               $listMapper
-                  ->add('impersonating', 'string', array('template' => 'RednoseFrameworkBundle:Field:impersonating.html.twig'))
+                  ->add('impersonating', 'string', array('template' => 'RednoseFrameworkBundle:Admin\Field:impersonating.html.twig'))
               ;
           }
     }
