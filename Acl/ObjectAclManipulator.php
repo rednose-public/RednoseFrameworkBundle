@@ -35,7 +35,7 @@ class ObjectAclManipulator
      * @param string         $maskBuilderClass
      * @param array          $permissions
      */
-    public function __construct(AclManipulator $aclManipulator, $maskBuilderClass, array $permissions = array('VIEW', 'EDIT', 'APPROVE'))
+    public function __construct(AclManipulator $aclManipulator, $maskBuilderClass, array $permissions = array('EDIT', 'APPROVE'))
     {
         $this->aclManipulator   = $aclManipulator;
         $this->maskBuilderClass = $maskBuilderClass;

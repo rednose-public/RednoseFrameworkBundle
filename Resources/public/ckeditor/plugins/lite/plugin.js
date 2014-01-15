@@ -868,4 +868,8 @@ Written by (David *)Frenkiel - https://github.com/imdfl
 				return -1;
 			};
 	}
+<<<<<<< HEAD
 })();
+=======
+})();
+>>>>>>> 1.2
