@@ -34,12 +34,5 @@
       <argument>%rednose.framework.admin.group.controller%</argument>
     </service>
 
-    <service id="rednose.framework.admin.client" class="%rednose.framework.admin.client.class%">
-      <tag name="sonata.admin" manager_type="orm" group="oauth" label="clients"/>
-      <argument/>
-      <argument>%rednose.framework.admin.client.entity%</argument>
-      <argument>%rednose.framework.admin.client.controller%</argument>
-    </service>
-
   </services>
 </container>
