@@ -42,9 +42,9 @@ class ExceptionListener implements EventSubscriberInterface
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         // In the dev and test environment we want the default exception handler.
-//        if ($this->kernel->getEnvironment() !== 'prod') {
-//            return;
-//        }
+        if ($this->kernel->getEnvironment() !== 'prod') {
+            return;
+        }
 
         $exception = $event->getException();
         $response  = new Response();
