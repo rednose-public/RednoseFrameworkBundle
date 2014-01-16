@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
+        <!-- Exceptions -->
+        <parameter key="rednose_framework.exceptionhandler.class">Rednose\FrameworkBundle\EventListener\ExceptionListener</parameter>
+
         <parameter key="rednose_framework.doctrine_listener.class">Rednose\FrameworkBundle\EventListener\DoctrineListener</parameter>
         <parameter key="rednose_framework.datetime_formatter.class">Rednose\FrameworkBundle\DateTimeFormatter\DateTimeFormatter</parameter>
         <parameter key="rednose_framework.notification.factory.class">Rednose\FrameworkBundle\Notification\NotificationFactory</parameter>
@@ -10,6 +13,13 @@
     </parameters>
 
     <services>
+        <!-- Exceptions -->
+        <service id="rednose_framework.exceptionhandler" class="%rednose_framework.exceptionhandler.class%">
+            <argument type="service" id="kernel" />
+            <argument type="service" id="templating" />
+            <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" priority="-64" />
+        </service>
+
         <!-- Notifications -->
         <service id="rednose_framework.notification.factory" class="%rednose_framework.notification.factory.class%">
             <argument type="service" id="service_container"/>
