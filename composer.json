@@ -45,6 +45,7 @@
         "jms/serializer-bundle": "0.12.*@dev",
         "knplabs/knp-time-bundle": "dev-master",
         "friendsofsymfony/oauth-server-bundle": "*@stable",
+        "liip/monitor-bundle": "dev-master",
         "ezyang/htmlpurifier": "dev-master",
         "rednose/api-doc-bundle": "dev-master"
     },

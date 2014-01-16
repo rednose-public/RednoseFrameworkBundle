@@ -1,26 +1,4 @@
 {% block rednose_widget_editor_widget %}
-
-<<<<<<< HEAD
-    <script>
-        var editor = CKEDITOR.replace('{{ id }}', {
-            toolbar: {{ toolbar|json_encode|raw }},
-
-            {% if scayt %}
-            scayt_autoStartup: true,
-            disableNativeSpellChecker: true,
-            {% endif %}
-
-            removePlugins: 'elementspath',
-            resize_enabled: false,
-
-            scayt_sLang: '{{ locale }}',
-            language: '{{ locale }}',
-            height: '{{ height }}',
-
-            // Helvetica and Verdana is all we allow. Font choice is only here to correct pasted stuff from other sources,
-            // ideally the font and the size are dictated by the configured template for this particular document.
-            font_names: 'Helvetica; Verdana'
-=======
     <div class="widget_editor">
         {{ block ('textarea_widget') }}
     </div>
@@ -55,7 +33,6 @@
                     console.log('Editor contents was modified. Contents: ' + l.content);
                 });
             }
->>>>>>> 94f2e5c... Replaced CKEditor (with TinyMCE)
         });
     </script>
 {% endblock rednose_widget_editor_widget %}
