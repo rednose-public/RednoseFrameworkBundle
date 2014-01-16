@@ -1,0 +1,20 @@
+sonata_admin:
+    title: RedNose Admin
+    security:
+        handler: sonata.admin.security.handler.role
+    templates:
+        layout:  RednoseFrameworkBundle:Admin:standard_layout.html.twig
+        user_block:  RednoseFrameworkBundle:Admin\Core:user_block.html.twig
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+
+        sonata.block.service.text:
+        sonata.block.service.action:
+        sonata.block.service.rss:
+
+        sonata.user.block.menu:    # used to display the menu in profile pages
+        sonata.user.block.account: # used to display menu option (login option)

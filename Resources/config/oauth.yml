@@ -7,11 +7,3 @@ fos_oauth_server:
 
     service:
         user_provider: rednose_framework.user_manager
-
-fos_user:
-    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
-    firewall_name: main
-    user_class: Rednose\FrameworkBundle\Entity\User
-    group:
-        group_class: Rednose\FrameworkBundle\Entity\Group
-        group_manager: fos_user.group_manager.default
