@@ -1,0 +1,59 @@
+{% autoescape false %}
+
+digraph pool_graph {
+    {# Graph settings. #}
+    bgcolor=transparent;
+    {% if portrait %}
+      rankdir=LR;
+    {% endif %}
+    ratio=compress;
+    compound=true;
+    labelfloat=true;
+    graph [
+      splines=polyline,
+      nodesep=0.25,
+      margin=0.5
+      ];
+    {# Default nodes. #}
+    node [
+      shape=box,
+      fixedsize=true,
+      width=0.75,
+      height=1.00,
+      fontsize=8,
+      fontname="Helvetica-Bold"
+  ];
+    {# Default arrows. #}
+    edge [
+      arrowsize=0.6,
+      arrowhead="none"
+  ];
+
+  {% for pool in process.pools %}
+      {{ pool.id }} [
+        {# FIXME: Find a more sophisticated way to store this data, this will mess up on pool names with a comma and whatnot. We cannot use JSON as GraphViz misinterprets the quotes. #}
+        {# Abuse the label property to store some CSV values #}
+        label="{{ pool.name }},{{ pool.documentcountforprocess(process) }}"
+      ];
+
+    {% for nextpool in pool.nextpoolsforprocess(process) %}
+        "{{ pool.id }}" -> "{{ nextpool.id }}";
+    {% endfor %}
+
+  {% endfor %}
+
+  {# Keep this around for future reference, at one point we want to render HTML graphs with images in the main web client #}
+
+  {#{% for pool in pools %}
+      "{{ pool }}" [
+          URL="{{ path('pooladmin_edit', {'pool_id': pool.id, 'process_id': process_id }) }}",
+          tooltip="{{ pool }}",
+          label=<<TABLE border="0" cellborder="0">
+          <TR><TD WIDTH="50" HEIGHT="60" FIXEDSIZE="TRUE"><IMG SCALE="TRUE" SRC="/Library/WebServer/Documents/flowgen-tweedekamer/web/bundles/rednosetweedekamer/images/process.png"/></TD></TR>
+          <TR><TD><font point-size="10">{{ pool|replace({' ': '<BR/>'}) }}</font></TD></TR>
+          </TABLE>>
+      ];
+  {% endfor %}#}
+}
+
+{% endautoescape %}

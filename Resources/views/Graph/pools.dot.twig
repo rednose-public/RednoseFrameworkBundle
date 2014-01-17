@@ -1,0 +1,45 @@
+{% autoescape false %}
+
+digraph pool_graph {
+    {# Graph settings. #}
+    bgcolor=transparent;
+    {% if portrait %}
+      rankdir=LR;
+    {% endif %}
+    model=circuit;
+    ratio=compress;
+    compound=true;
+    labelfloat=true;
+    graph [
+      nodesep=0.1
+      ];
+    {# Default nodes. #}
+    node [
+      color="#333333",
+      style="filled",
+      fontcolor="#333333",
+      fillcolor="#FFFFFF",
+      fontsize=8,
+      fontname="DejaVu Sans Semi-Condensed",
+      margin=0.05];
+    {# Default arrows. #}
+    edge [
+      color="#333333",
+      arrowsize=0.8,
+      arrowhead="empty"];
+
+  {% for pool in process.pools %}
+      "{{ pool }}" [
+          URL="{{ path('pooladmin_edit', {'pool_id': pool.id, 'process_id': process.id }) }}"
+          fillcolor="#FFE28A",
+          tooltip="{{ pool }}"
+      ];
+
+    {% for nextpool in pool.nextpoolsforprocess(process) %}
+        "{{ pool }}" -> "{{ nextpool }}";
+    {% endfor %}
+
+  {% endfor %}
+}
+
+{% endautoescape %}
