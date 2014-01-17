@@ -33,7 +33,7 @@
         "sensio/generator-bundle": "2.3.*",
         "jms/di-extra-bundle": "*@stable",
         "jms/security-extra-bundle": "*@stable",
-        "friendsofsymfony/jsrouting-bundle": "1.5.*@stable",
+        "friendsofsymfony/jsrouting-bundle": "1.5.2",
         "friendsofsymfony/rest-bundle": "1.2.*@stable",
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/doctrine-fixtures-bundle": "*@dev",
