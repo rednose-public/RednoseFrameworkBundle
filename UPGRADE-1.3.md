@@ -16,14 +16,12 @@ Features
 Deprecations
 ------------
 
- * Removed sonata admin bundle extend, templates now need to be overridden through configuration.
- * Removed the CKEditor 'confighelper' plugin, due to incompatibilities with other plugins.
+ * Removed SonataAdminBundle extend, templates now need to be overridden through configuration.
 
 Bundles
---------
+-------
 
  * Added Restbundle to the framework for standardization.
  * Added JSRouting to the framework.
  * Added Doctrine migrations to the framework.
  * Added Assetic and twig extensions to the framework.
-

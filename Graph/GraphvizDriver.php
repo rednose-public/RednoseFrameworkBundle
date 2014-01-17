@@ -15,10 +15,9 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * A front-end for feeding .dot-files (GraphViz drawing definitions) to
- * GraphViz's dot tool.
+ * Graphviz binary driver.
  */
-class Graph
+class GraphvizDriver
 {
     private $kernel;
 
@@ -44,14 +43,12 @@ class Graph
      *
      * @param string $name                The name of the graph to render
      * @param string $type                The type
-     * @param mixed  $drawingInstructions Graphviz instructionset
+     * @param mixed  $drawingInstructions Graphviz instruction-set
      *
      * @return mixed The rendered image
      */
     public function render($name, $type, $drawingInstructions)
     {
-        // FIXME: Caching like this makes no sense as maps differ all the time since processes were introduced in 2.0
-
         // Flag for checking the validity of existing cache files for this
         // graph.
         $keepExistingCache = false;
@@ -200,7 +197,7 @@ class Graph
             fwrite($fh, $data);
             fclose($fh);
         } catch (\Exception $e) {
-            throw new \Exception('Failed to write to GraphViz cache, make sure `'.$this->cachePath.'\' is writable');
+            throw new \Exception('Failed to write to Graphviz cache, make sure `'.$this->cachePath.'\' is writable');
         }
     }
 }

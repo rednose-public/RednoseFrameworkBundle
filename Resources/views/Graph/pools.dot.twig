@@ -3,7 +3,7 @@
 digraph pool_graph {
     {# Graph settings. #}
     bgcolor=transparent;
-    {% if portrait %}
+    {% if graph.portrait %}
       rankdir=LR;
     {% endif %}
     model=circuit;
@@ -26,20 +26,27 @@ digraph pool_graph {
     edge [
       color="#333333",
       arrowsize=0.8,
-      arrowhead="empty"];
+      arrowhead="normal"];
 
-  {% for pool in process.pools %}
-      "{{ pool }}" [
-          URL="{{ path('pooladmin_edit', {'pool_id': pool.id, 'process_id': process.id }) }}"
+    {% for node in graph.nodes %}
+        "{{ node.id }}" [
+          {% if node.url %}
+            URL="{{ node.url }}"
+          {% endif %}
           fillcolor="#FFE28A",
-          tooltip="{{ pool }}"
-      ];
-
-    {% for nextpool in pool.nextpoolsforprocess(process) %}
-        "{{ pool }}" -> "{{ nextpool }}";
+          label="{{ node.label }}"
+          tooltip="{{ node.tooltip }}"
+        ];
     {% endfor %}
 
-  {% endfor %}
+    {% for edge in graph.edges %}
+        {% if edge.bidirectional %}
+            edge [dir="both"]
+        {% else %}
+            edge [dir="forward"]
+        {% endif %}
+        "{{ edge.input.id }}" -> "{{ edge.output.id }}";
+    {% endfor %}
 }
 
 {% endautoescape %}

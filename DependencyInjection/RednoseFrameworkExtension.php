@@ -35,6 +35,12 @@ class RednoseFrameworkExtension extends Extension
             $loader->load('acl.xml');
         }
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (isset($bundles['LiipMonitorBundle'])) {
+            $loader->load('monitor.xml');
+        }
+
         $serviceFiles = array('admin', 'graph', 'grid', 'orm', 'services');
 
         foreach ($serviceFiles as $basename) {
