@@ -37,7 +37,7 @@
         "friendsofsymfony/rest-bundle": "1.2.*@stable",
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/doctrine-fixtures-bundle": "*@dev",
-        "friendsofsymfony/user-bundle": "1.3.1",
+        "friendsofsymfony/user-bundle": "1.3.*@stable",
         "sonata-project/doctrine-orm-admin-bundle": "2.2.*@stable",
         "sonata-project/intl-bundle": "2.2.*@stable",
         "jms/serializer-bundle": "0.12.*@dev",
