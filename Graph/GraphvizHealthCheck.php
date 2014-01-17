@@ -25,7 +25,7 @@ class GraphvizHealthCheck extends Check
 
         $process->run();
 
-        // Process should always fail, either because the dummy file shouldn't exist.
+        // Process should always fail, because the dummy file shouldn't exist.
         if ($process->isSuccessful()) {
             throw new CheckFailedException();
         }
