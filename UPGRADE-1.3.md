@@ -8,11 +8,6 @@ Config
  * ACL is now an optional configuration.
  * CKEditor inline is now a form option.
 
-Features
---------
-
- * Added Graphviz to the framework.
-
 Deprecations
 ------------
 
