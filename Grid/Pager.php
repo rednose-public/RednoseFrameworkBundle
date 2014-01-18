@@ -8,6 +8,21 @@ namespace Rednose\FrameworkBundle\Grid;
 class Pager
 {
     /**
+     * @var int
+     */
+    protected $pageLength;
+
+    /**
+     * @var int
+     */
+    protected $page;
+
+    /**
+     * @var int
+     */
+    protected $totalResults;
+
+    /**
      * Default constructor.
      */
     public function __construct()
