@@ -20,11 +20,20 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode    = $treeBuilder->root('rednose_framework', 'array');
 
+        $this->addUserSection($rootNode);
         $this->addOauthSection($rootNode);
         $this->addAclSection($rootNode);
         $this->addFormSection($rootNode);
 
         return $treeBuilder;
+    }
+
+    private function addUserSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->booleanNode('user')->defaultTrue()->end()
+            ->end();
     }
 
     private function addOauthSection(ArrayNodeDefinition $node)
