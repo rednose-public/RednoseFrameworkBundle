@@ -40,5 +40,12 @@ class RednoseFrameworkExtension extends Extension
         foreach ($serviceFiles as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
+
+        $this->loadForm($config['form'], $container);
+    }
+
+    private function loadForm(array $config, ContainerBuilder $container)
+    {
+        $container->getDefinition('form.type.rednose_widget_editor')->replaceArgument(1, $config['editor']);
     }
 }

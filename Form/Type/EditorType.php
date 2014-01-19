@@ -23,16 +23,22 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class EditorType extends AbstractType
 {
+    const TYPE_TINYMCE  = 'tinymce';
+    const TYPE_CKEDITOR = 'ckeditor';
+
+    protected $type;
     protected $request;
 
     /**
      * Constructor
      *
      * @param Request $request Request object
+     * @param string  $type    Editor type
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, $type)
     {
         $this->request = $request;
+        $this->type    = $type;
     }
 
     /**
@@ -55,12 +61,12 @@ class EditorType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['toolbar']       = $form->getConfig()->getAttribute('toolbar');
-        $view->vars['scayt']         = $form->getConfig()->getAttribute('scayt');
-        $view->vars['track_changes'] = $form->getConfig()->getAttribute('track_changes');
-        $view->vars['height']        = $form->getConfig()->getAttribute('height');
-        $view->vars['inline']        = $form->getConfig()->getAttribute('inline');
-        $view->vars['locale']        = $this->request->getLocale();
+        $view->vars['toolbar'] = $form->getConfig()->getAttribute('toolbar');
+        $view->vars['scayt']   = $form->getConfig()->getAttribute('scayt');
+        $view->vars['height']  = $form->getConfig()->getAttribute('height');
+        $view->vars['inline']  = $form->getConfig()->getAttribute('inline');
+        $view->vars['locale']  = $this->request->getLocale();
+        $view->vars['type']    = $this->type;
     }
 
 
@@ -87,6 +93,7 @@ class EditorType extends AbstractType
     {
         $resolver->setDefaults(array(
             'required'      => false,
+            'inline'        => false,
             'scayt'         => true,
             'height'        => 250,
 

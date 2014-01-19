@@ -4,35 +4,52 @@
     </div>
 
     <script language="javascript">
-        var user = {
-            id  : '{{ app.user.id }}',
-            name: '{{ app.user.bestname }}'
-        };
+        {% if type == constant('Rednose\\FrameworkBundle\\Form\\Type\\EditorType::TYPE_CKEDITOR') %}
+            CKEDITOR.{% if inline %}inline{% else %}replace{% endif %}('{{ id }}', {
+                toolbar: {{ toolbar|json_encode|raw }},
 
-        tinymce.init({
-            theme: 'advanced',
-            selector: '#{{ id }}',
-            inline: true,
+                {% if scayt %}
+                    scayt_autoStartup: true,
+                    disableNativeSpellChecker: true,
+                {% endif %}
 
-            style_formats: [
-                {title: 'Bold text', inline: 'b'},
-                {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-                {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-                {title: 'Example 1', inline: 'span', classes: 'example1'},
-                {title: 'Example 2', inline: 'span', classes: 'example2'},
-                {title: 'Table styles'},
-                {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-            ],
+                removePlugins: 'elementspath',
+                resize_enabled: false,
 
-            setup : function(ed) {
-                ed.onChange.add(function(ed, l) {
-                    console.log('Editor contents was modified. Contents: ' + l.content);
-                });
+                scayt_sLang: '{{ locale }}',
+                language: '{{ locale }}',
+                height: '{{ height }}',
 
-                ed.onKeyUp.add(function(ed, l) {
-                    console.log('Editor contents was modified. Contents: ' + l.content);
-                });
-            }
-        });
+                // Verdana is all we allow. Font choice is only here to correct pasted stuff from other sources,
+                // ideally the font and the size are dictated by the configured template for this particular document.
+                font_names: 'Verdana'
+            });
+        {% else %}
+            tinymce.init({
+                theme: 'advanced',
+                selector: '#{{ id }}',
+                inline: true,
+
+                style_formats: [
+                    {title: 'Bold text', inline: 'b'},
+                    {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                    {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                    {title: 'Example 1', inline: 'span', classes: 'example1'},
+                    {title: 'Example 2', inline: 'span', classes: 'example2'},
+                    {title: 'Table styles'},
+                    {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                ],
+
+                setup : function(ed) {
+                    ed.onChange.add(function(ed, l) {
+                        console.log('Editor contents was modified. Contents: ' + l.content);
+                    });
+
+                    ed.onKeyUp.add(function(ed, l) {
+                        console.log('Editor contents was modified. Contents: ' + l.content);
+                    });
+                }
+            });
+        {% endif %}
     </script>
 {% endblock rednose_widget_editor_widget %}

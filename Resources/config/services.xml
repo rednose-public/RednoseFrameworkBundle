@@ -35,7 +35,7 @@
             <tag name="form.type_extension" alias="field" />
         </service>
 
-        <service id="form.type.help_extionsion" class="Rednose\FrameworkBundle\Form\Extension\HelpFormTypeExtension">
+        <service id="form.type.help_extension" class="Rednose\FrameworkBundle\Form\Extension\HelpFormTypeExtension">
             <tag name="form.type_extension" alias="field" />
         </service>
 
@@ -47,6 +47,7 @@
 
         <service id="form.type.rednose_widget_editor" class="Rednose\FrameworkBundle\Form\Type\EditorType">
             <argument type="service" id="request" strict="false" />
+            <argument></argument>
             <tag name="form.type" alias="rednose_widget_editor" />
         </service>
 

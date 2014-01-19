@@ -6,7 +6,11 @@ Config
 
  * Oauth is now an optional configuration.
  * ACL is now an optional configuration.
- * CKEditor inline is now a form option.
+
+Features
+--------
+
+ * WYSIWYG editor can now be CKEditor or TinyMCE.
 
 Deprecations
 ------------
