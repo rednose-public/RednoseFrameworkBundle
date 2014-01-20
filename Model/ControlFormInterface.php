@@ -42,14 +42,14 @@ interface ControlFormInterface
     /**
      * Adds a control to the form
      *
-     * @param \Control $control
+     * @param ControlInterface $control
      */
     public function addControl(ControlInterface $control);
 
     /**
      * Gets the controls that this form contains
      *
-     * @return ArrayCollection
+     * @return ControlInterface[]
      */
     public function getControls();
 }

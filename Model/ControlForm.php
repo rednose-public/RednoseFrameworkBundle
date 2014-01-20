@@ -10,6 +10,11 @@ use Rednose\FrameworkBundle\Model\ContentSectionInterface;
  */
 abstract class ControlForm implements ContentSectionInterface, ControlFormInterface
 {
+    protected $id;
+    protected $name;
+    protected $caption;
+    protected $controls;
+
     /**
      * Default constructor.
      */
@@ -79,7 +84,7 @@ abstract class ControlForm implements ContentSectionInterface, ControlFormInterf
     /**
      * Adds a control to the form
      *
-     * @param \Control $control
+     * @param ControlInterface $control
      */
     public function addControl(ControlInterface $control)
     {
@@ -91,7 +96,7 @@ abstract class ControlForm implements ContentSectionInterface, ControlFormInterf
     /**
      * Gets the controls that this form contains
      *
-     * @return ArrayCollection
+     * @return ControlInterface[]
      */
     public function getControls()
     {
