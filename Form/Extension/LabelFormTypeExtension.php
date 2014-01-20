@@ -34,6 +34,6 @@ class LabelFormTypeExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return 'field';
+        return 'form';
     }
 }

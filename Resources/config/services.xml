@@ -32,11 +32,11 @@
 
         <!-- Form extensions -->
         <service id="form.type.label_extension" class="Rednose\FrameworkBundle\Form\Extension\LabelFormTypeExtension">
-            <tag name="form.type_extension" alias="field" />
+            <tag name="form.type_extension" alias="form" />
         </service>
 
         <service id="form.type.help_extension" class="Rednose\FrameworkBundle\Form\Extension\HelpFormTypeExtension">
-            <tag name="form.type_extension" alias="field" />
+            <tag name="form.type_extension" alias="form" />
         </service>
 
         <!-- Form types -->
