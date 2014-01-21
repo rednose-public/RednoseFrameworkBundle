@@ -1,32 +1,45 @@
 /* Reset */
 .docgenSkin table, .docgenSkin tbody, .docgenSkin, .docgenSkin img, .docgenSkin tr, .docgenSkin div, .docgenSkin td, .docgenSkin iframe, .docgenSkin span, .docgenSkin .mceText {border:0; margin:0; padding:0; background:transparent; white-space:nowrap; text-decoration:none; font-weight:normal; cursor:default; color:#000; vertical-align:baseline; width:auto; border-collapse:separate; text-align:left}
 .docgenSkin a:hover, .docgenSkin a:link, .docgenSkin a:visited, .docgenSkin a:active {text-decoration:none; font-weight:normal; cursor:default; color:#000}
-.docgenSkin table td {vertical-align:middle}
+/*.docgenSkin table td {vertical-align:middle}*/
+.docgenSkin table td {vertical-align:top; display: block; float: left;}
 
 /* Containers */
 .docgenSkin table {direction:ltr;background:transparent}
 .docgenSkin iframe {display:block; margin: 0 !important;}
 .docgenSkin .mceLayout:focus { border: 4px solid #000; }
-.docgenSkin .mceToolbar {height:26px}
 .docgenSkin .mceLeft {text-align:left}
 .docgenSkin .mceRight {text-align:right}
 
+.docgenSkin table.mceToolbar td {
+    margin: 2px 0px;
+}
+
 /* External */
-/*.docgenSkin .mceExternalToolbar {position:fixed; border:1px solid #CCC; border-bottom:0; display:none; top: 0 !important;}*/
-.docgenSkin .mceExternalToolbar {
-    background: #333;
-    color: #fff;
+.docgenSkin .mceExternalToolbar, .docgenSkin .mceExternalToolbar[style] {
     position: fixed;
     z-index: 9999;
-    padding: 10px 100px;
+    background: #f0f9ff; /* Old browsers */
+    background: -moz-linear-gradient(top,  #f0f9ff 7%, #dce7f5 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(7%,#f0f9ff), color-stop(100%,#dce7f5)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #f0f9ff 7%,#dce7f5 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #f0f9ff 7%,#dce7f5 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #f0f9ff 7%,#dce7f5 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #f0f9ff 7%,#dce7f5 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f9ff', endColorstr='#dce7f5',GradientType=0 ) !important; /* IE6-9 */
+    border-top: 1px solid #dbe3ed;
+    border-bottom: 1px solid #c4cede;
+    padding: 10px 10px;
     left: 0px;
     right: 0px;
     top: 0px !important;
-    box-shadow: 0 3px 5px 0 #fff;
-    display:none;
+    box-shadow: 0 13px 13px rgba(160, 160, 160, 1);
+    display:none
 }
+
 .mceExternalToolbar > table {
-    margin: 0 auto;
+    /*margin: 0 auto;*/
+    float: left;
 }
 
 .docgenSkin .mceExternalToolbar td.mceToolbar {padding-right:13px;}
@@ -44,28 +57,65 @@
 .docgenSkin .mceStatusbar a.mceResize {display:block; float:right; background:url(img/icons.gif) -800px 0; width:20px; height:20px; cursor:se-resize; outline:0}
 .docgenSkin .mceStatusbar a:hover {text-decoration:underline}
 .docgenSkin table.mceToolbar {margin-left:3px}
-.docgenSkin span.mceIcon, .docgenSkin img.mceIcon {display:block; width:20px; height:20px}
+.docgenSkin span.mceIcon, .docgenSkin img.mceIcon {display:block; width:20px; height:20px; }
 .docgenSkin .mceIcon {background:url(img/icons.gif) no-repeat 20px 20px}
 .docgenSkin td.mceCenter {text-align:center;}
 .docgenSkin td.mceCenter table {margin:0 auto; text-align:left;}
 .docgenSkin td.mceRight table {margin:0 0 0 auto;}
 
-/* Button */
-.docgenSkin .mceButton {display:block; border:1px solid #ccc; width:20px; height:20px; margin-right:4px}
-.docgenSkin a.mceButtonEnabled:hover {border:1px solid #0A246A; background-color:#333}
-.docgenSkin a.mceButtonActive, .docgenSkin a.mceButtonSelected {border:1px solid #0A246A; background-color:#C2CBE0}
+.docgenSkin .mceButton {
+    display:block;
+    border: 1px solid #a5b7d0;
+    width:20px; 
+    height:20px;
+    padding: 2px;
+    background: #feffff; /* Old browsers */
+    background: -moz-linear-gradient(top,  #feffff 0%, #dce6f5 36%, #dce6f5 63%, #ffffff 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#feffff), color-stop(36%,#dce6f5), color-stop(63%,#dce6f5), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #feffff 0%,#dce6f5 36%,#dce6f5 63%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #feffff 0%,#dce6f5 36%,#dce6f5 63%,#ffffff 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #feffff 0%,#dce6f5 36%,#dce6f5 63%,#ffffff 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #feffff 0%,#dce6f5 36%,#dce6f5 63%,#ffffff 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dce6f5', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+}
+
+.docgenSkin a.mceButtonEnabled:hover, .docgenSkin button:hover {
+    border:1px solid #ffd05e;
+    background: #fde7cf; /* Old browsers */
+    background: -moz-linear-gradient(top,  #fde7cf 0%, #fde7cf 36%, #ffce69 37%, #ffffff 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fde7cf), color-stop(36%,#fde7cf), color-stop(37%,#ffce69), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #fde7cf 0%,#fde7cf 36%,#ffce69 37%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #fde7cf 0%,#fde7cf 36%,#ffce69 37%,#ffffff 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #fde7cf 0%,#fde7cf 36%,#ffce69 37%,#ffffff 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #fde7cf 0%,#fde7cf 36%,#ffce69 37%,#ffffff 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fde7cf', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+}
+
+.docgenSkin a.mceButtonActive, .docgenSkin a.mceButtonSelected {
+    border:1px solid #c29b29;
+    background: #ffc45d; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ffd998 0%, #ffd998 36%, #ffc45d 37%, #ffd178 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fde7cf), color-stop(36%,#fde7cf), color-stop(37%,#ffce69), color-stop(100%,#ffd178)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ffd998 0%,#ffd998 36%,#ffc45d 37%,#ffd178 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ffd998 0%,#ffd998 36%,#ffc45d 37%,#ffd178 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ffd998 0%,#ffd998 36%,#ffc45d 37%,#ffd178 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #ffd998 0%,#ffd998 36%,#ffc45d 37%,#ffd178 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffc45d', endColorstr='#ffd178',GradientType=0 ); /* IE6-9 */
+}
+
 .docgenSkin .mceButtonDisabled .mceIcon {opacity:0.3; -ms-filter:'alpha(opacity=30)'; filter:alpha(opacity=30)}
 .docgenSkin .mceButtonLabeled {width:auto}
 .docgenSkin .mceButtonLabeled span.mceIcon {float:left}
 .docgenSkin span.mceButtonLabel {display:block; font-size:10px; padding:4px 6px 0 22px; font-family:Tahoma,Verdana,Arial,Helvetica}
 .docgenSkin .mceButtonDisabled .mceButtonLabel {color:#888}
+.docgenSkin .mceButtonDisabled { border: 1px solid #C9D7E7; background: #d8e2f1; background-image: none; }
 
 /* Separator */
 .docgenSkin .mceSeparator {display:block; background:url(img/icons.gif) -180px 0; width:2px; height:20px; margin:2px 2px 0 4px}
 
 /* ListBox */
 .docgenSkin .mceListBox, .docgenSkin .mceListBox a {display:block}
-.docgenSkin .mceListBox .mceText {padding-left:4px; width:70px; text-align:left; border:1px solid #CCC; border-right:0; background:#FFF; font-family:Tahoma,Verdana,Arial,Helvetica; font-size:11px; height:20px; line-height:20px; overflow:hidden}
+.docgenSkin .mceListBox .mceText {padding-left:4px; width:120px; text-align:left; border:1px solid #b0c0d5; border-right:0; background:none; font-family:Tahoma,Verdana,Arial,Helvetica; font-size:11px; height:20px; line-height:20px; overflow:hidden}
 .docgenSkin .mceListBox .mceOpen {width:9px; height:20px; background:url(img/icons.gif) -741px 0; margin-right:2px; border:1px solid #CCC;}
 .docgenSkin table.mceListBoxEnabled:hover .mceText, .docgenSkin .mceListBoxHover .mceText, .docgenSkin .mceListBoxSelected .mceText {border:1px solid #A2ABC0; border-right:0; background:#FFF}
 .docgenSkin table.mceListBoxEnabled:hover .mceOpen, .docgenSkin .mceListBoxHover .mceOpen, .docgenSkin .mceListBoxSelected .mceOpen {background-color:#FFF; border:1px solid #A2ABC0}
@@ -105,7 +155,7 @@
 .docgenSkin .mceNoIcons a .mceText {padding-left:10px}
 .docgenSkin .mceMenu table {background:#FFF}
 .docgenSkin .mceMenu a, .docgenSkin .mceMenu span, .docgenSkin .mceMenu {display:block}
-.docgenSkin .mceMenu td {height:20px}
+/*.docgenSkin .mceMenu td {height:20px}*/
 .docgenSkin .mceMenu a {position:relative;padding:3px 0 4px 0}
 .docgenSkin .mceMenu .mceText {position:relative; display:block; font-family:Tahoma,Verdana,Arial,Helvetica; color:#000; cursor:default; margin:0; padding:0 25px 0 25px; display:block}
 .docgenSkin .mceMenu span.mceText, .docgenSkin .mceMenu .mcePreview {font-size:11px}

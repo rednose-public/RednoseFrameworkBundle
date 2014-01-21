@@ -38,14 +38,14 @@
                 cssContent = tinymce.style_css;
             }
 
-            var toolbar = '{% for bar in toolbar %}{% for item in bar.items %}{{ item }},{% endfor %}|,{% endfor %}';
+            var toolbar = '{% for bar in toolbar %}{% for item in bar.items %}{{ item }},{% endfor %},{% endfor %}';
 
             // Creates a new editor instance
             var ed = new tinymce.Editor('{{ id }}', {
                 theme: 'advanced',
                 skin: 'docgen',
 
-                plugins : "paste,fullscreen",
+                plugins : "paste",
 
                 theme_advanced_buttons1 : toolbar,
                 theme_advanced_buttons2 : '',
