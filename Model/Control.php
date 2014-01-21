@@ -20,6 +20,7 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     protected $visible;
     protected $protected;
     protected $readonly;
+    protected $help;
 
     public function __construct()
     {
