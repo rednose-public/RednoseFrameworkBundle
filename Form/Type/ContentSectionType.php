@@ -20,8 +20,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Rednose\FrameworkBundle\Model\Node\Value\OutputValueNodeInterface;
-use Rednose\FrameworkBundle\Model\Node\Value\InputValueNodeInterface;
 
 class ContentSectionType extends AbstractType
 {
@@ -86,10 +84,6 @@ class ContentSectionType extends AbstractType
                 case ContentDefinitionInterface::TYPE_TEXT:
                     $type = 'text';
 
-                    $options = array(
-                        'data' => $this->getValue($contentDefinition)
-                    );
-
                     break;
 
                 case ContentDefinitionInterface::TYPE_HTML:
@@ -97,7 +91,6 @@ class ContentSectionType extends AbstractType
 
                     $options = array(
                         'required' => false,
-                        'data'     => $this->getValue($contentDefinition),
                         'attr'     => array(
                             'data-id'       => $contentDefinition->getContentItem()->getForeignId(),
                             'placeholder'   => $this->translator->trans('Type here...'),
@@ -144,27 +137,5 @@ class ContentSectionType extends AbstractType
     public function getName()
     {
         return 'content_section';
-    }
-
-    /**
-     * Gets an initial value, either from an input node graph or a default value.
-     *
-     * @param ContentDefinitionInterface $definition
-     *
-     * @return string
-     */
-    protected function getValue(ContentDefinitionInterface $definition)
-    {
-        if ($definition instanceof OutputValueNodeInterface) {
-            $inputNode = $definition->getInput();
-
-            if ($inputNode !== null) {
-                if ($inputNode instanceof InputValueNodeInterface) {
-                    return $inputNode->getOutputValue();
-                }
-            }
-        }
-
-        return $definition->getDefaultValue();
     }
 }

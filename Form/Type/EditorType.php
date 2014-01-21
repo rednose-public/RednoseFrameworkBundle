@@ -99,46 +99,40 @@ class EditorType extends AbstractType
                 array('name' => 'styles', 'items' => array('Styles')),
 
                 // Standard bold, italic, underline. Remove format is only here to clean up the mess from pasted stuff.
-                array('name' => 'basicstyles', 'items' => array('Bold', 'Italic', 'Underline', '-', 'RemoveFormat')),
+                array('name' => 'basicstyles', 'items' => array('|','Bold', 'Italic', 'Underline', '-', 'RemoveFormat')),
 
                 // Basic lists.
-                array('name' => 'paragraph', 'items' => array('NumberedList', 'BulletedList')),
+                array('name' => 'paragraph', 'items' => array('|','NumberedList', 'BulletedList')),
 
                 // URL support, essential.
-                array('name' => 'links', 'items' => array('Link')),
+                array('name' => 'links', 'items' => array('|','Link')),
 
                 // Essential and no reason to not implement them.
-                array('name' => 'clipboard', 'items' => array('Undo', 'Redo')),
+                array('name' => 'clipboard', 'items' => array('|','Undo', 'Redo')),
 
                 // Cut / copy / paste. These features are limited to web browsers, as other devices have these implemented into their basic
                 // text input API's.
-                array('name' => 'clipboard', 'items' => array('Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord')),
-
-                // Nice to have. All clients should implement this.
-                array('name' => 'tools', 'items' => array('Maximize', 'Scayt')),
+                array('name' => 'clipboard', 'items' => array('|','Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord')),
             );
         } else {
             $toolbar = array(
                 array('name' => 'styles', 'items' => array('styleselect')),
 
                 // Standard bold, italic, underline. Remove format is only here to clean up the mess from pasted stuff.
-                array('name' => 'basicstyles', 'items' => array('bold', 'italic', 'underline', '|', 'removeformat')),
+                array('name' => 'basicstyles', 'items' => array('|','bold', 'italic', 'underline', '|', 'removeformat')),
 
                 // Basic lists.
-                array('name' => 'paragraph', 'items' => array('numlist', 'bullist')),
+                array('name' => 'paragraph', 'items' => array('|','numlist', 'bullist')),
 
                 // URL support, essential.
-                array('name' => 'links', 'items' => array('link')),
+                array('name' => 'links', 'items' => array('|','link')),
 
                 // Essential and no reason to not implement them.
-                array('name' => 'clipboard', 'items' => array('undo', 'redo')),
+                array('name' => 'clipboard', 'items' => array('|','undo', 'redo')),
 
                 // Cut / copy / paste. These features are limited to web browsers, as other devices have these implemented into their basic
                 // text input API's.
-                array('name' => 'clipboard', 'items' => array('Cut', 'copy', 'paste', 'pastetext', 'pasteword')),
-
-                // Nice to have. All clients should implement this.
-                array('name' => 'tools', 'items' => array('fullscreen')),
+                array('name' => 'clipboard', 'items' => array('|','Cut', 'copy', 'paste', 'pastetext', 'pasteword')),
             );
         }
 
