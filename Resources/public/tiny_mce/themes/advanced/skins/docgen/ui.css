@@ -32,8 +32,7 @@
     padding: 10px 10px;
     left: 0px;
     right: 0px;
-    top: 0px !important;
-    box-shadow: 0 13px 13px rgba(160, 160, 160, 1);
+    box-shadow: 0 6px 13px rgba(160, 160, 160, 1);
     display:none
 }
 
