@@ -91,15 +91,11 @@ class EditorType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'required'      => false,
-            'inline'        => false,
-            'scayt'         => true,
-            'height'        => 250,
+        // WYSIWYG features. Options are carefully chosen, keeping dictated corporate identity guidelines and multi-device support
+        // in mind.
 
-            // WYSIWYG features. Options are carefully chosen, keeping dictated corporate identity guidelines and multi-device support
-            // in mind.
-            'toolbar'       => array(
+        if ($this->type === $this::TYPE_CKEDITOR) {
+            $toolbar = array(
                 array('name' => 'styles', 'items' => array('Styles')),
 
                 // Standard bold, italic, underline. Remove format is only here to clean up the mess from pasted stuff.
@@ -120,7 +116,38 @@ class EditorType extends AbstractType
 
                 // Nice to have. All clients should implement this.
                 array('name' => 'tools', 'items' => array('Maximize', 'Scayt')),
-            ),
+            );
+        } else {
+            $toolbar = array(
+                array('name' => 'styles', 'items' => array('styleselect')),
+
+                // Standard bold, italic, underline. Remove format is only here to clean up the mess from pasted stuff.
+                array('name' => 'basicstyles', 'items' => array('bold', 'italic', 'underline', '|', 'removeformat')),
+
+                // Basic lists.
+                array('name' => 'paragraph', 'items' => array('numlist', 'bullist')),
+
+                // URL support, essential.
+                array('name' => 'links', 'items' => array('link')),
+
+                // Essential and no reason to not implement them.
+                array('name' => 'clipboard', 'items' => array('undo', 'redo')),
+
+                // Cut / copy / paste. These features are limited to web browsers, as other devices have these implemented into their basic
+                // text input API's.
+                array('name' => 'clipboard', 'items' => array('Cut', 'copy', 'paste', 'pastetext', 'pasteword')),
+
+                // Nice to have. All clients should implement this.
+                array('name' => 'tools', 'items' => array('fullscreen')),
+            );
+        }
+
+        $resolver->setDefaults(array(
+            'required' => false,
+            'inline'   => true,
+            'scayt'    => true,
+            'height'   => 250,
+            'toolbar'  => $toolbar
         ));
     }
 }

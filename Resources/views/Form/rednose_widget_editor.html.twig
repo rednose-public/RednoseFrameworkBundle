@@ -6,6 +6,8 @@
     <script language="javascript">
         {% if type == constant('Rednose\\FrameworkBundle\\Form\\Type\\EditorType::TYPE_CKEDITOR') %}
             CKEDITOR.{% if inline %}inline{% else %}replace{% endif %}('{{ id }}', {
+                extraPlugins: 'confighelper',
+
                 toolbar: {{ toolbar|json_encode|raw }},
 
                 {% if scayt %}
@@ -25,31 +27,41 @@
                 font_names: 'Verdana'
             });
         {% else %}
-            tinymce.init({
+            var styleFormats = [],
+                cssContent;
+
+            if (typeof(tinymce.style_formats) != 'undefined') {
+                styleFormats = tinymce.style_formats;
+            }
+
+            if (typeof(tinymce.style_css) != 'undefined') {
+                cssContent = tinymce.style_css;
+            }
+
+            var toolbar = '{% for bar in toolbar %}{% for item in bar.items %}{{ item }},{% endfor %}|,{% endfor %}';
+
+            // Creates a new editor instance
+            var ed = new tinymce.Editor('{{ id }}', {
                 theme: 'advanced',
-                selector: '#{{ id }}',
-                inline: true,
+                skin: 'docgen',
 
-                style_formats: [
-                    {title: 'Bold text', inline: 'b'},
-                    {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-                    {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-                    {title: 'Example 1', inline: 'span', classes: 'example1'},
-                    {title: 'Example 2', inline: 'span', classes: 'example2'},
-                    {title: 'Table styles'},
-                    {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                ],
+                plugins : "paste,fullscreen",
 
-                setup : function(ed) {
-                    ed.onChange.add(function(ed, l) {
-                        console.log('Editor contents was modified. Contents: ' + l.content);
-                    });
+                theme_advanced_buttons1 : toolbar,
+                theme_advanced_buttons2 : '',
+                theme_advanced_buttons3 : '',
 
-                    ed.onKeyUp.add(function(ed, l) {
-                        console.log('Editor contents was modified. Contents: ' + l.content);
-                    });
-                }
-            });
+                style_formats: styleFormats,
+                content_css: cssContent,
+
+                theme_advanced_toolbar_location : "external",
+                theme_advanced_resizing : false,
+                theme_advanced_statusbar_location : false,
+
+                //style_formats: styleFormats
+            }, tinymce.EditorManager);
+
+            ed.render();
         {% endif %}
     </script>
 {% endblock rednose_widget_editor_widget %}
