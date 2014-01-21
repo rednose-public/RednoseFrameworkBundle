@@ -41,6 +41,11 @@
             var toolbar = '{% for bar in toolbar %}{% for item in bar.items %}{{ item }},{% endfor %}|,{% endfor %}';
 
             // Creates a new editor instance
+
+            if (typeof(tinyInstance) === 'undefined') {
+                tinyInstance = Array();
+            }
+
             var ed = new tinymce.Editor('{{ id }}', {
                 theme: 'advanced',
                 skin: 'docgen',
@@ -62,6 +67,8 @@
             }, tinymce.EditorManager);
 
             ed.render();
+
+            tinyInstance.push(ed);
         {% endif %}
     </script>
 {% endblock rednose_widget_editor_widget %}
