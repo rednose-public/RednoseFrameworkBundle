@@ -5,6 +5,17 @@
 
     <script language="javascript">
         {% if type == constant('Rednose\\FrameworkBundle\\Form\\Type\\EditorType::TYPE_CKEDITOR') %}
+            var styleFormat = [];
+
+            for (var i in stylesSet) {
+                styleFormat.push({
+                    name: stylesSet[i].name, element: 'p', attributes: { 'class': stylesSet[i].className }
+                });
+            }
+
+            CKEDITOR.config.contentsCss = [ styleSetCss ];
+            CKEDITOR.config.stylesSet   = styleFormat;
+
             CKEDITOR.{% if inline %}inline{% else %}replace{% endif %}('{{ id }}', {
                 extraPlugins: 'confighelper',
 
@@ -62,20 +73,21 @@
                 theme_advanced_toolbar_location : "external",
                 theme_advanced_resizing : false,
                 theme_advanced_statusbar_location : false,
+
                 /* Experimental code tinymce fixed scrolling toolbar */
                 /*
                 setup: function(ed) {
                     ed.onClick.add(function(ed, e) {
                         YUI().use('rednose-jquery', function(Y) {
-                        
+
                             $(document).ready( function() {
                                 scrollcheck();
-                            });                   
-                            
+                            });
+
                             $(window).scroll( function() {
                                 scrollcheck();
                             });
-                            
+
                             function scrollcheck() {
                                 if ( $(this).scrollTop() > 160 ) {
                                     $("div#" + ed.id + "_external.mceExternalToolbar").css("top", ($("body").scrollTop() + "px"));
@@ -83,7 +95,7 @@
                                     $("div#" + ed.id + "_external.mceExternalToolbar").css("top", (160 - $(this).scrollTop()) + "px");
                                 }
                             }
-                            
+
                         });
                     });
                 },
