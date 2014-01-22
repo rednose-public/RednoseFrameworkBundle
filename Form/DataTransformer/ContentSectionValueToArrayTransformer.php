@@ -85,8 +85,11 @@ class ContentSectionValueToArrayTransformer implements DataTransformerInterface
             // Check for existing form data for this definition.
             if (isset($data[$contentDefinition->getContentId()])) {
 
-                // Add the content to the section value.
-                $contentSectionValue->addContent($contentDefinition->getContentItem(), $data[$contentDefinition->getContentId()]);
+                // Check if the field is not flagged as readonly to prevent creating unwanted content
+                if ($contentDefinition->getContentItem()->isReadonly() === false) {
+                    // Add the content to the section value.
+                    $contentSectionValue->addContent($contentDefinition->getContentItem(), $data[$contentDefinition->getContentId()]);
+                }
             }
         }
 
