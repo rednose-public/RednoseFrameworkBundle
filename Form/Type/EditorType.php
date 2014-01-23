@@ -113,6 +113,9 @@ class EditorType extends AbstractType
                 // Cut / copy / paste. These features are limited to web browsers, as other devices have these implemented into their basic
                 // text input API's.
                 array('name' => 'clipboard', 'items' => array('|','Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord')),
+
+                // Buildin spellchecker
+                array('name' => 'spellchecker', 'items' => array('Scayt')),
             );
         } else {
             $toolbar = array(

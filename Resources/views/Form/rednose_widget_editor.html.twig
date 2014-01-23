@@ -17,7 +17,7 @@
             CKEDITOR.config.stylesSet   = styleFormat;
 
             CKEDITOR.{% if inline %}inline{% else %}replace{% endif %}('{{ id }}', {
-                extraPlugins: 'confighelper',
+                extraPlugins: 'confighelperfork',
 
                 toolbar: {{ toolbar|json_encode|raw }},
 

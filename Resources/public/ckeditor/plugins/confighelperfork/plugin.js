@@ -2,6 +2,8 @@
  * @file Configuration helper plugin for CKEditor
  * Copyright (C) 2012 Alfonso Martínez de Lizarrondo
  *
+ * Modified by Sven Hagemann - RedNose B.V. Leiden
+ *
  */
 (function() {
 "use strict";
@@ -13,16 +15,20 @@ var supportsPlaceholder = ('placeholder' in document.createElement( 'textarea' )
 // Otherwise return the original data
 function dataIsEmpty( data )
 {
+    // IE8 fix
     if ( ! data ) {
         return true;
     }
 
-	if ( data.length > 20 )
-		return false;
+    var bufferElement = document.createElement("DIV");
 
-	var value = data.replace( /[\n|\t]*/g, '' ).toLowerCase();
-	if ( !value || value == '<br>' || value == '<p>&nbsp;<br></p>' || value == '<p><br></p>' || value == '<p>&nbsp;</p>' || value == '&nbsp;' || value == ' ' || value == '&nbsp;<br>' || value == ' <br>' )
-		return true;
+    bufferElement.innerHTML = data;
+
+    var plainText = (bufferElement.textContent || bufferElement.innerText);
+
+    if (! plainText) {
+        return true;
+    }
 
 	return false;
 }
@@ -76,8 +82,10 @@ function removePlaceholder(ev) {
 			return;
 
 		root.removeClass( 'placeholder' );
-		// fill it properly
-		root.setHtml( (CKEDITOR.dtd[ root.getName() ]['p'] ? '<p>&nbsp;</p>' : ' ') );
+		root.setHtml('');
+
+		// No unwanted spaces
+		//root.setHtml( (CKEDITOR.dtd[ root.getName() ]['p'] ? '<p>&nbsp;</p>' : ' ') );
 	}
 	else
 	{
@@ -99,7 +107,7 @@ function getLang( element )
 }
 
 
-CKEDITOR.plugins.add( 'confighelper',
+CKEDITOR.plugins.add( 'confighelperfork',
 {
 	getPlaceholderCss : function()
     {
