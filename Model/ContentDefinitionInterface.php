@@ -7,12 +7,15 @@ namespace Rednose\FrameworkBundle\Model;
  */
 interface ContentDefinitionInterface
 {
-    const TYPE_TEXT     = 'text';
-    const TYPE_TEXTAREA = 'textarea';
-    const TYPE_HTML     = 'html';
-    const TYPE_DATE     = 'date';
-    const TYPE_DROPDOWN = 'dropdown';
-    const TYPE_RADIO    = 'radio';
+    const TYPE_TEXT         = 'text';
+    const TYPE_TEXTAREA     = 'textarea';
+    const TYPE_HTML         = 'html';
+    const TYPE_DATE         = 'date';
+    const TYPE_DROPDOWN     = 'dropdown';
+    const TYPE_RADIO        = 'radio';
+    const TYPE_CHECKBOX     = 'checkbox';
+    const TYPE_AUTOCOMPLETE = 'autocomplete';
+    const TYPE_FILE         = 'file';
 
     /**
      * Gets the unique identifier for the content item this object defines.

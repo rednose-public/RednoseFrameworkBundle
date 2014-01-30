@@ -45,6 +45,7 @@
         "friendsofsymfony/oauth-server-bundle": "*@stable",
         "liip/monitor-bundle": "dev-master",
         "ezyang/htmlpurifier": "dev-master",
+        "guzzle/guzzle": "3.8.*@stable",
         "rednose/api-doc-bundle": "dev-master"
     },
     "autoload": {

@@ -1,0 +1,6 @@
+rednose_framework_files_upload:
+    pattern:  /files/upload
+    defaults: { _controller: RednoseFrameworkBundle:File:upload }
+    methods:  [POST]
+    options:
+        expose: true
