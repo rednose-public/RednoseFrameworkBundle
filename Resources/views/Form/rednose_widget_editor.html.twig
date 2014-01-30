@@ -7,14 +7,21 @@
         {% if type == constant('Rednose\\FrameworkBundle\\Form\\Type\\EditorType::TYPE_CKEDITOR') %}
             var styleFormat = [];
 
-            for (var i in stylesSet) {
-                styleFormat.push({
-                    name: stylesSet[i].name, element: 'p', attributes: { 'class': stylesSet[i].className }
-                });
+            // FIXME: Remove dependency on global variable `stylesSet` and use form option
+            if (typeof stylesSet !== 'undefined') {
+                for (var i in stylesSet) {
+                    styleFormat.push({
+                        name: stylesSet[i].name, element: 'p', attributes: { 'class': stylesSet[i].className }
+                    });
+                }
+
+                CKEDITOR.config.stylesSet   = styleFormat;
             }
 
-            CKEDITOR.config.contentsCss = [ styleSetCss ];
-            CKEDITOR.config.stylesSet   = styleFormat;
+            // FIXME: Remove dependency on global variable `stylesSetCss` and use form option
+            if (typeof stylesSetCss !== 'undefined') {
+                CKEDITOR.config.contentsCss = [ styleSetCss ];
+            }
 
             CKEDITOR.{% if inline %}inline{% else %}replace{% endif %}('{{ id }}', {
                 extraPlugins: 'confighelperfork',
@@ -54,7 +61,7 @@
             // Creates a new editor instance
 
             if (typeof(tinyInstance) === 'undefined') {
-                tinyInstance = Array();
+                tinyInstance = [];
             }
 
             var ed = new tinymce.Editor('{{ id }}', {
