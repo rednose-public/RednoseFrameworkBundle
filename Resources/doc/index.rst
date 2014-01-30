@@ -4,7 +4,7 @@ Installation
 ============
 
 Add FrameworkBundle to your application kernel
----------------------------------------------
+----------------------------------------------
 
 ::
 
@@ -27,3 +27,4 @@ Security configuration
     rednose_framework:
         oauth: true (Enables Oauth2 authentication)
         acl: true (Enables ACL services and permission maps)
+

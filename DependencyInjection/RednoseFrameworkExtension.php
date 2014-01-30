@@ -39,7 +39,7 @@ class RednoseFrameworkExtension extends Extension
             $loader->load('acl.xml');
         }
 
-        $serviceFiles = array('grid', 'orm', 'services');
+        $serviceFiles = array('grid', 'orm', 'services', 'twig');
 
         foreach ($serviceFiles as $basename) {
             $loader->load(sprintf('%s.xml', $basename));

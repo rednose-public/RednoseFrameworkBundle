@@ -3,7 +3,6 @@
 namespace Rednose\FrameworkBundle\Purifier;
 
 use HTMLPurifier;
-use HTMLPurifier_Bootstrap;
 use HTMLPurifier_Config;
 
 /**
