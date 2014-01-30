@@ -8,18 +8,18 @@
             var styleFormat = [];
 
             // FIXME: Remove dependency on global variable `stylesSet` and use form option
-            if (typeof stylesSet !== 'undefined') {
+            if (typeof(stylesSet) !== 'undefined') {
                 for (var i in stylesSet) {
                     styleFormat.push({
                         name: stylesSet[i].name, element: 'p', attributes: { 'class': stylesSet[i].className }
                     });
                 }
 
-                CKEDITOR.config.stylesSet   = styleFormat;
+                CKEDITOR.config.stylesSet = styleFormat;
             }
 
             // FIXME: Remove dependency on global variable `stylesSetCss` and use form option
-            if (typeof stylesSetCss !== 'undefined') {
+            if (typeof(styleSetCss) !== 'undefined') {
                 CKEDITOR.config.contentsCss = [ styleSetCss ];
             }
 
