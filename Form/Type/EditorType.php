@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Rednose\FrameworkBundle\Form\EventListener\EditorTypeDataListener;
 
 /**
  * WYSIWYG document editor wrapper form
@@ -26,19 +27,22 @@ class EditorType extends AbstractType
     const TYPE_TINYMCE  = 'tinymce';
     const TYPE_CKEDITOR = 'ckeditor';
 
-    protected $type;
     protected $request;
+    protected $listener;
+    protected $type;
 
     /**
      * Constructor
      *
-     * @param Request $request Request object
-     * @param string  $type    Editor type
+     * @param Request                $request  Request object
+     * @param EditorTypeDataListener $listener Data listener
+     * @param string                 $type     Editor type
      */
-    public function __construct(Request $request, $type)
+    public function __construct(Request $request, EditorTypeDataListener $listener, $type)
     {
-        $this->request = $request;
-        $this->type    = $type;
+        $this->request  = $request;
+        $this->listener = $listener;
+        $this->type     = $type;
     }
 
     /**
@@ -46,6 +50,10 @@ class EditorType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['purify']) {
+            $builder->addEventSubscriber($this->listener);
+        }
+
         parent::buildForm($builder, $options);
 
         $builder
@@ -142,6 +150,7 @@ class EditorType extends AbstractType
         $resolver->setDefaults(array(
             'required' => false,
             'inline'   => true,
+            'purify'   => false,
             'scayt'    => true,
             'height'   => 250,
             'toolbar'  => $toolbar

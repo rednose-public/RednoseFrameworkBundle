@@ -47,6 +47,7 @@
 
         <service id="form.type.rednose_widget_editor" class="Rednose\FrameworkBundle\Form\Type\EditorType">
             <argument type="service" id="request" strict="false" />
+            <argument type="service" id="rednose_framework.form.listener.edit_type_data" />
             <argument></argument>
             <tag name="form.type" alias="rednose_widget_editor" />
         </service>
@@ -54,6 +55,10 @@
         <service id="form.type.rednose_date" class="Rednose\FrameworkBundle\Form\Type\DateType">
             <argument type="service" id="request" strict="false" />
             <tag name="form.type" alias="rednose_date" />
+        </service>
+
+        <service id="rednose_framework.form.listener.edit_type_data" class="Rednose\FrameworkBundle\Form\EventListener\EditorTypeDataListener">
+            <argument type="service" id="rednose_framework.purifier" />
         </service>
 
         <!-- JMS Object constructor alias -->

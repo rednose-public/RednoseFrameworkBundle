@@ -14,12 +14,20 @@ namespace Rednose\FrameworkBundle\Form\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use HTMLPurifier;
 
-/**
- * Create a new DateTime object in case none is specified for a date field.
- */
-class DateTypeDataListener implements EventSubscriberInterface
+class EditorTypeDataListener implements EventSubscriberInterface
 {
+    /**
+     * @var HTMLPurifier
+     */
+    protected $purifier;
+
+    public function __construct(HTMLPurifier $purifier)
+    {
+        $this->purifier = $purifier;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,8 +41,12 @@ class DateTypeDataListener implements EventSubscriberInterface
      */
     public function setData(FormEvent $event)
     {
-        if ($event->getData() == null) {
-            $event->setData(new \DateTime);
+        $data = $event->getData();
+
+        if ($data === null) {
+            return;
         }
+
+        $event->setData($this->purifier->purify($data));
     }
 }

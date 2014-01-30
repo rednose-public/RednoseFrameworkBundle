@@ -50,7 +50,7 @@ class RednoseFrameworkExtension extends Extension
 
     private function loadForm(array $config, ContainerBuilder $container)
     {
-        $container->getDefinition('form.type.rednose_widget_editor')->replaceArgument(1, $config['editor']);
+        $container->getDefinition('form.type.rednose_widget_editor')->replaceArgument(2, $config['editor']);
         $container->setParameter('form.type.rednose_widget_editor.type', $config['editor']);
     }
 }
