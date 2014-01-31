@@ -11,6 +11,7 @@ interface ContentDefinitionInterface
     const TYPE_TEXTAREA     = 'textarea';
     const TYPE_HTML         = 'html';
     const TYPE_DATE         = 'date';
+    const TYPE_DATETIME     = 'datetime';
     const TYPE_DROPDOWN     = 'dropdown';
     const TYPE_RADIO        = 'radio';
     const TYPE_CHECKBOX     = 'checkbox';
