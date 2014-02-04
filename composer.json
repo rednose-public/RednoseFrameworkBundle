@@ -46,6 +46,7 @@
         "liip/monitor-bundle": "dev-master",
         "ezyang/htmlpurifier": "dev-master",
         "guzzle/guzzle": "3.8.*@stable",
+        "richsage/rms-push-notifications-bundle": "dev-master",
         "rednose/api-doc-bundle": "dev-master"
     },
     "autoload": {
