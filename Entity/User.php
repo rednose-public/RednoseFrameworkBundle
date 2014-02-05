@@ -43,7 +43,7 @@ class User extends BaseUser implements UserInterface
     /**
      * Gets the username
      *
-     * Will automaticly return the username in lowercase for
+     * Will automatically return the username in lowercase for
      * framework compatibility.
      *
      * if forceLowercase is set to false it will return the
@@ -60,6 +60,14 @@ class User extends BaseUser implements UserInterface
         }
 
         return $this->username;
+    }
+
+    /**
+     * @return Group[]
+     */
+    public function getGroups()
+    {
+        return $this->groups;
     }
 
     /**
