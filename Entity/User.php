@@ -63,14 +63,6 @@ class User extends BaseUser implements UserInterface
     }
 
     /**
-     * @return Group[]
-     */
-    public function getGroups()
-    {
-        return $this->groups;
-    }
-
-    /**
      * Get the realname (full name)
      *
      * @param string $realName
