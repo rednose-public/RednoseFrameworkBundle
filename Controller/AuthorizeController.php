@@ -30,8 +30,6 @@ class AuthorizeController extends Controller
             throw new NotFoundHttpException("Client {$request->get('client_id')} is not found.");
         }
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
-
         $form = $this->container->get('rednose_framework.authorize.form');
         $formHandler = $this->container->get('rednose_framework.authorize.form_handler');
 
