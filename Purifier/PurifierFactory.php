@@ -33,7 +33,7 @@ class PurifierFactory
 
         // Add textblock placeholder attribute to allowed definitions.
         $def->addAttribute('span', 'data-placeholder', 'Text');
-        $def->addAttribute('p', 'data-header-target', 'Text');
+        $def->addAttribute('span', 'data-header-target', 'Text');
 
         return new HTMLPurifier($config);
     }
