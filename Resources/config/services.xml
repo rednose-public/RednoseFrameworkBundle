@@ -69,6 +69,12 @@
 
         <service id="jms_serializer.object_constructor" alias="rednose_framework.doctrine_object_constructor" public="false"/>
 
+        <service id="rednose_framework.array_collection_handler" class="Rednose\FrameworkBundle\Serializer\Handler\ArrayCollectionHandler">
+            <tag name="jms_serializer.subscribing_handler" />
+        </service>
+
+        <service id="jms_serializer.array_collection_handler" alias="rednose_framework.array_collection_handler"/>
+
         <!-- Doctrine event listener -->
         <service id="rednose_framework.doctrine_listener" class="%rednose_framework.doctrine_listener.class%">
             <argument type="service" id="event_dispatcher" />
