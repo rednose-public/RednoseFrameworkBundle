@@ -34,6 +34,13 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
     protected $foreignId;
 
     /**
+     * @ORM\Column(type="string", length=64)
+     *
+     * @Assert\NotBlank(message="Please enter a name.")
+     */
+     protected $name;
+
+    /**
      * @ORM\Column(type="string", length=64, nullable=true)
      *
      * @Assert\NotBlank(message="Please enter a form caption.")
