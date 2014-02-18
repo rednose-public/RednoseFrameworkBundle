@@ -1,0 +1,4 @@
+rednose_framework:
+    resource: "@RednoseFrameworkBundle/Controller/"
+    type:     annotation
+    prefix:   /
