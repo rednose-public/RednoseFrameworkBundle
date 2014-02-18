@@ -12,9 +12,11 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
 {
     protected $id;
     protected $value;
+    protected $handle;
     protected $caption;
     protected $type;
     protected $properties;
+    protected $controlForm;
     protected $weight;
     protected $required;
     protected $visible;
@@ -236,7 +238,7 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     /**
      * Get parent ControlForm
      *
-     * @return \ControlForm
+     * @return ControlFormInterface
      */
     public function getControlForm()
     {
@@ -246,7 +248,7 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     /**
      * Sets the parent ControlForm
      *
-     * @param \ControlForm $form
+     * @param ControlFormInterface $form
      */
     public function setControlForm(ControlFormInterface $form)
     {
