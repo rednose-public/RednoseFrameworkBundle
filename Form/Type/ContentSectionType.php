@@ -40,17 +40,23 @@ class ContentSectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (isset($options['data']) === false) {
-            throw new \InvalidArgumentException('Data needs to be passed on form type construction.');
+        if (isset($options['data']) === false && isset($options['form']) === false) {
+            throw new \InvalidArgumentException('Data needs to be passed on form type construction, or option `form` needs to be specified.');
         }
 
-        $data = $options['data'];
+        $contentSection = null;
 
-        if (!$data instanceof ContentSectionValueInterface) {
-            throw new \InvalidArgumentException('Form data must implement ContentSectionValueInterface');
+        if (isset($options['form'])) {
+            $contentSection = $options['form'];
+        } else if (isset($options['data'])) {
+            $data = $options['data'];
+
+            if (!$data instanceof ContentSectionValueInterface) {
+                throw new \InvalidArgumentException('Form data must implement ContentSectionValueInterface');
+            }
+
+            $contentSection = $data->getContentSection();
         }
-
-        $contentSection = $data->getContentSection();
 
         if (!$contentSection instanceof ContentSectionInterface) {
             throw new \InvalidArgumentException('Content section must implement ContentSectionInterface');
@@ -128,6 +134,7 @@ class ContentSectionType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => null,
+            'form'       => null,
         ));
     }
 

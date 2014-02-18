@@ -1,0 +1,11 @@
+{% extends 'RednoseFrameworkBundle::layout.html.twig' %}
+
+{% block title %}{{ model.name }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form class="form-horizontal">
+            {{ form_widget(form) }}
+        </form>
+    </div>
+{% endblock %}
