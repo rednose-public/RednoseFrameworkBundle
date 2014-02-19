@@ -11,31 +11,28 @@
 
 namespace Rednose\FrameworkBundle\Form\Type;
 
-use Rednose\FrameworkBundle\Form\EventListener\DateTypeDataListener;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToTimestampTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * A localized wrapper to implement the YUI datepicker widget.
+ * A localized wrapper to implement the YUI Rednose Autocomplete widget.
  */
-class DateType extends AbstractType
+class AutocompleteType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->setAttribute('disable', $options['disable'])
-            ->setData(new \DateTime())
-        ;
+        parent::buildForm($builder, $options);
 
-        $builder->addEventSubscriber(new DateTypeDataListener);
-        $builder->addViewTransformer(new DateTimeToTimestampTransformer);
+        $builder
+            ->setAttribute('choices', $options['choices'])
+            ->setAttribute('datasource', $options['datasource'])
+        ;
     }
 
     /**
@@ -43,10 +40,8 @@ class DateType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['disable'] = $form->getConfig()->getAttribute('disable');
-
-        // TODO: Inject dependency
-        $view->vars['locale'] = 'nl';
+        $view->vars['choices']    = $form->getConfig()->getAttribute('choices');
+        $view->vars['datasource'] = $form->getConfig()->getAttribute('datasource');
     }
 
     /**
@@ -56,7 +51,8 @@ class DateType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => null,
-            'disable'    => 'false',
+            'choices'    => null,
+            'datasource' => null,
         ));
     }
 
@@ -73,6 +69,6 @@ class DateType extends AbstractType
      */
     public function getName()
     {
-        return 'rednose_date';
+        return 'rednose_autocomplete';
     }
 }

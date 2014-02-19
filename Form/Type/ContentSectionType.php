@@ -93,6 +93,25 @@ class ContentSectionType extends AbstractType
 
                     break;
 
+                case ContentDefinitionInterface::TYPE_AUTOCOMPLETE:
+                    $type = 'rednose_autocomplete';
+
+                    $options = array(
+                        'attr' => array(
+                            'placeholder' => $this->translator->trans('type_to_search_placeholder'),
+                        )
+                    );
+
+                    if (isset($properties['choices'])) {
+                        $options['choices'] = $properties['choices'];
+                    }
+
+                    if (isset($properties['datasource'])) {
+                        $options['datasource'] = $properties['datasource'];
+                    }
+
+                    break;
+
                 case ContentDefinitionInterface::TYPE_DATETIME:
                     $type = 'datetime';
 
@@ -119,25 +138,25 @@ class ContentSectionType extends AbstractType
                         'required' => false,
                         'attr'     => array(
                             'data-id'       => $contentDefinition->getContentItem()->getForeignId(),
-                            'placeholder'   => $this->translator->trans('Type here...'),
+                            'placeholder'   => $this->translator->trans('type_here_placeholder'),
                             'data-required' => $contentDefinition->isRequired()
                         )
                     );
 
                     if (isset($properties['height'])) {
-                        $options['height']  = $properties['height'];
+                        $options['height'] = $properties['height'];
                     }
 
                     if (isset($properties['inline'])) {
-                        $options['inline']  = $properties['inline'];
+                        $options['inline'] = $properties['inline'];
                     }
 
                     if (isset($properties['purify'])) {
-                        $options['purify']  = $properties['purify'];
+                        $options['purify'] = $properties['purify'];
                     }
 
                     if (isset($properties['scayt'])) {
-                        $options['scayt']   = $properties['scayt'];
+                        $options['scayt']  = $properties['scayt'];
                     }
 
                     if (isset($properties['toolbar'])) {

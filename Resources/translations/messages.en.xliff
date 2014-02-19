@@ -1,51 +1,59 @@
 <?xml version="1.0"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file datatype="plaintext" original="" source-language="en">
-    <body>
-      <trans-unit id="sign_in_title">
-        <source>sign_in_title</source>
-        <target>Sign in with your RedNose ID</target>
-      </trans-unit>
-      <trans-unit id="sign_in">
-        <source>sign_in</source>
-        <target>Sign in</target>
-      </trans-unit>
-      <trans-unit id="error">
-        <source>error</source>
-        <target>Error</target>
-      </trans-unit>
-      <trans-unit id="username">
-        <source>username</source>
-        <target>Username</target>
-      </trans-unit>
-      <trans-unit id="password">
-        <source>password</source>
-        <target>Password</target>
-      </trans-unit>
-      <trans-unit id="remember_me">
-        <source>remember_me</source>
-        <target>Remember me</target>
-      </trans-unit>
-      <trans-unit id="forgot_password">
-        <source>forgot_password</source>
-        <target>Forgot your password?</target>
-      </trans-unit>
-      <trans-unit id="sign_in_button">
-        <source>sign_in_button</source>
-        <target>Sign in</target>
-      </trans-unit>
-      <trans-unit id="users">
-        <source>users</source>
-        <target>Users</target>
-      </trans-unit>
-      <trans-unit id="groups">
-        <source>groups</source>
-        <target>Groups</target>
-      </trans-unit>
-      <trans-unit id="clients">
-        <source>clients</source>
-        <target>Clients</target>
-      </trans-unit>
-    </body>
-  </file>
+    <file datatype="plaintext" original="" source-language="en">
+        <body>
+            <trans-unit id="sign_in_title">
+                <source>sign_in_title</source>
+                <target>Sign in with your RedNose ID</target>
+            </trans-unit>
+            <trans-unit id="sign_in">
+                <source>sign_in</source>
+                <target>Sign in</target>
+            </trans-unit>
+            <trans-unit id="error">
+                <source>error</source>
+                <target>Error</target>
+            </trans-unit>
+            <trans-unit id="username">
+                <source>username</source>
+                <target>Username</target>
+            </trans-unit>
+            <trans-unit id="password">
+                <source>password</source>
+                <target>Password</target>
+            </trans-unit>
+            <trans-unit id="remember_me">
+                <source>remember_me</source>
+                <target>Remember me</target>
+            </trans-unit>
+            <trans-unit id="forgot_password">
+                <source>forgot_password</source>
+                <target>Forgot your password?</target>
+            </trans-unit>
+            <trans-unit id="sign_in_button">
+                <source>sign_in_button</source>
+                <target>Sign in</target>
+            </trans-unit>
+            <trans-unit id="users">
+                <source>users</source>
+                <target>Users</target>
+            </trans-unit>
+            <trans-unit id="groups">
+                <source>groups</source>
+                <target>Groups</target>
+            </trans-unit>
+            <trans-unit id="clients">
+                <source>clients</source>
+                <target>Clients</target>
+            </trans-unit>
+            <trans-unit id="type_here_placeholder">
+                <source>type_here_placeholder</source>
+                <target>Type here…</target>
+            </trans-unit>
+            <trans-unit id="type_to_search_placeholder">
+                <source>type_to_search_placeholder</source>
+                <target>Type here to search…</target>
+            </trans-unit>
+        </body>
+    </file>
 </xliff>

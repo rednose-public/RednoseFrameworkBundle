@@ -1,0 +1,15 @@
+{% block rednose_autocomplete_widget %}
+    {{ block ('form_widget') }}
+
+    <script language="javascript">
+        YUI().use('rednose-form', function (Y) {
+            var AutoComplete = Y.Rednose.ControlFormAutoComplete;
+
+            new AutoComplete({
+                inputNode : '#{{ id }}',
+                choices   : {{ choices|json_encode|raw }},
+                datasource: {{ datasource|json_encode|raw }}
+            }).render();
+        });
+    </script>
+{% endblock rednose_autocomplete_widget %}
