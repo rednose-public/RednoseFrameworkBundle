@@ -25,6 +25,11 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
     protected $id;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $foreignId;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     protected $required = false;
@@ -50,13 +55,6 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
      * @Assert\NotBlank(message="Please enter a field caption.")
      */
     protected $caption;
-
-    /**
-     * Control handle, for example to reference this control in a rule
-     *
-     * @ORM\Column(type="string", length=64, nullable=true)
-     */
-    protected $handle;
 
     /**
      * @ORM\Column(type="string", length=16, nullable=false)
@@ -100,11 +98,11 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
 
     public function getForeignId()
     {
-        return $this->handle;
+        return $this->foreignId;
     }
 
     public function setForeignId($id)
     {
-        $this->handle = $id;
+        $this->foreignId = $id;
     }
 }

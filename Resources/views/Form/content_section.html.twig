@@ -1,0 +1,14 @@
+{% block content_section_widget %}
+    {{ block('form_widget') }}
+
+    <script language="javascript">
+        YUI().use('node', function (Y) {
+            var form = Y.one('#{{ id }}').ancestor('form');
+
+            // TODO: Implement change events for the HTML type, preferably through the form change event.
+            form.on('change', function (e) {
+                console.log(e);
+            });
+        });
+    </script>
+{% endblock content_section_widget %}

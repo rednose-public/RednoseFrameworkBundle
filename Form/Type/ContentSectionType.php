@@ -80,9 +80,11 @@ class ContentSectionType extends AbstractType
             }
 
             if ($contentDefinition->getContentItem() instanceof ExtrinsicObjectInterface) {
+                // FIXME: Overriding the `attr` key in the $options array doens't merge correctly.
                 $baseOptions = array_merge_recursive($baseOptions, array(
                     'attr' => array(
-                        'data-id' => $contentDefinition->getContentItem()->getForeignId(),
+                        'data-id'   => $contentDefinition->getContentItem()->getForeignId(),
+                        'data-type' => $contentDefinition->getContentItem()->getType(),
                     ),
                 ));
             }
@@ -96,8 +98,11 @@ class ContentSectionType extends AbstractType
                 case ContentDefinitionInterface::TYPE_AUTOCOMPLETE:
                     $type = 'rednose_autocomplete';
 
+                    // FIXME: See above.
                     $options = array(
                         'attr' => array(
+                            'data-id'     => $contentDefinition->getContentItem()->getForeignId(),
+                            'data-type'   => $contentDefinition->getContentItem()->getType(),
                             'placeholder' => $this->translator->trans('type_to_search_placeholder'),
                         )
                     );
@@ -134,10 +139,12 @@ class ContentSectionType extends AbstractType
                 case ContentDefinitionInterface::TYPE_HTML:
                     $type = 'rednose_widget_editor';
 
+                    // FIXME: See above.
                     $options = array(
                         'required' => false,
                         'attr'     => array(
                             'data-id'       => $contentDefinition->getContentItem()->getForeignId(),
+                            'data-type'     => $contentDefinition->getContentItem()->getType(),
                             'placeholder'   => $this->translator->trans('type_here_placeholder'),
                             'data-required' => $contentDefinition->isRequired()
                         )
