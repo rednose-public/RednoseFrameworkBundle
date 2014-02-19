@@ -96,10 +96,13 @@ class ContentSectionType extends AbstractType
                 case ContentDefinitionInterface::TYPE_DATETIME:
                     $type = 'datetime';
 
+                    $date = new \DateTime();
+
                     $options = array(
                         'input'        => 'string',
                         'with_seconds' => false,
-                        'date_format'  => \IntlDateFormatter::LONG
+                        'date_format'  => \IntlDateFormatter::LONG,
+                        'data'         => $date->format('Y-m-d H:i:s'),
                     );
 
                     break;

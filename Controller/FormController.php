@@ -42,7 +42,6 @@ class FormController extends Controller
             throw $this->createNotFoundException();
         }
 
-        // FIXME: Form should be able to construct without data: use source form as config option.
         $form = $this->createForm('content_section', null, array(
             'form' => $model,
         ));
