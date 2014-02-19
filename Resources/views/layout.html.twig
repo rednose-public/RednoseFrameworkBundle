@@ -1,3 +1,7 @@
+{% if form is defined %}
+    {% form_theme form 'RednoseFrameworkBundle:Form:fields.html.twig' %}
+{% endif %}
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -6,6 +10,18 @@
 
         {% block stylesheets %}
 			<link href="{{ asset('bundles/rednoseframework/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
+        {% endblock %}
+
+        {% block javascripts %}
+            <script type="text/javascript" src="{{ asset('cdn/yui3/build/yui/yui-min.js') }}"></script>
+            <script type="text/javascript" src="{{ rednose_yui_config() }}"></script>
+
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+            <script type="text/javascript" src="{{ asset('bundles/rednoseframework/ckeditor/ckeditor.js') }}"></script>
+
+            <script type="text/javascript" src="{{ asset('bundles/rednoseframework/modernizr/modernizr.min.js') }}"></script>
         {% endblock %}
     </head>
     <body>

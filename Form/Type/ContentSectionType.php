@@ -63,8 +63,9 @@ class ContentSectionType extends AbstractType
         }
 
         foreach ($contentSection->getDefinitions() as $contentDefinition) {
-            $type    = null;
-            $options = array();
+            $properties = $contentDefinition->getProperties();
+            $type       = null;
+            $options    = array();
 
             $baseOptions = array(
                 'label'     => $contentDefinition->getCaption(),
@@ -92,6 +93,22 @@ class ContentSectionType extends AbstractType
 
                     break;
 
+                case ContentDefinitionInterface::TYPE_DATETIME:
+                    $type = 'datetime';
+
+                    $options = array(
+                        'input'        => 'string',
+                        'with_seconds' => false,
+                        'date_format'  => \IntlDateFormatter::LONG
+                    );
+
+                    break;
+
+                case ContentDefinitionInterface::TYPE_CHECKBOX:
+                    $type = 'checkbox';
+
+                    break;
+
                 case ContentDefinitionInterface::TYPE_HTML:
                     $type = 'rednose_widget_editor';
 
@@ -104,13 +121,31 @@ class ContentSectionType extends AbstractType
                         )
                     );
 
+                    if (isset($properties['height'])) {
+                        $options['height']  = $properties['height'];
+                    }
+
+                    if (isset($properties['inline'])) {
+                        $options['inline']  = $properties['inline'];
+                    }
+
+                    if (isset($properties['purify'])) {
+                        $options['purify']  = $properties['purify'];
+                    }
+
+                    if (isset($properties['scayt'])) {
+                        $options['scayt']   = $properties['scayt'];
+                    }
+
+                    if (isset($properties['toolbar'])) {
+                        $options['toolbar'] = $properties['toolbar'];
+                    }
+
                     break;
 
                 case ContentDefinitionInterface::TYPE_DROPDOWN:
                 case ContentDefinitionInterface::TYPE_RADIO:
                     $type = 'choice';
-
-                    $properties = $contentDefinition->getProperties();
 
                     $options = array(
                         'choices'     => $properties['choices'],
