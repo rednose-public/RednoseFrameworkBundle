@@ -3,9 +3,11 @@
 
     <script language="javascript">
         YUI().use('rednose-form', function (Y) {
-            var AutoComplete = Y.Rednose.ControlFormAutoComplete;
+            var Autocomplete = Y.Rednose.ControlFormAutoComplete;
 
-            new AutoComplete({
+            YUI.Env.Autocomplete || (YUI.Env.Autocomplete = {});
+
+            YUI.Env.Autocomplete['{{ id }}'] = new Autocomplete({
                 inputNode : '#{{ id }}',
                 choices   : {{ choices|json_encode|raw }},
                 datasource: {{ datasource|json_encode|raw }}

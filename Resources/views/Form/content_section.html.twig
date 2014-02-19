@@ -2,13 +2,122 @@
     {{ block('form_widget') }}
 
     <script language="javascript">
-        YUI().use('node', function (Y) {
+        // XXX: Incomplete implementation.
+        YUI().use('node', 'json', function (Y) {
+            var RECORD  = 'record';
+
+            var getRecordPropertyValue = function (id, property) {
+                var control = form.one('[data-id=' + id + ']'),
+                    nodeId,
+                    type;
+
+                if (!control) {
+                    return null;
+                }
+
+                type   = control.getAttribute('data-type');
+                nodeId = control.get('id');
+
+                if (type === 'autocomplete') {
+                    var record = YUI.Env.Autocomplete[nodeId].get('record');
+
+                    if (!record) {
+                        return null;
+                    }
+
+                    return record[property];
+                }
+
+                return null;
+            };
+
+            var getPropertyValue = function (id, property) {
+                var control = form.one('[data-id=' + id + ']'),
+                    type;
+
+                if (!control) {
+                    return null;
+                }
+
+                type = control.getAttribute('data-type');
+
+                switch(property) {
+                    case 'value':
+                        if (type === 'checkbox') {
+                            return control.get('checked');
+                        }
+
+                        return control.get('value');
+                    default:
+                        return null;
+                }
+            };
+
+            var getValueFromTargetString = function (target) {
+                var parts    = target.split('.'),
+                    id       = parts[0],
+                    property = parts[1];
+
+                if (!id && !property) {
+                    return null;
+                }
+
+                if (property === RECORD) {
+                    return getRecordPropertyValue(id, parts[2]);
+                }
+
+                return getPropertyValue(id, property);
+            };
+
+            var handleVisible = function (control, value) {
+                var container = control.ancestor('div');
+
+                value ? container.show() : container.hide();
+            };
+
+            var handleValue = function (control, value) {
+                control.set('value', value);
+            };
+
+            var handleFormConnections = function (form) {
+                var controls       = form.all('[data-type]'),
+                    connectionDict = {};
+
+                controls.each(function (control) {
+                    if (control.hasAttribute('data-connections')) {
+                        var id          = control.getAttribute('data-id'),
+                            connections = control.getAttribute('data-connections');
+
+                        connectionDict[id] = Y.JSON.parse(connections);
+                    }
+                });
+
+                Y.Object.each(connectionDict, function (connections, id) {
+                    var control = form.one('[data-id=' + id + ']');
+
+                    Y.Object.each(connections, function (target, property) {
+                        var value = getValueFromTargetString(target);
+
+                        switch(property) {
+                            case 'visible':
+                                handleVisible(control, value);
+                                break;
+                            case 'value':
+                                handleValue(control, value);
+                                break;
+                        }
+                    });
+                });
+            };
+
             var form = Y.one('#{{ id }}').ancestor('form');
 
             // TODO: Implement change events for the HTML type, preferably through the form change event.
-            form.on('change', function (e) {
-                console.log(e);
+            form.on('change', function () {
+                handleFormConnections(form);
             });
+
+            handleFormConnections(form);
         });
     </script>
 {% endblock content_section_widget %}

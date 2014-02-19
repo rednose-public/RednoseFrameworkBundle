@@ -185,7 +185,16 @@ class ContentSectionType extends AbstractType
                     break;
             }
 
-            $builder->add((string) $contentDefinition->getContentId(), $type, array_merge($baseOptions, $options));
+            $formOptions = array_merge($baseOptions, $options);
+
+            // Initial form-connection implementation.
+            $connections = is_array($properties) && isset($properties['connections']) ? $properties['connections'] : null;
+
+            if ($connections) {
+                $formOptions['attr']['data-connections'] = json_encode($connections);
+            }
+
+            $builder->add((string) $contentDefinition->getContentId(), $type, $formOptions);
         }
 
         $builder->addViewTransformer(new ContentSectionValueToArrayTransformer);
