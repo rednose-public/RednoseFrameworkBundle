@@ -5,12 +5,10 @@
         YUI_config.lang = 'nl-NL';
 
         YUI().use('rednose-form-designer', function (Y) {
-            var formDesigner = new Y.Rednose.FormDesigner.FormDesigner({
+            new Y.Rednose.FormDesigner.FormDesigner({
                 serverRouting: true,
-                root         : '{{ path('sonata_admin_redirect') }}rednose/framework/form'
-            });
-
-            formDesigner.render();
+                root         : '{{ admin.generateUrl('list')|replace({'/list': ''}) }}'
+            }).render();
         });
     </script>
 {% endblock %}

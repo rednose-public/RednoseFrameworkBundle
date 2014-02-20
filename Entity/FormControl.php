@@ -7,12 +7,15 @@ use Rednose\FrameworkBundle\Model\Control as BaseControl;
 use Symfony\Component\Validator\Constraints as Assert;
 use Rednose\FrameworkBundle\Model\ExtrinsicObjectInterface;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Default control object
  *
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_form_control")
+ *
+ * @UniqueEntity(fields={"foreignId"}, message="This id is already in use, choose another id.")
  *
  * @Serializer\AccessorOrder("custom", custom = {"xmlId", "caption", "required", "help"})
  */
@@ -30,7 +33,7 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", unique=true)
      *
      * @Serializer\XmlAttribute
      * @Serializer\Groups({"details"})

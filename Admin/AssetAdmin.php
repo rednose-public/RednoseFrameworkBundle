@@ -13,6 +13,8 @@ class AssetAdmin extends Admin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('export');
+
+        $collection->add('upload', 'upload');
         $collection->add('download',  $this->getRouterIdParameter().'/download');
     }
 
@@ -45,6 +47,8 @@ class AssetAdmin extends Admin
     public function getTemplate($name)
     {
         switch ($name) {
+            case 'list':
+                return 'RednoseFrameworkBundle:AssetAdmin:list.html.twig';
             case 'edit':
                 return 'RednoseFrameworkBundle:AssetAdmin:edit.html.twig';
             case 'base_list_field':
