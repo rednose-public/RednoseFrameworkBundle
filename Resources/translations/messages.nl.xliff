@@ -2,6 +2,7 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
     <file datatype="plaintext" original="" source-language="en">
         <body>
+            <!--Forms-->
             <trans-unit id="type_here_placeholder">
                 <source>type_here_placeholder</source>
                 <target>Vul hier de tekst in…</target>
@@ -9,6 +10,19 @@
             <trans-unit id="type_to_search_placeholder">
                 <source>type_to_search_placeholder</source>
                 <target>Type hier om te zoeken…</target>
+            </trans-unit>
+            <!--Admin-->
+            <trans-unit id="users">
+                <source>users</source>
+                <target>Gebruikers</target>
+            </trans-unit>
+            <trans-unit id="groups">
+                <source>groups</source>
+                <target>Groepen</target>
+            </trans-unit>
+            <trans-unit id="forms">
+                <source>forms</source>
+                <target>Formulieren</target>
             </trans-unit>
         </body>
     </file>

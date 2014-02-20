@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file datatype="plaintext" original="" source-language="en">
+        <body>
+            <!--Admin-->
+            <trans-unit id="sonata_notification">
+                <source>sonata_notification</source>
+                <target>Achtergrond taken</target>
+            </trans-unit>
+            <trans-unit id="user_management">
+                <source>user_management</source>
+                <target>Gebruikersbeheer</target>
+            </trans-unit>
+            <trans-unit id="oauth">
+                <source>oauth</source>
+                <target>OAuth 2.0</target>
+            </trans-unit>
+            <trans-unit id="data_sources">
+                <source>data_sources</source>
+                <target>Data Sources</target>
+            </trans-unit>
+            <trans-unit id="user_block_logout">
+                <source>user_block_logout</source>
+                <target>Uitloggen</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>Type hier om te zoeken…</target>
+            </trans-unit>
+            <!--Forms-->
+            <trans-unit id="forms">
+                <source>forms</source>
+                <target>Formulieren</target>
+            </trans-unit>
+            <!--Assets-->
+            <trans-unit id="title_upload">
+                <source>title_upload</source>
+                <target>Bestand uploaden</target>
+            </trans-unit>
+            <trans-unit id="btn_upload">
+                <source>btn_upload</source>
+                <target>Uploaden</target>
+            </trans-unit>
+            <trans-unit id="link_action_upload">
+                <source>link_action_upload</source>
+                <target>Uploaden</target>
+            </trans-unit>
+            <trans-unit id="action_download">
+                <source>action_download</source>
+                <target>Downloaden</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,23 +1,32 @@
 <?xml version="1.0"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file datatype="plaintext" original="" source-language="en">
-    <body>
-      <trans-unit id="sonata_notification">
-        <source>sonata_notification</source>
-        <target>Background jobs</target>
-      </trans-unit>
-      <trans-unit id="user_management">
-        <source>user_management</source>
-        <target>User management</target>
-      </trans-unit>
-      <trans-unit id="oauth">
-        <source>oauth</source>
-        <target>OAuth 2.0</target>
-      </trans-unit>
-      <trans-unit id="user_block_logout">
-        <source>user_block_logout</source>
-        <target>Sign out</target>
-      </trans-unit>
-    </body>
-  </file>
+    <file datatype="plaintext" original="" source-language="en">
+        <body>
+            <!--Admin-->
+            <trans-unit id="sonata_notification">
+                <source>sonata_notification</source>
+                <target>Background jobs</target>
+            </trans-unit>
+            <trans-unit id="user_management">
+                <source>user_management</source>
+                <target>User management</target>
+            </trans-unit>
+            <trans-unit id="oauth">
+                <source>oauth</source>
+                <target>OAuth 2.0</target>
+            </trans-unit>
+            <trans-unit id="data_sources">
+                <source>data_sources</source>
+                <target>Data Sources</target>
+            </trans-unit>
+            <trans-unit id="user_block_logout">
+                <source>user_block_logout</source>
+                <target>Sign out</target>
+            </trans-unit>
+            <trans-unit id="search_placeholder">
+                <source>search_placeholder</source>
+                <target>Type here to search…</target>
+            </trans-unit>
+        </body>
+    </file>
 </xliff>
