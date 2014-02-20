@@ -23,7 +23,11 @@ class FormController extends Controller
             throw $this->createNotFoundException();
         }
 
+        $context = new SerializationContext();
+        $context->setGroups(array('details'));
+
         $view = View::create();
+        $view->setSerializationContext($context);
         $view->setFormat('json');
         $view->setData($form);
 

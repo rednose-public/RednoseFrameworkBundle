@@ -14,7 +14,7 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_form_control")
  *
- * @Serializer\AccessorOrder("custom", custom = {"foreignId", "caption", "required", "help"})
+ * @Serializer\AccessorOrder("custom", custom = {"xmlId", "caption", "required", "help"})
  */
 class FormControl extends BaseControl implements ExtrinsicObjectInterface
 {
@@ -24,6 +24,8 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Groups({"details"})
      */
     protected $id;
 
@@ -31,16 +33,26 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
      * @ORM\Column(type="string")
      *
      * @Serializer\XmlAttribute
-     * @Serializer\SerializedName("id")
-     * @Serializer\Groups({"file"})
+     * @Serializer\Groups({"details"})
      */
     protected $foreignId;
+
+    /**
+     * Transient property.
+     *
+     * @Serializer\XmlAttribute
+     * @Serializer\Type("string")
+     * @Serializer\SerializedName("id")
+     * @Serializer\Groups({"file"})
+     * @Serializer\Accessor(getter="getForeignId")
+     */
+    protected $xmlId;
 
     /**
      * @ORM\Column(type="boolean")
      *
      * @Serializer\XmlAttribute
-     * @Serializer\Groups({"file"})
+     * @Serializer\Groups({"file", "details"})
      */
     protected $required = false;
 
@@ -48,7 +60,7 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
      * @ORM\Column(type="boolean")
      *
      * @Serializer\XmlAttribute
-     * @Serializer\Groups({"file"})
+     * @Serializer\Groups({"file", "details"})
      */
     protected $protected = false;
 
@@ -56,7 +68,7 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
      * @ORM\Column(type="boolean")
      *
      * @Serializer\XmlAttribute
-     * @Serializer\Groups({"file"})
+     * @Serializer\Groups({"file", "details"})
      */
     protected $readonly = false;
 
@@ -64,7 +76,7 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
      * @ORM\Column(type="boolean")
      *
      * @Serializer\XmlAttribute
-     * @Serializer\Groups({"file"})
+     * @Serializer\Groups({"file", "details"})
      */
     protected $visible = true;
 
@@ -74,8 +86,7 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
      * @Assert\NotBlank(message="Please enter a field caption.")
      *
      * @Serializer\XmlAttribute
-     * @Serializer\SerializedName("name")
-     * @Serializer\Groups({"file"})
+     * @Serializer\Groups({"file", "details"})
      */
     protected $caption;
 
@@ -83,7 +94,7 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
      * @ORM\Column(type="string", length=16, nullable=false)
      *
      * @Serializer\XmlAttribute
-     * @Serializer\Groups({"file"})
+     * @Serializer\Groups({"file", "details"})
      */
     protected $type;
 
@@ -91,12 +102,15 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
      * @ORM\Column(type="text", nullable=true)
      *
      * @Serializer\XmlAttribute
-     * @Serializer\Groups({"file"})
+     * @Serializer\Groups({"file", "details"})
      */
     protected $value;
 
     /**
      * @ORM\Column(type="array")
+     *
+     * @Serializer\SerializedName("properties")
+     * @Serializer\Groups({"details"})
      */
     protected $properties;
 
@@ -108,13 +122,13 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
     /**
      * @ORM\Column(type="integer")
      */
-    protected $weight;
+    protected $weight = 0;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      *
      * @Serializer\XmlAttribute
-     * @Serializer\Groups({"file"})
+     * @Serializer\Groups({"file", "details"})
      */
     protected $help;
 
@@ -177,5 +191,15 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
 
         // Decode as associative array.
         $this->properties = json_decode($properties, true);
+    }
+
+    /**
+     * @Serializer\PostDeserialize
+     */
+    public function postDeserialize()
+    {
+        if ($this->xmlId) {
+            $this->foreignId = $this->xmlId;
+        }
     }
 }

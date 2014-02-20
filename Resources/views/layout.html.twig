@@ -15,6 +15,7 @@
         {% block javascripts %}
             <script type="text/javascript" src="{{ asset('cdn/yui3/build/yui/yui-min.js') }}"></script>
             <script type="text/javascript" src="{{ rednose_yui_config() }}"></script>
+            <script type="text/javascript">YUI.Env.user = { name: '{{ app.user.bestname }}' };</script>
 
             <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
@@ -24,7 +25,7 @@
             <script type="text/javascript" src="{{ asset('bundles/rednoseframework/modernizr/modernizr.min.js') }}"></script>
         {% endblock %}
     </head>
-    <body>
+    <body class="yui3-skin-sam">
         {% block content '' %}
     </body>
 </html>

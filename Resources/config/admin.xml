@@ -14,8 +14,9 @@
         <parameter key="rednose.framework.admin.client.controller">RednoseFrameworkBundle:Admin\ClientAdmin</parameter>
         <parameter key="rednose.framework.admin.client.entity">Rednose\FrameworkBundle\Entity\Client</parameter>
 
-        <parameter key="rednose.framework.admin.form.class">Rednose\FrameworkBundle\Admin\FormAdmin</parameter>
-        <parameter key="rednose.framework.admin.form.controller">RednoseFrameworkBundle:Admin\FormAdmin</parameter>
+        <parameter key="rednose.framework.admin.asset.class">Rednose\FrameworkBundle\Admin\AssetAdmin</parameter>
+        <parameter key="rednose.framework.admin.asset.controller">RednoseFrameworkBundle:Admin\AssetAdmin</parameter>
+
         <parameter key="rednose.framework.admin.form.entity">Rednose\FrameworkBundle\Entity\Form</parameter>
     </parameters>
 
@@ -38,11 +39,11 @@
             <argument>%rednose.framework.admin.group.controller%</argument>
         </service>
 
-        <service id="rednose.framework.admin.form" class="%rednose.framework.admin.form.class%">
+        <service id="rednose.framework.admin.form" class="%rednose.framework.admin.asset.class%">
             <tag name="sonata.admin" manager_type="orm" group="forms" label="forms"/>
             <argument/>
             <argument>%rednose.framework.admin.form.entity%</argument>
-            <argument>%rednose.framework.admin.form.controller%</argument>
+            <argument>%rednose.framework.admin.asset.controller%</argument>
         </service>
     </services>
 </container>

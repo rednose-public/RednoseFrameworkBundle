@@ -18,11 +18,13 @@ use JMS\Serializer\Annotation as Serializer;
  * @UniqueEntity(fields={"foreignId"}, message="This id is already in use, choose another id.")
  *
  * @Serializer\XmlRoot("form")
- * @Serializer\AccessorOrder("custom", custom = {"xmlns", "foreignId", "name", "styleSetName", "content", "controls"})
+ * @Serializer\AccessorOrder("custom", custom = {"xmlns", "xmlId", "name", "styleSetName", "content", "controls"})
  */
 class Form extends BaseControlForm implements ExtrinsicObjectInterface
 {
     /**
+     * Transient property.
+     *
      * @Serializer\Type("string")
      * @Serializer\XmlAttribute
      * @Serializer\Groups({"file"})
@@ -35,6 +37,8 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Groups({"details"})
      */
     protected $id;
 
@@ -42,10 +46,20 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
      * @ORM\Column(type="string")
      *
      * @Serializer\XmlAttribute
-     * @Serializer\SerializedName("id")
-     * @Serializer\Groups({"file"})
+     * @Serializer\Groups({"details"})
      */
     protected $foreignId;
+
+    /**
+     * Transient property.
+     *
+     * @Serializer\XmlAttribute
+     * @Serializer\SerializedName("id")
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"file"})
+     * @Serializer\Accessor(getter="getForeignId")
+     */
+    protected $xmlId;
 
     /**
      * @ORM\Column(type="string", length=64)
@@ -53,7 +67,7 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
      * @Assert\NotBlank(message="Please enter a name.")
      *
      * @Serializer\XmlAttribute
-     * @Serializer\Groups({"file"})
+     * @Serializer\Groups({"file", "details"})
      */
      protected $name;
 
@@ -63,7 +77,7 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
      * @Assert\NotBlank(message="Please enter a form caption.")
      *
      * @Serializer\XmlAttribute
-     * @Serializer\Groups({"file"})
+     * @Serializer\Groups({"file", "details"})
      */
     protected $caption;
 
@@ -76,7 +90,7 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
      * @ORM\OrderBy({"weight" = "ASC"})
      *
      * @Serializer\SerializedName("controls")
-     * @Serializer\Groups({"file"})
+     * @Serializer\Groups({"file", "details"})
      * @Serializer\XmlList(inline = false, entry = "control")
      */
     protected $controls;
@@ -94,12 +108,14 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
     // -- Serializer Methods ---------------------------------------------------
 
     /**
-     * Set up the bidirectional entity-relations after deserializing.
-     *
      * @Serializer\PostDeserialize
      */
     public function postDeserialize()
     {
+        if ($this->xmlId) {
+            $this->foreignId = $this->xmlId;
+        }
+
         if ($this->controls) {
             foreach ($this->controls as $control) {
                 $control->setControlForm($this);
