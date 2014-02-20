@@ -16,9 +16,19 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="rednose_framework_form")
  *
  * @UniqueEntity(fields={"foreignId"}, message="This id is already in use, choose another id.")
+ *
+ * @Serializer\XmlRoot("form")
+ * @Serializer\AccessorOrder("custom", custom = {"xmlns", "foreignId", "name", "styleSetName", "content", "controls"})
  */
 class Form extends BaseControlForm implements ExtrinsicObjectInterface
 {
+    /**
+     * @Serializer\Type("string")
+     * @Serializer\XmlAttribute
+     * @Serializer\Groups({"file"})
+     */
+    protected $xmlns = 'http://rednose.nl/schema/form';
+
     /**
      * Unique id.
      *
@@ -30,6 +40,10 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
 
     /**
      * @ORM\Column(type="string")
+     *
+     * @Serializer\XmlAttribute
+     * @Serializer\SerializedName("id")
+     * @Serializer\Groups({"file"})
      */
     protected $foreignId;
 
@@ -37,6 +51,9 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
      * @ORM\Column(type="string", length=64)
      *
      * @Assert\NotBlank(message="Please enter a name.")
+     *
+     * @Serializer\XmlAttribute
+     * @Serializer\Groups({"file"})
      */
      protected $name;
 
@@ -44,6 +61,9 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
      * @ORM\Column(type="string", length=64, nullable=true)
      *
      * @Assert\NotBlank(message="Please enter a form caption.")
+     *
+     * @Serializer\XmlAttribute
+     * @Serializer\Groups({"file"})
      */
     protected $caption;
 
@@ -54,6 +74,10 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
      *   mappedBy="controlForm",
      *   cascade={"persist", "remove"})
      * @ORM\OrderBy({"weight" = "ASC"})
+     *
+     * @Serializer\SerializedName("controls")
+     * @Serializer\Groups({"file"})
+     * @Serializer\XmlList(inline = false, entry = "control")
      */
     protected $controls;
 

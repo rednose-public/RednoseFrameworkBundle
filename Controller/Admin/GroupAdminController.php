@@ -1,6 +1,6 @@
 <?php
 
-namespace Rednose\FrameworkBundle\Controller;
+namespace Rednose\FrameworkBundle\Controller\Admin;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 

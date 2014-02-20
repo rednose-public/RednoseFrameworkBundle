@@ -1,38 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-  <parameters>
-    <parameter key="rednose.framework.admin.user.class">Rednose\FrameworkBundle\Admin\UserAdmin</parameter>
-    <parameter key="rednose.framework.admin.user.controller">RednoseFrameworkBundle:UserAdmin</parameter>
-    <parameter key="rednose.framework.admin.user.entity">Rednose\FrameworkBundle\Entity\User</parameter>
+    <parameters>
+        <parameter key="rednose.framework.admin.user.class">Rednose\FrameworkBundle\Admin\UserAdmin</parameter>
+        <parameter key="rednose.framework.admin.user.controller">RednoseFrameworkBundle:Admin\UserAdmin</parameter>
+        <parameter key="rednose.framework.admin.user.entity">Rednose\FrameworkBundle\Entity\User</parameter>
 
-    <parameter key="rednose.framework.admin.group.class">Rednose\FrameworkBundle\Admin\GroupAdmin</parameter>
-    <parameter key="rednose.framework.admin.group.controller">RednoseFrameworkBundle:GroupAdmin</parameter>
-    <parameter key="rednose.framework.admin.group.entity">Rednose\FrameworkBundle\Entity\Group</parameter>
+        <parameter key="rednose.framework.admin.group.class">Rednose\FrameworkBundle\Admin\GroupAdmin</parameter>
+        <parameter key="rednose.framework.admin.group.controller">RednoseFrameworkBundle:Admin\GroupAdmin</parameter>
+        <parameter key="rednose.framework.admin.group.entity">Rednose\FrameworkBundle\Entity\Group</parameter>
 
-    <parameter key="rednose.framework.admin.client.class">Rednose\FrameworkBundle\Admin\ClientAdmin</parameter>
-    <parameter key="rednose.framework.admin.client.controller">RednoseFrameworkBundle:ClientAdmin</parameter>
-    <parameter key="rednose.framework.admin.client.entity">Rednose\FrameworkBundle\Entity\Client</parameter>
-  </parameters>
+        <parameter key="rednose.framework.admin.client.class">Rednose\FrameworkBundle\Admin\ClientAdmin</parameter>
+        <parameter key="rednose.framework.admin.client.controller">RednoseFrameworkBundle:Admin\ClientAdmin</parameter>
+        <parameter key="rednose.framework.admin.client.entity">Rednose\FrameworkBundle\Entity\Client</parameter>
 
-  <services>
+        <parameter key="rednose.framework.admin.form.class">Rednose\FrameworkBundle\Admin\FormAdmin</parameter>
+        <parameter key="rednose.framework.admin.form.controller">RednoseFrameworkBundle:Admin\FormAdmin</parameter>
+        <parameter key="rednose.framework.admin.form.entity">Rednose\FrameworkBundle\Entity\Form</parameter>
+    </parameters>
 
-    <service id="rednose.framework.admin.user" class="%rednose.framework.admin.user.class%">
-      <tag name="sonata.admin" manager_type="orm" group="user_management" label="users"/>
-      <argument/>
-      <argument>%rednose.framework.admin.user.entity%</argument>
-      <argument>%rednose.framework.admin.user.controller%</argument>
-      <call method="setUserManager">
-        <argument type="service" id="fos_user.user_manager"/>
-      </call>
-    </service>
+    <services>
 
-    <service id="rednose.framework.admin.group" class="%rednose.framework.admin.group.class%">
-      <tag name="sonata.admin" manager_type="orm" group="user_management" label="groups"/>
-      <argument/>
-      <argument>%rednose.framework.admin.group.entity%</argument>
-      <argument>%rednose.framework.admin.group.controller%</argument>
-    </service>
+        <service id="rednose.framework.admin.user" class="%rednose.framework.admin.user.class%">
+            <tag name="sonata.admin" manager_type="orm" group="user_management" label="users"/>
+            <argument/>
+            <argument>%rednose.framework.admin.user.entity%</argument>
+            <argument>%rednose.framework.admin.user.controller%</argument>
+            <call method="setUserManager">
+                <argument type="service" id="fos_user.user_manager"/>
+            </call>
+        </service>
 
-  </services>
+        <service id="rednose.framework.admin.group" class="%rednose.framework.admin.group.class%">
+            <tag name="sonata.admin" manager_type="orm" group="user_management" label="groups"/>
+            <argument/>
+            <argument>%rednose.framework.admin.group.entity%</argument>
+            <argument>%rednose.framework.admin.group.controller%</argument>
+        </service>
+
+        <service id="rednose.framework.admin.form" class="%rednose.framework.admin.form.class%">
+            <tag name="sonata.admin" manager_type="orm" group="forms" label="forms"/>
+            <argument/>
+            <argument>%rednose.framework.admin.form.entity%</argument>
+            <argument>%rednose.framework.admin.form.controller%</argument>
+        </service>
+    </services>
 </container>

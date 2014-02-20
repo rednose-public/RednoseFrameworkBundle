@@ -2,9 +2,6 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
-use Rednose\FrameworkBundle\Exception\InvalidArgument;
-use Rednose\FrameworkBundle\Model\ContentDefinitionInterface;
-
 /**
  * The abstract control class.
  */
@@ -21,6 +18,7 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     protected $required;
     protected $visible;
     protected $protected;
+    protected $alignment;
     protected $readonly;
     protected $help;
 

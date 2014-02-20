@@ -3,7 +3,6 @@
 namespace Rednose\FrameworkBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Rednose\FrameworkBundle\Model\ContentSectionInterface;
 
 /**
  * The abstract controlform.
@@ -101,5 +100,13 @@ abstract class ControlForm implements ContentSectionInterface, ControlFormInterf
     public function getControls()
     {
         return $this->controls;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
     }
 }
