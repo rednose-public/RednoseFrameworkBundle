@@ -6,6 +6,7 @@ use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\User\UserInterface as CoreUserInterface;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * A RedNose framework user
@@ -21,6 +22,8 @@ class User extends BaseUser implements UserInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Groups({"list", "details"})
      */
     protected $id;
 
@@ -30,7 +33,6 @@ class User extends BaseUser implements UserInterface
     protected $realname;
 
     /**
-     *
      * @ORM\ManyToMany(targetEntity="Rednose\FrameworkBundle\Entity\Group", inversedBy="users")
      *
      * @ORM\JoinTable(name="rednose_framework_user_group",
@@ -39,6 +41,15 @@ class User extends BaseUser implements UserInterface
      * )
      */
     protected $groups;
+
+    /**
+     * Transient API property.
+     *
+     * @Serializer\SerializedName("username")
+     * @Serializer\Accessor(getter="getBestName")
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $bestName;
 
     /**
      * Gets the username
