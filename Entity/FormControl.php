@@ -125,7 +125,7 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
     /**
      * @ORM\Column(type="integer")
      */
-    protected $weight = 0;
+    protected $sortOrder = 0;
 
     /**
      * @ORM\Column(type="text", nullable=true)

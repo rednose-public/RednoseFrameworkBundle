@@ -140,7 +140,7 @@ interface ControlInterface
     /**
      * Sets the sort order
      *
-     * @param integer $weight
+     * @param integer $sortOrder
      */
     public function setSortOrder($sortOrder);
 
