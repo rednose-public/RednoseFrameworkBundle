@@ -14,7 +14,7 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     protected $type;
     protected $properties;
     protected $controlForm;
-    protected $weight;
+    protected $sortOrder;
     protected $required;
     protected $visible;
     protected $protected;
@@ -26,7 +26,7 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     {
         $this->type       = ContentDefinitionInterface::TYPE_TEXT;
         $this->properties = array();
-        $this->weight     = 0;
+        $this->sortOrder  = 0;
         $this->required   = false;
         $this->visible    = true;
         $this->protected  = false;
@@ -214,23 +214,23 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     }
 
     /**
-     * Gets the weight, for ordering
+     * Gets the sortOrder
      *
      * @return integer
      */
-    public function getWeight()
+    public function getSortOrder()
     {
-        return $this->weight;
+        return $this->sortOrder;
     }
 
     /**
-     * Sets the weight
+     * Sets the sortOrder
      *
-     * @param integer $weight
+     * @param integer $sortOrder
      */
-    public function setWeight($weight)
+    public function setSortOrder($sortOrder)
     {
-        $this->weight = $weight;
+        $this->sortOrder = $sortOrder;
     }
 
     /**

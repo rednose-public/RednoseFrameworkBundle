@@ -131,18 +131,18 @@ interface ControlInterface
     public function setAlignment($alignment);
 
     /**
-     * Gets the weight, for ordering
+     * Gets the sort order
      *
      * @return integer
      */
-    public function getWeight();
+    public function getSortOrder();
 
     /**
-     * Sets the weight
+     * Sets the sort order
      *
      * @param integer $weight
      */
-    public function setWeight($weight);
+    public function setSortOrder($sortOrder);
 
     /**
      * Get parent ControlForm
