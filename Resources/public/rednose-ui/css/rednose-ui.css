@@ -13,7 +13,23 @@
 }
 
 [class^="rednose-icon-"].icon-white,
-[class*=" rednose-icon-"].icon-white {
+[class*=" rednose-icon-"].icon-white,
+.nav-pills > .active > a > [class^="rednose-icon-"],
+.nav-pills > .active > a > [class*=" rednose-icon-"],
+.nav-list > .active > a > [class^="rednose-icon-"],
+.nav-list > .active > a > [class*=" rednose-icon-"],
+.navbar-inverse .nav > .active > a > [class^="rednose-icon-"],
+.navbar-inverse .nav > .active > a > [class*=" rednose-icon-"],
+.dropdown-menu > li > a:hover > [class^="rednose-icon-"],
+.dropdown-menu > li > a:focus > [class^="rednose-icon-"],
+.dropdown-menu > li > a:hover > [class*=" rednose-icon-"],
+.dropdown-menu > li > a:focus > [class*=" rednose-icon-"],
+.dropdown-menu > .active > a > [class^="rednose-icon-"],
+.dropdown-menu > .active > a > [class*=" rednose-icon-"],
+.dropdown-submenu:hover > a > [class^="rednose-icon-"],
+.dropdown-submenu:focus > a > [class^="rednose-icon-"],
+.dropdown-submenu:hover > a > [class*=" rednose-icon-"],
+.dropdown-submenu:focus > a > [class*=" rednose-icon-"] {
     background-image: url("../img/content-icons-white.png");
 }
 
