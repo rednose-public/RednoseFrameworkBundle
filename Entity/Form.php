@@ -87,7 +87,7 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
      *   orphanRemoval=true,
      *   mappedBy="controlForm",
      *   cascade={"persist", "remove"})
-     * @ORM\OrderBy({"weight" = "ASC"})
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
      *
      * @Serializer\SerializedName("controls")
      * @Serializer\Groups({"file", "details"})
