@@ -117,8 +117,11 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
         }
 
         if ($this->controls) {
+            $sortOrder = 0;
+
             foreach ($this->controls as $control) {
                 $control->setControlForm($this);
+                $control->setSortOrder($sortOrder++);
             }
         }
     }

@@ -124,6 +124,9 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
 
     /**
      * @ORM\Column(type="integer")
+     *
+     * @Serializer\XmlAttribute
+     * @Serializer\Groups({"file", "details"})
      */
     protected $sortOrder = 0;
 
