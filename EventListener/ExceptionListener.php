@@ -69,6 +69,8 @@ class ExceptionListener implements EventSubscriberInterface
             $response->setContent($this->templating->render('RednoseFrameworkBundle:Exception:500.html.twig'));
         }
 
+        $event->setResponse($response);
+
         return;
     }
 
