@@ -41,13 +41,27 @@ class ExceptionListener implements EventSubscriberInterface
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
+        $exception = $event->getException();
+        $response  = new Response();
+
+        if ($event->getRequest()->headers->get('Content-Type') === 'application/json') {
+            $err = array(
+                'message' => $exception->getMessage(),
+                'code'    => $exception->getCode(),
+            );
+
+            $response->setContent(json_encode($err));
+            $response->headers->set('Content-Type', 'application/json');
+
+            $event->setResponse($response);
+
+            return;
+        }
+
         // In the dev environment we want the default exception handler.
         if ($this->kernel->getEnvironment() === 'dev') {
             return;
         }
-
-        $exception = $event->getException();
-        $response  = new Response();
 
         if ($exception instanceof NotFoundHttpException) {
             $response->setContent($this->templating->render('RednoseFrameworkBundle:Exception:404.html.twig'));
@@ -55,8 +69,7 @@ class ExceptionListener implements EventSubscriberInterface
             $response->setContent($this->templating->render('RednoseFrameworkBundle:Exception:500.html.twig'));
         }
 
-        // Send the modified response object to the event
-        $event->setResponse($response);
+        return;
     }
 
     /**
