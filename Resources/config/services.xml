@@ -87,8 +87,10 @@
             <tag name="doctrine.event_listener" event="postRemove" />
         </service>
 
-        <!-- HTML purifier -->
+        <!-- HTML purifier / lexer -->
         <service id="rednose_framework.purifier.factory" class="%rednose_framework.purifier.factory.class%"/>
         <service id="rednose_framework.purifier" factory-method="create" factory-service="rednose_framework.purifier.factory" class="%rednose_framework.purifier.factory.class%"/>
+        <service id="rednose_framework.purifier.lexer" factory-method="createLexer" factory-service="rednose_framework.purifier.factory" class="%rednose_framework.purifier.factory.class%"/>
+
     </services>
 </container>
