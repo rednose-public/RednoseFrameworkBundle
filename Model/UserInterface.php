@@ -43,11 +43,6 @@ interface UserInterface extends BaseUserInterface, GroupableInterface, Equatable
     public function isAdmin();
 
     /**
-     * Symfony\Component\Security\Core\User\EquatableInterface::isEqualTo()
-     */
-    public function isEqualTo(\Symfony\Component\Security\Core\User\UserInterface $user);
-
-    /**
      * Sets the admin status
      *
      * @param boolean $boolean
@@ -55,19 +50,4 @@ interface UserInterface extends BaseUserInterface, GroupableInterface, Equatable
     public function setAdmin($boolean);
 
     public function getExpiresAt();
-
-    /**
-     * Gets the username
-     *
-     * Will automatically return the username in lowercase for
-     * framework compatibility.
-     *
-     * if forceLowercase is set to false it will return the
-     * username as it has been set by setUsername().
-     *
-     * @param $forceLowercase
-     *
-     * @return string
-     */
-    public function getUsername($forceLowercase = true);
 }

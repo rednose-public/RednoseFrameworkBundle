@@ -33,11 +33,6 @@ interface UserManagerInterface extends BaseUserManagerInterface
     public function loadUserByUsername($username);
 
     /**
-     * @return User
-     */
-    public function createUser();
-
-    /**
      * Return all users, sorted
      *
      * @param $ascending

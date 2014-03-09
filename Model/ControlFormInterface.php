@@ -26,13 +26,6 @@ interface ControlFormInterface
     public function setName($name);
 
     /**
-     * Gets the caption of the form
-     *
-     * @return string
-     */
-    public function getCaption();
-
-    /**
      * Sets the caption of the form
      *
      * @param string $caption
