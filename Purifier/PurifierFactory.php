@@ -29,6 +29,9 @@ class PurifierFactory
         $config->set('Cache.SerializerPath', $cache);
         $config->set('CSS.AllowedProperties', array());
 
+        // Fixes encoding.
+        $config->set('Core.EscapeNonASCIICharacters', true);
+
         $def = $config->getHTMLDefinition(true);
 
         // Add textblock placeholder attribute to allowed definitions.
