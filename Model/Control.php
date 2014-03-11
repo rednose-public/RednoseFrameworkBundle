@@ -70,6 +70,22 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     }
 
     /**
+     * @param mixed $caption
+     */
+    public function setCaption($caption)
+    {
+        $this->caption = $caption;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCaption()
+    {
+        return $this->caption;
+    }
+
+    /**
      * @see ControlInterface
      */
     public function getReadonly()
