@@ -101,10 +101,10 @@ body, html,
     font-weight: bold;
     text-shadow: 0 1px 1px rgba(255, 255, 255, 0.35);
     -webkit-text-rendering: optimizeLegibility;
-    -moz-text-rendering: optimizeLegibility;
-    -ms-text-rendering: optimizeLegibility;
-    -o-text-rendering: optimizeLegibility;
-    text-rendering: optimizeLegibility;
+       -moz-text-rendering: optimizeLegibility;
+        -ms-text-rendering: optimizeLegibility;
+         -o-text-rendering: optimizeLegibility;
+            text-rendering: optimizeLegibility;
 }
 
 .rednose-grid-message-title {
