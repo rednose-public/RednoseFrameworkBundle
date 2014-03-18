@@ -2,7 +2,6 @@
 
 namespace Rednose\FrameworkBundle\Purifier;
 
-use HTMLPurifier;
 use HTMLPurifier_Config;
 use HTMLPurifier_Lexer;
 
@@ -38,7 +37,7 @@ class PurifierFactory
         $def->addAttribute('span', 'data-placeholder', 'Text');
         $def->addAttribute('span', 'data-header-target', 'Text');
 
-        return new HTMLPurifier($config);
+        return new RednoseHTMLPurifier($config);
     }
 
     /**
