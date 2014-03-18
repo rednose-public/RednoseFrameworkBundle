@@ -52,6 +52,10 @@ body, html,
     position: static;
 }
 
+.yui3-widget-bd .rednose-unit-main {
+    background-color: #fff;
+}
+
 .rednose-navbar-grid .rednose-unit-container {
     top: 41px;
 }
@@ -62,7 +66,8 @@ body, html,
     position:absolute;
     left:0;
     width: 280px;
-}
+    border-right: 1px solid #eee;
+}}
 
 .rednose-unit-right {
     height:100%;
@@ -70,6 +75,7 @@ body, html,
     top:0;
     right:0;
     width: 280px;
+    border-left: 1px solid #eee;
 }
 
 .rednose-unit-main {
