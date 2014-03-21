@@ -57,6 +57,20 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
             return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
         }
 
+        $id = $context->attributes->get('id');
+
+        if ($id->isDefined()) {
+            $object = $objectManager->getRepository($metadata->name)->findOneById($id->get());
+
+            if ($object) {
+                $object = $objectManager->find($metadata->name, array('id' => $object->getId()));
+
+                $objectManager->initializeObject($object);
+
+                return $object;
+            }
+        }
+
         $class = new \ReflectionClass($metadata->name);
 
         if ($class->implementsInterface('Rednose\FrameworkBundle\Model\ExtrinsicObjectInterface') && $context->getFormat() === 'xml') {
