@@ -10,7 +10,10 @@
 
         {% block stylesheets %}
 			<link href="{{ asset('bundles/rednoseframework/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
-            <link href="{{ asset('bundles/rednoseframework/rednose-ui/css/rednose-ui.css') }}" rel="stylesheet" />
+
+            {% stylesheets filter='less' output='css/rednose-ui.css' '@RednoseFrameworkBundle/Resources/public/rednose-ui/less/*' %}
+                <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="all" />
+            {% endstylesheets %}
         {% endblock %}
 
         {% block javascripts %}
