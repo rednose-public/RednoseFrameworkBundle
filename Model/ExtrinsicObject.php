@@ -13,7 +13,7 @@ abstract class ExtrinsicObject implements ExtrinsicObjectInterface
      *
      * @return string $id
      */
-    final public function getForeignId()
+    public function getForeignId()
     {
         return $this->foreignId;
     }
@@ -25,7 +25,7 @@ abstract class ExtrinsicObject implements ExtrinsicObjectInterface
      *
      * @throws \InvalidArgumentException when the id is attempted to be changed.
      */
-    final public function setForeignId($id)
+    public function setForeignId($id)
     {
         if ($this->foreignId !== null || $id === null) {
             throw new \InvalidArgumentException(
