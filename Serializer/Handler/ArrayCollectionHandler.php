@@ -73,28 +73,21 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
     protected function transferCollection(Collection $source, Collection $destination)
     {
         // Quickfix, JMS' JSON deserializer doesn't like mutated collections.
-        $destination->clear();
 
+        // Add new objects.
         foreach ($source as $object) {
-            $destination->add($object);
+            if ($destination->contains($object) === false) {
+                $destination->add($object);
+            }
+        }
+
+        // Remove deleted objects.
+        foreach ($destination as $object) {
+            if ($source->contains($object) === false) {
+                $destination->removeElement($object);
+            }
         }
 
         return $destination;
-//
-//        // Add new objects.
-//        foreach ($source as $object) {
-//            if ($destination->contains($object) === false) {
-//                $destination->add($object);
-//            }
-//        }
-//
-//        // Remove deleted objects.
-//        foreach ($destination as $object) {
-//            if ($source->contains($object) === false) {
-//                $destination->removeElement($object);
-//            }
-//        }
-//
-//        return $destination;
     }
 }
