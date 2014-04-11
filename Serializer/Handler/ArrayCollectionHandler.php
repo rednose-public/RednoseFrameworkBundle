@@ -72,8 +72,6 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
 
     protected function transferCollection(Collection $source, Collection $destination)
     {
-        // Quickfix, JMS' JSON deserializer doesn't like mutated collections.
-
         // Add new objects.
         foreach ($source as $object) {
             if ($destination->contains($object) === false) {
