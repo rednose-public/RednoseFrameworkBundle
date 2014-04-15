@@ -4,6 +4,7 @@ namespace Rednose\FrameworkBundle\Purifier;
 
 use HTMLPurifier_Config;
 use HTMLPurifier_Lexer;
+use HTMLPurifier;
 
 /**
  * Factory class that constructs a configured HTML purifier instance.
