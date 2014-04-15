@@ -8,7 +8,7 @@ use HTMLPurifier;
 
 class RednoseHTMLPurifier extends HTMLPurifier
 {
-    public function purify($html)
+    public function purify($html, $config = null)
     {
         $html = $this->normalizeTables($html);
 
