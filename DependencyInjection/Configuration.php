@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
         $this->addUserSection($rootNode);
         $this->addOauthSection($rootNode);
         $this->addAclSection($rootNode);
+        $this->addAccountSection($rootNode);
         $this->addFormSection($rootNode);
 
         return $treeBuilder;
@@ -49,6 +50,14 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->booleanNode('acl')->defaultFalse()->end()
+            ->end();
+    }
+
+    private function addAccountSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->booleanNode('auto_account_creation')->defaultFalse()->end()
             ->end();
     }
 

@@ -6,9 +6,34 @@ use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Rednose\FrameworkBundle\Model\UserManagerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use FOS\UserBundle\Util\CanonicalizerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class UserManager extends BaseUserManager implements UserManagerInterface
 {
+    /**
+     * @var bool
+     */
+    protected $autoAccountCreation;
+
+    /**
+     * Constructor.
+     *
+     * @param EncoderFactoryInterface $encoderFactory
+     * @param CanonicalizerInterface  $usernameCanonicalizer
+     * @param CanonicalizerInterface  $emailCanonicalizer
+     * @param ObjectManager           $om
+     * @param string                  $class
+     * @param bool                    $autoAccountCreation
+     */
+    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, $autoAccountCreation = false)
+    {
+        parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class);
+
+        $this->autoAccountCreation = $autoAccountCreation;
+    }
+
     /**
      * @return User
      */
@@ -90,7 +115,7 @@ class UserManager extends BaseUserManager implements UserManagerInterface
      */
     public function loadUserByUsername($username)
     {
-        if ($this->findUserBy(array('username' => $username)) === null) {
+        if ($this->autoAccountCreation && $this->findUserBy(array('username' => $username)) === null) {
             $user = $this->createUser();
             $user->setUserName($username);
             $user->setEnabled(true);

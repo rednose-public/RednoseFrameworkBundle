@@ -27,10 +27,6 @@ class RednoseFrameworkExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        if ($config['user']) {
-            $loader->load('admin.xml');
-        }
-
         if ($config['oauth']) {
             $loader->load('oauth.xml');
         }
@@ -45,6 +41,11 @@ class RednoseFrameworkExtension extends Extension
             $loader->load(sprintf('%s.xml', $basename));
         }
 
+        if ($config['user']) {
+            $loader->load('admin.xml');
+            $this->loadAccount($config['auto_account_creation'], $container);
+        }
+
         $this->loadForm($config['form'], $container);
     }
 
@@ -52,5 +53,10 @@ class RednoseFrameworkExtension extends Extension
     {
         $container->getDefinition('form.type.rednose_widget_editor')->replaceArgument(2, $config['editor']);
         $container->setParameter('form.type.rednose_widget_editor.type', $config['editor']);
+    }
+
+    private function loadAccount($config, ContainerBuilder $container)
+    {
+        $container->getDefinition('rednose_framework.user_manager')->replaceArgument(5, $config);
     }
 }
