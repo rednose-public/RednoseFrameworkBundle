@@ -10,26 +10,9 @@
 
         {% block stylesheets %}
 			<link href="{{ asset('bundles/rednoseframework/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
-            <link rel="stylesheet" href="{{ asset('cdn/rednose-ui/build/rednose-ui/css/rednose-ui-min.css') }}" type="text/css" media="screen" />
-        {% endblock %}
-
-        {% block javascripts %}
-            <script type="text/javascript" src="{{ asset('cdn/yui3/build/yui/yui-min.js') }}"></script>
-            <script type="text/javascript" src="{{ rednose_yui_config() }}"></script>
-
-            {% if app.user %}
-                <script type="text/javascript">YUI.Env.user = { name: '{{ app.user.bestname }}' };</script>
-            {% endif %}
-
-            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-            <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-
-            <script type="text/javascript" src="{{ asset('bundles/rednoseframework/ckeditor/ckeditor.js') }}"></script>
-
-            <script type="text/javascript" src="{{ asset('bundles/rednoseframework/modernizr/modernizr.min.js') }}"></script>
         {% endblock %}
     </head>
-    <body class="yui3-skin-sam">
+    <body>
         {% block content '' %}
     </body>
 </html>
