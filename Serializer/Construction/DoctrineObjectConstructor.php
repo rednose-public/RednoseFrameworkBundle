@@ -67,6 +67,8 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
 
                 $objectManager->initializeObject($object);
 
+                $context->attributes->set('id', null);
+
                 return $object;
             }
         }
