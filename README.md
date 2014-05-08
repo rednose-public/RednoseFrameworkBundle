@@ -3,7 +3,7 @@ RednoseFrameworkBundle
 
 Provides several core features used throughout the RedNose bundles.
 
-**Caution:** This bundle Requires Symfony 2.3.x. For Symfony 2.1.x, you need to use the 1.2 branch of the bundle. For Symfony 2.0.x, you need to use the 1.1 branch of the bundle (or lower).
+**Caution:** This bundle Requires Symfony 2.3.x or higher.
 
 Installation
 ------------
@@ -42,4 +42,10 @@ About
 
 FrameworkBundle is a [RedNose](http://www.rednose.nl) initiative.
 		
+License
+-------
+
+This bundle is under the MIT license. See the complete license in the bundle:
+
+    Resources/meta/LICENSE
 

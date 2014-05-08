@@ -4,7 +4,7 @@
     "description": "Symfony RednoseFrameworkBundle",
     "keywords": ["framework"],
     "homepage": "http://www.rednose.nl",
-    "license": "proprietary",
+    "license": "MIT",
     "authors": [
         {
             "name": "Marc Bontje",
