@@ -59,4 +59,18 @@ interface UserInterface extends BaseUserInterface, GroupableInterface, Equatable
     public function setAdmin($boolean);
 
     public function getExpiresAt();
+
+    /**
+     * Gets the preferred locale for this user.
+     *
+     * @return string
+     */
+    public function getLocale();
+
+    /**
+     * Sets the preferred locale for this user.
+     *
+     * @param string $locale
+     */
+    public function setLocale($locale);
 }

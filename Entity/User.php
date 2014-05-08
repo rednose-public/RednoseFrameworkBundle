@@ -52,6 +52,11 @@ class User extends BaseUser implements UserInterface
     protected $groups;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $locale;
+
+    /**
      * Transient API property.
      *
      * @Serializer\SerializedName("username")
@@ -149,6 +154,26 @@ class User extends BaseUser implements UserInterface
         } else {
             $this->removeRole(static::ROLE_ADMIN);
         }
+    }
+
+    /**
+     * Gets the preferred locale for this user.
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Sets the preferred locale for this user.
+     *
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
     }
 
     /**

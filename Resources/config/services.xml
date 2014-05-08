@@ -10,6 +10,9 @@
 
         <!-- HTML purifier -->
         <parameter key="rednose_framework.purifier.factory.class">Rednose\FrameworkBundle\Purifier\PurifierFactory</parameter>
+
+        <!-- Locale event listener -->
+        <parameter key="rednose_framework.listener.locale.class">Rednose\FrameworkBundle\EventListener\LocaleListener</parameter>
     </parameters>
 
     <services>
@@ -85,6 +88,11 @@
             <tag name="doctrine.event_listener" event="postPersist" />
             <tag name="doctrine.event_listener" event="postUpdate" />
             <tag name="doctrine.event_listener" event="postRemove" />
+        </service>
+
+        <service id="rednose_framework.listener.locale" class="%rednose_framework.listener.locale.class%">
+            <argument type="service" id="security.context" />
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest"/>
         </service>
 
         <!-- HTML purifier / lexer -->
