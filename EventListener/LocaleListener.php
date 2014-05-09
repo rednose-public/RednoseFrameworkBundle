@@ -47,6 +47,11 @@ class LocaleListener
             return;
         }
 
+        // Anonymous has no locale state
+        if ($this->context->getToken() === null) {
+            return;
+        }
+
         $user    = $this->context->getToken()->getUser();
         $request = $event->getRequest();
 
