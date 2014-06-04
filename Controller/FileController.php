@@ -29,7 +29,7 @@ class FileController extends Controller
         foreach($request->files as $uploadedFile) {
             if ($uploadedFile instanceof UploadedFile && $uploadedFile->isValid()) {
                 $dir  = $this->getTempDir();
-                $name = sprintf('%s.tmp', uniqid('tmp'));
+                $name = sprintf('%s.%s', uniqid(), $uploadedFile->getClientOriginalExtension());
 
                 $metadata = array(
                     'name'     => $uploadedFile->getClientOriginalName(),
@@ -37,23 +37,25 @@ class FileController extends Controller
                 );
 
                 // Write file.
-                $file = $uploadedFile->move($dir, $name);
+                $uploadedFile->move($dir, $name);
 
                 // Write metadata.
                 file_put_contents(sprintf('%s/%s.meta', $dir, $name), serialize($metadata));
 
-                return new Response($file->getFilename());
+                $uri = sprintf('%s/%s', $dir, $name);
+
+                return new Response(str_replace('/app_dev.php', '', sprintf('%s/%s', $this->container->get('router')->getContext()->getBaseUrl(), $uri)));
             }
         }
 
         return new Response(null, 500);
     }
 
+    /**
+     * @return string
+     */
     protected function getTempDir()
     {
-        $base = $this->get('kernel')->getRootDir().'/cache';
-        $env  = $this->get('kernel')->getEnvironment();
-
-        return sprintf('%s/%s/rednose_framework/tmp', $base, $env);
+        return sprintf('cache/rednose_framework/file');
     }
 }
