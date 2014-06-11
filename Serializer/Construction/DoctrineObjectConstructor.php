@@ -66,6 +66,25 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
             }
         }
 
+        $uuid = $context->attributes->get('uuid');
+
+        if ($uuid->isDefined()) {
+            $object = $objectManager->getRepository($metadata->name)->findOneBy(array(
+                'uuid'     => $uuid->get(),
+                'revision' => 0
+            ));
+
+            if ($object) {
+                $object = $objectManager->find($metadata->name, array('id' => $object->getId()));
+
+                $objectManager->initializeObject($object);
+
+                $context->attributes->set('uuid', null);
+
+                return $object;
+            }
+        }
+
         $class = new \ReflectionClass($metadata->name);
 
         if ($class->implementsInterface('Rednose\FrameworkBundle\Model\ExtrinsicObjectInterface') && $context->getFormat() === 'xml') {
