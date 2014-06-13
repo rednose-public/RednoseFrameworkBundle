@@ -86,13 +86,14 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
             }
         }
 
-        // Locate possible ClassMetadata
-        $classMetadataFactory = $objectManager->getMetadataFactory();
-
-        if ($classMetadataFactory->isTransient($metadata->name)) {
-            // No ClassMetadata found, proceed with normal deserialization
-            return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
-        }
+        return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
+//        // Locate possible ClassMetadata
+//        $classMetadataFactory = $objectManager->getMetadataFactory();
+//
+//        if ($classMetadataFactory->isTransient($metadata->name)) {
+//            // No ClassMetadata found, proceed with normal deserialization
+//            return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
+//        }
 
         // Managed entity, check for proxy load
         // if (!is_array($data)) {
@@ -101,22 +102,22 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
         // }
 
         // Fallback to default constructor if missing identifier(s)
-        $classMetadata  = $objectManager->getClassMetadata($metadata->name);
-        $identifierList = array();
-
-        foreach ($classMetadata->getIdentifierFieldNames() as $name) {
-            if ( ! array_key_exists($name, $data)) {
-                return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
-            }
-
-            $identifierList[$name] = $data[$name];
-        }
-
-        // Entity update, load it from database
-        $object = $objectManager->find($metadata->name, $identifierList);
-
-        $objectManager->initializeObject($object);
-
-        return $object;
+//        $classMetadata  = $objectManager->getClassMetadata($metadata->name);
+//        $identifierList = array();
+//
+//        foreach ($classMetadata->getIdentifierFieldNames() as $name) {
+//            if ( ! array_key_exists($name, $data)) {
+//                return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
+//            }
+//
+//            $identifierList[$name] = $data[$name];
+//        }
+//
+//        // Entity update, load it from database
+//        $object = $objectManager->find($metadata->name, $identifierList);
+//
+//        $objectManager->initializeObject($object);
+//
+//        return $object;
     }
 }
