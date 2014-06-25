@@ -18,6 +18,7 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
 {
     protected $id;
     protected $value;
+    protected $binding;
     protected $handle;
     protected $caption;
     protected $type;
@@ -176,6 +177,22 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     public function setValue($value)
     {
         $this->value = $value;
+    }
+
+    /**
+     * @param string $binding
+     */
+    public function setBinding($binding)
+    {
+        $this->binding = $binding;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBinding()
+    {
+        return $this->binding;
     }
 
     /**

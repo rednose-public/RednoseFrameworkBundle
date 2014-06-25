@@ -119,6 +119,14 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
     protected $value;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Serializer\XmlAttribute
+     * @Serializer\Groups({"file", "details"})
+     */
+    protected $binding;
+
+    /**
      * @ORM\Column(type="array")
      *
      * @Serializer\SerializedName("properties")
