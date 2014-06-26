@@ -197,24 +197,25 @@ class ContentSectionType extends AbstractType
 
                     $choices = $properties['choices'];
 
-                    if ($properties['datasource']) {
-                        $source = $this->om->getRepository('Rednose\DataProviderBundle\Entity\DataSource')->findOneBy(array(
-                            'foreignId' => $properties['datasource']['id']
-                        ));
-
-                        $provider = $this->factory->create($source);
-
-                        $map = $properties['datasource']['map'];
-
-                        $choices = array();
-
-                        foreach ($provider->getData() as $record) {
-                            $id    = $this->getArrayValueByKey($record, $map['id']);
-                            $value = $this->getArrayValueByKey($record, $map['value']);
-
-                            $choices[$id] = $value;
-                        }
-                    }
+                    // Server side execution.
+//                    if ($properties['datasource']) {
+//                        $source = $this->om->getRepository('Rednose\DataProviderBundle\Entity\DataSource')->findOneBy(array(
+//                            'foreignId' => $properties['datasource']['id']
+//                        ));
+//
+//                        $provider = $this->factory->create($source);
+//
+//                        $map = $properties['datasource']['map'];
+//
+//                        $choices = array();
+//
+//                        foreach ($provider->getData() as $record) {
+//                            $id    = $this->getArrayValueByKey($record, $map['id']);
+//                            $value = $this->getArrayValueByKey($record, $map['value']);
+//
+//                            $choices[$id] = $value;
+//                        }
+//                    }
 
                     $options = array(
                         'choices'     => $choices,
@@ -222,7 +223,18 @@ class ContentSectionType extends AbstractType
                         'expanded'    => $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO,
                     );
 
-                    break;
+                    if ($properties['datasource']) {
+                        $options['attr'] = array(
+                            'data-datasource' => json_encode($properties['datasource'])
+                        );
+                    }
+
+                    if ($contentDefinition->getBinding()) {
+                        $options['attr'] = array(
+                            'data-datasource' => json_encode($properties['datasource'])
+                        );
+                    }
+                break;
             }
 
             $formOptions = array_merge($baseOptions, $options);
@@ -259,6 +271,11 @@ class ContentSectionType extends AbstractType
     public function getName()
     {
         return 'content_section';
+    }
+
+    private function getKeyFromXPath($xpath)
+    {
+        return end(explode('/', $xpath));
     }
 
     private function getArrayValueByKey(array $array, $search)
