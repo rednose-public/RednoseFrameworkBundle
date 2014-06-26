@@ -194,10 +194,12 @@ class ContentSectionType extends AbstractType
                 $formOptions['attr']['data-connections'] = json_encode($connections);
             }
 
-            $builder->add((string) $contentDefinition->getContentId(), $type, $formOptions);
+//            $builder->add((string) $contentDefinition->getContentId(), $type, $formOptions);
+            $builder->add((string) $contentDefinition->getForeignId(), $type, $formOptions);
         }
 
-        $builder->addViewTransformer(new ContentSectionValueToArrayTransformer);
+        $builder->add('save', 'submit');
+//        $builder->addViewTransformer(new ContentSectionValueToArrayTransformer);
     }
 
     /**
