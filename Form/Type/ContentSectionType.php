@@ -20,19 +20,38 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Rednose\DataProviderBundle\Provider\DataProviderFactoryInterface;
 
 class ContentSectionType extends AbstractType
 {
+    /**
+     * @var TranslatorInterface
+     */
     protected $translator;
+
+    /**
+     * @var ObjectManager
+     */
+    protected $om;
+
+    /**
+     * @var DataProviderFactoryInterface
+     */
+    protected $factory;
 
     /**
      * Constructor.
      *
-     * @param TranslatorInterface $translator A translator
+     * @param TranslatorInterface          $translator
+     * @param ObjectManager                $om
+     * @param DataProviderFactoryInterface $factory
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, ObjectManager $om, DataProviderFactoryInterface $factory)
     {
         $this->translator = $translator;
+        $this->om         = $om;
+        $this->factory    = $factory;
     }
 
     /**
@@ -176,8 +195,29 @@ class ContentSectionType extends AbstractType
                 case ContentDefinitionInterface::TYPE_RADIO:
                     $type = 'choice';
 
+                    $choices = $properties['choices'];
+
+                    if ($properties['datasource']) {
+                        $source = $this->om->getRepository('Rednose\DataProviderBundle\Entity\DataSource')->findOneBy(array(
+                            'foreignId' => $properties['datasource']['id']
+                        ));
+
+                        $provider = $this->factory->create($source);
+
+                        $map = $properties['datasource']['map'];
+
+                        $choices = array();
+
+                        foreach ($provider->getData() as $record) {
+                            $id    = $this->getArrayValueByKey($record, $map['id']);
+                            $value = $this->getArrayValueByKey($record, $map['value']);
+
+                            $choices[$id] = $value;
+                        }
+                    }
+
                     $options = array(
-                        'choices'     => $properties['choices'],
+                        'choices'     => $choices,
                         'empty_value' => $this->translator->trans('Choose an option...'),
                         'expanded'    => $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO,
                     );
@@ -219,5 +259,20 @@ class ContentSectionType extends AbstractType
     public function getName()
     {
         return 'content_section';
+    }
+
+    private function getArrayValueByKey(array $array, $search)
+    {
+        foreach ($array as $key => $value) {
+            if ($key === $search) {
+                return $value;
+            }
+
+            if (is_array($value) && $v = $this->getArrayValueByKey($value, $search)) {
+                return $v;
+            }
+        }
+
+        return null;
     }
 }
