@@ -224,20 +224,18 @@ class ContentSectionType extends AbstractType
                     );
 
                     if ($properties['datasource']) {
-                        $options['attr'] = array(
-                            'data-datasource' => json_encode($properties['datasource'])
-                        );
+                        $options['attr']['data-datasource'] = json_encode($properties['datasource']);
                     }
 
-                    if ($contentDefinition->getBinding()) {
-                        $options['attr'] = array(
-                            'data-datasource' => json_encode($properties['datasource'])
-                        );
-                    }
-                break;
+                    break;
             }
 
             $formOptions = array_merge($baseOptions, $options);
+
+            // Initial data-binding implementation.
+            if ($contentDefinition->getBinding()) {
+                $formOptions['attr']['data-binding'] = $this->getKeyFromXPath($contentDefinition->getBinding());
+            }
 
             // Initial form-connection implementation.
             $connections = is_array($properties) && isset($properties['connections']) ? $properties['connections'] : null;
