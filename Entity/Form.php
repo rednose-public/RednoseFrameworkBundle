@@ -13,9 +13,7 @@ namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Rednose\FrameworkBundle\Model\ControlForm as BaseControlForm;
-use Rednose\FrameworkBundle\Model\ExtrinsicObjectInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
@@ -24,51 +22,22 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_form")
  *
- * @UniqueEntity(fields={"foreignId"}, message="This id is already in use, choose another id.")
- *
+ * @Serializer\XmlNamespace(uri="http://rednose.nl/schema/form")
  * @Serializer\XmlRoot("form")
- * @Serializer\AccessorOrder("custom", custom = {"xmlns", "xmlId", "name", "styleSetName", "content", "controls"})
+ * @Serializer\AccessorOrder("custom", custom = {"id", "name", "styleSetName", "content", "controls"})
  */
-class Form extends BaseControlForm implements ExtrinsicObjectInterface
+class Form extends BaseControlForm
 {
     /**
-     * Transient property.
-     *
-     * @Serializer\Type("string")
-     * @Serializer\XmlAttribute
-     * @Serializer\Groups({"file"})
-     */
-    protected $xmlns = 'http://rednose.nl/schema/form';
-
-    /**
-     * Unique id.
-     *
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      *
-     * @Serializer\Groups({"details"})
+     * @Serializer\XmlAttribute
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"file", "list", "details"})
      */
     protected $id;
-
-    /**
-     * @ORM\Column(type="string", unique=true)
-     *
-     * @Serializer\XmlAttribute
-     * @Serializer\Groups({"details"})
-     */
-    protected $foreignId;
-
-    /**
-     * Transient property.
-     *
-     * @Serializer\XmlAttribute
-     * @Serializer\SerializedName("id")
-     * @Serializer\Type("string")
-     * @Serializer\Groups({"file"})
-     * @Serializer\Accessor(getter="getForeignId")
-     */
-    protected $xmlId;
 
     /**
      * @ORM\Column(type="string", length=64)
@@ -104,16 +73,6 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
      */
     protected $controls;
 
-    public function getForeignId()
-    {
-        return $this->foreignId;
-    }
-
-    public function setForeignId($id)
-    {
-        $this->foreignId = $id;
-    }
-
     // -- Serializer Methods ---------------------------------------------------
 
     /**
@@ -121,10 +80,6 @@ class Form extends BaseControlForm implements ExtrinsicObjectInterface
      */
     public function postDeserialize()
     {
-        if ($this->xmlId) {
-            $this->foreignId = $this->xmlId;
-        }
-
         if ($this->controls) {
             $sortOrder = 0;
 

@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-  <services>
+    <services>
 
-    <service id="rednose_framework.group_manager" class="Rednose\FrameworkBundle\Entity\GroupManager">
-      <argument type="service" id="fos_user.entity_manager"/>
-      <argument>Rednose\FrameworkBundle\Entity\Group</argument>
-    </service>
+        <service id="rednose_framework.group_manager" class="Rednose\FrameworkBundle\Entity\GroupManager">
+            <argument type="service" id="fos_user.entity_manager"/>
+            <argument>Rednose\FrameworkBundle\Entity\Group</argument>
+        </service>
 
-    <service id="rednose_framework.user_manager" class="Rednose\FrameworkBundle\Entity\UserManager">
-      <argument type="service" id="security.encoder_factory"/>
-      <argument type="service" id="fos_user.util.username_canonicalizer"/>
-      <argument type="service" id="fos_user.util.email_canonicalizer"/>
-      <argument type="service" id="fos_user.entity_manager"/>
-      <argument>Rednose\FrameworkBundle\Entity\User</argument>
-      <argument>false</argument>
-    </service>
+        <service id="rednose_framework.user_manager" class="Rednose\FrameworkBundle\Entity\UserManager">
+            <argument type="service" id="security.encoder_factory"/>
+            <argument type="service" id="fos_user.util.username_canonicalizer"/>
+            <argument type="service" id="fos_user.util.email_canonicalizer"/>
+            <argument type="service" id="fos_user.entity_manager"/>
+            <argument>Rednose\FrameworkBundle\Entity\User</argument>
+            <argument>false</argument>
+        </service>
 
-  </services>
+        <service id="rednose_framework.form_manager" class="Rednose\FrameworkBundle\Entity\FormManager">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
+    </services>
 </container>
