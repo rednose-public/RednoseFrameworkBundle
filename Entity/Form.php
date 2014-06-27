@@ -24,7 +24,7 @@ use JMS\Serializer\Annotation as Serializer;
  *
  * @Serializer\XmlNamespace(uri="http://rednose.nl/schema/form")
  * @Serializer\XmlRoot("form")
- * @Serializer\AccessorOrder("custom", custom = {"id", "name", "styleSetName", "content", "controls"})
+ * @Serializer\AccessorOrder("custom", custom = {"id", "name", "identity", "content", "controls"})
  */
 class Form extends BaseControlForm
 {
@@ -40,7 +40,7 @@ class Form extends BaseControlForm
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string")
      *
      * @Assert\NotBlank(message="Please enter a name.")
      *
@@ -50,7 +50,15 @@ class Form extends BaseControlForm
      protected $name;
 
     /**
-     * @ORM\Column(type="string", length=64, nullable=true)
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @Serializer\XmlAttribute
+     * @Serializer\Groups({"file", "details"})
+     */
+    protected $identity;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
      *
      * @Assert\NotBlank(message="Please enter a form caption.")
      *

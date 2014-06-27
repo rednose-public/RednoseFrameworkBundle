@@ -20,6 +20,7 @@ abstract class ControlForm implements ContentSectionInterface, ControlFormInterf
 {
     protected $id;
     protected $name;
+    protected $identity;
     protected $caption;
     protected $controls;
 
@@ -57,6 +58,22 @@ abstract class ControlForm implements ContentSectionInterface, ControlFormInterf
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $identity
+     */
+    public function setIdentity($identity)
+    {
+        $this->identity = $identity;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentity()
+    {
+        return $this->identity;
     }
 
     /**
