@@ -21,6 +21,7 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     protected $binding;
     protected $handle;
     protected $caption;
+    protected $placeholder;
     protected $type;
     protected $properties;
     protected $controlForm;
@@ -353,6 +354,22 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     public function setVisible($visible)
     {
         $this->visible = $visible;
+    }
+
+    /**
+     * @param string $placeholder
+     */
+    public function setPlaceholder($placeholder)
+    {
+        $this->placeholder = $placeholder;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlaceholder()
+    {
+        return $this->placeholder;
     }
 
     // TODO: Deprecate getValue and setValue in favor of these interface methods.

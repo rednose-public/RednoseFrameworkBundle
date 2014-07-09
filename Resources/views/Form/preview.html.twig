@@ -3,7 +3,59 @@
 {% block title %}{{ model.name }}{% endblock %}
 
 {% block content %}
+    <link rel="stylesheet" href="{{ asset('bundles/rednoseframework/bootstrap/css/bootstrap.css') }}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{{ asset('yui/rednose-ui/rednose-ui/rednose-ui-min.css') }}" type="text/css" media="screen" />
+
+    {# Include the YUI seed #}
+    <script type="text/javascript" src="{{ asset('bundles/rednoseyui/3.16.0/yui/yui-min.js') }}"></script>
+
+    {# Include the module loaders #}
+    <script type="text/javascript" src="{{ asset('yui/rednose-ui/rednose-loader/rednose-loader.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('yui/docgen-admin/docgenadmin-loader/docgenadmin-loader.js') }}"></script>
+
+    {# Register the loaders as part of the YUI core #}
+    <script type="text/javascript">YUI.Env.core.push('rednose-loader');</script>
+    <script type="text/javascript">YUI.Env.core.push('docgenadmin-loader');</script>
+
+    {# Include the YUI config object with path and URL mappings #}
+    <script>{{ rednose_yui_config() }}</script>
+
+    {# Pass environment variables to the YUI core #}
+    <script type="text/javascript">YUI.Env.user = { name: '{{ app.user.bestname }}' };</script>
+
+    {# Assign a global YUI object to allow lazyloading #}
+    <script>var Y = YUI();</script>
+
+    <script type="text/javascript" src="{{ minify(['rednosedocgenclient/js/main.js', 'fosjsrouting/js/router.js'], 'bundles') }}"></script>
+    <script type="text/javascript" src="{{ path('fos_js_routing_js', { 'callback': 'fos.Router.setData'}) }}"></script>
+
     <div class="container">
         {{ form(form) }}
     </div>
+
+    <script>
+        var json = {{ json|raw }};
+
+        YUI().use('rednose-form', function (Y) {
+            var Autocomplete = Y.Rednose.ControlFormAutoComplete,
+                Form         = Y.Rednose.Form.FormModel;
+
+            var form  = Y.one('form'),
+                model = new Form(json);
+
+            model.get('controls').each(function (control) {
+                var node       = form.one('[data-id=' + control.get('foreign_id') + ']'),
+                    type       = control.get('type'),
+                    properties = control.get('properties');
+
+                if (type === 'autocomplete') {
+                    var autocomplete = new Autocomplete({
+                        inputNode : node,
+                        choices   : (properties && properties.choices) || null,
+                        datasource: (properties && properties.datasource) || null
+                    }).render();
+                }
+            })
+        });
+    </script>
 {% endblock %}

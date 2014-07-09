@@ -48,7 +48,8 @@ class FormController extends Controller
      */
     public function previewAction($id)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
+        $em         = $this->get('doctrine.orm.entity_manager');
+        $serializer = $this->get('serializer');
 
         $model = $em->getRepository('Rednose\FrameworkBundle\Entity\Form')->findOneById($id);
 
@@ -60,8 +61,12 @@ class FormController extends Controller
             'form' => $model,
         ));
 
+        $context = new SerializationContext();
+        $context->setGroups('details');
+
         return $this->render('RednoseFrameworkBundle:Form:preview.html.twig', array(
             'model' => $model,
+            'json'  => $serializer->serialize($model, 'json', $context),
             'form'  => $form->createView(),
         ));
     }

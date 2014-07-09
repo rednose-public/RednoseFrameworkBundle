@@ -93,14 +93,20 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
     protected $visible = true;
 
     /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     *
-     * @Assert\NotBlank(message="Please enter a field caption.")
+     * @ORM\Column(type="string", nullable=true)
      *
      * @Serializer\XmlAttribute
      * @Serializer\Groups({"file", "details"})
      */
     protected $caption;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @Serializer\XmlAttribute
+     * @Serializer\Groups({"file", "details"})
+     */
+    protected $placeholder;
 
     /**
      * @ORM\Column(type="string", length=16, nullable=false)
