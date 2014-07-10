@@ -21,6 +21,11 @@ abstract class FormSection implements ContentSectionInterface
     protected $controls;
 
     /**
+     * @var boolean
+     */
+    protected $inline;
+
+    /**
      * @var integer
      */
     protected $sortOrder;
@@ -148,6 +153,22 @@ abstract class FormSection implements ContentSectionInterface
     public function getSortOrder()
     {
         return $this->sortOrder;
+    }
+
+    /**
+     * @param boolean $inline
+     */
+    public function setInline($inline)
+    {
+        $this->inline = $inline;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getInline()
+    {
+        return $this->inline;
     }
 
     /**

@@ -88,6 +88,14 @@ class FormSection extends BaseFormSection
      */
     protected $controls;
 
+    /**
+     * @ORM\Column(type="boolean")
+     *
+     * @Serializer\XmlAttribute
+     * @Serializer\Groups({"file", "details"})
+     */
+    protected $inline = false;
+
     // -- Serializer Methods ---------------------------------------------------
 
     /**
