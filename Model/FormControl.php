@@ -14,9 +14,10 @@ namespace Rednose\FrameworkBundle\Model;
 /**
  * The abstract control class.
  */
-abstract class Control implements ContentDefinitionInterface, ControlInterface
+abstract class FormControl implements ContentDefinitionInterface
 {
     protected $id;
+    protected $name;
     protected $value;
     protected $binding;
     protected $handle;
@@ -29,9 +30,13 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     protected $required;
     protected $visible;
     protected $protected;
-    protected $alignment;
     protected $readonly;
     protected $help;
+
+    /**
+     * @var FormSection
+     */
+    protected $section;
 
     public function __construct()
     {
@@ -52,6 +57,22 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
@@ -217,26 +238,6 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     }
 
     /**
-     * Gets the desired onscreen alignment of the control
-     *
-     * @return string
-     */
-    public function getAlignment()
-    {
-        return $this->alignment;
-    }
-
-    /**
-     * Sets the desired onscreen alignment of the control
-     *
-     * @param string $alignment
-     */
-    public function setAlignment($alignment)
-    {
-        $this->alignment = $alignment;
-    }
-
-    /**
      * Gets the sortOrder
      *
      * @return integer
@@ -370,6 +371,22 @@ abstract class Control implements ContentDefinitionInterface, ControlInterface
     public function getPlaceholder()
     {
         return $this->placeholder;
+    }
+
+    /**
+     * @param \Rednose\FrameworkBundle\Model\FormSection $section
+     */
+    public function setSection($section)
+    {
+        $this->section = $section;
+    }
+
+    /**
+     * @return \Rednose\FrameworkBundle\Model\FormSection
+     */
+    public function getSection()
+    {
+        return $this->section;
     }
 
     // TODO: Deprecate getValue and setValue in favor of these interface methods.

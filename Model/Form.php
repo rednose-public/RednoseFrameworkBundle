@@ -16,28 +16,24 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * The abstract controlform.
  */
-abstract class ControlForm implements ContentSectionInterface, ControlFormInterface
+abstract class Form
 {
     protected $id;
     protected $name;
     protected $identity;
     protected $caption;
-    protected $controls;
+
+    /**
+     * @var FormSection[]
+     */
+    protected $sections;
 
     /**
      * Default constructor.
      */
     public function __construct()
     {
-        $this->controls = new ArrayCollection();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefinitions()
-    {
-        return $this->controls;
+        $this->sections = new ArrayCollection();
     }
 
     /**
@@ -107,25 +103,21 @@ abstract class ControlForm implements ContentSectionInterface, ControlFormInterf
     }
 
     /**
-     * Adds a control to the form
-     *
-     * @param ControlInterface $control
+     * @param FormSection $section
      */
-    public function addControl(ControlInterface $control)
+    public function addSection(FormSection $section)
     {
-        $control->setControlForm($this);
+        $section->setForm($this);
 
-        $this->controls->add($control);
+        $this->sections->add($section);
     }
 
     /**
-     * Gets the controls that this form contains
-     *
-     * @return ControlInterface[]
+     * @return FormSection[]
      */
-    public function getControls()
+    public function getSections()
     {
-        return $this->controls;
+        return $this->sections;
     }
 
     /**

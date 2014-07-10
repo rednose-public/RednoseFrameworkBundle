@@ -12,9 +12,8 @@
 namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Rednose\FrameworkBundle\Model\Control as BaseControl;
+use Rednose\FrameworkBundle\Model\FormControl as BaseFormControl;
 use Symfony\Component\Validator\Constraints as Assert;
-use Rednose\FrameworkBundle\Model\ExtrinsicObjectInterface;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -24,11 +23,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_form_control")
  *
- * @UniqueEntity(fields={"foreignId"}, message="This id is already in use, choose another id.")
- *
- * @Serializer\AccessorOrder("custom", custom = {"xmlId", "caption", "required", "help"})
+ * @Serializer\AccessorOrder("custom", custom = {"name", "caption", "required", "help"})
  */
-class FormControl extends BaseControl implements ExtrinsicObjectInterface
+class FormControl extends BaseFormControl
 {
     /**
      * Unique id.
@@ -45,20 +42,9 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
      * @ORM\Column(type="string", unique=true)
      *
      * @Serializer\XmlAttribute
-     * @Serializer\Groups({"details"})
+     * @Serializer\Groups({"file", "details"})
      */
-    protected $foreignId;
-
-    /**
-     * Transient property.
-     *
-     * @Serializer\XmlAttribute
-     * @Serializer\Type("string")
-     * @Serializer\SerializedName("id")
-     * @Serializer\Groups({"file"})
-     * @Serializer\Accessor(getter="getForeignId")
-     */
-    protected $xmlId;
+    protected $name;
 
     /**
      * @ORM\Column(type="boolean")
@@ -141,11 +127,6 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
     protected $properties;
 
     /**
-     * @ORM\Column(type="string", length=16, nullable=false)
-     */
-    protected $alignment = 'left';
-
-    /**
      * @ORM\Column(type="integer")
      *
      * @Serializer\XmlAttribute
@@ -162,14 +143,13 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
     protected $help;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Form")
+     * @ORM\ManyToOne(targetEntity="FormSection")
      *
      * @ORM\JoinColumn(
-     *   name="controlform_id",
-     *   referencedColumnName="id",
-     *   onDelete="CASCADE")
+     *   name="section_id",
+     *   referencedColumnName="id")
      */
-    protected $controlForm;
+    protected $section;
 
     /**
      * @Serializer\Type("string")
@@ -178,22 +158,6 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
      * @Serializer\Groups({"file"})
      */
     protected $jsonProperties;
-
-    /**
-     * @return string
-     */
-    public function getForeignId()
-    {
-        return $this->foreignId;
-    }
-
-    /**
-     * @param string $id
-     */
-    public function setForeignId($id)
-    {
-        $this->foreignId = $id;
-    }
 
     /**
      * @return string
@@ -220,15 +184,5 @@ class FormControl extends BaseControl implements ExtrinsicObjectInterface
 
         // Decode as associative array.
         $this->properties = json_decode($properties, true);
-    }
-
-    /**
-     * @Serializer\PostDeserialize
-     */
-    public function postDeserialize()
-    {
-        if ($this->xmlId) {
-            $this->foreignId = $this->xmlId;
-        }
     }
 }

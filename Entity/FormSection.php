@@ -12,7 +12,7 @@
 namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Rednose\FrameworkBundle\Model\Form as BaseForm;
+use Rednose\FrameworkBundle\Model\FormSection as BaseFormSection;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
 
@@ -20,22 +20,20 @@ use JMS\Serializer\Annotation as Serializer;
  * Default ControlForm
  *
  * @ORM\Entity
- * @ORM\Table(name="rednose_framework_form")
+ * @ORM\Table(name="rednose_framework_form_section")
  *
- * @Serializer\XmlNamespace(uri="http://rednose.nl/schema/form")
- * @Serializer\XmlRoot("form")
  * @Serializer\AccessorOrder("custom", custom = {"id", "name", "identity", "content", "controls"})
  */
-class Form extends BaseForm
+class FormSection extends BaseFormSection
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="guid")
-     * @ORM\GeneratedValue(strategy="UUID")
+     * Unique id.
      *
-     * @Serializer\XmlAttribute
-     * @Serializer\Type("string")
-     * @Serializer\Groups({"file", "list", "details"})
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Groups({"details"})
      */
     protected $id;
 
@@ -47,15 +45,15 @@ class Form extends BaseForm
      * @Serializer\XmlAttribute
      * @Serializer\Groups({"file", "details"})
      */
-     protected $name;
+    protected $name;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="integer")
      *
      * @Serializer\XmlAttribute
      * @Serializer\Groups({"file", "details"})
      */
-    protected $identity;
+    protected $sortOrder = 0;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -68,18 +66,27 @@ class Form extends BaseForm
     protected $caption;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Form")
+     *
+     * @ORM\JoinColumn(
+     *   name="form_id",
+     *   referencedColumnName="id")
+     */
+    protected $form;
+
+    /**
      * @ORM\OneToMany(
-     *   targetEntity="FormSection",
+     *   targetEntity="FormControl",
      *   orphanRemoval=true,
-     *   mappedBy="form",
+     *   mappedBy="section",
      *   cascade={"persist", "remove"})
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      *
-     * @Serializer\SerializedName("sections")
+     * @Serializer\SerializedName("controls")
      * @Serializer\Groups({"file", "details"})
-     * @Serializer\XmlList(inline = false, entry = "section")
+     * @Serializer\XmlList(inline = false, entry = "control")
      */
-    protected $sections;
+    protected $controls;
 
     // -- Serializer Methods ---------------------------------------------------
 
@@ -88,12 +95,12 @@ class Form extends BaseForm
      */
     public function postDeserialize()
     {
-        if ($this->sections) {
+        if ($this->controls) {
             $sortOrder = 0;
 
-            foreach ($this->sections as $section) {
-                $section->setForm($this);
-                $section->setSortOrder($sortOrder++);
+            foreach ($this->controls as $control) {
+                $control->setSection($this);
+                $control->setSortOrder($sortOrder++);
             }
         }
     }

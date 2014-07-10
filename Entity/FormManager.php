@@ -3,7 +3,7 @@
 namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
-use Rednose\FrameworkBundle\Model\ControlForm as ControlForm;
+use Rednose\FrameworkBundle\Model\Form as BaseForm;
 
 class FormManager
 {
@@ -21,10 +21,10 @@ class FormManager
     }
 
     /**
-     * @param ControlForm $form
-     * @param bool        $flush
+     * @param BaseForm $form
+     * @param bool     $flush
      */
-    public function updateForm(ControlForm $form, $flush = true)
+    public function updateForm(BaseForm $form, $flush = true)
     {
         $metadata = $this->em->getClassMetaData(get_class($form));
 
