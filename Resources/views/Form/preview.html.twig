@@ -33,31 +33,70 @@
     </div>
 
     <script>
-        var json = {{ json|raw }};
-
-        function getXpathValue (document, query) {
-            var result = document.evaluate(query, document, null, XPathResult.ANY_TYPE, null);
-
-            if (result.resultType === 2) {
-                return result.stringValue;
-            }
-
-            if (result.resultType === 4) {
-                return result.iterateNext().textContent;
-            }
-
-            return null;
-        }
-
         YUI().use('rednose-form', 'datatype-xml', function (Y) {
+            var json = {{ json|raw }};
+
+            function getXpathValue (document, query) {
+                var result = document.evaluate(query, document, null, XPathResult.ANY_TYPE, null);
+
+                if (result.resultType === 2) {
+                    return result.stringValue;
+                }
+
+                if (result.resultType === 4) {
+                    return result.iterateNext().textContent;
+                }
+
+                return null;
+            }
+
+            function setXpathValue (document, query, value) {
+                var result = document.evaluate(query, document, null, XPathResult.ANY_TYPE, null);
+
+                if (result.resultType === 4) {
+                    result.iterateNext().textContent = value;
+                }
+            }
+
+            function handleConditions(document, conditions) {
+                for (node in conditions) {
+                    if (conditions.hasOwnProperty(node)) {
+                        var condition = conditions[node];
+
+                        var a = getXpathValue(document, condition.a),
+                            b = getXpathValue(document, condition.b);
+
+                        var node = Y.one('#' + node),
+                            row  = node.get('parentNode');
+
+                        switch (condition.operator) {
+                            case '==':
+                                var result = (a === b);
+
+                                row[result ? 'show' : 'hide']();
+
+                                break;
+                        }
+                    }
+                }
+            }
+
             var Autocomplete = Y.Rednose.ControlFormAutoComplete,
                 Form         = Y.Rednose.Form.FormModel;
 
             var form  = Y.one('form'),
                 model = new Form(json);
 
+            var xmlData = '<' + model.get('name') + '>';
+
+            var conditions = {};
+
             model.get('sections').each(function (section) {
+                xmlData += '<' + section.get('name') + '>';
+
                 section.get('controls').each(function (control) {
+                    xmlData += '<' + control.get('name') + '>';
+
                     var node       = form.one('[data-id=' + control.get('id') + ']'),
                         type       = control.get('type'),
                         properties = control.get('properties');
@@ -71,19 +110,34 @@
                     }
 
                     if (properties && properties.conditions && properties.conditions.visible) {
-                        console.log(properties.conditions.visible);
+                        conditions[node.get('id')] = properties.conditions.visible;
                     }
+
+                    xmlData += '</' + control.get('name') + '>';
                 });
+
+                xmlData += '</' + section.get('name') + '>';
             });
 
-            var xmlData = '<MondelingeKamervraag><Section1><bijAfwezigheidVan>false</bijAfwezigheidVan></Section1></MondelingeKamervraag>';
+            xmlData += '</' + model.get('name') + '>';
+
             var document = Y.XML.parse(xmlData);
 
-            var a = '//Section1/bijAfwezigheidVan';
-            var b = '"true"';
+            form.after('change', function (e) {
+                var node    = e.target,
+                    name    = node.getData('name'),
+                    section = node.getData('section'),
+                    value   = node.get('type') === 'checkbox' ? node.get('checked').toString() : node.get('value');
 
-            console.log(getXpathValue(document, a));
-            console.log(getXpathValue(document, b));
+                var location = '//' + section + '/' + name;
+
+                setXpathValue(document, location, value);
+                handleConditions(document, conditions);
+            });
+
+            // Setup initial state.
+            // TODO: Move to server-side setData listener.
+            handleConditions(document, conditions);
         });
     </script>
 {% endblock %}

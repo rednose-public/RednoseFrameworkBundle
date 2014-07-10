@@ -90,8 +90,6 @@ class ContentSectionType extends AbstractType
                 // FIXME: Overriding the `attr` key in the $options array doens't merge correctly.
                 $baseOptions = array_merge_recursive($baseOptions, array(
                     'attr' => array(
-                        'data-id'   => $contentDefinition->getContentItem()->getId(),
-                        'data-type' => $contentDefinition->getContentItem()->getType(),
                     ),
                 ));
             }
@@ -108,8 +106,6 @@ class ContentSectionType extends AbstractType
                     // FIXME: See above.
                     $options = array(
                         'attr' => array(
-                            'data-id'     => $contentDefinition->getContentItem()->getId(),
-                            'data-type'   => $contentDefinition->getContentItem()->getType(),
                             'placeholder' => $this->translator->trans('type_to_search_placeholder'),
                         )
                     );
@@ -150,8 +146,6 @@ class ContentSectionType extends AbstractType
                     $options = array(
                         'required' => false,
                         'attr'     => array(
-                            'data-id'       => $contentDefinition->getContentItem()->getId(),
-                            'data-type'     => $contentDefinition->getContentItem()->getType(),
                             'placeholder'   => $this->translator->trans('type_here_placeholder'),
                             'data-required' => $contentDefinition->isRequired()
                         )
@@ -219,6 +213,11 @@ class ContentSectionType extends AbstractType
             }
 
             $formOptions = array_merge($baseOptions, $options);
+
+            $formOptions['attr']['data-id']      = $contentDefinition->getContentItem()->getId();
+            $formOptions['attr']['data-type']    = $contentDefinition->getContentItem()->getType();
+            $formOptions['attr']['data-name']    = $contentDefinition->getName();
+            $formOptions['attr']['data-section'] = $contentSection->getName();
 
             // Initial data-binding implementation.
             if ($contentDefinition->getBinding()) {
