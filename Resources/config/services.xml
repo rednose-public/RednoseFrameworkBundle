@@ -43,6 +43,10 @@
         </service>
 
         <!-- Form types -->
+        <service id="rednose_framework.form.type.rednose_form" class="Rednose\FrameworkBundle\Form\Type\RednoseFormType">
+            <tag name="form.type" alias="rednose_form" />
+        </service>
+
         <service id="rednose_framework.form.type.content_section" class="Rednose\FrameworkBundle\Form\Type\ContentSectionType">
             <tag name="form.type" alias="content_section" />
             <argument type="service" id="translator" />

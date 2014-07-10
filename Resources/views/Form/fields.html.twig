@@ -6,3 +6,17 @@
 {% use 'RednoseFrameworkBundle:Form:rednose_widget_editor.html.twig' %}
 {% use 'RednoseFrameworkBundle:Form:rednose_date.html.twig' %}
 {% use 'RednoseFrameworkBundle:Form:rednose_autocomplete.html.twig' %}
+
+{% block content_section_row %}
+    {% spaceless %}
+        {% if inline == true %}
+            <div class="rednose-form-inline">
+        {% else %}
+            <div>
+        {% endif %}
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    </div>
+    {% endspaceless %}
+{% endblock %}

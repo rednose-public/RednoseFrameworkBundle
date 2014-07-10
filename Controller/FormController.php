@@ -57,7 +57,11 @@ class FormController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm('content_section', null, array(
+//        $form = $this->createForm('content_section', null, array(
+//            'form' => $model,
+//        ));
+
+        $form = $this->createForm('rednose_form', null, array(
             'form' => $model,
         ));
 

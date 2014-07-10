@@ -15,13 +15,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Rednose\FrameworkBundle\Model\FormControl as BaseFormControl;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * Default control object
  *
  * @ORM\Entity
- * @ORM\Table(name="rednose_framework_form_control")
+ * @ORM\Table(name="rednose_framework_form_control", uniqueConstraints={@UniqueConstraint(name="rednose_framework_form_control_unique", columns={"section_id", "name"})})
  *
  * @Serializer\AccessorOrder("custom", custom = {"name", "caption", "required", "help"})
  */
@@ -39,7 +39,7 @@ class FormControl extends BaseFormControl
     protected $id;
 
     /**
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string")
      *
      * @Serializer\XmlAttribute
      * @Serializer\Groups({"file", "details"})

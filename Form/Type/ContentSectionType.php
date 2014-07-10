@@ -22,6 +22,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Rednose\DataProviderBundle\Provider\DataProviderFactoryInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 class ContentSectionType extends AbstractType
 {
@@ -59,27 +61,13 @@ class ContentSectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (isset($options['data']) === false && isset($options['form']) === false) {
-            throw new \InvalidArgumentException('Data needs to be passed on form type construction, or option `form` needs to be specified.');
-        }
-
-        $contentSection = null;
-
-        if (isset($options['form'])) {
-            $contentSection = $options['form'];
-        } else if (isset($options['data'])) {
-            $data = $options['data'];
-
-            if (!$data instanceof ContentSectionValueInterface) {
-                throw new \InvalidArgumentException('Form data must implement ContentSectionValueInterface');
-            }
-
-            $contentSection = $data->getContentSection();
-        }
+        $contentSection = $options['section'];
 
         if (!$contentSection instanceof ContentSectionInterface) {
-            throw new \InvalidArgumentException('Content section must implement ContentSectionInterface');
+            throw new \InvalidArgumentException('Section must be instance of `ContentSectionInterface`');
         }
+
+        $builder->setAttribute('inline', $contentSection->getInline());
 
         foreach ($contentSection->getDefinitions() as $contentDefinition) {
             $properties = $contentDefinition->getProperties();
@@ -102,7 +90,7 @@ class ContentSectionType extends AbstractType
                 // FIXME: Overriding the `attr` key in the $options array doens't merge correctly.
                 $baseOptions = array_merge_recursive($baseOptions, array(
                     'attr' => array(
-                        'data-id'   => $contentDefinition->getContentItem()->getForeignId(),
+                        'data-id'   => $contentDefinition->getContentItem()->getId(),
                         'data-type' => $contentDefinition->getContentItem()->getType(),
                     ),
                 ));
@@ -120,7 +108,7 @@ class ContentSectionType extends AbstractType
                     // FIXME: See above.
                     $options = array(
                         'attr' => array(
-                            'data-id'     => $contentDefinition->getContentItem()->getForeignId(),
+                            'data-id'     => $contentDefinition->getContentItem()->getId(),
                             'data-type'   => $contentDefinition->getContentItem()->getType(),
                             'placeholder' => $this->translator->trans('type_to_search_placeholder'),
                         )
@@ -162,7 +150,7 @@ class ContentSectionType extends AbstractType
                     $options = array(
                         'required' => false,
                         'attr'     => array(
-                            'data-id'       => $contentDefinition->getContentItem()->getForeignId(),
+                            'data-id'       => $contentDefinition->getContentItem()->getId(),
                             'data-type'     => $contentDefinition->getContentItem()->getType(),
                             'placeholder'   => $this->translator->trans('type_here_placeholder'),
                             'data-required' => $contentDefinition->isRequired()
@@ -244,12 +232,19 @@ class ContentSectionType extends AbstractType
                 $formOptions['attr']['data-connections'] = json_encode($connections);
             }
 
-//            $builder->add((string) $contentDefinition->getContentId(), $type, $formOptions);
-            $builder->add((string) $contentDefinition->getForeignId(), $type, $formOptions);
+            $builder->add((string) $contentDefinition->getName(), $type, $formOptions);
         }
 
-        $builder->add('save', 'submit');
+//        $builder->add('save', 'submit');
 //        $builder->addViewTransformer(new ContentSectionValueToArrayTransformer);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['inline'] = $form->getConfig()->getAttribute('inline');
     }
 
     /**
@@ -259,7 +254,7 @@ class ContentSectionType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => null,
-            'form'       => null,
+            'section'    => null,
         ));
     }
 
