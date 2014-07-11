@@ -33,178 +33,111 @@
     </div>
 
     <script>
-        YUI().use('autocomplete', 'autocomplete-highlighters', 'datasource', function (Y) {
-            var json = '[{"office":"Minister-President, Minister van Algemene Zaken","name":"Mark Rutte"},{"office":"Minister van Sociale Zaken en Werkgelegenheid","name":"Lodewijk Asscher"},{"office":"Staatssecretaris van Sociale Zaken en Werkgelegenheid","name":"Jetta Klijnsma"},{"office":"Minister van Buitenlandse Zaken","name":"Frans Timmermans"},{"office":"Minister voor Buitenlandse Handel en Ontwikkelingssamenwerking","name":"Lilianne Ploumen"},{"office":"Minister van Veiligheid en Justitie","name":"Ivo Opstelten"},{"office":"Staatssecretaris van Veiligheid en Justitie","name":"Fred Teeven"},{"office":"Minister van Binnenlandse Zaken en Koninkrijksrelaties","name":"Ronald Plasterk"},{"office":"Minister voor Wonen en Rijksdienst","name":"Stef Blok"},{"office":"Minister van Onderwijs, Cultuur en Wetenschap","name":"Jet Bussemaker"},{"office":"Staatssecretaris van Onderwijs, Cultuur en Wetenschap","name":"Sander Dekker"},{"office":"Minister van Financi\u00ebn","name":"Jeroen Dijsselbloem"},{"office":"Staatssecretaris van Financi\u00ebn","name":"Frans Weekers"},{"office":"Minister van Defensie","name":"Jeanine Hennis-Plasschaert"},{"office":"Minister van Infrastructuur en Milieu","name":"Melanie Schultz van Haegen-Maas Geesteranus"},{"office":"Staatssecretaris van Infrastructuur en Milieu","name":"Wilma Mansveld"},{"office":"Minister van Economische Zaken","name":"Henk Kamp"},{"office":"Staatssecretaris van Economische Zaken","name":"Sharon Dijksma"},{"office":"Minister van Volksgezondheid, Welzijn en Sport","name":"Edith Schippers"},{"office":"Staatssecretaris van Volksgezondheid, Welzijn en Sport","name":"Martin van Rijn"}]';
-            var xml  = '<?xml version="1.0"?><response><item key="0"><office>Minister-President, Minister van Algemene Zaken</office><name>Mark Rutte</name></item><item key="1"><office>Minister van Sociale Zaken en Werkgelegenheid</office><name>Lodewijk Asscher</name></item><item key="2"><office>Staatssecretaris van Sociale Zaken en Werkgelegenheid</office><name>Jetta Klijnsma</name></item><item key="3"><office>Minister van Buitenlandse Zaken</office><name>Frans Timmermans</name></item><item key="4"><office>Minister voor Buitenlandse Handel en Ontwikkelingssamenwerking</office><name>Lilianne Ploumen</name></item><item key="5"><office>Minister van Veiligheid en Justitie</office><name>Ivo Opstelten</name></item><item key="6"><office>Staatssecretaris van Veiligheid en Justitie</office><name>Fred Teeven</name></item><item key="7"><office>Minister van Binnenlandse Zaken en Koninkrijksrelaties</office><name>Ronald Plasterk</name></item><item key="8"><office>Minister voor Wonen en Rijksdienst</office><name>Stef Blok</name></item><item key="9"><office>Minister van Onderwijs, Cultuur en Wetenschap</office><name>Jet Bussemaker</name></item><item key="10"><office>Staatssecretaris van Onderwijs, Cultuur en Wetenschap</office><name>Sander Dekker</name></item><item key="11"><office>Minister van Financi&#xEB;n</office><name>Jeroen Dijsselbloem</name></item><item key="12"><office>Staatssecretaris van Financi&#xEB;n</office><name>Frans Weekers</name></item><item key="13"><office>Minister van Defensie</office><name>Jeanine Hennis-Plasschaert</name></item><item key="14"><office>Minister van Infrastructuur en Milieu</office><name>Melanie Schultz van Haegen-Maas Geesteranus</name></item><item key="15"><office>Staatssecretaris van Infrastructuur en Milieu</office><name>Wilma Mansveld</name></item><item key="16"><office>Minister van Economische Zaken</office><name>Henk Kamp</name></item><item key="17"><office>Staatssecretaris van Economische Zaken</office><name>Sharon Dijksma</name></item><item key="18"><office>Minister van Volksgezondheid, Welzijn en Sport</office><name>Edith Schippers</name></item><item key="19"><office>Staatssecretaris van Volksgezondheid, Welzijn en Sport</office><name>Martin van Rijn</name></item></response>';
+        YUI().use('rednose-form', 'datatype-xml', function (Y) {
+            var json = {{ json|raw }};
 
-            var data = [
-                {name:"abc",id:123,extra:"foo"},
-                {name:"def",id:456,extra:"bar"},
-                {name:"ghi",id:789,extra:"baz"}
-            ];
+            function getXpathValue (document, query) {
+                var result = document.evaluate(query, document, null, XPathResult.ANY_TYPE, null);
 
-//            var myDataSource = new Y.DataSource.Local({source:["a", "b", "c"]});
-            var ds = new Y.DataSource.Local({source:data});
-
-//            var myCallback = {
-//                success: function(e){
-//                    console.log(e.response.results);
-//                },
-//                failure: function(e){
-//                    console.log('Could not retrieve data: ' + e.error.message);
-//                }
-//            };
-
-            ds.plug(Y.Plugin.DataSourceArraySchema, {
-                schema: {
-                    resultFields: ["name","id"]
+                if (result.resultType === 2) {
+                    return result.stringValue;
                 }
+
+                if (result.resultType === 4) {
+                    return result.iterateNext().textContent;
+                }
+
+                return null;
+            }
+
+            function setXpathValue (document, query, value) {
+                var result = document.evaluate(query, document, null, XPathResult.ANY_TYPE, null);
+
+                if (result.resultType === 4) {
+                    result.iterateNext().textContent = value;
+                }
+            }
+
+            function handleConditions(document, conditions) {
+                for (var nodeId in conditions) {
+                    if (conditions.hasOwnProperty(nodeId)) {
+                        var condition = conditions[nodeId];
+
+                        var a = getXpathValue(document, condition.a),
+                            b = getXpathValue(document, condition.b);
+
+                        var node = Y.one('#' + node),
+                            row  = node.get('parentNode');
+
+                        switch (condition.operator) {
+                            case '==':
+                                var result = (a === b);
+
+                                row[result ? 'show' : 'hide']();
+
+                                break;
+                        }
+                    }
+                }
+            }
+
+            var Autocomplete = Y.Rednose.ControlFormAutoComplete,
+                Form         = Y.Rednose.Form.FormModel;
+
+            var form  = Y.one('form'),
+                model = new Form(json);
+
+            var xmlData = '<' + model.get('name') + '>';
+
+            var conditions = {};
+
+            model.get('sections').each(function (section) {
+                xmlData += '<' + section.get('name') + '>';
+
+                section.get('controls').each(function (control) {
+                    xmlData += '<' + control.get('name') + '>';
+
+                    var node       = form.one('[data-id=' + control.get('id') + ']'),
+                        type       = control.get('type'),
+                        properties = control.get('properties');
+
+                    if (type === 'autocomplete') {
+                        var autocomplete = new Autocomplete({
+                            inputNode : node,
+                            choices   : (properties && properties.choices) || null,
+                            datasource: (properties && properties.datasource) || null
+                        }).render();
+                    }
+
+                    if (properties && properties.conditions && properties.conditions.visible) {
+                        conditions[node.get('id')] = properties.conditions.visible;
+                    }
+
+                    xmlData += '</' + control.get('name') + '>';
+                });
+
+                xmlData += '</' + section.get('name') + '>';
             });
 
-//            myDataSource.sendRequest({callback: myCallback});
+            xmlData += '</' + model.get('name') + '>';
 
-        // Create a DataSource instance.
-//        var ds = new Y.DataSource.Get({
-//            source: 'http://query.yahooapis.com/v1/public/yql?format=json'
-//        });
+            var document = Y.XML.parse(xmlData);
 
-        Y.one('#rednose_form_Section1_bewindspersoon').plug(Y.Plugin.AutoComplete, {
-            maxResults: 10,
-            resultHighlighter: 'phraseMatch',
-            resultTextLocator: function (result) {
-                console.log(result);
-                return 'test';
-//                return result.name + ', ' + result.id + ', ' + result.extra;
-            },
+            form.after('change', function (e) {
+                var node    = e.target,
+                    name    = node.getData('name'),
+                    section = node.getData('section'),
+                    value   = node.get('type') === 'checkbox' ? node.get('checked').toString() : node.get('value');
 
-            // Use the DataSource instance as the result source.
-            source: ds,
+                var location = '//' + section + '/' + name;
 
-            // YQL query to use for each request. This will be appended to the URL
-            // that was supplied to the DataSource's "source" config above.
-//            requestTemplate: '&q=select * from geo.places where text="{query}" and placeTypeName.content="Town" and country.content="United States"',
+                setXpathValue(document, location, value);
+                handleConditions(document, conditions);
+            });
 
-            // Custom result list locator to parse the results out of the YQL response.
-            // This is necessary because YQL sometimes returns an array of results, and
-            // sometimes just a single result that isn't in an array.
-//            resultListLocator: function (response) {
-//                var results = response[0].query.results &&
-//                        response[0].query.results.place;
-//
-//                if (results && !Y.Lang.isArray(results)) {
-//                    results = [results];
-//                }
-//
-//                return results || [];
-//            }
+            // Setup initial state.
+            // TODO: Move to server-side setData listener.
+            handleConditions(document, conditions);
         });
-
-        });
-        {#YUI().use('rednose-form', 'datatype-xml', function (Y) {#}
-            {#var json = {{ json|raw }};#}
-
-            {#function getXpathValue (document, query) {#}
-                {#var result = document.evaluate(query, document, null, XPathResult.ANY_TYPE, null);#}
-
-                {#if (result.resultType === 2) {#}
-                    {#return result.stringValue;#}
-                {#}#}
-
-                {#if (result.resultType === 4) {#}
-                    {#return result.iterateNext().textContent;#}
-                {#}#}
-
-                {#return null;#}
-            {#}#}
-
-            {#function setXpathValue (document, query, value) {#}
-                {#var result = document.evaluate(query, document, null, XPathResult.ANY_TYPE, null);#}
-
-                {#if (result.resultType === 4) {#}
-                    {#result.iterateNext().textContent = value;#}
-                {#}#}
-            {#}#}
-
-            {#function handleConditions(document, conditions) {#}
-                {#for (node in conditions) {#}
-                    {#if (conditions.hasOwnProperty(node)) {#}
-                        {#var condition = conditions[node];#}
-
-                        {#var a = getXpathValue(document, condition.a),#}
-                            {#b = getXpathValue(document, condition.b);#}
-
-                        {#var node = Y.one('#' + node),#}
-                            {#row  = node.get('parentNode');#}
-
-                        {#switch (condition.operator) {#}
-                            {#case '==':#}
-                                {#var result = (a === b);#}
-
-                                {#row[result ? 'show' : 'hide']();#}
-
-                                {#break;#}
-                        {#}#}
-                    {#}#}
-                {#}#}
-            {#}#}
-
-            {#var Autocomplete = Y.Rednose.ControlFormAutoComplete,#}
-                {#Form         = Y.Rednose.Form.FormModel;#}
-
-            {#var form  = Y.one('form'),#}
-                {#model = new Form(json);#}
-
-            {#var xmlData = '<' + model.get('name') + '>';#}
-
-            {#var conditions = {};#}
-
-            {#model.get('sections').each(function (section) {#}
-                {#xmlData += '<' + section.get('name') + '>';#}
-
-                {#section.get('controls').each(function (control) {#}
-                    {#xmlData += '<' + control.get('name') + '>';#}
-
-                    {#var node       = form.one('[data-id=' + control.get('id') + ']'),#}
-                        {#type       = control.get('type'),#}
-                        {#properties = control.get('properties');#}
-
-                    {#if (type === 'autocomplete') {#}
-                        {#var autocomplete = new Autocomplete({#}
-                            {#inputNode : node,#}
-                            {#choices   : (properties && properties.choices) || null,#}
-                            {#datasource: (properties && properties.datasource) || null#}
-                        {#}).render();#}
-                    {#}#}
-
-                    {#if (properties && properties.conditions && properties.conditions.visible) {#}
-                        {#conditions[node.get('id')] = properties.conditions.visible;#}
-                    {#}#}
-
-                    {#xmlData += '</' + control.get('name') + '>';#}
-                {#});#}
-
-                {#xmlData += '</' + section.get('name') + '>';#}
-            {#});#}
-
-            {#xmlData += '</' + model.get('name') + '>';#}
-
-            {#var document = Y.XML.parse(xmlData);#}
-
-            {#form.after('change', function (e) {#}
-                {#var node    = e.target,#}
-                    {#name    = node.getData('name'),#}
-                    {#section = node.getData('section'),#}
-                    {#value   = node.get('type') === 'checkbox' ? node.get('checked').toString() : node.get('value');#}
-
-                {#var location = '//' + section + '/' + name;#}
-
-                {#setXpathValue(document, location, value);#}
-                {#handleConditions(document, conditions);#}
-            {#});#}
-
-            {#// Setup initial state.#}
-            {#// TODO: Move to server-side setData listener.#}
-            {#handleConditions(document, conditions);#}
-        {#});#}
     </script>
 {% endblock %}
