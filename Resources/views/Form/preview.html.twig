@@ -63,6 +63,10 @@
                         property;
 
                 while (property = tokens.shift()) {
+                    if (buffer === null || typeof buffer === 'undefined') {
+                        return null;
+                    }
+
                     if (!buffer.hasOwnProperty(property)) {
                         return null;
                     }
@@ -89,7 +93,7 @@
                         var a = getXpathValue(document, condition.a),
                             b = getXpathValue(document, condition.b);
 
-                        var node = Y.one('#' + node),
+                        var node = Y.one('#' + nodeId),
                             row  = node.get('parentNode');
 
                         switch (condition.operator) {
@@ -149,13 +153,11 @@
                         properties = control.get('properties');
 
                     if (type === 'autocomplete') {
-                        var autocomplete = new Autocomplete({
+                        node.autocomplete = new Autocomplete({
                             inputNode : node,
                             choices   : (properties && properties.choices) || null,
                             datasource: (properties && properties.datasource) || null
                         }).render();
-
-                        node.autocomplete = autocomplete;
                     }
 
                     if (properties && properties.datasource && properties.datasource.id) {
