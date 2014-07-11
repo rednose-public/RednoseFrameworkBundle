@@ -36,7 +36,7 @@
         YUI().use('rednose-form', 'datatype-xml', function (Y) {
             var json = {{ json|raw }};
 
-            function getXpathValue (document, query) {
+            function getXpathValue(document, query) {
                 var result = document.evaluate(query, document, null, XPathResult.ANY_TYPE, null);
 
                 if (result.resultType === 2) {
@@ -50,7 +50,30 @@
                 return null;
             }
 
-            function setXpathValue (document, query, value) {
+            function getNodeXpathLocation(node) {
+                var name    = node.getData('name'),
+                        section = node.getData('section');
+
+                return '//' + section + '/' + name;
+            }
+
+            function getJSONValue(data, location) {
+                var tokens = location.split('.'),
+                        buffer = data,
+                        property;
+
+                while (property = tokens.shift()) {
+                    if (!buffer.hasOwnProperty(property)) {
+                        return null;
+                    }
+
+                    buffer = buffer[property];
+                }
+
+                return buffer;
+            }
+
+            function setXpathValue(document, query, value) {
                 var result = document.evaluate(query, document, null, XPathResult.ANY_TYPE, null);
 
                 if (result.resultType === 4) {
@@ -81,6 +104,29 @@
                 }
             }
 
+            function handleDatasources(document, datasources) {
+                for (datasourceId in datasources) {
+                    if (datasources.hasOwnProperty(datasourceId)) {
+                        var datasource = datasources[datasourceId];
+
+                        form.all('[data-binding]').each(function (node) {
+                            var binding = node.getData('binding'),
+                                data    = {};
+
+                            data[datasourceId] = datasource.get('record');
+
+                            var value = getJSONValue(data, binding.replace(/[${}]/g, ''));
+
+                            if (value) {
+                                node.set('value', value);
+
+                                setXpathValue(document, getNodeXpathLocation(node), value);
+                            }
+                        });
+                    }
+                }
+            }
+
             var Autocomplete = Y.Rednose.ControlFormAutoComplete,
                 Form         = Y.Rednose.Form.FormModel;
 
@@ -90,6 +136,7 @@
             var xmlData = '<' + model.get('name') + '>';
 
             var conditions = {};
+            var datasources = {};
 
             model.get('sections').each(function (section) {
                 xmlData += '<' + section.get('name') + '>';
@@ -107,6 +154,12 @@
                             choices   : (properties && properties.choices) || null,
                             datasource: (properties && properties.datasource) || null
                         }).render();
+
+                        node.autocomplete = autocomplete;
+                    }
+
+                    if (properties && properties.datasource && properties.datasource.id) {
+                        datasources[properties.datasource.id] = node.autocomplete;
                     }
 
                     if (properties && properties.conditions && properties.conditions.visible) {
@@ -124,15 +177,13 @@
             var document = Y.XML.parse(xmlData);
 
             form.after('change', function (e) {
-                var node    = e.target,
-                    name    = node.getData('name'),
-                    section = node.getData('section'),
-                    value   = node.get('type') === 'checkbox' ? node.get('checked').toString() : node.get('value');
-
-                var location = '//' + section + '/' + name;
+                var node     = e.target,
+                    location = getNodeXpathLocation(node),
+                    value    = node.get('type') === 'checkbox' ? node.get('checked').toString() : node.get('value');
 
                 setXpathValue(document, location, value);
                 handleConditions(document, conditions);
+                handleDatasources(document, datasources);
             });
 
             // Setup initial state.
