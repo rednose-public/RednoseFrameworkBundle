@@ -1,0 +1,77 @@
+{% block content_section_row %}
+    {% spaceless %}
+        {% if inline == true %}
+            <fieldset class="rednose-form-inline">
+        {% else %}
+            <fieldset>
+        {% endif %}
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    </fieldset>
+    {% endspaceless %}
+{% endblock %}
+
+{% block form_row %}
+    {% spaceless %}
+        <div class="control-group">
+            {{ form_label(form) }}
+            {{ form_errors(form) }}
+            <div class="controls">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}
+
+{# Adds `control-label` class #}
+
+{% block form_label %}
+    {% spaceless %}
+        {% if label is not sameas(false) %}
+            {% if not compound %}
+                {% set label_attr = label_attr|merge({'for': id}) %}
+            {% endif %}
+            {% if required %}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+            {% endif %}
+            {% if label is empty %}
+                {% set label = name|humanize %}
+            {% endif %}
+            <label class="control-label"{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_label %}
+
+{# Adds `form-horizontal` class #}
+
+{% block form_start %}
+    {% spaceless %}
+        {% set method = method|upper %}
+        {% if method in ["GET", "POST"] %}
+            {% set form_method = method %}
+        {% else %}
+            {% set form_method = "POST" %}
+        {% endif %}
+        <form class="form-horizontal" method="{{ form_method|lower }}" action="{{ action }}"{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>
+        {% if form_method != method %}
+            <input type="hidden" name="_method" value="{{ method }}" />
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_start %}
+
+{% block form_widget_compound %}
+    {% spaceless %}
+        {% if legend is defined and legend is not null %}
+            <legend>{{ legend }}</legend>
+        {% endif %}
+
+        <div {{ block('widget_container_attributes') }}>
+            {% if form.parent is empty %}
+                {{ form_errors(form) }}
+            {% endif %}
+            {{ block('form_rows') }}
+            {{ form_rest(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock form_widget_compound %}

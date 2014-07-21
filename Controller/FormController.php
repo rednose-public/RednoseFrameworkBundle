@@ -12,15 +12,20 @@
 namespace Rednose\FrameworkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\SecurityContext;
-use FOS\RestBundle\Controller\Annotations\Get;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use FOS\RestBundle\View\View;
 use JMS\Serializer\SerializationContext;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Rednose\FrameworkBundle\Model\Form;
 
 class FormController extends Controller
 {
     /**
-     * @Get("/forms/{id}/read", name="rednose_framework_forms_read", options={"expose"=true})
+     * @Route("/forms/{id}/read", name="rednose_framework_forms_read", options={"expose"=true})
+     * @Method({"GET"})
      */
     public function readAction($id)
     {
@@ -44,26 +49,35 @@ class FormController extends Controller
     }
 
     /**
-     * @Get("/forms/{id}/preview", name="rednose_framework_forms_preview", options={"expose"=true})
+     * @Route("/forms/{id}/preview", name="rednose_framework_forms_preview", options={"expose"=true})
+     * @Method({"GET", "POST"})
      */
     public function previewAction($id)
     {
         $em         = $this->get('doctrine.orm.entity_manager');
         $serializer = $this->get('serializer');
 
+        /** @var Form $model */
         $model = $em->getRepository('Rednose\FrameworkBundle\Entity\Form')->findOneById($id);
 
         if (!$model) {
             throw $this->createNotFoundException();
         }
 
-//        $form = $this->createForm('content_section', null, array(
-//            'form' => $model,
-//        ));
-
         $form = $this->createForm('rednose_form', null, array(
             'form' => $model,
         ));
+
+        $form->handleRequest($this->getRequest());
+
+        if ($form->isValid()) {
+            $encoder = new XmlEncoder($model->getName());
+            $data    = $form->getData();
+
+            return new Response($encoder->encode($data, 'xml'), 200, array(
+                'Content-Type' => 'application/xml',
+            ));
+        }
 
         $context = new SerializationContext();
         $context->setGroups('details');
@@ -76,7 +90,8 @@ class FormController extends Controller
     }
 
     /**
-     * @Get("/forms/{id}/export", name="rednose_framework_forms_export", options={"expose"=true})
+     * @Route("/forms/{id}/export", name="rednose_framework_forms_export", options={"expose"=true})
+     * @Method({"GET"})
      */
     public function exportAction($id)
     {
