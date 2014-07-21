@@ -32,7 +32,8 @@ class RednoseFormType extends AbstractType
         foreach ($form->getSections() as $section) {
             $builder->add($section->getName(), 'content_section', array(
                 'section' => $section,
-                'label'   => false
+                'label'   => false,
+                'legend'  => $section->getCaption(),
             ));
         }
 

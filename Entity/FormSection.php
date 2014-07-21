@@ -58,8 +58,6 @@ class FormSection extends BaseFormSection
     /**
      * @ORM\Column(type="string", nullable=true)
      *
-     * @Assert\NotBlank(message="Please enter a form caption.")
-     *
      * @Serializer\XmlAttribute
      * @Serializer\Groups({"file", "details"})
      */
