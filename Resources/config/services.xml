@@ -74,6 +74,10 @@
             <tag name="form.type" alias="rednose_autocomplete" />
         </service>
 
+        <service id="form.type.rednose_button" class="Rednose\FrameworkBundle\Form\Type\ButtonType">
+            <tag name="form.type" alias="rednose_button" />
+        </service>
+
         <service id="rednose_framework.form.listener.edit_type_data" class="Rednose\FrameworkBundle\Form\EventListener\EditorTypeDataListener">
             <argument type="service" id="rednose_framework.purifier" />
         </service>

@@ -95,6 +95,16 @@ class ContentSectionType extends AbstractType
             }
 
             switch ($contentDefinition->getType()) {
+                case 'button':
+                    $type = 'rednose_button';
+
+                    $options = array(
+                        'value' => $contentDefinition->getValue(),
+                        'label' => false,
+                    );
+
+                    break;
+
                 case ContentDefinitionInterface::TYPE_TEXT:
                     $type = 'text';
 
@@ -201,13 +211,14 @@ class ContentSectionType extends AbstractType
 
                     $options = array(
                         'choices'     => $choices,
-                        'empty_value' => $this->translator->trans('Choose an option...'),
+//                        'empty_value' => $this->translator->trans('Choose an option...'),
+                        'empty_value' => false,
                         'expanded'    => $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO,
                     );
 
-                    if ($properties['datasource']) {
-                        $options['attr']['data-datasource'] = json_encode($properties['datasource']);
-                    }
+//                    if ($properties['datasource']) {
+//                        $options['attr']['data-datasource'] = json_encode($properties['datasource']);
+//                    }
 
                     break;
             }
@@ -222,6 +233,14 @@ class ContentSectionType extends AbstractType
             // Initial data-binding implementation.
             if ($contentDefinition->getBinding()) {
                 $formOptions['attr']['data-binding'] = $this->getKeyFromXPath($contentDefinition->getBinding());
+            }
+
+            if ($contentDefinition->getBindings()) {
+                $formOptions['attr']['data-bindings'] = json_encode($contentDefinition->getBindings());
+            }
+
+            if ($properties['datasource']) {
+                $formOptions['attr']['data-datasource'] = json_encode($properties['datasource']);
             }
 
             // Initial form-connection implementation.

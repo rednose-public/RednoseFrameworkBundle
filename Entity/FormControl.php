@@ -119,6 +119,15 @@ class FormControl extends BaseFormControl
     protected $binding;
 
     /**
+     * @ORM\Column(type="array", nullable=true)
+     *
+     * @Serializer\XmlList(inline = false, entry = "binding")
+     * @Serializer\Type("array<string>")
+     * @Serializer\Groups({"file", "details"})
+     */
+    protected $bindings;
+
+    /**
      * @ORM\Column(type="array")
      *
      * @Serializer\SerializedName("properties")

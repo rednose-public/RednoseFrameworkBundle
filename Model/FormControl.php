@@ -20,6 +20,7 @@ abstract class FormControl implements ContentDefinitionInterface
     protected $name;
     protected $value;
     protected $binding;
+    protected $bindings;
     protected $handle;
     protected $caption;
     protected $placeholder;
@@ -215,6 +216,22 @@ abstract class FormControl implements ContentDefinitionInterface
     public function getBinding()
     {
         return $this->binding;
+    }
+
+    /**
+     * @param string $bindings
+     */
+    public function setBindings($bindings)
+    {
+        $this->bindings = $bindings;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBindings()
+    {
+        return $this->bindings;
     }
 
     /**
