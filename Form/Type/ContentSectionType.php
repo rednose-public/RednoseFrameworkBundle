@@ -229,6 +229,7 @@ class ContentSectionType extends AbstractType
             $formOptions['attr']['data-type']    = $contentDefinition->getContentItem()->getType();
             $formOptions['attr']['data-name']    = $contentDefinition->getName();
             $formOptions['attr']['data-section'] = $contentSection->getName();
+            $formOptions['attr']['data-path']    = $contentSection->getName().'.'.$contentDefinition->getName();
 
             // Initial data-binding implementation.
             if ($contentDefinition->getBinding()) {
