@@ -75,7 +75,7 @@ class ContentSectionType extends AbstractType
             $options    = array();
 
             $baseOptions = array(
-                'label'     => $contentDefinition->getCaption(),
+                'label'     => $contentDefinition->getCaption() ?: false,
                 'required'  => $contentDefinition->isRequired(),
                 'help'      => $contentDefinition->getHelp(),
                 'read_only' => $contentDefinition->isProtected(),
