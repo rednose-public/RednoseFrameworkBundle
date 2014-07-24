@@ -19,16 +19,20 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ButtonType extends AbstractType
+class ImageType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->setAttribute('value', $options['value'])
-        ;
+//        $builder
+//            ->setAttribute('disable', $options['disable'])
+//            ->setData(new \DateTime())
+//        ;
+//
+//        $builder->addEventSubscriber(new DateTypeDataListener);
+//        $builder->addViewTransformer(new DateTimeToTimestampTransformer);
     }
 
     /**
@@ -36,7 +40,10 @@ class ButtonType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['value'] = $form->getConfig()->getAttribute('value');
+//        $view->vars['disable'] = $form->getConfig()->getAttribute('disable');
+//
+//        // TODO: Inject dependency
+//        $view->vars['locale'] = 'nl';
     }
 
     /**
@@ -46,7 +53,6 @@ class ButtonType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => null,
-            'value'      => null,
         ));
     }
 
@@ -63,6 +69,6 @@ class ButtonType extends AbstractType
      */
     public function getName()
     {
-        return 'rednose_button';
+        return 'rednose_image';
     }
 }

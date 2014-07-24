@@ -95,18 +95,28 @@ class ContentSectionType extends AbstractType
             }
 
             switch ($contentDefinition->getType()) {
-                case 'button':
-                    $type = 'rednose_button';
-
-                    $options = array(
-                        'value' => $contentDefinition->getValue(),
-                        'label' => false,
-                    );
+                case 'image':
+                    $type = 'rednose_image';
 
                     break;
 
                 case ContentDefinitionInterface::TYPE_TEXT:
                     $type = 'text';
+
+                    break;
+
+                case ContentDefinitionInterface::TYPE_TEXTAREA:
+                    $type = 'textarea';
+
+                    if (isset($properties['rows'])) {
+                        // FIXME: See above.
+                        $options = array(
+                            'required' => false,
+                            'attr' => array(
+                                'rows' => $properties['rows'],
+                            )
+                        );
+                    }
 
                     break;
 
@@ -211,8 +221,9 @@ class ContentSectionType extends AbstractType
 
                     $options = array(
                         'choices'     => $choices,
+                        'required'    => false,
 //                        'empty_value' => $this->translator->trans('Choose an option...'),
-                        'empty_value' => false,
+//                        'empty_value' => false,
                         'expanded'    => $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO,
                     );
 

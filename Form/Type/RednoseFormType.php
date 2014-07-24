@@ -37,7 +37,14 @@ class RednoseFormType extends AbstractType
             ));
         }
 
-        $builder->add('save', 'submit');
+//        $builder->add('save', 'submit');
+        $builder->add('export', 'button', array(
+            'label' => 'Export',
+        ));
+
+        $builder->add('generate', 'submit', array(
+            'label' => 'Generate',
+        ));
     }
 
     /**

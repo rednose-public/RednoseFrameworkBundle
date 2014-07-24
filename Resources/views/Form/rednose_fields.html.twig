@@ -1,0 +1,10 @@
+{# Image #}
+
+{% block rednose_image_row %}
+    {% spaceless %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        <img src="{{ value }}" alt="{{ label|trans({}, translation_domain) }}" {{ block('widget_attributes') }}/>
+    {% endspaceless %}
+{% endblock %}
