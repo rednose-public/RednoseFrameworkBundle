@@ -95,6 +95,17 @@ class ContentSectionType extends AbstractType
             }
 
             switch ($contentDefinition->getType()) {
+                case 'button':
+                    $type = 'button';
+
+                    $options = array(
+                        'label' => $contentDefinition->getValue(),
+                    );
+
+                    $baseOptions = array();
+
+                    break;
+
                 case 'image':
                     $type = 'rednose_image';
 
