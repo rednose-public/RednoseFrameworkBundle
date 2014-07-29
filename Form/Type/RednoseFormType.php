@@ -11,8 +11,11 @@
 
 namespace Rednose\FrameworkBundle\Form\Type;
 
+use Rednose\FrameworkBundle\Form\DataTransformer\DocumentToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Rednose\FrameworkBundle\Model\Form;
 
@@ -28,6 +31,9 @@ class RednoseFormType extends AbstractType
         if (!$form instanceof Form) {
             throw new \InvalidArgumentException('Form must be instance of `Rednose\FrameworkBundle\Model\Form`');
         }
+
+        $builder->addViewTransformer(new DocumentToArrayTransformer());
+//        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
 
         foreach ($form->getSections() as $section) {
             $builder->add($section->getName(), 'content_section', array(
@@ -67,7 +73,7 @@ class RednoseFormType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => null,
+//            'data_class' => null,
             'form'       => null,
         ));
     }
@@ -78,5 +84,14 @@ class RednoseFormType extends AbstractType
     public function getName()
     {
         return 'rednose_form';
+    }
+
+    public function onPreSetData(FormEvent $event)
+    {
+        $data = $event->getData();
+        $form = $event->getForm();
+
+        var_dump($form->get('AfzenderOndertekening')->get('On_Behalf')->getData());
+        exit;
     }
 }
