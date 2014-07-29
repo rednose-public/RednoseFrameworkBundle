@@ -34,6 +34,9 @@ class RednoseFormType extends AbstractType
                 'section' => $section,
                 'label'   => false,
                 'legend'  => $section->getCaption(),
+                'attr'    => array(
+                    'data-section' => $section->getName()
+                )
             ));
         }
 

@@ -232,9 +232,8 @@ class ContentSectionType extends AbstractType
 
                     $options = array(
                         'choices'     => $choices,
-                        'required'    => false,
-//                        'empty_value' => $this->translator->trans('Choose an option...'),
-//                        'empty_value' => false,
+                        'required'    => $contentDefinition->isRequired(),
+                        'empty_value' => $contentDefinition->isRequired() ? false : $this->translator->trans('Choose an option...'),
                         'expanded'    => $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO,
                     );
 
@@ -250,7 +249,7 @@ class ContentSectionType extends AbstractType
             $formOptions['attr']['data-id']      = $contentDefinition->getContentItem()->getId();
             $formOptions['attr']['data-type']    = $contentDefinition->getContentItem()->getType();
             $formOptions['attr']['data-name']    = $contentDefinition->getName();
-            $formOptions['attr']['data-section'] = $contentSection->getName();
+//            $formOptions['attr']['data-section'] = $contentSection->getName();
             $formOptions['attr']['data-path']    = $contentSection->getName().'.'.$contentDefinition->getName();
 
             // Initial data-binding implementation.
@@ -266,11 +265,8 @@ class ContentSectionType extends AbstractType
                 $formOptions['attr']['data-datasource'] = json_encode($properties['datasource']);
             }
 
-            // Initial form-connection implementation.
-            $connections = is_array($properties) && isset($properties['connections']) ? $properties['connections'] : null;
-
-            if ($connections) {
-                $formOptions['attr']['data-connections'] = json_encode($connections);
+            if ($properties['conditions']) {
+                $formOptions['attr']['data-conditions'] = json_encode($properties['conditions']);
             }
 
             $builder->add((string) $contentDefinition->getName(), $type, $formOptions);
