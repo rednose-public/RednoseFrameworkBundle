@@ -14,7 +14,7 @@ class DocumentToArrayTransformer implements DataTransformerInterface
 
     public function __construct()
     {
-        $this->encoder = new XmlEncoder('form');
+        $this->encoder = new XmlEncoder('Rijkshuistijl');
     }
 
     /**

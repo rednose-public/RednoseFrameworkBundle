@@ -18,6 +18,8 @@ use Rednose\FrameworkBundle\Model\ContentSectionValueInterface;
 use Rednose\FrameworkBundle\Model\ExtrinsicObjectInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -62,10 +64,17 @@ class ContentSectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $contentSection = $options['section'];
+        $dom            = $options['dom'];
 
         if (!$contentSection instanceof ContentSectionInterface) {
             throw new \InvalidArgumentException('Section must be instance of `ContentSectionInterface`');
         }
+
+        if (!$dom instanceof \DOMDocument) {
+            throw new \InvalidArgumentException('Dom must be instance of `DOMDocument`');
+        }
+
+        $xpath = new \DOMXPath($dom);
 
         $builder->setAttribute('inline', $contentSection->getInline());
 
@@ -74,8 +83,16 @@ class ContentSectionType extends AbstractType
             $type       = null;
             $options    = array();
 
+            $visible = $contentDefinition->isVisible();
+
+            if (array_key_exists('conditions', $properties) && array_key_exists('visible', $properties['conditions'])) {
+                $condition = $properties['conditions']['visible'];
+                $visible   = $this->evaluateCondition($this->getXpathValue($xpath, $condition['a']), $this->getXpathValue($xpath, $condition['b']), $condition['operator']);
+            }
+
             $baseOptions = array(
                 'label'     => $contentDefinition->getCaption() ?: false,
+                'visible'   => $visible,
                 'required'  => $contentDefinition->isRequired(),
                 'help'      => $contentDefinition->getHelp(),
                 'read_only' => $contentDefinition->isProtected(),
@@ -265,12 +282,18 @@ class ContentSectionType extends AbstractType
                 $formOptions['attr']['data-datasource'] = json_encode($properties['datasource']);
             }
 
-            if ($properties['conditions']) {
+            if (array_key_exists('conditions', $properties)) {
                 $formOptions['attr']['data-conditions'] = json_encode($properties['conditions']);
             }
 
             $builder->add((string) $contentDefinition->getName(), $type, $formOptions);
         }
+
+//        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
+
+        $this->builder = $builder;
+
+
 
 //        $builder->add('save', 'submit');
 //        $builder->addViewTransformer(new ContentSectionValueToArrayTransformer);
@@ -292,6 +315,7 @@ class ContentSectionType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => null,
             'section'    => null,
+            'dom'        => null,
         ));
     }
 
@@ -301,6 +325,34 @@ class ContentSectionType extends AbstractType
     public function getName()
     {
         return 'content_section';
+    }
+
+    protected function getXpathValue(\DOMXPath $xpath, $query)
+    {
+        $result = $xpath->evaluate($query);
+
+        if ($result instanceof \DOMNodeList) {
+            if ($result->length > 0) {
+                return $result->item(0)->nodeValue;
+            }
+
+            return '';
+        }
+
+        return $result;
+    }
+
+    protected function evaluateCondition($a, $b, $operator)
+    {
+        switch ($operator) {
+            case '==':
+                return ($a === $b);
+
+            case '!=':
+                return ($a !== $b);
+        }
+
+        return null;
     }
 
     private function getKeyFromXPath($xpath)

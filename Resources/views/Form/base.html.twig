@@ -1,3 +1,7 @@
+
+
+{# Adds `inline` classes for subforms (sections) #}
+
 {% block content_section_row %}
     {% spaceless %}
         {% if inline == true %}
@@ -12,9 +16,11 @@
     {% endspaceless %}
 {% endblock %}
 
+{# Adds form_row classes and checks for `visible` option #}
+
 {% block form_row %}
     {% spaceless %}
-        <div class="control-group">
+        <div class="control-group"{% if visible is defined and not visible %} hidden="hidden"{% endif %}>
             {{ form_label(form) }}
             {{ form_errors(form) }}
             <div class="controls">

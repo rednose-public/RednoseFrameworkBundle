@@ -21,23 +21,33 @@ use Rednose\FrameworkBundle\Model\Form;
 
 class RednoseFormType extends AbstractType
 {
+    protected $conditions = array();
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->builder = $builder;
+
         $form = $options['form'];
 
         if (!$form instanceof Form) {
             throw new \InvalidArgumentException('Form must be instance of `Rednose\FrameworkBundle\Model\Form`');
         }
 
+        // We need the data on form construction so we can set the initial state by processing from conditions.
+        if (!array_key_exists('data', $options)) {
+            throw new \InvalidArgumentException('Data must be specified on form construction');
+        }
+
         $builder->addViewTransformer(new DocumentToArrayTransformer());
-//        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
 
         foreach ($form->getSections() as $section) {
             $builder->add($section->getName(), 'content_section', array(
                 'section' => $section,
+                'dom'     => $options['data'],
                 'label'   => false,
                 'legend'  => $section->getCaption(),
                 'attr'    => array(
@@ -73,7 +83,7 @@ class RednoseFormType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-//            'data_class' => null,
+            'data_class' => null,
             'form'       => null,
         ));
     }
@@ -88,10 +98,14 @@ class RednoseFormType extends AbstractType
 
     public function onPreSetData(FormEvent $event)
     {
-        $data = $event->getData();
-        $form = $event->getForm();
-
-        var_dump($form->get('AfzenderOndertekening')->get('On_Behalf')->getData());
-        exit;
+//        $data = $event->getData();
+//        $form = $event->getForm();
+//
+//        $field = $this->builder->get('AfzenderOndertekening')->get('On_Behalf');
+//
+//        $options = $field->getOptions();            // get the options
+//        $type = $field->getType()->getName();       // get the name of the type
+//        $options['label'] = "Login Name";           // change the label
+//        $this->builder->get('AfzenderOndertekening')->add('On_Behalf', $type, $options);
     }
 }
