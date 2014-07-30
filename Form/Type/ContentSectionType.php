@@ -250,7 +250,7 @@ class ContentSectionType extends AbstractType
                     $options = array(
                         'choices'     => $choices,
                         'required'    => $contentDefinition->isRequired(),
-                        'empty_value' => $contentDefinition->isRequired() ? false : $this->translator->trans('Choose an option...'),
+                        'empty_value' => $contentDefinition->isRequired() ? false : '...',
                         'expanded'    => $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO,
                     );
 
@@ -263,11 +263,11 @@ class ContentSectionType extends AbstractType
 
             $formOptions = array_merge($baseOptions, $options);
 
-            $formOptions['attr']['data-id']      = $contentDefinition->getContentItem()->getId();
-            $formOptions['attr']['data-type']    = $contentDefinition->getContentItem()->getType();
-            $formOptions['attr']['data-name']    = $contentDefinition->getName();
-//            $formOptions['attr']['data-section'] = $contentSection->getName();
-            $formOptions['attr']['data-path']    = $contentSection->getName().'.'.$contentDefinition->getName();
+            $formOptions['attr']['data-id']       = $contentDefinition->getContentItem()->getId();
+            $formOptions['attr']['data-type']     = $contentDefinition->getContentItem()->getType();
+            $formOptions['attr']['data-name']     = $contentDefinition->getName();
+            $formOptions['attr']['data-required'] = $contentDefinition->isRequired();
+            $formOptions['attr']['data-path']     = $contentSection->getName().'.'.$contentDefinition->getName();
 
             // Initial data-binding implementation.
             if ($contentDefinition->getBinding()) {
