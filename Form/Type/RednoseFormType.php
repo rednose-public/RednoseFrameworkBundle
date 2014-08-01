@@ -36,7 +36,7 @@ class RednoseFormType extends AbstractType
             throw new \InvalidArgumentException('Form must be instance of `Rednose\FrameworkBundle\Model\Form`');
         }
 
-        // We need the data on form construction so we can set the initial state by processing from conditions.
+        // We need the data on form construction so we can set the initial state by processing form conditions.
         if (!array_key_exists('data', $options)) {
             throw new \InvalidArgumentException('Data must be specified on form construction');
         }
