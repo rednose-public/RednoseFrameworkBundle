@@ -176,8 +176,10 @@ class ContentSectionType extends AbstractType
                     $options = array(
                         'input'        => 'string',
                         'with_seconds' => false,
-                        'date_format'  => \IntlDateFormatter::LONG,
+                        'date_format'  => \IntlDateFormatter::SHORT,
                         'data'         => $date->format('Y-m-d H:i:s'),
+                        'date_widget'  => 'single_text',
+                        'time_widget'  => 'single_text',
                     );
 
                     break;
@@ -300,8 +302,6 @@ class ContentSectionType extends AbstractType
 //        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
 
         $this->builder = $builder;
-
-
 
 //        $builder->add('save', 'submit');
 //        $builder->addViewTransformer(new ContentSectionValueToArrayTransformer);

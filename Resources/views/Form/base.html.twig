@@ -23,7 +23,7 @@
         <div class="control-group"{% if visible is defined and not visible %} hidden="hidden"{% endif %}>
             {{ form_label(form) }}
             {{ form_errors(form) }}
-            <div class="controls">
+            <div class="controls controls-row">
                 {{ form_widget(form) }}
             </div>
         </div>
@@ -120,3 +120,28 @@
         <label class="checkbox" for="{{ id }}"><input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />{{ label|trans }}</label>
     {% endspaceless %}
 {% endblock checkbox_widget %}
+
+{# Date / time#}
+
+{% block datetime_widget %}
+    {% spaceless %}
+        <div {{ block('widget_container_attributes') }}>
+            {{ form_errors(form.date) }}
+            {{ form_errors(form.time) }}
+            {{ form_widget(form.date, {'attr': {'class': 'span2'}}) }}
+            {{ form_widget(form.time) }}
+        </div>
+    {% endspaceless %}
+{% endblock datetime_widget %}
+
+{% block date_widget %}
+    {% spaceless %}
+        <input type="text" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% endspaceless %}
+{% endblock %}
+
+{% block time_widget %}
+    {% spaceless %}
+        <input class="span1" type="text" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% endspaceless %}
+{% endblock %}
