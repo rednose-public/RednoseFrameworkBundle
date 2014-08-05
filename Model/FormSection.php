@@ -19,6 +19,8 @@ abstract class FormSection implements ContentSectionInterface
     protected $name;
     protected $caption;
     protected $controls;
+    protected $sections;
+    protected $section;
 
     /**
      * @var boolean
@@ -41,6 +43,7 @@ abstract class FormSection implements ContentSectionInterface
     public function __construct()
     {
         $this->controls = new ArrayCollection();
+        $this->sections = new ArrayCollection();
     }
 
     /**
@@ -121,6 +124,34 @@ abstract class FormSection implements ContentSectionInterface
     public function getControls()
     {
         return $this->controls;
+    }
+
+    public function addSection(FormSection $section)
+    {
+        $section->setSection($this);
+
+        $this->sections->add($section);
+    }
+
+    public function getSections()
+    {
+        return $this->sections;
+    }
+
+    /**
+     * @param FormSection $section
+     */
+    public function setSection($section)
+    {
+        $this->section = $section;
+    }
+
+    /**
+     * @return FormSection
+     */
+    public function getSection()
+    {
+        return $this->section;
     }
 
     /**

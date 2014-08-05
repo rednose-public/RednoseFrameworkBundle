@@ -74,6 +74,20 @@ class FormSection extends BaseFormSection
 
     /**
      * @ORM\OneToMany(
+     *   targetEntity="FormSection",
+     *   orphanRemoval=true,
+     *   mappedBy="section",
+     *   cascade={"persist", "remove"})
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
+     *
+     * @Serializer\SerializedName("sections")
+     * @Serializer\Groups({"file", "details"})
+     * @Serializer\XmlList(inline = false, entry = "section")
+     */
+    protected $sections;
+
+    /**
+     * @ORM\OneToMany(
      *   targetEntity="FormControl",
      *   orphanRemoval=true,
      *   mappedBy="section",
@@ -94,6 +108,17 @@ class FormSection extends BaseFormSection
      */
     protected $inline = false;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="FormSection")
+     *
+     * @ORM\JoinColumn(
+     *   name="section_id",
+     *   nullable=true,
+     *   onDelete="SET NULL",
+     *   referencedColumnName="id")
+     */
+    protected $section;
+
     // -- Serializer Methods ---------------------------------------------------
 
     /**
@@ -107,6 +132,15 @@ class FormSection extends BaseFormSection
             foreach ($this->controls as $control) {
                 $control->setSection($this);
                 $control->setSortOrder($sortOrder++);
+            }
+        }
+
+        if ($this->sections) {
+            $sortOrder = 0;
+
+            foreach ($this->sections as $section) {
+                $section->setSection($this);
+                $section->setSortOrder($sortOrder++);
             }
         }
     }
