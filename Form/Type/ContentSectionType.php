@@ -74,6 +74,24 @@ class ContentSectionType extends AbstractType
             throw new \InvalidArgumentException('Dom must be instance of `DOMDocument`');
         }
 
+        // XXX
+        foreach ($contentSection->getSections() as $section) {
+            $builder->add($section->getName(), 'collection', array(
+                'allow_add' => true,
+                'type' => 'content_section',
+                'label' => false,
+                'options' => array(
+                    'section' => $section,
+                    'dom'     => $dom,
+                    'label'   => false,
+                    'legend'  => $section->getCaption(),
+                    'attr'    => array(
+                        'data-section' => $section->getName()
+                    )
+                )
+            ));
+        }
+
         $xpath = new \DOMXPath($dom);
 
         $builder->setAttribute('inline', $contentSection->getInline());
