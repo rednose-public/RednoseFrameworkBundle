@@ -225,27 +225,31 @@ class ContentSectionType extends AbstractType
                 case ContentDefinitionInterface::TYPE_RADIO:
                     $type = 'choice';
 
-                    $choices = $properties['choices'];
+                    $choices = isset($properties['choices']) ? $properties['choices'] : array();
 
                     // Server side execution.
-//                    if ($properties['datasource']) {
-//                        $source = $this->om->getRepository('Rednose\DataProviderBundle\Entity\DataSource')->findOneBy(array(
-//                            'foreignId' => $properties['datasource']['id']
-//                        ));
-//
-//                        $provider = $this->factory->create($source);
-//
-//                        $map = $properties['datasource']['map'];
-//
-//                        $choices = array();
-//
-//                        foreach ($provider->getData() as $record) {
-//                            $id    = $this->getArrayValueByKey($record, $map['id']);
-//                            $value = $this->getArrayValueByKey($record, $map['value']);
-//
-//                            $choices[$id] = $value;
-//                        }
-//                    }
+                    if (isset($properties['datasource']) && isset($properties['datasource']['serverSide'])) {
+                        $source = $this->om->getRepository('Rednose\DataProviderBundle\Entity\DataSource')->findOneBy(array(
+                            'foreignId' => $properties['datasource']['id']
+                        ));
+
+                        $provider = $this->factory->create($source);
+
+                        $map = $properties['datasource']['map'];
+
+                        $choices = array();
+
+                        foreach ($provider->getData() as $record) {
+                            if (!array_key_exists($map['value'], $record) || !array_key_exists($map['text'], $record)) {
+                                throw new \RuntimeException(sprintf('Invalid mapping for datasource `%s`', $source->getName()));
+                            }
+
+                            $value = $record[$map['value']];
+                            $text  = $record[$map['text']];
+
+                            $choices[$value] = $text;
+                        }
+                    }
 
                     $options = array(
                         'choices'     => $choices,
@@ -358,20 +362,5 @@ class ContentSectionType extends AbstractType
     private function getKeyFromXPath($xpath)
     {
         return end(explode('/', $xpath));
-    }
-
-    private function getArrayValueByKey(array $array, $search)
-    {
-        foreach ($array as $key => $value) {
-            if ($key === $search) {
-                return $value;
-            }
-
-            if (is_array($value) && $v = $this->getArrayValueByKey($value, $search)) {
-                return $v;
-            }
-        }
-
-        return null;
     }
 }
