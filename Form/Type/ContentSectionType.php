@@ -228,10 +228,14 @@ class ContentSectionType extends AbstractType
                     $choices = isset($properties['choices']) ? $properties['choices'] : array();
 
                     // Server side execution.
-                    if (isset($properties['datasource']) && isset($properties['datasource']['serverSide'])) {
+                    if (isset($properties['datasource']) && !isset($properties['parent'])) {
                         $source = $this->om->getRepository('Rednose\DataProviderBundle\Entity\DataSource')->findOneBy(array(
                             'foreignId' => $properties['datasource']['id']
                         ));
+
+                        if ($source === null) {
+                            throw new \RuntimeException(sprintf('Datasource `%s` not does not exist', $properties['datasource']['id']));
+                        }
 
                         $provider = $this->factory->create($source);
 
