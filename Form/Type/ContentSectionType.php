@@ -248,7 +248,7 @@ class ContentSectionType extends AbstractType
                     $choices = isset($properties['choices']) ? $properties['choices'] : array();
 
                     // Server side execution.
-                    if (isset($properties['datasource']) && !isset($properties['parent'])) {
+                    if (isset($properties['datasource']) && !isset($properties['datasource']['parent'])) {
                         $source = $this->om->getRepository('Rednose\DataProviderBundle\Entity\DataSource')->findOneBy(array(
                             'foreignId' => $properties['datasource']['id']
                         ));
@@ -278,7 +278,7 @@ class ContentSectionType extends AbstractType
                     $options = array(
                         'choices'     => $choices,
                         'required'    => $contentDefinition->isRequired(),
-                        'empty_value' => $contentDefinition->isRequired() ? false : '...',
+                        'empty_value' => $contentDefinition->isRequired() || $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO ? false : '...',
                         'expanded'    => $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO,
                     );
 
