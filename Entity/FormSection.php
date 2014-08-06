@@ -82,7 +82,7 @@ class FormSection extends BaseFormSection
      *
      * @Serializer\SerializedName("sections")
      * @Serializer\Groups({"file", "details"})
-     * @Serializer\XmlList(inline = false, entry = "section")
+     * @Serializer\XmlList(inline = true, entry = "section")
      */
     protected $sections;
 
@@ -96,7 +96,7 @@ class FormSection extends BaseFormSection
      *
      * @Serializer\SerializedName("controls")
      * @Serializer\Groups({"file", "details"})
-     * @Serializer\XmlList(inline = false, entry = "control")
+     * @Serializer\XmlList(inline = true, entry = "control")
      */
     protected $controls;
 

@@ -77,7 +77,7 @@ class Form extends BaseForm
      *
      * @Serializer\SerializedName("sections")
      * @Serializer\Groups({"file", "details"})
-     * @Serializer\XmlList(inline = false, entry = "section")
+     * @Serializer\XmlList(inline = true, entry = "section")
      */
     protected $sections;
 
