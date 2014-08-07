@@ -105,9 +105,6 @@ class ContentSectionType extends AbstractType
 
             if (array_key_exists('conditions', $properties) && array_key_exists('visible', $properties['conditions'])) {
                 $condition = $properties['conditions']['visible'];
-//                var_dump($this->getXpathValue($xpath, $condition['a']));
-//                var_dump($dom->saveXML());
-//                exit;
                 $visible   = $this->evaluateCondition($this->getXpathValue($xpath, $condition['a']), $this->getXpathValue($xpath, $condition['b']), $condition['operator']);
             }
 

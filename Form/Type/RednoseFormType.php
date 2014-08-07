@@ -38,9 +38,9 @@ class RednoseFormType extends AbstractType
         }
 
         // We need the data on form construction so we can set the initial state by processing form conditions.
-        if (!array_key_exists('data', $options)) {
-            throw new \InvalidArgumentException('Data must be specified on form construction');
-        }
+//        if (!array_key_exists('data', $options)) {
+//            throw new \InvalidArgumentException('Data must be specified on form construction');
+//        }
 
         $bindings = array();
 
@@ -56,15 +56,18 @@ class RednoseFormType extends AbstractType
 
         $builder->addViewTransformer($this->transformer);
 
-//        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
+        // XXX
+        $data = $options['data'] ?: array();
 
-//        var_dump($builder->getForm()->getData());
-//        exit;
+        foreach ($data as $key => $value) {
+            $data[$key]['bijAfwezigheidVan'] = $data[$key]['bijAfwezigheidVan'] ? 'true' : 'false';
+        }
 
+        $data = $this->transformer->transform($data);
 
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $encoder = new XmlEncoder('form');
-        $dom->loadXML($encoder->encode($this->transformer->transform($options['data']), 'xml'));
+        $dom->loadXML($encoder->encode($data, 'xml'));
 
         foreach ($form->getSections() as $section) {
             $builder->add($section->getName(), 'content_section', array(
