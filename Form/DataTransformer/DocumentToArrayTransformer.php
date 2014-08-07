@@ -24,9 +24,6 @@ class DocumentToArrayTransformer implements DataTransformerInterface
             return array();
         }
 
-//        var_dump($data);
-//        exit;
-
         $transformed = array();
         $bindings    = array_flip($this->bindings);
 
@@ -40,12 +37,7 @@ class DocumentToArrayTransformer implements DataTransformerInterface
             }
         }
 
-//        var_dump($transformed);
-//        exit;
-
         return $transformed;
-
-//        return $this->encoder->decode($data->saveXML(), 'xml');
     }
 
     public function reverseTransform($data)
@@ -54,23 +46,36 @@ class DocumentToArrayTransformer implements DataTransformerInterface
             return null;
         }
 
-        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $transformed = array();
+        $bindings    = $this->bindings;
 
-        $dom->loadXML($this->encoder->encode($data, 'xml'));
+        foreach ($data as $section => $entries) {
+            foreach ($entries as $key => $value) {
+                $path = sprintf('%s.%s', $section, $key);
 
-        return $dom;
+                if (array_key_exists($path, $bindings)) {
+                    $this->arraySet($transformed, $bindings[$path], $value);
+                }
+            }
+        }
+
+        return $transformed;
     }
 
     protected function arrayGet($arr, $path)
     {
-        if (!$path)
+        if (!$path) {
             return null;
+        }
 
         $segments = is_array($path) ? $path : explode('.', $path);
-        $cur =& $arr;
+
+        $cur = &$arr;
+
         foreach ($segments as $segment) {
-            if (!isset($cur[$segment]))
+            if (!isset($cur[$segment])) {
                 return null;
+            }
 
             $cur = $cur[$segment];
         }
@@ -80,16 +85,22 @@ class DocumentToArrayTransformer implements DataTransformerInterface
 
     protected function arraySet(&$arr, $path, $value)
     {
-        if (!$path)
+        if (!$path) {
             return null;
+        }
 
         $segments = is_array($path) ? $path : explode('.', $path);
-        $cur =& $arr;
+
+        $cur = &$arr;
+
         foreach ($segments as $segment) {
-            if (!isset($cur[$segment]))
+            if (!isset($cur[$segment])) {
                 $cur[$segment] = array();
-            $cur =& $cur[$segment];
+            }
+
+            $cur = &$cur[$segment];
         }
+
         $cur = $value;
     }
 }

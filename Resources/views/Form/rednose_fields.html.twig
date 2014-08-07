@@ -5,6 +5,7 @@
         {% if label is empty %}
             {% set label = name|humanize %}
         {% endif %}
-        <img src="{{ value }}" alt="{{ label|trans({}, translation_domain) }}" {{ block('widget_attributes') }}/>
+        <img src="{{ value }}" alt="{{ label|trans({}, translation_domain) }}"/>
+        <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
     {% endspaceless %}
 {% endblock %}

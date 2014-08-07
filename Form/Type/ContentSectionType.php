@@ -151,6 +151,11 @@ class ContentSectionType extends AbstractType
 
                     break;
 
+                case 'integer':
+                    $type = 'integer';
+
+                    break;
+
                 case ContentDefinitionInterface::TYPE_TEXTAREA:
                     $type = 'textarea';
 
