@@ -97,6 +97,18 @@ class ContentSectionType extends AbstractType
         $builder->setAttribute('inline', $contentSection->getInline());
 
         foreach ($contentSection->getDefinitions() as $contentDefinition) {
+            if ($contentDefinition->getType() === 'table') {
+                $properties = $contentDefinition->getProperties();
+
+                $builder->add((string) $contentDefinition->getName(), 'rednose_table', array(
+                    'table'         => $properties['table'],
+                    'parent_field'  => $properties['parentField'],
+                    'related_field' => $properties['relatedField'],
+                ));
+
+                continue;
+            }
+
             $properties = $contentDefinition->getProperties();
             $type       = null;
             $options    = array();
