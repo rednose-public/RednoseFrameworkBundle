@@ -41,8 +41,15 @@ class RednoseFormType extends AbstractType
             throw new \InvalidArgumentException('Data must be specified on form construction');
         }
 
-        $builder->addViewTransformer(new DocumentToArrayTransformer());
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
+        $bindings = array();
+
+        foreach ($form->getSections() as $section) {
+            foreach ($section->getControls() as $control) {
+                if ($control->getBinding()) {
+                    $bindings[$control->getPath()] = $control->getBinding();
+                }
+            }
+        }
 
         foreach ($form->getSections() as $section) {
             $builder->add($section->getName(), 'content_section', array(
@@ -55,6 +62,12 @@ class RednoseFormType extends AbstractType
                 )
             ));
         }
+
+//        var_dump($builder->getFormConfig());
+//        exit;
+
+        $builder->addViewTransformer(new DocumentToArrayTransformer($bindings));
+//        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
 
 //        $builder->add('export', 'submit', array(
 //            'label' => 'Export',

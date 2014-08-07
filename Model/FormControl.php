@@ -406,6 +406,11 @@ abstract class FormControl implements ContentDefinitionInterface
         return $this->section;
     }
 
+    public function getPath()
+    {
+        return sprintf('%s.%s', $this->section->getName(), $this->getName());
+    }
+
     // TODO: Deprecate getValue and setValue in favor of these interface methods.
 
     /**

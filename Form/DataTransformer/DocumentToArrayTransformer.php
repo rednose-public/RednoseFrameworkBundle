@@ -12,30 +12,42 @@ class DocumentToArrayTransformer implements DataTransformerInterface
      */
     protected $encoder;
 
-    public function __construct()
+    public function __construct(array $bindings)
     {
-        $this->encoder = new XmlEncoder('Rijkshuistijl');
+        $this->encoder  = new XmlEncoder('Rijkshuistijl');
+        $this->bindings = $bindings;
     }
 
-    /**
-     * @param \DOMDocument $dom
-     *
-     * @return array
-     */
-    public function transform($dom)
+    public function transform($data)
     {
-        if ($dom === null) {
+        if ($data === null) {
             return array();
         }
 
-        return $this->encoder->decode($dom->saveXML(), 'xml');
+//        var_dump($data);
+//        exit;
+
+        $transformed = array();
+        $bindings    = array_flip($this->bindings);
+
+        foreach ($data as $source => $entries) {
+            foreach ($entries as $key => $value) {
+                $path = sprintf('%s.%s', $source, $key);
+
+                if (array_key_exists($path, $bindings)) {
+                    $this->arraySet($transformed, $bindings[$path], $value);
+                }
+            }
+        }
+
+//        var_dump($transformed);
+//        exit;
+
+        return $transformed;
+
+//        return $this->encoder->decode($data->saveXML(), 'xml');
     }
 
-    /**
-     * @param array $data
-     *
-     * @return \DOMDocument
-     */
     public function reverseTransform($data)
     {
         if ($data === null) {
@@ -47,5 +59,37 @@ class DocumentToArrayTransformer implements DataTransformerInterface
         $dom->loadXML($this->encoder->encode($data, 'xml'));
 
         return $dom;
+    }
+
+    protected function arrayGet($arr, $path)
+    {
+        if (!$path)
+            return null;
+
+        $segments = is_array($path) ? $path : explode('.', $path);
+        $cur =& $arr;
+        foreach ($segments as $segment) {
+            if (!isset($cur[$segment]))
+                return null;
+
+            $cur = $cur[$segment];
+        }
+
+        return $cur;
+    }
+
+    protected function arraySet(&$arr, $path, $value)
+    {
+        if (!$path)
+            return null;
+
+        $segments = is_array($path) ? $path : explode('.', $path);
+        $cur =& $arr;
+        foreach ($segments as $segment) {
+            if (!isset($cur[$segment]))
+                $cur[$segment] = array();
+            $cur =& $cur[$segment];
+        }
+        $cur = $value;
     }
 }
