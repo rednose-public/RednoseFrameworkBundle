@@ -7,6 +7,10 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 class DocumentToArrayTransformer implements DataTransformerInterface
 {
+    public $dom;
+
+    public $xpath;
+
     /**
      * @var XmlEncoder
      */
@@ -14,7 +18,10 @@ class DocumentToArrayTransformer implements DataTransformerInterface
 
     public function __construct(array $bindings)
     {
-        $this->encoder  = new XmlEncoder('Rijkshuistijl');
+        $this->dom = new \DOMDocument('1.0', 'UTF-8');
+        $this->xpath = new \DOMXPath($this->dom);
+
+        $this->encoder  = new XmlEncoder('form');
         $this->bindings = $bindings;
     }
 
@@ -36,6 +43,9 @@ class DocumentToArrayTransformer implements DataTransformerInterface
                 }
             }
         }
+
+        $xml = $this->encoder->encode($transformed, 'xml');
+        $this->dom->loadXML($xml);
 
         return $transformed;
     }

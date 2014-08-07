@@ -70,9 +70,9 @@ class ContentSectionType extends AbstractType
             throw new \InvalidArgumentException('Section must be instance of `ContentSectionInterface`');
         }
 
-//        if (!$dom instanceof \DOMDocument) {
-//            throw new \InvalidArgumentException('Dom must be instance of `DOMDocument`');
-//        }
+        if (!$dom instanceof \DOMDocument) {
+            throw new \InvalidArgumentException('Dom must be instance of `DOMDocument`');
+        }
 
         // XXX
         foreach ($contentSection->getSections() as $section) {
@@ -92,7 +92,7 @@ class ContentSectionType extends AbstractType
             ));
         }
 
-//        $xpath = new \DOMXPath($dom);
+        $xpath = new \DOMXPath($dom);
 
         $builder->setAttribute('inline', $contentSection->getInline());
 
@@ -103,10 +103,13 @@ class ContentSectionType extends AbstractType
 
             $visible = $contentDefinition->isVisible();
 
-//            if (array_key_exists('conditions', $properties) && array_key_exists('visible', $properties['conditions'])) {
-//                $condition = $properties['conditions']['visible'];
-//                $visible   = $this->evaluateCondition($this->getXpathValue($xpath, $condition['a']), $this->getXpathValue($xpath, $condition['b']), $condition['operator']);
-//            }
+            if (array_key_exists('conditions', $properties) && array_key_exists('visible', $properties['conditions'])) {
+                $condition = $properties['conditions']['visible'];
+//                var_dump($this->getXpathValue($xpath, $condition['a']));
+//                var_dump($dom->saveXML());
+//                exit;
+                $visible   = $this->evaluateCondition($this->getXpathValue($xpath, $condition['a']), $this->getXpathValue($xpath, $condition['b']), $condition['operator']);
+            }
 
             $baseOptions = array(
                 'label'     => $contentDefinition->getCaption() ?: false,

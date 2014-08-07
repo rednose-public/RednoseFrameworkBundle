@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Rednose\FrameworkBundle\Model\Form;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 class RednoseFormType extends AbstractType
 {
@@ -51,10 +52,24 @@ class RednoseFormType extends AbstractType
             }
         }
 
+        $this->transformer = new DocumentToArrayTransformer($bindings);
+
+        $builder->addViewTransformer($this->transformer);
+
+//        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
+
+//        var_dump($builder->getForm()->getData());
+//        exit;
+
+
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $encoder = new XmlEncoder('form');
+        $dom->loadXML($encoder->encode($this->transformer->transform($options['data']), 'xml'));
+
         foreach ($form->getSections() as $section) {
             $builder->add($section->getName(), 'content_section', array(
                 'section' => $section,
-                'dom'     => $options['data'],
+                'dom'     => $dom,
                 'label'   => false,
                 'legend'  => $section->getCaption(),
                 'attr'    => array(
@@ -63,11 +78,12 @@ class RednoseFormType extends AbstractType
             ));
         }
 
+//        var_dump($this->transformer->dom->saveXML());
+//        exit;
+
 //        var_dump($builder->getFormConfig());
 //        exit;
 
-        $builder->addViewTransformer(new DocumentToArrayTransformer($bindings));
-//        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
 
 //        $builder->add('export', 'submit', array(
 //            'label' => 'Export',
@@ -111,7 +127,6 @@ class RednoseFormType extends AbstractType
 
     public function onPreSetData(FormEvent $event)
     {
-//        $data = $event->getData();
 //        $form = $event->getForm();
 //
 //        $field = $this->builder->get('AfzenderOndertekening')->get('On_Behalf');
