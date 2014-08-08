@@ -26,13 +26,7 @@ class ImageType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//        $builder
-//            ->setAttribute('disable', $options['disable'])
-//            ->setData(new \DateTime())
-//        ;
-//
-//        $builder->addEventSubscriber(new DateTypeDataListener);
-//        $builder->addViewTransformer(new DateTimeToTimestampTransformer);
+        $builder->setAttribute('default', $options['default']);
     }
 
     /**
@@ -40,10 +34,7 @@ class ImageType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-//        $view->vars['disable'] = $form->getConfig()->getAttribute('disable');
-//
-//        // TODO: Inject dependency
-//        $view->vars['locale'] = 'nl';
+        $view->vars['default'] = $form->getConfig()->getAttribute('default');
     }
 
     /**
@@ -53,6 +44,7 @@ class ImageType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => null,
+            'default' => null,
         ));
     }
 

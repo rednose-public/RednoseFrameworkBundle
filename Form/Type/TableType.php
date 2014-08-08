@@ -41,14 +41,18 @@ class TableType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $query = sprintf ('SELECT * FROM `%s` WHERE `%s` = ?', $options['table'], $options['related_field']);
+        $columns = $options['columns'];
 
-        $value = 1;
+        $query = sprintf('SELECT %s FROM `%s`', implode(', ', $columns), $options['table']);
 
-        $records = $this->connection->fetchAll($query, array($value));
+        if (isset($options['related_field'])) {
+            $query .= sprintf(' WHERE `%s` = %s', $options['related_field'], $options['parent_value']);
+        }
+
+        $records = $this->connection->fetchAll($query);
 
         $table = new Table();
-        $table->columns = array('inhoud');
+        $table->columns = $columns;
         $table->records = $records;
 
         $builder
@@ -78,7 +82,8 @@ class TableType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => null,
             'table' => null,
-            'parent_field' => null,
+            'columns' => array(),
+            'parent_value' => null,
             'related_field' => null,
             'allow_add' => true,
             'allow_delete' => true,

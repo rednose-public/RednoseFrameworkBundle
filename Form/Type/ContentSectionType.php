@@ -102,8 +102,9 @@ class ContentSectionType extends AbstractType
 
                 $builder->add((string) $contentDefinition->getName(), 'rednose_table', array(
                     'table'         => $properties['table'],
-                    'parent_field'  => $properties['parentField'],
-                    'related_field' => $properties['relatedField'],
+                    'parent_value'  => isset($properties['parentField']) ? $this->getXpathValue($xpath, $properties['parentField']) : null,
+                    'related_field' => isset($properties['relatedField']) ? $properties['relatedField'] : null,
+                    'columns'       => $properties['columns'],
                 ));
 
                 continue;
@@ -155,6 +156,10 @@ class ContentSectionType extends AbstractType
 
                 case 'image':
                     $type = 'rednose_image';
+
+                    $options = array(
+                        'default' => $contentDefinition->getValue(),
+                    );
 
                     break;
 
