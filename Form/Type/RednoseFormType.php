@@ -96,9 +96,9 @@ class RednoseFormType extends AbstractType
 //            'label' => 'Generate',
 //        ));
 
-        $builder->add('save', 'submit', array(
-            'label' => 'Save',
-        ));
+//        $builder->add('save', 'submit', array(
+//            'label' => 'Save',
+//        ));
 
 //        $builder->add('approve', 'submit', array(
 //            'label' => 'Approve',
