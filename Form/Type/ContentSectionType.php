@@ -97,18 +97,18 @@ class ContentSectionType extends AbstractType
         $builder->setAttribute('inline', $contentSection->getInline());
 
         foreach ($contentSection->getDefinitions() as $contentDefinition) {
-            if ($contentDefinition->getType() === 'table') {
-                $properties = $contentDefinition->getProperties();
-
-                $builder->add((string) $contentDefinition->getName(), 'rednose_table', array(
-                    'table'         => $properties['table'],
-                    'parent_value'  => isset($properties['parentField']) ? $this->getXpathValue($xpath, $properties['parentField']) : null,
-                    'related_field' => isset($properties['relatedField']) ? $properties['relatedField'] : null,
-                    'columns'       => $properties['columns'],
-                ));
-
-                continue;
-            }
+//            if ($contentDefinition->getType() === 'table') {
+//                $properties = $contentDefinition->getProperties();
+//
+//                $builder->add((string) $contentDefinition->getName(), 'rednose_table', array(
+//                    'table'         => $properties['table'],
+//                    'parent_value'  => isset($properties['parentField']) ? $this->getXpathValue($xpath, $properties['parentField']) : null,
+//                    'related_field' => isset($properties['relatedField']) ? $properties['relatedField'] : null,
+//                    'columns'       => $properties['columns'],
+//                ));
+//
+//                continue;
+//            }
 
             $properties = $contentDefinition->getProperties();
             $type       = null;
