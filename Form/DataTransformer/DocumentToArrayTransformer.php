@@ -24,7 +24,7 @@ class DocumentToArrayTransformer implements DataTransformerInterface
 
     /**
      * Constructor.
-     * 
+     *
      * @param array $bindings The configured form bindings.
      */
     public function __construct(array $bindings)
