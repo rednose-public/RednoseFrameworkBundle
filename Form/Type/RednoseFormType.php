@@ -14,8 +14,6 @@ namespace Rednose\FrameworkBundle\Form\Type;
 use Rednose\FrameworkBundle\Form\DataTransformer\DocumentToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Rednose\FrameworkBundle\Model\Form;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -31,16 +29,11 @@ class RednoseFormType extends AbstractType
     {
         $this->builder = $builder;
 
-        $form = $options['form'];
-
-        if (!$form instanceof Form) {
+        if (!isset($options['form']) || !$options['form'] instanceof Form) {
             throw new \InvalidArgumentException('Form must be instance of `Rednose\FrameworkBundle\Model\Form`');
         }
 
-        // We need the data on form construction so we can set the initial state by processing form conditions.
-//        if (!array_key_exists('data', $options)) {
-//            throw new \InvalidArgumentException('Data must be specified on form construction');
-//        }
+        $form = $options['form'];
 
         $bindings = array();
 
@@ -80,33 +73,6 @@ class RednoseFormType extends AbstractType
                 )
             ));
         }
-
-//        var_dump($this->transformer->dom->saveXML());
-//        exit;
-
-//        var_dump($builder->getFormConfig());
-//        exit;
-
-
-//        $builder->add('export', 'submit', array(
-//            'label' => 'Export',
-//        ));
-//
-//        $builder->add('generate', 'submit', array(
-//            'label' => 'Generate',
-//        ));
-
-//        $builder->add('save', 'submit', array(
-//            'label' => 'Save',
-//        ));
-
-//        $builder->add('approve', 'submit', array(
-//            'label' => 'Approve',
-//        ));
-//
-//        $builder->add('reject', 'submit', array(
-//            'label' => 'Reject',
-//        ));
     }
 
     /**
@@ -126,17 +92,5 @@ class RednoseFormType extends AbstractType
     public function getName()
     {
         return 'rednose_form';
-    }
-
-    public function onPreSetData(FormEvent $event)
-    {
-//        $form = $event->getForm();
-//
-//        $field = $this->builder->get('AfzenderOndertekening')->get('On_Behalf');
-//
-//        $options = $field->getOptions();            // get the options
-//        $type = $field->getType()->getName();       // get the name of the type
-//        $options['label'] = "Login Name";           // change the label
-//        $this->builder->get('AfzenderOndertekening')->add('On_Behalf', $type, $options);
     }
 }

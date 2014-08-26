@@ -400,7 +400,7 @@ class ContentSectionType extends AbstractType
                 return ($a !== $b);
         }
 
-        return null;
+        return false;
     }
 
     private function getKeyFromXPath($xpath)
