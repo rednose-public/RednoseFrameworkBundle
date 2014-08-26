@@ -7,8 +7,14 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 class DocumentToArrayTransformer implements DataTransformerInterface
 {
+    /**
+     * @var \DOMDocument
+     */
     public $dom;
 
+    /**
+     * @var \DOMXPath
+     */
     public $xpath;
 
     /**
@@ -16,6 +22,11 @@ class DocumentToArrayTransformer implements DataTransformerInterface
      */
     protected $encoder;
 
+    /**
+     * Constructor.
+     * 
+     * @param array $bindings The configured form bindings.
+     */
     public function __construct(array $bindings)
     {
         $this->dom = new \DOMDocument('1.0', 'UTF-8');
@@ -25,6 +36,13 @@ class DocumentToArrayTransformer implements DataTransformerInterface
         $this->bindings = $bindings;
     }
 
+    /**
+     * Transforms an array of data based on the form's bindings.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
     public function transform($data)
     {
         if ($data === null) {
@@ -32,24 +50,32 @@ class DocumentToArrayTransformer implements DataTransformerInterface
         }
 
         $transformed = array();
-        $bindings    = array_flip($this->bindings);
 
-        foreach ($data as $source => $entries) {
-            foreach ($entries as $key => $value) {
-                $path = sprintf('%s.%s', $source, $key);
+        foreach ($this->bindings as $target => $source) {
+            $value = $this->arrayGet($data, $source);
 
-                if (array_key_exists($path, $bindings)) {
-                    $this->arraySet($transformed, $bindings[$path], $value);
-                }
+            // XXX
+            if ($value === '0' || $value === '1') {
+                $value = (bool) $value;
             }
+
+            $this->arraySet($transformed, $target, $value);
         }
 
+        // Store the data within a DOM document to evaluate server-side XPath expressions.
         $xml = $this->encoder->encode($transformed, 'xml');
         $this->dom->loadXML($xml);
 
         return $transformed;
     }
 
+    /**
+     * Transforms an array of data based on the form's bindings.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
     public function reverseTransform($data)
     {
         if ($data === null) {
@@ -57,22 +83,25 @@ class DocumentToArrayTransformer implements DataTransformerInterface
         }
 
         $transformed = array();
-        $bindings    = $this->bindings;
 
-        foreach ($data as $section => $entries) {
-            foreach ($entries as $key => $value) {
-                $path = sprintf('%s.%s', $section, $key);
+        foreach ($this->bindings as $target => $source) {
+            $value = $this->arrayGet($data, $target);
 
-                if (array_key_exists($path, $bindings)) {
-                    $this->arraySet($transformed, $bindings[$path], $value);
-                }
-            }
+            $this->arraySet($transformed, $source, $value);
         }
 
         return $transformed;
     }
 
-    protected function arrayGet($arr, $path)
+    /**
+     * Gets a value from an array by specifying a path, ie. "Address.Street".
+     *
+     * @param array $arr
+     * @param string $path
+     *
+     * @return mixed
+     */
+    protected function arrayGet(array $arr, $path)
     {
         if (!$path) {
             return null;
@@ -93,10 +122,17 @@ class DocumentToArrayTransformer implements DataTransformerInterface
         return $cur;
     }
 
-    protected function arraySet(&$arr, $path, $value)
+    /**
+     * Sets a value within an array by specifying a path, ie. "Address.Street".
+     *
+     * @param array  $arr
+     * @param string $path
+     * @param mixed  $value
+     */
+    protected function arraySet(array &$arr, $path, $value)
     {
         if (!$path) {
-            return null;
+            return;
         }
 
         $segments = is_array($path) ? $path : explode('.', $path);
