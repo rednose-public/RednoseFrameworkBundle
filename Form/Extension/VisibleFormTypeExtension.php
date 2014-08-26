@@ -19,20 +19,25 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class VisibleFormTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->setAttribute('visible', $options['visible']);
-    }
+    protected $visible = true;
 
     /**
      * {@inheritdoc}
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['visible'] = $options['visible'];
+        $dom = $form->getConfig()->getOption('dom');
+
+        if ($dom) {
+            $result = $dom->getElementsByTagName('Recipient_Company')->item(0);
+
+            if ($result && $result->nodeValue !== "" && $result->nodeValue !== null) {
+                $this->visible = false;
+            }
+        }
+
+        // TODO: Evaluate conditions here.
+        $view->vars['visible'] = $this->visible;
     }
 
     /**
