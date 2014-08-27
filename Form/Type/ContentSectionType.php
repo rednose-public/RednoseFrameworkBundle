@@ -183,12 +183,9 @@ class ContentSectionType extends AbstractType
                         )
                     );
 
-                    if (isset($properties['choices'])) {
-                        $options['choices'] = $properties['choices'];
-                    }
-
                     if (isset($properties['datasource'])) {
-                        $options['datasource'] = $properties['datasource'];
+                        $options['data_source'] = $properties['datasource']['id'];
+                        $options['data_map'] = $properties['datasource']['map'];
                     }
 
                     break;

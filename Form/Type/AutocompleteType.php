@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the RednoseFrameworkBundle package.
- *
- * (c) RedNose <http://www.rednose.nl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Rednose\FrameworkBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -17,9 +8,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-/**
- * A localized wrapper to implement the YUI Rednose Autocomplete widget.
- */
 class AutocompleteType extends AbstractType
 {
     /**
