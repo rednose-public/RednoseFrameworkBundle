@@ -26,18 +26,7 @@ class VisibleFormTypeExtension extends AbstractTypeExtension
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $dom = $form->getConfig()->getOption('dom');
-
-        if ($dom) {
-            $result = $dom->getElementsByTagName('Recipient_Company')->item(0);
-
-            if ($result && $result->nodeValue !== "" && $result->nodeValue !== null) {
-                $this->visible = false;
-            }
-        }
-
-        // TODO: Evaluate conditions here.
-        $view->vars['visible'] = $this->visible;
+        $view->vars['visible'] = $options['visible'];
     }
 
     /**
