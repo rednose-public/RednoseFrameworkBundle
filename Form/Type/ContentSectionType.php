@@ -176,13 +176,6 @@ class ContentSectionType extends AbstractType
                 case ContentDefinitionInterface::TYPE_AUTOCOMPLETE:
                     $type = 'rednose_autocomplete';
 
-                    // FIXME: See above.
-                    $options = array(
-                        'attr' => array(
-                            'placeholder' => $this->translator->trans('type_to_search_placeholder'),
-                        )
-                    );
-
                     if (isset($properties['datasource'])) {
                         $options['data_source'] = $properties['datasource']['id'];
                         $options['data_map'] = $properties['datasource']['map'];
