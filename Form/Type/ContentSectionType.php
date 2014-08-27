@@ -283,8 +283,8 @@ class ContentSectionType extends AbstractType
                     }
 
                     $options = array(
-//                        'choices'     => $choices,
-                        'datasource'  => 'test',
+                        'data_source' => isset($properties['datasource']) ? $properties['datasource']['id'] : null,
+                        'data_map'    => isset($properties['datasource']) ? $properties['datasource']['map'] : null,
                         'required'    => $contentDefinition->isRequired(),
                         'empty_value' => $contentDefinition->isRequired() || $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO ? false : '...',
                         'expanded'    => $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO,
