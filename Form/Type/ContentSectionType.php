@@ -64,15 +64,15 @@ class ContentSectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $contentSection = $options['section'];
-        $dom            = $options['dom'];
+//        $dom            = $options['dom'];
 
         if (!$contentSection instanceof ContentSectionInterface) {
             throw new \InvalidArgumentException('Section must be instance of `ContentSectionInterface`');
         }
 
-        if (!$dom instanceof \DOMDocument) {
-            throw new \InvalidArgumentException('Dom must be instance of `DOMDocument`');
-        }
+//        if (!$dom instanceof \DOMDocument) {
+//            throw new \InvalidArgumentException('Dom must be instance of `DOMDocument`');
+//        }
 
         // XXX
         foreach ($contentSection->getSections() as $section) {
@@ -82,7 +82,7 @@ class ContentSectionType extends AbstractType
                 'label' => false,
                 'options' => array(
                     'section' => $section,
-                    'dom'     => $dom,
+//                    'dom'     => $dom,
                     'label'   => false,
                     'legend'  => $section->getCaption(),
                     'attr'    => array(
@@ -92,7 +92,7 @@ class ContentSectionType extends AbstractType
             ));
         }
 
-        $xpath = new \DOMXPath($dom);
+//        $xpath = new \DOMXPath($dom);
 
         $builder->setAttribute('inline', $contentSection->getInline());
 
@@ -116,10 +116,10 @@ class ContentSectionType extends AbstractType
 
             $visible = $contentDefinition->isVisible();
 
-            if (array_key_exists('conditions', $properties) && array_key_exists('visible', $properties['conditions'])) {
-                $condition = $properties['conditions']['visible'];
-                $visible   = $this->evaluateCondition($this->getXpathValue($xpath, $condition['a']), $this->getXpathValue($xpath, $condition['b']), $condition['operator']);
-            }
+//            if (array_key_exists('conditions', $properties) && array_key_exists('visible', $properties['conditions'])) {
+//                $condition = $properties['conditions']['visible'];
+//                $visible   = $this->evaluateCondition($this->getXpathValue($xpath, $condition['a']), $this->getXpathValue($xpath, $condition['b']), $condition['operator']);
+//            }
 
             $baseOptions = array(
                 'label'     => $contentDefinition->getCaption() ?: false,
@@ -128,6 +128,7 @@ class ContentSectionType extends AbstractType
                 'help'      => $contentDefinition->getHelp(),
                 'read_only' => $contentDefinition->isProtected(),
                 'disabled'  => $contentDefinition->isReadonly(),
+                'conditions' => $properties['conditions'],
             );
 
             if ($contentDefinition->isVisible() === false) {
