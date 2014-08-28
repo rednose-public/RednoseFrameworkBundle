@@ -114,29 +114,15 @@ class ContentSectionType extends AbstractType
             $type       = null;
             $options    = array();
 
-            $visible = $contentDefinition->isVisible();
-
             $baseOptions = array(
                 'label'     => $contentDefinition->getCaption() ?: false,
-                'visible'   => $visible,
+                'visible'   => $contentDefinition->isVisible(),
                 'required'  => $contentDefinition->isRequired(),
                 'help'      => $contentDefinition->getHelp(),
                 'read_only' => $contentDefinition->isProtected(),
                 'disabled'  => $contentDefinition->isReadonly(),
                 'conditions' => $properties['conditions'],
             );
-
-            if ($contentDefinition->isVisible() === false) {
-                $baseOptions['attr'] = array('style' => 'display: none;');
-            }
-
-            if ($contentDefinition->getContentItem() instanceof ExtrinsicObjectInterface) {
-                // FIXME: Overriding the `attr` key in the $options array doens't merge correctly.
-                $baseOptions = array_merge_recursive($baseOptions, array(
-                    'attr' => array(
-                    ),
-                ));
-            }
 
             switch ($contentDefinition->getType()) {
                 case 'image':
@@ -242,36 +228,6 @@ class ContentSectionType extends AbstractType
                 case ContentDefinitionInterface::TYPE_RADIO:
                     $type = 'choice';
 
-                    $choices = isset($properties['choices']) ? $properties['choices'] : array();
-
-                    // Server side execution.
-                    if (isset($properties['datasource']) && !isset($properties['datasource']['parent'])) {
-                        $source = $this->om->getRepository('Rednose\DataProviderBundle\Entity\DataSource')->findOneBy(array(
-                            'foreignId' => $properties['datasource']['id']
-                        ));
-
-                        if ($source === null) {
-                            throw new \RuntimeException(sprintf('Datasource `%s` not does not exist', $properties['datasource']['id']));
-                        }
-
-                        $provider = $this->factory->create($source);
-
-                        $map = $properties['datasource']['map'];
-
-                        $choices = array();
-
-                        foreach ($provider->getData() as $record) {
-                            if (!array_key_exists($map['value'], $record) || !array_key_exists($map['text'], $record)) {
-                                throw new \RuntimeException(sprintf('Invalid mapping for datasource `%s`', $source->getName()));
-                            }
-
-                            $value = $record[$map['value']];
-                            $text  = $record[$map['text']];
-
-                            $choices[$value] = $text;
-                        }
-                    }
-
                     $options = array(
                         'data_source' => isset($properties['datasource']) ? $properties['datasource']['id'] : null,
                         'data_map'    => isset($properties['datasource']) ? $properties['datasource']['map'] : null,
@@ -280,9 +236,9 @@ class ContentSectionType extends AbstractType
                         'expanded'    => $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO,
                     );
 
-//                    if ($properties['datasource']) {
-//                        $options['attr']['data-datasource'] = json_encode($properties['datasource']);
-//                    }
+                    if (isset($properties['choices'])) {
+                        $options['choices'] = $properties['choices'];
+                    }
 
                     break;
             }
@@ -295,22 +251,12 @@ class ContentSectionType extends AbstractType
             $formOptions['attr']['data-required'] = $contentDefinition->isRequired();
             $formOptions['attr']['data-path']     = $contentSection->getName().'.'.$contentDefinition->getName();
 
-            // Initial data-binding implementation.
-            if ($contentDefinition->getBinding()) {
-                $formOptions['attr']['data-binding'] = $this->getKeyFromXPath($contentDefinition->getBinding());
-            }
-
             if ($contentDefinition->getBindings()) {
                 $formOptions['attr']['data-bindings'] = json_encode($contentDefinition->getBindings());
             }
 
-            if ($properties['datasource']) {
-                $formOptions['attr']['data-datasource'] = json_encode($properties['datasource']);
-            }
-
             $builder->add((string) $contentDefinition->getName(), $type, $formOptions);
         }
-
     }
 
     /**
