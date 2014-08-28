@@ -229,11 +229,13 @@ class ContentSectionType extends AbstractType
                     $type = 'choice';
 
                     $options = array(
-                        'data_source' => isset($properties['datasource']) ? $properties['datasource']['id'] : null,
-                        'data_map'    => isset($properties['datasource']) ? $properties['datasource']['map'] : null,
-                        'required'    => $contentDefinition->isRequired(),
-                        'empty_value' => $contentDefinition->isRequired() || $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO ? false : '...',
-                        'expanded'    => $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO,
+                        'data_source'  => isset($properties['datasource']) ? $properties['datasource']['id'] : null,
+                        'data_map'     => isset($properties['datasource']) ? $properties['datasource']['map'] : null,
+                        'parent_source'=> isset($properties['datasource']) && isset($properties['datasource']['parent']) ? $properties['datasource']['parent']['id'] : null,
+                        'parent_field' => isset($properties['datasource']) && isset($properties['datasource']['parent']) ? $properties['datasource']['parent']['field'] : null,
+                        'required'     => $contentDefinition->isRequired(),
+                        'empty_value'  => $contentDefinition->isRequired() || $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO ? false : '...',
+                        'expanded'     => $contentDefinition->getType() === ContentDefinitionInterface::TYPE_RADIO,
                     );
 
                     if (isset($properties['choices'])) {
