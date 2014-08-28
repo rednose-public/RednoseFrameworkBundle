@@ -191,7 +191,7 @@ class ContentSectionType extends AbstractType
                     break;
 
                 case ContentDefinitionInterface::TYPE_HTML:
-                    $type = 'rednose_widget_editor';
+                    $type = 'rednose_rich_text';
 
                     // FIXME: See above.
                     $options = array(

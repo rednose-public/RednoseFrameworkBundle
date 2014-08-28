@@ -33,7 +33,6 @@ class Configuration implements ConfigurationInterface
         $this->addOauthSection($rootNode);
         $this->addAclSection($rootNode);
         $this->addAccountSection($rootNode);
-        $this->addFormSection($rootNode);
 
         return $treeBuilder;
     }
@@ -67,28 +66,6 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->booleanNode('auto_account_creation')->defaultFalse()->end()
-            ->end();
-    }
-
-    private function addFormSection(ArrayNodeDefinition $node)
-    {
-        $supportedEditors = array(EditorType::TYPE_TINYMCE, EditorType::TYPE_CKEDITOR);
-
-        $node
-            ->children()
-                ->arrayNode('form')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('editor')
-                            ->isRequired()
-                            ->defaultValue(EditorType::TYPE_TINYMCE)
-                            ->validate()
-                                ->ifNotInArray($supportedEditors)
-                                ->thenInvalid('The editor %s is not supported. Please choose one of '.json_encode($supportedEditors))
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
             ->end();
     }
 }

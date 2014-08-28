@@ -33,11 +33,6 @@
             <argument type="service" id="service_container"/>
         </service>
 
-        <!-- Form extensions -->
-        <service id="form.type.label_extension" class="Rednose\FrameworkBundle\Form\Extension\LabelFormTypeExtension">
-            <tag name="form.type_extension" alias="form" />
-        </service>
-
         <service id="form.type.help_extension" class="Rednose\FrameworkBundle\Form\Extension\HelpFormTypeExtension">
             <tag name="form.type_extension" alias="form" />
         </service>
@@ -51,22 +46,11 @@
         </service>
 
         <!-- Form types -->
-        <!--<service id="rednose_framework.form.type.rednose_form" class="Rednose\FrameworkBundle\Form\Type\RednoseFormType">-->
-            <!--<tag name="form.type" alias="rednose_form" />-->
-        <!--</service>-->
-
         <service id="rednose_framework.form.type.content_section" class="Rednose\FrameworkBundle\Form\Type\ContentSectionType">
             <tag name="form.type" alias="content_section" />
             <argument type="service" id="translator" />
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="rednose_data_provider.provider.factory" />
-        </service>
-
-        <service id="form.type.rednose_widget_editor" class="Rednose\FrameworkBundle\Form\Type\EditorType">
-            <argument type="service" id="request" strict="false" />
-            <argument type="service" id="rednose_framework.form.listener.edit_type_data" />
-            <argument></argument>
-            <tag name="form.type" alias="rednose_widget_editor" />
         </service>
 
         <service id="form.type.rednose_date" class="Rednose\FrameworkBundle\Form\Type\DateType">
@@ -85,10 +69,6 @@
         <service id="form.type.rednose_table" class="Rednose\FrameworkBundle\Form\Type\TableType">
             <argument type="service" id="database_connection"/>
             <tag name="form.type" alias="rednose_table" />
-        </service>
-
-        <service id="rednose_framework.form.listener.edit_type_data" class="Rednose\FrameworkBundle\Form\EventListener\EditorTypeDataListener">
-            <argument type="service" id="rednose_framework.purifier" />
         </service>
 
         <!-- JMS Object constructor alias -->
