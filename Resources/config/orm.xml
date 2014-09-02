@@ -16,9 +16,5 @@
             <argument>false</argument>
         </service>
 
-        <service id="rednose_framework.form_manager" class="Rednose\FrameworkBundle\Entity\FormManager">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-        </service>
-
     </services>
 </container>

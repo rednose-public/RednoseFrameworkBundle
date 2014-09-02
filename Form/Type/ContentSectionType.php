@@ -66,9 +66,9 @@ class ContentSectionType extends AbstractType
         $contentSection = $options['section'];
 //        $dom            = $options['dom'];
 
-        if (!$contentSection instanceof ContentSectionInterface) {
-            throw new \InvalidArgumentException('Section must be instance of `ContentSectionInterface`');
-        }
+//        if (!$contentSection instanceof ContentSectionInterface) {
+//            throw new \InvalidArgumentException('Section must be instance of `ContentSectionInterface`');
+//        }
 
 //        if (!$dom instanceof \DOMDocument) {
 //            throw new \InvalidArgumentException('Dom must be instance of `DOMDocument`');
