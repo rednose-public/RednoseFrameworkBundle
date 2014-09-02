@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_data_control")
  *
- * @UniqueEntity(fields={"name", "identity", "parent"}, message="This name is already in use, choose another name")
+ * @UniqueEntity(fields={"name", "dictionary", "parent"}, message="This name is already in use, choose another name")
  *
  * @Serializer\AccessorOrder("custom", custom = {"id", "name", "type", "required"})
  */
