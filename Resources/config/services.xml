@@ -33,24 +33,7 @@
             <argument type="service" id="service_container"/>
         </service>
 
-        <service id="form.type.help_extension" class="Rednose\FrameworkBundle\Form\Extension\HelpFormTypeExtension">
-            <tag name="form.type_extension" alias="form" />
-        </service>
-
-        <service id="form.type.visible_extension" class="Rednose\FrameworkBundle\Form\Extension\VisibleFormTypeExtension">
-            <tag name="form.type_extension" alias="form" />
-        </service>
-
-        <service id="form.type.legend_extension" class="Rednose\FrameworkBundle\Form\Extension\LegendFormTypeExtension">
-            <tag name="form.type_extension" alias="form" />
-        </service>
-
         <!-- Form types -->
-        <service id="form.type.rednose_date" class="Rednose\FrameworkBundle\Form\Type\DateType">
-            <argument type="service" id="request" strict="false" />
-            <tag name="form.type" alias="rednose_date" />
-        </service>
-
         <service id="form.type.rednose_image" class="Rednose\FrameworkBundle\Form\Type\ImageType">
             <tag name="form.type" alias="rednose_image" />
         </service>
