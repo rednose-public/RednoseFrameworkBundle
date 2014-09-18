@@ -107,6 +107,40 @@ class DataDictionary implements DataDictionaryInterface
     }
 
     /**
+     * Returns whether a control for a given path exists or not.
+     *
+     * @param string $path
+     *
+     * @return bool
+     */
+    public function hasControl($path)
+    {
+        $segments = explode('.', $path);
+
+        $cur = $this;
+
+        foreach ($segments as $segment) {
+
+        }
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasChild($name)
+    {
+        foreach ($this->getControls() as $control) {
+            if ($control->getName() === $name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @Serializer\PostDeserialize
      */
     public function postDeserialize()

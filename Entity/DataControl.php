@@ -220,12 +220,26 @@ class DataControl implements DataControlInterface
         while ($control->getParent() !== null) {
             $control = $control->getParent();
 
-            $path = $control->getName() . '/' . $path;
+            $path = $control->getName() . '.' . $path;
         }
 
-        $path = '/' . $path . $this->getName();
+        return $path . $this->getName();
+    }
 
-        return $path;
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasChild($name)
+    {
+        foreach ($this->getChildren() as $control) {
+            if ($control->getName() === $name) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

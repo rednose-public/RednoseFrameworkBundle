@@ -63,4 +63,16 @@ interface DataControlInterface
      * @return DataDictionaryInterface
      */
     public function getDictionary();
+
+    /**
+     * @return string
+     */
+    public function getPath();
+
+   /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasChild($name);
 }
