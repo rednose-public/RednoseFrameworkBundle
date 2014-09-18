@@ -41,7 +41,7 @@ class DataControl implements DataControlInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string")
      *
      * @Serializer\XmlAttribute
      * @Serializer\Groups({"file", "list", "details"})
