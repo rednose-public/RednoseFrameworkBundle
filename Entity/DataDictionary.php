@@ -22,13 +22,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class DataDictionary implements DataDictionaryInterface
 {
     /**
-     * Unique id.
-     *
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      *
-     * @Serializer\Groups({"list", "details"})
+     * @Serializer\XmlAttribute
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"file", "list", "details"})
      */
     protected $id;
 

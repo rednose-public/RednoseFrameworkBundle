@@ -11,6 +11,11 @@ use Rednose\FrameworkBundle\Model\DataControlInterface;
 interface DataDictionaryInterface
 {
     /**
+     * @return string
+     */
+    public function getId();
+
+    /**
      * @param $name
      */
     public function setName($name);
