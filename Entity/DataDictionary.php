@@ -115,13 +115,29 @@ class DataDictionary implements DataDictionaryInterface
      */
     public function hasControl($path)
     {
+        return ($this->getControl($path) instanceof DataControlInterface);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return DataControlInterface
+     */
+    public function getControl($path)
+    {
         $segments = explode('.', $path);
 
         $cur = $this;
 
         foreach ($segments as $segment) {
+            if ($cur->hasChild($segment) === false) {
+                return null;
+            }
 
+            $cur = $cur->getChild($segment);
         }
+
+        return $cur;
     }
 
     /**
@@ -131,13 +147,23 @@ class DataDictionary implements DataDictionaryInterface
      */
     public function hasChild($name)
     {
+        return ($this->getChild($name) instanceof DataControlInterface);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function getChild($name)
+    {
         foreach ($this->getControls() as $control) {
             if ($control->getName() === $name) {
-                return true;
+                return $control;
             }
         }
 
-        return false;
+        return null;
     }
 
     /**

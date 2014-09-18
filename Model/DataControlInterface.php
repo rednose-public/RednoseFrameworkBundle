@@ -75,4 +75,11 @@ interface DataControlInterface
      * @return bool
      */
     public function hasChild($name);
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function getChild($name);
 }

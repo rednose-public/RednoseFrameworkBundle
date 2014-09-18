@@ -45,9 +45,23 @@ interface DataDictionaryInterface
     public function hasControl($path);
 
     /**
+     * @param string $path
+     *
+     * @return DataControlInterface
+     */
+    public function getControl($path);
+
+    /**
      * @param string $name
      *
      * @return bool
      */
     public function hasChild($name);
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function getChild($name);
 }

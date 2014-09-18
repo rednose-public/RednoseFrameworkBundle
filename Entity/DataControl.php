@@ -233,13 +233,23 @@ class DataControl implements DataControlInterface
      */
     public function hasChild($name)
     {
+        return ($this->getChild($name) instanceof DataControlInterface);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function getChild($name)
+    {
         foreach ($this->getChildren() as $control) {
             if ($control->getName() === $name) {
-                return true;
+                return $control;
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
