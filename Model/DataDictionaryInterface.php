@@ -69,4 +69,11 @@ interface DataDictionaryInterface
      * @return bool
      */
     public function getChild($name);
+
+    /**
+     * Return the dictionary as an array tree structure.
+     *
+     * @return array
+     */
+    public function toArray();
 }

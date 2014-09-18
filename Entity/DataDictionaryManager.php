@@ -22,6 +22,24 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
     }
 
     /**
+     * @return DataDictionaryInterface[]
+     */
+    public function findDictionaries()
+    {
+        return $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findAll();
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return DataDictionaryInterface
+     */
+    public function findDictionaryById($id)
+    {
+        return $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneBy(array('id' => $id));
+    }
+
+    /**
      * @param DataDictionaryInterface $dictionary
      * @param bool                    $flush
      */
@@ -42,16 +60,6 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
 
         $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_UUID);
         $metadata->setIdGenerator(new \Doctrine\ORM\Id\UuidGenerator());
-    }
-
-    /**
-     * @param string $id
-     *
-     * @return DataDictionaryInterface
-     */
-    public function findDictionaryById($id)
-    {
-        return $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneBy(array('id' => $id));
     }
 
     /**

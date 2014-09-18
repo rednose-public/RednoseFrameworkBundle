@@ -163,6 +163,14 @@ class DataControl implements DataControlInterface
     }
 
     /**
+     * @return bool
+     */
+    public function hasChildren()
+    {
+        return $this->children && ($this->children->count() > 0);
+    }
+
+    /**
      * @param DataDictionaryInterface $dictionary
      */
     public function setDictionary(DataDictionaryInterface $dictionary)

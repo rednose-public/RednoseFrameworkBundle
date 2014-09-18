@@ -2,7 +2,7 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
-use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
+use Rednose\FrameworkBundle\Entity\DataControl;use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
 
 interface DataControlInterface
 {
@@ -82,4 +82,14 @@ interface DataControlInterface
      * @return bool
      */
     public function getChild($name);
+
+    /**
+     * @return string
+     */
+    public function getIcon();
+
+    /**
+     * @return bool
+     */
+    public function hasChildren();
 }

@@ -21,4 +21,9 @@ interface DataDictionaryManagerInterface
      * @param bool $flush
      */
     public function updateDictionary(DataDictionaryInterface $dictionary, $flush = true);
+
+    /**
+     * @return DataDictionaryInterface[]
+     */
+    public function findDictionaries();
 }

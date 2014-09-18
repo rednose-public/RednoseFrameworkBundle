@@ -175,4 +175,46 @@ class DataDictionary implements DataDictionaryInterface
             $control->setDictionary($this);
         }
     }
+
+    /**
+     * Return the dictionary as an array tree structure.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $nodes = array();
+
+        foreach ($this->getControls() as $control) {
+            $nodes[] = $this->createTreeNode($control);
+        }
+
+        return $nodes;
+    }
+
+    /**
+     * @param DataControlInterface $control
+     *
+     * @return array
+     */
+    private function createTreeNode(DataControlInterface $control)
+    {
+        $node = array(
+            'id'    => $control->getId(),
+            'label' => $control->getName(),
+            'icon'  => $control->getIcon(),
+            'type'  => 'control',
+            'data'  => $control,
+        );
+
+        if ($control->hasChildren()) {
+            $node['children'] = array();
+
+            foreach ($control->getChildren() as $child) {
+                $node['children'][] = $this->createTreeNode($child);
+            }
+        }
+
+        return $node;
+    }
 }
