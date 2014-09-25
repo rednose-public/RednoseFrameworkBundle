@@ -22,6 +22,6 @@ Deprecations
 * Experimental Node-graph functionality was removed
 
 Bundles
-------------
+-------
 
 * FOSRestBundle was upgraded to version 1.4
