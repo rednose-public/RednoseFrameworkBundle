@@ -1,6 +1,11 @@
 UPGRADE FROM 1.3 or 1.4 to 1.5
 ==============================
 
+Configuration
+-------------
+
+* Configuration for editor controls was removed
+
 Features
 --------
 
