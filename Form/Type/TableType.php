@@ -21,6 +21,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\DBAL\Connection;
 use Rednose\FrameworkBundle\Model\Table;
 
+/**
+ * Experimental class
+ */
 class TableType extends AbstractType
 {
     /**

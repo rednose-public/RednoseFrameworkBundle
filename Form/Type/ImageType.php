@@ -19,6 +19,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Experimental
+ */
 class ImageType extends AbstractType
 {
     /**

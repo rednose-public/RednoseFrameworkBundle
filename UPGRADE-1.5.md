@@ -9,17 +9,18 @@ Configuration
 Features
 --------
 
-* Default views are upgraded to use Bootstrap 3
+* Default views are upgraded to use Bootstrap 3 (TODO)
 * Array utils added
-* Added Organization model
-* Added DataDictionary
+* Added Organization model (TODO)
+* Added DataDictionary (TODO)
 
 Deprecations
 ------------
 
-* All form components are removed from the framework
-* Extrinsic object was removed
-* Experimental Node-graph functionality was removed
+* The grid pager was removed (TODO)
+* All form components are removed from the framework (TODO)
+* Extrinsic object was removed (TODO)
+* Experimental Node-graph functionality was removed (TODO)
 
 Bundles
 -------
