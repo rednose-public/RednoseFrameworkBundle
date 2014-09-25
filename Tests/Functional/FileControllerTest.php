@@ -39,7 +39,7 @@ class FileControllerTest extends WebTestCase
         );
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals($contents, file_get_contents(sprintf('%s/%s', $this->getTempDir(), $client->getResponse()->getContent())));
+        $this->assertEquals($contents, file_get_contents(sprintf('%s%s', $this->getTempDir(), $client->getResponse()->getContent())));
     }
 
     public function getFileData()
@@ -54,7 +54,7 @@ class FileControllerTest extends WebTestCase
     {
         return static::createClient(array(), array(
             'PHP_AUTH_USER' => 'admin',
-            'PHP_AUTH_PW'   => 'admin',
+            'PHP_AUTH_PW'   => 'adminpasswd',
         ));
     }
 
@@ -62,9 +62,6 @@ class FileControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $base = $client->getContainer()->get('kernel')->getRootDir().'/cache';
-        $env  = $client->getContainer()->get('kernel')->getEnvironment();
-
-        return sprintf('%s/%s/rednose_framework/tmp', $base, $env);
+        return $client->getContainer()->get('kernel')->getRootDir().'/../web';
     }
 }

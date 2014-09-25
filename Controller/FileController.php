@@ -28,6 +28,7 @@ class FileController extends Controller
 
         foreach($request->files as $uploadedFile) {
             if ($uploadedFile instanceof UploadedFile && $uploadedFile->isValid()) {
+                $base = $this->get('kernel')->getRootDir().'/../web';
                 $dir  = $this->getTempDir();
                 $name = sprintf('%s.%s', uniqid(), $uploadedFile->getClientOriginalExtension());
 
@@ -37,10 +38,10 @@ class FileController extends Controller
                 );
 
                 // Write file.
-                $uploadedFile->move($dir, $name);
+                $uploadedFile->move($base.'/'.$dir, $name);
 
                 // Write metadata.
-                file_put_contents(sprintf('%s/%s.meta', $dir, $name), serialize($metadata));
+                file_put_contents($base.'/'.sprintf('%s/%s.meta', $dir, $name), serialize($metadata));
 
                 $uri = sprintf('%s/%s', $dir, $name);
 
@@ -56,6 +57,6 @@ class FileController extends Controller
      */
     protected function getTempDir()
     {
-        return sprintf('cache/rednose_framework/file');
+        return 'cache/rednose_framework/file';
     }
 }
