@@ -33,9 +33,6 @@ Configuration reference:
         
         oauth: false # Enables Oauth2 authentication
         acl:   false # Enables ACL services and permission maps
-        
-		form:
-			editor: tinymce # WYSIWYG editor, either `tinymce` or `ckeditor`
 		    
 About
 -----

@@ -53,6 +53,11 @@ class ExceptionListener implements EventSubscriberInterface
         $exception = $event->getException();
         $response  = new Response();
 
+        if ($this->kernel->getEnvironment() === 'test') {
+            var_dump($exception->getMessage());
+            return;
+        }
+
         if ($event->getRequest()->headers->get('Content-Type') === 'application/json') {
             $err = array(
                 'message' => $exception->getMessage(),
