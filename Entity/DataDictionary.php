@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Rednose\FrameworkBundle\Model\DataControlInterface;
 use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -39,6 +40,12 @@ class DataDictionary implements DataDictionaryInterface
      * @Serializer\Groups({"file", "list", "details"})
      */
     protected $name;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=false)
+     */
+    protected $organization;
 
     /**
      * @ORM\OneToMany(targetEntity="DataControl", mappedBy="dictionary", orphanRemoval=true, cascade={"persist", "remove"})
@@ -80,6 +87,22 @@ class DataDictionary implements DataDictionaryInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param OrganizationInterface $organization
+     */
+    public function setOrganization(OrganizationInterface $organization)
+    {
+        $this->organization = $organization;
+    }
+
+    /**
+     * @return OrganizationInterface
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
     }
 
     /**
