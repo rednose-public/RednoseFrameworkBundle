@@ -33,16 +33,6 @@
             <argument type="service" id="service_container"/>
         </service>
 
-        <!-- Form types -->
-        <service id="form.type.rednose_image" class="Rednose\FrameworkBundle\Form\Type\ImageType">
-            <tag name="form.type" alias="rednose_image" />
-        </service>
-
-        <service id="form.type.rednose_table" class="Rednose\FrameworkBundle\Form\Type\TableType">
-            <argument type="service" id="database_connection"/>
-            <tag name="form.type" alias="rednose_table" />
-        </service>
-
         <!-- JMS Object constructor alias -->
         <service id="rednose_framework.doctrine_object_constructor" class="Rednose\FrameworkBundle\Serializer\Construction\DoctrineObjectConstructor" public="false">
             <argument type="service" id="doctrine"/>
