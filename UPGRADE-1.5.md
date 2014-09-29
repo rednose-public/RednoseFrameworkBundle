@@ -11,8 +11,8 @@ Features
 
 * Default views are upgraded to use Bootstrap 3 (TODO)
 * Array utils added
-* Added Organization model (TODO)
-* Added DataDictionary (TODO)
+* Added Organization model
+* Added DataDictionary
 
 Deprecations
 ------------
@@ -20,7 +20,7 @@ Deprecations
 * The grid pager was removed
 * All form components are removed from the framework (TODO)
 * Extrinsic object was removed
-* Experimental Node-graph functionality was removed (TODO)
+* Experimental Node-graph functionality was removed
 
 Bundles
 -------
