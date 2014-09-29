@@ -1,3 +1,20 @@
+{# Image #}
+
+{% block rednose_image_row %}
+    {% spaceless %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        {% if value is empty %}
+            {% set value = default %}
+        {% endif %}
+        <img src="{{ value }}" alt="{{ label|trans({}, translation_domain) }}"/>
+        <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% endspaceless %}
+{% endblock %}
+
+{# Table #}
+
 {% block rednose_table_row %}
     {% spaceless %}
         <table class="table">
