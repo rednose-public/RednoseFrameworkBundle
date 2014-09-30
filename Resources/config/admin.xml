@@ -14,9 +14,6 @@
         <parameter key="rednose.framework.admin.client.controller">RednoseFrameworkBundle:Admin\ClientAdmin</parameter>
         <parameter key="rednose.framework.admin.client.entity">Rednose\FrameworkBundle\Entity\Client</parameter>
 
-        <parameter key="rednose.framework.admin.asset.class">Rednose\FrameworkBundle\Admin\AssetAdmin</parameter>
-        <parameter key="rednose.framework.admin.asset.controller">RednoseFrameworkBundle:Admin\AssetAdmin</parameter>
-
         <parameter key="rednose.framework.admin.form.entity">Rednose\FrameworkBundle\Entity\Form</parameter>
     </parameters>
 
