@@ -27,28 +27,6 @@
                 <source>search_placeholder</source>
                 <target>Type hier om te zoeken…</target>
             </trans-unit>
-            <!--Forms-->
-            <trans-unit id="forms">
-                <source>forms</source>
-                <target>Formulieren</target>
-            </trans-unit>
-            <!--Assets-->
-            <trans-unit id="title_upload">
-                <source>title_upload</source>
-                <target>Bestand uploaden</target>
-            </trans-unit>
-            <trans-unit id="btn_upload">
-                <source>btn_upload</source>
-                <target>Uploaden</target>
-            </trans-unit>
-            <trans-unit id="link_action_upload">
-                <source>link_action_upload</source>
-                <target>Uploaden</target>
-            </trans-unit>
-            <trans-unit id="action_download">
-                <source>action_download</source>
-                <target>Downloaden</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>

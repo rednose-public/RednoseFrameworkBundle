@@ -18,7 +18,6 @@
     </parameters>
 
     <services>
-
         <service id="rednose.framework.admin.user" class="%rednose.framework.admin.user.class%">
             <tag name="sonata.admin" manager_type="orm" group="user_management" label="users"/>
             <argument/>
@@ -28,20 +27,11 @@
                 <argument type="service" id="fos_user.user_manager"/>
             </call>
         </service>
-
         <service id="rednose.framework.admin.group" class="%rednose.framework.admin.group.class%">
             <tag name="sonata.admin" manager_type="orm" group="user_management" label="groups"/>
             <argument/>
             <argument>%rednose.framework.admin.group.entity%</argument>
             <argument>%rednose.framework.admin.group.controller%</argument>
-        </service>
-
-        <service id="rednose.framework.admin.form" class="%rednose.framework.admin.asset.class%">
-            <tag name="sonata.admin" manager_type="orm" group="forms" label="forms"/>
-            <argument/>
-            <argument>%rednose.framework.admin.form.entity%</argument>
-            <argument>%rednose.framework.admin.asset.controller%</argument>
-
         </service>
     </services>
 </container>

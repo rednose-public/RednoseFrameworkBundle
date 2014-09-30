@@ -12,18 +12,23 @@
 namespace Rednose\FrameworkBundle\DataFixtures\ORM;
 
 use Rednose\FrameworkBundle\Entity\Group;
-
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Rednose\FrameworkBundle\Model\GroupManagerInterface;
 
 class GroupFixture extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
     private $container;
 
+    /**
+     * @var GroupManagerInterface
+     */
     private $groupManager;
 
     public function load(ObjectManager $em)

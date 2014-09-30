@@ -17,9 +17,13 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use FOS\UserBundle\Util\UserManipulator;
+use Rednose\FrameworkBundle\Model\UserInterface;
 
 class UserFixture extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
     private $container;
 
     /**
@@ -29,11 +33,13 @@ class UserFixture extends AbstractFixture implements OrderedFixtureInterface, Co
 
     public function load(ObjectManager $em)
     {
+        /** @var UserInterface $admin */
         $admin = $this->userUtil->create('admin', 'adminpasswd', 'info@rednose.nl', true, true);
         $admin->setRealname('Administrator');
         $admin->addGroup($this->getReference('group-admin'));
         $em->persist($admin);
 
+        /** @var UserInterface $user */
         $user = $this->userUtil->create('user', 'userpasswd', 'user@rednose.nl', true, false);
         $user->setRealname('Demo user');
         $user->addGroup($this->getReference('group-user'));
