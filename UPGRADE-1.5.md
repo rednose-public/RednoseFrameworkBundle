@@ -9,6 +9,7 @@ Configuration
 Features
 --------
 
+* Users and Groups are now identified by a GUID. User ids no longer collide with group ids so they can be combined in ACL configurations etc.
 * Default views are upgraded to use Bootstrap 3 (TODO)
 * Array utils added
 * Added Organization model
