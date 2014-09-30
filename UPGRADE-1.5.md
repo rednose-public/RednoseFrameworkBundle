@@ -18,7 +18,7 @@ Deprecations
 ------------
 
 * The grid pager was removed
-* All form components, models and interfaces are removed from the framework (TODO)
+* All form components, models and interfaces are removed from the framework
 * Extrinsic object was removed
 * Experimental Node-graph functionality was removed
 
