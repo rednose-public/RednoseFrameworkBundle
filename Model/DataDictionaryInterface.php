@@ -26,16 +26,6 @@ interface DataDictionaryInterface
     public function getName();
 
     /**
-     * @param OrganizationInterface $organization
-     */
-    public function setOrganization(OrganizationInterface $organization);
-
-    /**
-     * @return OrganizationInterface
-     */
-    public function getOrganization();
-
-    /**
      * @return DataControlInterface[]
      */
     public function getControls();

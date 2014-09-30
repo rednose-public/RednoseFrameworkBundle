@@ -13,6 +13,7 @@ namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
+use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
 
 /**
  * @ORM\Entity
@@ -31,6 +32,12 @@ class Organization implements OrganizationInterface
      * @ORM\Column(type="string", unique=true)
      */
     protected $name;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="DataDictionary")
+     * @ORM\JoinColumn(name="dictionary_id", referencedColumnName="id", nullable=true)
+     */
+    protected $dictionary;
 
     /**
      * @return integer
@@ -54,5 +61,21 @@ class Organization implements OrganizationInterface
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return DataDictionaryInterface
+     */
+    public function getDataDictionary()
+    {
+        return $this->dictionary;
+    }
+
+    /**
+     * @param mixed DataDictionaryInterface
+     */
+    public function setDataDictionary($dictionary)
+    {
+        $this->dictionary = $dictionary;
     }
 }

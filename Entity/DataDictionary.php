@@ -42,12 +42,6 @@ class DataDictionary implements DataDictionaryInterface
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=false)
-     */
-    protected $organization;
-
-    /**
      * @ORM\OneToMany(targetEntity="DataControl", mappedBy="dictionary", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\OrderBy({"name" = "ASC"})
      *

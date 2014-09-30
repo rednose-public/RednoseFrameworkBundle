@@ -27,4 +27,14 @@ interface OrganizationInterface
      * @param string $name
      */
     public function setName($name);
+
+    /**
+     * @return DataDictionaryInterface
+     */
+    public function getDataDictionary();
+
+    /**
+     * @param mixed DataDictionaryInterface
+     */
+    public function setDataDictionary($dictionary);
 }
