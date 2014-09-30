@@ -45,9 +45,7 @@
         "knplabs/knp-time-bundle": "dev-master",
         "liip/monitor": "dev-master",
         "liip/monitor-bundle": "dev-master",
-        "ezyang/htmlpurifier": "dev-master",
-        "richsage/rms-push-notifications-bundle": "dev-master",
-        "rednose/api-doc-bundle": "dev-master"
+        "ezyang/htmlpurifier": "dev-master"
     },
     "autoload": {
         "psr-0": { "Rednose\\FrameworkBundle": "" }
