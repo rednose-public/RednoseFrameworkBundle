@@ -7,9 +7,7 @@ use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\ViewHandlerInterface;
 use FOS\RestBundle\Util\Codes;
-use Rednose\FrameworkBundle\Model\DataDictionaryManagerInterface;
 
 class DataDictionaryController extends Controller
 {
@@ -18,7 +16,7 @@ class DataDictionaryController extends Controller
      */
     public function getDictionariesAction()
     {
-        $dictionaries = $this->getDictionaryManager()->findDictionaries();
+        $dictionaries = $this->get('rednose_framework.data_dictionary_manager')->findDictionaries();
 
         $context = new SerializationContext();
         $context->setGroups('list');
@@ -28,7 +26,7 @@ class DataDictionaryController extends Controller
         $view->setData($dictionaries);
         $view->setFormat('json');
 
-        return $this->getHandler()->handle($view);
+        return $this->get('fos_rest.view_handler')->handle($view);
     }
 
     /**
@@ -36,7 +34,7 @@ class DataDictionaryController extends Controller
      */
     public function getDictionaryAction($id)
     {
-        $manager = $this->getDictionaryManager();
+        $manager = $this->get('rednose_framework.data_dictionary_manager');
 
         $dictionary = $manager->findDictionaryById($id);
 
@@ -52,7 +50,7 @@ class DataDictionaryController extends Controller
         $view->setData($dictionary);
         $view->setFormat('json');
 
-        return $this->getHandler()->handle($view);
+        return $this->get('fos_rest.view_handler')->handle($view);
     }
 
     /**
@@ -60,7 +58,7 @@ class DataDictionaryController extends Controller
      */
     public function getDictionaryTreeAction($id)
     {
-        $manager = $this->getDictionaryManager();
+        $manager = $this->get('rednose_framework.data_dictionary_manager');
 
         $dictionary = $manager->findDictionaryById($id);
 
@@ -76,22 +74,6 @@ class DataDictionaryController extends Controller
         $view->setData($dictionary->toArray());
         $view->setFormat('json');
 
-        return $this->getHandler()->handle($view);
-    }
-
-    /**
-     * @return DataDictionaryManagerInterface
-     */
-    protected function getDictionaryManager()
-    {
-        return $this->get('rednose_framework.data_dictionary_manager');
-    }
-
-    /**
-     * @return ViewHandlerInterface
-     */
-    protected function getHandler()
-    {
-        return $this->get('fos_rest.view_handler');
+        return $this->get('fos_rest.view_handler')->handle($view);
     }
 }

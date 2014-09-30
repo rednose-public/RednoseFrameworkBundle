@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Rednose\FrameworkBundle\Model\DataControlInterface;
 use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
-use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -47,7 +46,7 @@ class DataDictionary implements DataDictionaryInterface
      *
      * @Serializer\Type("array<Rednose\FrameworkBundle\Entity\DataControl>")
      * @Serializer\XmlList(inline = true, entry = "control")
-     * @Serializer\Groups({"file", "list", "details"})
+     * @Serializer\Groups({"file", "details"})
      */
     protected $controls;
 
@@ -81,22 +80,6 @@ class DataDictionary implements DataDictionaryInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @param OrganizationInterface $organization
-     */
-    public function setOrganization(OrganizationInterface $organization)
-    {
-        $this->organization = $organization;
-    }
-
-    /**
-     * @return OrganizationInterface
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
     }
 
     /**
