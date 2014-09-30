@@ -30,6 +30,16 @@ interface DataControlInterface
     public function getName();
 
     /**
+     * @param integer $sortOrder
+     */
+    public function setSortOrder($sortOrder);
+
+    /**
+     * @return integer
+     */
+    public function getSortOrder();
+
+    /**
      * @param string $type
      */
     public function setType($type);

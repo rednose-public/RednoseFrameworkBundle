@@ -49,6 +49,13 @@ class DataControl implements DataControlInterface
     protected $name;
 
     /**
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Groups({"details"})
+     */
+    protected $sortOrder = 0;
+
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      *
      * @Serializer\XmlAttribute
@@ -66,7 +73,7 @@ class DataControl implements DataControlInterface
 
     /**
      * @ORM\OneToMany(targetEntity="DataControl", mappedBy="parent", orphanRemoval=true, cascade={"persist", "remove"})
-     * @ORM\OrderBy({"name" = "ASC"})
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
      *
      * @Serializer\Type("array<Rednose\FrameworkBundle\Entity\DataControl>")
      * @Serializer\XmlList(inline = true, entry = "control")
@@ -120,6 +127,22 @@ class DataControl implements DataControlInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param integer $sortOrder
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
     }
 
     /**
@@ -265,8 +288,11 @@ class DataControl implements DataControlInterface
      */
     public function postDeserialize()
     {
+        $sortOrder = 0;
+
         foreach ($this->getChildren() as $child) {
             $child->setParent($this);
+            $child->setSortOrder($sortOrder++);
         }
     }
 }

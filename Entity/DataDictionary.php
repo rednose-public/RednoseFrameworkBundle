@@ -42,7 +42,7 @@ class DataDictionary implements DataDictionaryInterface
 
     /**
      * @ORM\OneToMany(targetEntity="DataControl", mappedBy="dictionary", orphanRemoval=true, cascade={"persist", "remove"})
-     * @ORM\OrderBy({"name" = "ASC"})
+     * @ORM\OrderBy({"sortOrder" = "ASC"})
      *
      * @Serializer\Type("array<Rednose\FrameworkBundle\Entity\DataControl>")
      * @Serializer\XmlList(inline = true, entry = "control")
@@ -171,8 +171,11 @@ class DataDictionary implements DataDictionaryInterface
      */
     public function postDeserialize()
     {
+        $sortOrder = 0;
+
         foreach ($this->getControls() as $control) {
             $control->setDictionary($this);
+            $control->setSortOrder($sortOrder++);
         }
     }
 
