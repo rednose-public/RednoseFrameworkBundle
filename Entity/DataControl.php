@@ -14,6 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_data_control")
+ * @ORM\HasLifecycleCallbacks()
  *
  * @UniqueEntity(fields={"name", "dictionary", "parent"}, message="This name is already in use, choose another name")
  *
@@ -291,5 +292,22 @@ class DataControl implements DataControlInterface
             $child->setParent($this);
             $child->setSortOrder($sortOrder++);
         }
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function validate()
+    {
+        $reflectionClass = new \ReflectionClass($this);
+
+        foreach ($reflectionClass->getConstants() as $constant) {
+            if ($this->type === $constant) {
+                return;
+            }
+        }
+
+        throw new \InvalidArgumentException(sprintf('Invalid data-control type `%s` for control `%s`', $this->type, $this->name));
     }
 }

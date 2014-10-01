@@ -24,6 +24,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class DoctrineListener
 {
+    /**
+     * @var EventDispatcherInterface
+     */
     protected $dispatcher;
 
     /**
@@ -36,6 +39,9 @@ class DoctrineListener
         $this->dispatcher = $dispatcher;
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -55,6 +61,9 @@ class DoctrineListener
         }
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public function postUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -74,6 +83,9 @@ class DoctrineListener
         }
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public function postRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
