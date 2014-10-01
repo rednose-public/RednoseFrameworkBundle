@@ -1,39 +1,45 @@
 {% extends 'RednoseFrameworkBundle::layout.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
+{% block title %}{% trans %}sign_in_title{% endtrans %}{% endblock %}
 
+{% block stylesheets %}
     <link href="{{ asset('bundles/rednoseframework/css/login.css') }}" rel="stylesheet" />
 {% endblock %}
 
-{% block title %}{% trans %}sign_in_title{% endtrans %}{% endblock %}
-
 {% block content %}
-
-    <div class="content">
-      <h2>{% trans %}sign_in{% endtrans %}</h2>
-        <form action="{{ path('_rednose_framework_security_check') }}" method="POST">
-
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-
-        {% if error %}
-            <div class="alert alert-error"><strong>{% trans %}error{% endtrans %}!</strong> {{ error.message }}</div>
-        {% endif %}
-
-          <div>
-            <input id="username" name="_username" required="required" value="{{ last_username }}" autofocus="autofocus" type="text" placeholder="{% trans %}username{% endtrans %}">
-          </div>
-          <div>
-            <input id="password" name="_password" required="required" type="password" placeholder="{% trans %}password{% endtrans %}">
-          </div>
-          <div>
-              <label class="checkbox"><input type="checkbox" id="remember_me" name="_remember_me">{% trans %}remember_me{% endtrans %}</label>
-          </div>
-          <div class="footer">
-              {#<a class="pull-left" href="#">{% trans %}forgot_password{% endtrans %}</a>#}
-              <input class="btn btn-primary pull-right" type="submit" id="_submit" name="_submit" value="{% trans %}sign_in_button{% endtrans %}" />
-          </div>
-      </form>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{% trans %}sign_in{% endtrans %}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form accept-charset="UTF-8" role="form" action="{{ path('_rednose_framework_security_check') }}" method="POST">
+                            {% if error %}
+                                <div class="has-error">
+                                    <span class="help-block">{{ error.message }}</span>
+                                </div>
+                            {% endif %}
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" required="required" placeholder="{% trans %}username{% endtrans %}" name="_username" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" required="required" placeholder="{% trans %}password{% endtrans %}" name="_password" type="password">
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="_remember_me" type="checkbox"> {% trans %}remember_me{% endtrans %}
+                                    </label>
+                                </div>
+                                <input class="btn btn-lg btn-success btn-block" type="submit" name="_submit" value="{% trans %}sign_in_button{% endtrans %}">
+                            </fieldset>
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
 {% endblock %}

@@ -1,12 +1,10 @@
-{% if form is defined %}
-    {% form_theme form 'RednoseFrameworkBundle:Form:fields.html.twig' %}
-{% endif %}
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="utf-8"/>
         <title>{% block title '' %}</title>
+
+        <link rel="stylesheet" href="{{ asset('bundles/rednoseframework/vendor/bootstrap/dist/css/bootstrap.min.css') }}" type="text/css" media="screen" />
 
         {% block stylesheets %}
         {% endblock %}
