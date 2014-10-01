@@ -218,23 +218,20 @@ class DataControl implements DataControlInterface
             case self::TYPE_COMPOSITE:
                 return 'icon-list';
 
-            case self::TYPE_BOOLEAN:
-                return 'icon-ok-sign';
+            case self::TYPE_COLLECTION:
+                return 'icon-repeat';
 
             case self::TYPE_DATE:
                 return 'icon-calendar';
 
-            case self::TYPE_NUMBER:
-                return 'icon-th';
-
-            case self::TYPE_COLLECTION:
-                return 'icon-repeat';
-
             case self::TYPE_STRING:
                 return 'rednose-icon-text';
 
-            case self::TYPE_HTML:
+            case self::TYPE_TEXT:
                 return 'rednose-icon-textarea';
+
+            case self::TYPE_HTML:
+                return 'icon-align-left';
         }
 
         return null;
