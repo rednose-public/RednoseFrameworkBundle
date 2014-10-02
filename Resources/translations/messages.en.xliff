@@ -14,12 +14,12 @@
                 <source>error</source>
                 <target>Error</target>
             </trans-unit>
-            <trans-unit id="username">
-                <source>username</source>
+            <trans-unit id="sign_in_username">
+                <source>sign_in_username</source>
                 <target>Username</target>
             </trans-unit>
-            <trans-unit id="password">
-                <source>password</source>
+            <trans-unit id="sign_in_password">
+                <source>sign_in_password</source>
                 <target>Password</target>
             </trans-unit>
             <trans-unit id="remember_me">

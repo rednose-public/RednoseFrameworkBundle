@@ -14,12 +14,12 @@
                 <source>error</source>
                 <target>Foutmelding</target>
             </trans-unit>
-            <trans-unit id="username">
-                <source>username</source>
+            <trans-unit id="sign_in_username">
+                <source>sign_in_username</source>
                 <target>Gebruikersnaam</target>
             </trans-unit>
-            <trans-unit id="password">
-                <source>password</source>
+            <trans-unit id="sign_in_password">
+                <source>sign_in_password</source>
                 <target>Wachtwoord</target>
             </trans-unit>
             <trans-unit id="remember_me">
