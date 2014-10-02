@@ -28,4 +28,3 @@ Bundles
 
 * FOSRestBundle was upgraded to version 1.4
 * RednoseApiDocBundle was removed from the default dependencies
-* RMSPushNotificationsBundle was removed from the default dependencies

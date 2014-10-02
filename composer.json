@@ -52,7 +52,9 @@
         "liip/monitor": "1.0.*",
         "liip/monitor-bundle": "2.0.*",
 
-        "ezyang/htmlpurifier": "4.6.0"
+        "ezyang/htmlpurifier": "4.6.0",
+
+        "rednose/api-doc-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Rednose\\FrameworkBundle": "" }
