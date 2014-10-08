@@ -54,7 +54,6 @@ class ExceptionListener implements EventSubscriberInterface
         $response  = new Response();
 
         if ($this->kernel->getEnvironment() === 'test') {
-            var_dump($exception->getMessage());
             return;
         }
 
