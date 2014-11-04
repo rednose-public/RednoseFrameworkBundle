@@ -19,7 +19,7 @@ class RednoseHTMLPurifier extends HTMLPurifier
 {
     public function purify($html, $config = null)
     {
-        $html = $this->normalizeTables($html);
+//        $html = $this->normalizeTables($html);
 
         $cleanHtml = parent::purify($html);
 
