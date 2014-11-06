@@ -27,7 +27,7 @@ class PurifierFactory
      */
     public function create()
     {
-        $cache = sys_get_temp_dir() . '/fgHtmlPurify';
+        $cache = sys_get_temp_dir() . '/rnHtmlPurify';
 
         if (is_dir($cache) === false) {
             mkdir($cache, 0777, true);
@@ -54,7 +54,7 @@ class PurifierFactory
      */
     public function createLexer()
     {
-        $cache = sys_get_temp_dir() . '/fgHtmlPurify';
+        $cache = sys_get_temp_dir() . '/rnHtmlPurify';
 
         if (is_dir($cache) === false) {
             mkdir($cache, 0777, true);
