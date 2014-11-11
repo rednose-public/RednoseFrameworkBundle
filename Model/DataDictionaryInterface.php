@@ -76,4 +76,13 @@ interface DataDictionaryInterface
      * @return array
      */
     public function toArray();
+
+    /**
+     * Return the dictionary as a list, filtered by control type.
+     *
+     * @param string $type
+     *
+     * @return array
+     */
+    public function toList($type);
 }
