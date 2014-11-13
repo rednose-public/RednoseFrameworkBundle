@@ -2,13 +2,13 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
-use Rednose\FrameworkBundle\Entity\DataControl;use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
-
 interface DataControlInterface
 {
     const TYPE_COMPOSITE  = 'composite';
     const TYPE_COLLECTION = 'collection';
     const TYPE_DATE       = 'date';
+    const TYPE_BOOLEAN    = 'boolean';
+    const TYPE_NUMBER     = 'number';
     const TYPE_STRING     = 'string';
     const TYPE_TEXT       = 'text';
     const TYPE_HTML       = 'html';

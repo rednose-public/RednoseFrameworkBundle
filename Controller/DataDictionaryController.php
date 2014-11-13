@@ -62,16 +62,28 @@ class DataDictionaryController extends Controller
 
         $dictionary = $manager->findDictionaryById($id);
 
-        if ($dictionary === null) {
-            return new Response(null, Codes::HTTP_NOT_FOUND);
-        }
-
         $context = new SerializationContext();
         $context->setGroups('details');
 
         $view = new View();
         $view->setSerializationContext($context);
         $view->setData($dictionary->toArray());
+        $view->setFormat('json');
+
+        return $this->get('fos_rest.view_handler')->handle($view);
+    }
+
+    /**
+     * @Rest\Get("/dictionaries/{id}/list/{type}", name="rednose_framework_get_dictionary_list", options={"expose"=true})
+     */
+    public function getDictionaryTreeControlAction($id, $type)
+    {
+        $manager = $this->get('rednose_framework.data_dictionary_manager');
+
+        $dictionary = $manager->findDictionaryById($id);
+
+        $view = new View();
+        $view->setData($dictionary->toList($type));
         $view->setFormat('json');
 
         return $this->get('fos_rest.view_handler')->handle($view);

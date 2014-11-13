@@ -196,6 +196,47 @@ class DataDictionary implements DataDictionaryInterface
     }
 
     /**
+     * Return the dictionary as a list, filtered by control type.
+     *
+     * @param string $type
+     *
+     * @return array
+     */
+    public function toList($type)
+    {
+        $nodes = array();
+
+        foreach ($this->getControls() as $control) {
+            $nodes = array_merge($nodes, $this->controlToList($control, $type));
+        }
+
+        return $nodes;
+    }
+
+    /**
+     * @param DataControlInterface $control
+     * @param string $type
+     *
+     * @return array
+     */
+    private function controlToList(DataControlInterface $control, $type)
+    {
+        $nodes = array();
+
+        if ($control->getType() === $type) {
+            $nodes[] = $this->createListNode($control);
+        }
+
+        if ($control->hasChildren()) {
+            foreach ($control->getChildren() as $child) {
+                $nodes = array_merge($nodes, $this->controlToList($child, $type));
+            }
+        }
+
+        return $nodes;
+    }
+
+    /**
      * @param DataControlInterface $control
      *
      * @return array
@@ -219,5 +260,25 @@ class DataDictionary implements DataDictionaryInterface
         }
 
         return $node;
+    }
+
+    /**
+     * @param DataControlInterface $control
+     *
+     * @return array
+     */
+    private function createListNode(DataControlInterface $control)
+    {
+        return array(
+            'id'    => $control->getId(),
+            'label' => $control->getName(),
+            'icon'  => $control->getIcon(),
+            'type'  => 'control',
+            'data'  => array(
+                'name' => $control->getName(),
+                'type' => $control->getType(),
+                'path' => $control->getPath(),
+            ),
+        );
     }
 }

@@ -27,7 +27,7 @@ class PurifierFactory
      */
     public function create()
     {
-        $cache = sys_get_temp_dir() . '/fgHtmlPurify';
+        $cache = sys_get_temp_dir() . '/rnHtmlPurify';
 
         if (is_dir($cache) === false) {
             mkdir($cache, 0777, true);
@@ -40,11 +40,11 @@ class PurifierFactory
 
         $def = $config->getHTMLDefinition(true);
 
-        // Add textblock placeholder attribute to allowed definitions.
+        // Add textblock placeholder attributes to allowed definitions.
         $def->addAttribute('span', 'data-placeholder', 'Text');
         $def->addAttribute('span', 'data-header-target', 'Text');
 
-        return new RednoseHTMLPurifier($config);
+        return new HTMLPurifier($config);
     }
 
     /**
@@ -54,7 +54,7 @@ class PurifierFactory
      */
     public function createLexer()
     {
-        $cache = sys_get_temp_dir() . '/fgHtmlPurify';
+        $cache = sys_get_temp_dir() . '/rnHtmlPurify';
 
         if (is_dir($cache) === false) {
             mkdir($cache, 0777, true);

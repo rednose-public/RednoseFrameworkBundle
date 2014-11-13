@@ -10,7 +10,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 class OrganizationController extends Controller
 {
     /**
-     * @Rest\Get("/organizations", name="rednose_docgen_get_organizations", options={"expose"=true})
+     * @Rest\Get("/organizations", name="rednose_framework_get_organizations", options={"expose"=true})
      */
     public function getOrganizationsAction()
     {

@@ -82,7 +82,9 @@ class UserAdmin extends Admin
                 ->add('realname')
                 ->add('email')
                 ->add('email_canonical')
+            ->end()
             ->with('Details')
+                ->add('groups')
                 ->add('enabled')
                 ->add('locked')
                 ->add('expired')
@@ -102,12 +104,15 @@ class UserAdmin extends Admin
                 ->add('realname')
                 ->add('email')
                 ->add('plainPassword', 'text', array('required' => false))
+            ->end()
+
             ->with('Details')
-                ->add('groups', null, array('required' => false, 'expanded' => true))
+                ->add('groups', 'sonata_type_model', array('required' => false,'multiple' => true))
                 ->add('enabled', 'checkbox', array('required' => false))
                 ->add('locked', 'checkbox', array('required' => false))
                 ->add('Admin', 'checkbox', array('required' => false))
                 ->add('superAdmin', 'checkbox', array('required' => false))
+            ->end()
 
             ->setHelps(array(
                'username' => $this->trans('help_user_username')
