@@ -101,4 +101,11 @@ interface DataControlInterface
      * @return bool
      */
     public function hasChildren();
+
+    /**
+     * A control is relative when it has at least one ancestor of the type `collection`
+     *
+     * @return bool
+     */
+    public function isRelative();
 }

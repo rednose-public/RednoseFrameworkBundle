@@ -101,6 +101,11 @@ class DataControl implements DataControlInterface
      */
     protected $dictionary;
 
+    /**
+     * Constructor.
+     *
+     * @param DataDictionaryInterface $dictionary
+     */
     public function __construct(DataDictionaryInterface $dictionary)
     {
         $this->children = new ArrayCollection();
@@ -239,20 +244,48 @@ class DataControl implements DataControlInterface
     }
 
     /**
+     * A control is relative when it has at least one ancestor of the type `collection`
+     *
+     * @return bool
+     */
+    public function isRelative()
+    {
+        $control = $this;
+
+        while ($control) {
+            if ($control->getType() === DataControlInterface::TYPE_COLLECTION) {
+                return true;
+            }
+
+            $control = $control->getParent();
+        }
+
+        return false;
+    }
+
+    /**
      * @return string
      */
     public function getPath()
     {
-        $path    = '';
-        $control = $this;
-
-        while ($control->getParent() !== null) {
-            $control = $control->getParent();
-
-            $path = $control->getName() . '.' . $path;
+        if ($this->isRelative() === true) {
+            return $this->getName();
         }
 
-        return $path . $this->getName();
+        $control = $this;
+        $path = '';
+
+        while ($control) {
+            $path = $path.'/'.$control->getName();
+
+            if (!$control->getParent()) {
+                return '/'.$control->getDictionary()->getName().'/'.$path;
+            }
+
+            $control = $control->getParent();
+        }
+
+        return null;
     }
 
     /**
