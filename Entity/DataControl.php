@@ -250,7 +250,7 @@ class DataControl implements DataControlInterface
      */
     public function isRelative()
     {
-        $control = $this;
+        $control = $this->getParent();
 
         while ($control) {
             if ($control->getType() === DataControlInterface::TYPE_COLLECTION) {
@@ -273,19 +273,23 @@ class DataControl implements DataControlInterface
         }
 
         $control = $this;
-        $path = '';
+        $path = array();
 
         while ($control) {
-            $path = $path.'/'.$control->getName();
+            $path[] = $control->getName();
 
             if (!$control->getParent()) {
-                return '/'.$control->getDictionary()->getName().'/'.$path;
+                $path[] = $control->getDictionary()->getName();
             }
 
             $control = $control->getParent();
         }
 
-        return null;
+        if (empty($path)) {
+            return null;
+        }
+
+        return '/'.implode('/', array_reverse($path));
     }
 
     /**
