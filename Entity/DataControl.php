@@ -244,6 +244,26 @@ class DataControl implements DataControlInterface
     }
 
     /**
+     * @param string $context XPath location
+     *
+     * @return bool
+     */
+    public function isInContext($context)
+    {
+        $control = $this;
+
+        while ($control) {
+            if ($control->getPath() === $context) {
+                return true;
+            }
+
+            $control = $control->getParent();
+        }
+
+        return false;
+    }
+
+    /**
      * A control is relative when it has at least one ancestor of the type `collection`
      *
      * @return bool

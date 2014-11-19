@@ -198,16 +198,19 @@ class DataDictionary implements DataDictionaryInterface
     /**
      * Return the dictionary as a list, filtered by control type.
      *
-     * @param array $types
+     * @param array  $types   Control types to include. If left empty, all types are returned.
+     * @param string $context XPath location for the context node.
+     *                          Can be used to include relative nodes. If no context location is specified,
+     *                          only controls with absolute paths are returned.
      *
      * @return array
      */
-    public function toList(array $types = array())
+    public function toList(array $types = array(), $context = null)
     {
         $nodes = array();
 
         foreach ($this->getControls() as $control) {
-            $nodes = array_merge($nodes, $this->controlToList($control, $types));
+            $nodes = array_merge($nodes, $this->controlToList($control, $types, $context));
         }
 
         return $nodes;
@@ -216,12 +219,17 @@ class DataDictionary implements DataDictionaryInterface
     /**
      * @param DataControlInterface $control
      * @param array                $types
+     * @param string               $context
      *
      * @return array
      */
-    private function controlToList(DataControlInterface $control, array $types)
+    private function controlToList(DataControlInterface $control, array $types, $context)
     {
         $nodes = array();
+
+        if ($context !== null && $control->isRelative() && !$control->isInContext($context)) {
+            return $nodes;
+        }
 
         if (empty($types) || in_array($control->getType(), $types)) {
             $nodes[] = $this->createListNode($control);
@@ -229,7 +237,7 @@ class DataDictionary implements DataDictionaryInterface
 
         if ($control->hasChildren()) {
             foreach ($control->getChildren() as $child) {
-                $nodes = array_merge($nodes, $this->controlToList($child, $types));
+                $nodes = array_merge($nodes, $this->controlToList($child, $types, $context));
             }
         }
 

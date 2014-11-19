@@ -108,4 +108,11 @@ interface DataControlInterface
      * @return bool
      */
     public function isRelative();
+
+    /**
+     * @param string $context XPath location
+     *
+     * @return bool
+     */
+    public function isInContext($context);
 }

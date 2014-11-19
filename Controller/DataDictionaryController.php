@@ -80,14 +80,17 @@ class DataDictionaryController extends Controller
     {
         $manager = $this->get('rednose_framework.data_dictionary_manager');
         $dictionary = $manager->findDictionaryById($id);
+
         $types = array();
 
         if ($this->getRequest()->query->get('type')) {
             $types = explode(',', $this->getRequest()->query->get('type'));
         }
 
+        $context = $this->getRequest()->query->get('context');
+
         $view = new View();
-        $view->setData($dictionary->toList($types));
+        $view->setData($dictionary->toList($types, $context));
         $view->setFormat('json');
 
         return $this->get('fos_rest.view_handler')->handle($view);

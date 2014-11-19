@@ -80,9 +80,12 @@ interface DataDictionaryInterface
     /**
      * Return the dictionary as a list, filtered by control type.
      *
-     * @param array $types
+     * @param array  $types   Control types to include. If left empty, all types are returned.
+     * @param string $context XPath location for the context node.
+     *                          Can be used to include relative nodes. If no context location is specified,
+     *                          only controls with absolute paths are returned.
      *
      * @return array
      */
-    public function toList(array $types = array());
+    public function toList(array $types = array(), $context = null);
 }
