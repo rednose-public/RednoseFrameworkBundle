@@ -74,16 +74,20 @@ class DataDictionaryController extends Controller
     }
 
     /**
-     * @Rest\Get("/dictionaries/{id}/list/{type}", name="rednose_framework_get_dictionary_list", options={"expose"=true})
+     * @Rest\Get("/dictionaries/{id}/list", name="rednose_framework_get_dictionary_list", options={"expose"=true})
      */
-    public function getDictionaryTreeControlAction($id, $type)
+    public function getDictionaryTreeControlAction($id)
     {
         $manager = $this->get('rednose_framework.data_dictionary_manager');
-
         $dictionary = $manager->findDictionaryById($id);
+        $types = array();
+
+        if ($this->getRequest()->query->get('type')) {
+            $types = explode(',', $this->getRequest()->query->get('type'));
+        }
 
         $view = new View();
-        $view->setData($dictionary->toList($type));
+        $view->setData($dictionary->toList($types));
         $view->setFormat('json');
 
         return $this->get('fos_rest.view_handler')->handle($view);

@@ -198,16 +198,16 @@ class DataDictionary implements DataDictionaryInterface
     /**
      * Return the dictionary as a list, filtered by control type.
      *
-     * @param string $type
+     * @param array $types
      *
      * @return array
      */
-    public function toList($type)
+    public function toList(array $types = array())
     {
         $nodes = array();
 
         foreach ($this->getControls() as $control) {
-            $nodes = array_merge($nodes, $this->controlToList($control, $type));
+            $nodes = array_merge($nodes, $this->controlToList($control, $types));
         }
 
         return $nodes;
@@ -215,21 +215,21 @@ class DataDictionary implements DataDictionaryInterface
 
     /**
      * @param DataControlInterface $control
-     * @param string $type
+     * @param array                $types
      *
      * @return array
      */
-    private function controlToList(DataControlInterface $control, $type)
+    private function controlToList(DataControlInterface $control, array $types)
     {
         $nodes = array();
 
-        if ($control->getType() === $type) {
+        if (empty($types) || in_array($control->getType(), $types)) {
             $nodes[] = $this->createListNode($control);
         }
 
         if ($control->hasChildren()) {
             foreach ($control->getChildren() as $child) {
-                $nodes = array_merge($nodes, $this->controlToList($child, $type));
+                $nodes = array_merge($nodes, $this->controlToList($child, $types));
             }
         }
 

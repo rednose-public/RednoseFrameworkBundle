@@ -80,9 +80,9 @@ interface DataDictionaryInterface
     /**
      * Return the dictionary as a list, filtered by control type.
      *
-     * @param string $type
+     * @param array $types
      *
      * @return array
      */
-    public function toList($type);
+    public function toList(array $types = array());
 }
