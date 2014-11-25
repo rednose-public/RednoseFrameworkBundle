@@ -12,6 +12,14 @@ use FOS\RestBundle\Util\Codes;
 class DataDictionaryController extends Controller
 {
     /**
+     * @Rest\Get("/dictionaries/editor", name="rednose_framework_get_dictionaries_editor", options={"expose"=true})
+     */
+    public function getDictionariesEditorAction()
+    {
+        return $this->render('RednoseFrameworkBundle:DataDictionary:editor.html.twig');
+    }
+
+    /**
      * @Rest\Get("/dictionaries", name="rednose_framework_get_dictionaries", options={"expose"=true})
      */
     public function getDictionariesAction()
