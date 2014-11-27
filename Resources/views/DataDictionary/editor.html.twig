@@ -22,7 +22,7 @@
     <script type="text/javascript" src="{{ asset('assets/vendor/rednose-app/dist/rednose-app.js') }}"></script>
 
     <!-- App -->
-    <script type="text/javascript" src="{{ asset('assets/vendor/rednose-datadictionary-editor/dist/rednose-datadictionary-editor.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/vendor/rednose-datadictionary-manager/dist/rednose-datadictionary-manager.js') }}"></script>
 
     <!-- Routing -->
     <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
@@ -33,7 +33,7 @@
         var rootPath = '{{ asset('assets/vendor/rednose-datadictionary-editor') }}';
     </script>
 </head>
-<body ng-controller="editor">
+<body ng-controller="manager">
 <ng-include src="masterPage"></ng-include>
 </body>
 </html>
