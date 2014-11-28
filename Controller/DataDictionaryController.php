@@ -12,7 +12,8 @@ use FOS\RestBundle\Util\Codes;
 class DataDictionaryController extends Controller
 {
     /**
-     * @Rest\Get("/dictionaries/editor", name="rednose_framework_get_dictionaries_editor", options={"expose"=true})
+     * @Rest\Get("/dictionaries/editor", name="rednose_framework_get_dictionaries_editor",  options={"expose"=true})
+     * @Rest\Get("/dictionaries/editor/{id}", name="rednose_framework_get_dictionaries_editor_id", options={"expose"=true})
      */
     public function getDictionariesEditorAction()
     {
