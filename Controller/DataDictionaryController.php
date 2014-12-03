@@ -4,8 +4,10 @@ namespace Rednose\FrameworkBundle\Controller;
 
 use FOS\RestBundle\View\View;
 use JMS\Serializer\SerializationContext;
+use JMS\Serializer\DeserializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Util\Codes;
 
@@ -18,6 +20,25 @@ class DataDictionaryController extends Controller
     public function getDictionariesEditorAction()
     {
         return $this->render('RednoseFrameworkBundle:DataDictionary:editor.html.twig');
+    }
+
+    /**
+     * @Rest\Post("/dictionaries", name="rednose_framework_post_dictionaries_editor",  options={"expose"=true})
+     */
+    public function createDictionaryAction()
+    {
+        $serializer = $this->get('serializer');
+        $manager = $this->get('rednose_framework.data_dictionary_manager');
+        $request = $this->getRequest();
+
+        $context = new DeserializationContext();
+        $context->setGroups(array('details'));
+
+        $dictionary = $serializer->deserialize($request->getContent(), 'Rednose\FrameworkBundle\Entity\DataDictionary', 'json', $context);
+
+        $manager->updateDictionary($dictionary, true);
+
+        return new JsonResponse(array('id' => $dictionary->getId()), Codes::HTTP_CREATED);
     }
 
     /**
