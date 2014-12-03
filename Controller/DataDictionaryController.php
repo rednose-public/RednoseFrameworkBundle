@@ -23,9 +23,10 @@ class DataDictionaryController extends Controller
     }
 
     /**
-     * @Rest\Post("/dictionaries", name="rednose_framework_post_dictionaries_editor",  options={"expose"=true})
+     * @Rest\Post("/dictionaries", name="rednose_framework_post_dictionary",  options={"expose"=true})
+     * @Rest\Put("/dictionaries/{id}", name="rednose_framework_put_dictionary",  options={"expose"=true})
      */
-    public function createDictionaryAction()
+    public function updateDictionaryAction($id = null)
     {
         $serializer = $this->get('serializer');
         $manager = $this->get('rednose_framework.data_dictionary_manager');
@@ -33,6 +34,16 @@ class DataDictionaryController extends Controller
 
         $context = new DeserializationContext();
         $context->setGroups(array('details'));
+
+        if ($id !== null) {
+            $dictionary = $manager->findDictionaryById($id);
+
+            if ($dictionary === null) {
+                throw $this->createNotFoundException();
+            }
+
+            $context->setAttribute('id', $dictionary->getId());
+        }
 
         $dictionary = $serializer->deserialize($request->getContent(), 'Rednose\FrameworkBundle\Entity\DataDictionary', 'json', $context);
 
