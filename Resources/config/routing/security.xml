@@ -8,6 +8,7 @@
     </route>
     <route id="_rednose_framework_security_logout" pattern="/logout">
         <default key="_controller">RednoseFrameworkBundle:Security:logout</default>
+        <option key="expose">true</option>
     </route>
     <route id="rednose_framework_change_password" pattern="/change-password">
         <default key="_controller">RednoseFrameworkBundle:ChangePassword:changePassword</default>
