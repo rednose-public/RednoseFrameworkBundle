@@ -44,7 +44,6 @@ class DataDictionary implements DataDictionaryInterface
      * @ORM\OneToMany(targetEntity="DataControl", mappedBy="dictionary", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      *
-     * @Serializer\Type("array<Rednose\FrameworkBundle\Entity\DataControl>")
      * @Serializer\XmlList(inline = true, entry = "control")
      * @Serializer\Groups({"file", "details"})
      */
@@ -198,16 +197,19 @@ class DataDictionary implements DataDictionaryInterface
     /**
      * Return the dictionary as a list, filtered by control type.
      *
-     * @param string $type
+     * @param array  $types   Control types to include. If left empty, all types are returned.
+     * @param string $context XPath location for the context node.
+     *                          Can be used to include relative nodes. If no context location is specified,
+     *                          only controls with absolute paths are returned.
      *
      * @return array
      */
-    public function toList($type)
+    public function toList(array $types = array(), $context = null)
     {
         $nodes = array();
 
         foreach ($this->getControls() as $control) {
-            $nodes = array_merge($nodes, $this->controlToList($control, $type));
+            $nodes = array_merge($nodes, $this->controlToList($control, $types, $context));
         }
 
         return $nodes;
@@ -215,21 +217,26 @@ class DataDictionary implements DataDictionaryInterface
 
     /**
      * @param DataControlInterface $control
-     * @param string $type
+     * @param array                $types
+     * @param string               $context
      *
      * @return array
      */
-    private function controlToList(DataControlInterface $control, $type)
+    private function controlToList(DataControlInterface $control, array $types, $context)
     {
         $nodes = array();
 
-        if ($control->getType() === $type) {
+        if ($context !== null && $control->isRelative() && !$control->isInContext($context)) {
+            return $nodes;
+        }
+
+        if (empty($types) || in_array($control->getType(), $types)) {
             $nodes[] = $this->createListNode($control);
         }
 
         if ($control->hasChildren()) {
             foreach ($control->getChildren() as $child) {
-                $nodes = array_merge($nodes, $this->controlToList($child, $type));
+                $nodes = array_merge($nodes, $this->controlToList($child, $types, $context));
             }
         }
 

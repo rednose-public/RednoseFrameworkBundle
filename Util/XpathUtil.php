@@ -18,11 +18,15 @@ class XpathUtil
      */
     public static function getXpathNode(\DOMDocument $data, $location, $context = null)
     {
+        if ($location === null) {
+            return null;
+        }
+
         $xpath = new \DOMXPath($data);
 
         $result = $xpath->query($location, $context);
 
-        if ($result->length > 0) {
+        if ($result && $result->length > 0) {
             $node = $result->item(0);
 
             return $node;

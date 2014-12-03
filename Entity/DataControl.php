@@ -76,7 +76,6 @@ class DataControl implements DataControlInterface
      * @ORM\OneToMany(targetEntity="DataControl", mappedBy="parent", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      *
-     * @Serializer\Type("array<Rednose\FrameworkBundle\Entity\DataControl>")
      * @Serializer\XmlList(inline = true, entry = "control")
      * @Serializer\Groups({"file", "list", "details"})
      */
@@ -101,6 +100,11 @@ class DataControl implements DataControlInterface
      */
     protected $dictionary;
 
+    /**
+     * Constructor.
+     *
+     * @param DataDictionaryInterface $dictionary
+     */
     public function __construct(DataDictionaryInterface $dictionary)
     {
         $this->children = new ArrayCollection();
@@ -239,20 +243,72 @@ class DataControl implements DataControlInterface
     }
 
     /**
+     * @param string $context XPath location
+     *
+     * @return bool
+     */
+    public function isInContext($context)
+    {
+        $control = $this;
+
+        while ($control) {
+            if ($control->getPath() === $context) {
+                return true;
+            }
+
+            $control = $control->getParent();
+        }
+
+        return false;
+    }
+
+    /**
+     * A control is relative when it has at least one ancestor of the type `collection`
+     *
+     * @return bool
+     */
+    public function isRelative()
+    {
+        $control = $this->getParent();
+
+        while ($control) {
+            if ($control->getType() === DataControlInterface::TYPE_COLLECTION) {
+                return true;
+            }
+
+            $control = $control->getParent();
+        }
+
+        return false;
+    }
+
+    /**
      * @return string
      */
     public function getPath()
     {
-        $path    = '';
-        $control = $this;
-
-        while ($control->getParent() !== null) {
-            $control = $control->getParent();
-
-            $path = $control->getName() . '.' . $path;
+        if ($this->isRelative() === true) {
+            return $this->getName();
         }
 
-        return $path . $this->getName();
+        $control = $this;
+        $path = array();
+
+        while ($control) {
+            $path[] = $control->getName();
+
+            if (!$control->getParent()) {
+                $path[] = $control->getDictionary()->getName();
+            }
+
+            $control = $control->getParent();
+        }
+
+        if (empty($path)) {
+            return null;
+        }
+
+        return '/'.implode('/', array_reverse($path));
     }
 
     /**
