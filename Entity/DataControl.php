@@ -76,7 +76,6 @@ class DataControl implements DataControlInterface
      * @ORM\OneToMany(targetEntity="DataControl", mappedBy="parent", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      *
-     * @Serializer\Type("array<Rednose\FrameworkBundle\Entity\DataControl>")
      * @Serializer\XmlList(inline = true, entry = "control")
      * @Serializer\Groups({"file", "list", "details"})
      */
