@@ -14,15 +14,6 @@ use FOS\RestBundle\Util\Codes;
 class DataDictionaryController extends Controller
 {
     /**
-     * @Rest\Get("/dictionaries/editor", name="rednose_framework_get_dictionaries_editor",  options={"expose"=true})
-     * @Rest\Get("/dictionaries/editor/{id}", name="rednose_framework_get_dictionaries_editor_id", options={"expose"=true})
-     */
-    public function getDictionariesEditorAction()
-    {
-        return $this->render('RednoseFrameworkBundle:DataDictionary:editor.html.twig');
-    }
-
-    /**
      * @Rest\Post("/dictionaries", name="rednose_framework_post_dictionary",  options={"expose"=true})
      * @Rest\Put("/dictionaries/{id}", name="rednose_framework_put_dictionary",  options={"expose"=true})
      */
