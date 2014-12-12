@@ -86,6 +86,37 @@ class DataDictionaryController extends Controller
     }
 
     /**
+     * @Rest\Get("/dictionaries/{id}/download", name="rednose_framework_download_dictionary", options={"expose"=true})
+     */
+    public function downloadDictionaryAction($id)
+    {
+        $manager = $this->get('rednose_framework.data_dictionary_manager');
+
+        $dictionary = $manager->findDictionaryById($id);
+
+        if ($dictionary === null) {
+            return new Response(null, Codes::HTTP_NOT_FOUND);
+        }
+
+        $serializer = $this->get('serializer');
+
+        $context = new SerializationContext();
+        $context->setGroups(array('file'));
+
+        $content = $serializer->serialize($dictionary, 'xml', $context);
+
+        $response = new Response();
+        $response->setContent($content);
+        $response->headers->add(array(
+            'Content-Type'        => 'application/xml',
+            'Content-Length'      => strlen($content),
+            'Content-Disposition' => 'attachment; filename="' . $dictionary->getName() . '.xml"',
+        ));
+
+        return $response;
+    }
+
+    /**
      * @Rest\Get("/dictionaries/{id}/tree", name="rednose_framework_get_dictionary_tree", options={"expose"=true})
      */
     public function getDictionaryTreeAction($id)
