@@ -63,38 +63,26 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
 
     public function deserializeCollection(VisitorInterface $visitor, $data, array $type, Context $context)
     {
-        $propertyMetadata     = $context->getMetadataStack()->offsetGet(0);
-        $reflectionProperty   = $propertyMetadata->reflection;
-        $currentPropertyValue = $reflectionProperty->getValue($visitor->getCurrentObject());
+        $propertyMetadata   = $context->getMetadataStack()->offsetGet(0);
+        $reflectionProperty = $propertyMetadata->reflection;
+        $currentCollection  = $reflectionProperty->getValue($visitor->getCurrentObject());
 
-        // See above.
         $type['name'] = 'array';
 
-        $collection = new ArrayCollection($visitor->visitArray($data, $type, $context));
+        $items = $visitor->visitArray($data, $type, $context);
 
-        if (!$currentPropertyValue instanceof Collection) {
-            return $collection;
-        }
+        // If there is a current collection on the object, we need to return the same collection instance,
+        // or we end up with 2 collections in the database because the current collection isn't cleared.
+        if ($currentCollection instanceof Collection) {
+            $currentCollection->clear();
 
-        return $this->transferCollection($collection, $currentPropertyValue);
-    }
-
-    protected function transferCollection(Collection $source, Collection $destination)
-    {
-        // Add new objects.
-        foreach ($source as $object) {
-            if ($destination->contains($object) === false) {
-                $destination->add($object);
+            foreach ($items as $item) {
+                $currentCollection->add($item);
             }
+
+            return $currentCollection;
         }
 
-        // Remove deleted objects.
-        foreach ($destination as $object) {
-            if ($source->contains($object) === false) {
-                $destination->removeElement($object);
-            }
-        }
-
-        return $destination;
+        return new ArrayCollection($items);
     }
 }
