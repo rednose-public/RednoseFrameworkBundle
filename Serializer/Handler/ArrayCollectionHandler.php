@@ -74,7 +74,6 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
         // If there is a current collection on the object, we need to return the same collection instance,
         // or we end up with 2 collections in the database because the current collection isn't cleared.
         if ($currentCollection instanceof Collection) {
-
             // Remove deleted items
             $existingIdList = array();
 
@@ -84,6 +83,8 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
 
             $currentCollection->forAll(function($key, $value) use ($existingIdList, &$currentCollection) {
                 if (in_array($value->getId(), $existingIdList, true) === false) {
+                    
+                    die(get_class($currentCollection));
                     $currentCollection->removeElement($value);
                 }
 
@@ -91,14 +92,14 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
             });
 
             // Add new items
-            foreach ($items as $item) {
-                if ($currentCollection->exists(function($key, $value) use ($item) {
-                    if ($value->getId() === $item->getId()) {
-                        return true;
-                    }
+            $existingIdList = array();
 
-                    return false;
-                }) === false) {
+            foreach ($currentCollection as $item) {
+                $existingIdList[] = $item->getId();
+            }
+
+            foreach ($items as $item) {
+                if (in_array($item->getId(), $existingIdList, true) === false) {
                     $currentCollection->add($item);
                 }
             }
