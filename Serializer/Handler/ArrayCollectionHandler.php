@@ -11,6 +11,7 @@
 
 namespace Rednose\FrameworkBundle\Serializer\Handler;
 
+use stdClass;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Context;
 use JMS\Serializer\GraphNavigator;
@@ -20,6 +21,16 @@ use JMS\Serializer\Handler\SubscribingHandlerInterface;
 
 class ArrayCollectionHandler implements SubscribingHandlerInterface
 {
+    /**
+     * @var {array}
+     */
+    protected $addedItems = array();
+
+    /**
+     * @var {array}
+     */
+    protected $removedItems = array();
+
     public static function getSubscribingMethods()
     {
         $methods = array();
@@ -53,6 +64,32 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
         return $methods;
     }
 
+    public function getCollectionsTransactionQueue()
+    {
+        $movedItems = array();
+
+        foreach ($this->addedItems as $objectHash => $value) {
+            if (isset($this->removedItems[$objectHash])) {
+                $movedItems[] = $this->addedItems[$objectHash];
+
+                unset($this->addedItems[$objectHash]);
+                unset($this->removedItems[$objectHash]);
+            }
+        }
+
+        if (count($this->addedItems) > 0 || count($this->removedItems) || count($movedItems) > 0) {
+            $return = new stdClass();
+
+            $return->addedItems   = $this->addedItems;
+            $return->removedItems = $this->removedItems;
+            $return->movedItems   = $movedItems;
+
+            return $return;
+        }
+
+        return false;
+    }
+
     public function serializeCollection(VisitorInterface $visitor, Collection $collection, array $type, Context $context)
     {
         // We change the base type, and pass through possible parameters.
@@ -78,20 +115,6 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
         // it for removal!!
 
         if ($currentCollection instanceof Collection) {
-            // Remove deleted items
-            $existingIdList = array();
-
-            foreach ($items as $item) {
-                $existingIdList[] = $item->getId();
-            }
-
-            $currentCollection->forAll(function($key, $value) use ($existingIdList, &$currentCollection) {
-                if (in_array($value->getId(), $existingIdList, true) === false) {
-                    $currentCollection->remove($value);
-                }
-
-                return true;
-            });
 
             // Add new items
             $existingIdList = array();
@@ -102,9 +125,25 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
 
             foreach ($items as $item) {
                 if (in_array($item->getId(), $existingIdList, true) === false) {
-                    $currentCollection->add($item);
+                    $this->addedItems[spl_object_hash($item)] = false;//array($item, $currentCollection);
                 }
             }
+
+            // Remove deleted items
+            $existingIdList = array();
+
+            foreach ($items as $item) {
+                $existingIdList[] = $item->getId();
+            }
+
+            $self = $this;
+            $currentCollection->forAll(function($key, $item) use ($existingIdList, $currentCollection, &$self) {
+                if (in_array($item->getId(), $existingIdList, true) === false) {
+                    $self->removedItems[spl_object_hash($item)] = false;//array($item, $currentCollection);
+                }
+
+                return true;
+            });
 
             return $currentCollection;
         }
