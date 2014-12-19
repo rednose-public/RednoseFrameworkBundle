@@ -16,7 +16,9 @@ use Rednose\FrameworkBundle\Serializer\Handler\ArrayCollectionHandler;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class SerializerListener implements EventSubscriberInterface
 {
@@ -25,9 +27,15 @@ class SerializerListener implements EventSubscriberInterface
      */
     protected $handler = null;
 
-    public function __construct(ArrayCollectionHandler $handler, Registry $managerRegistry)
+    /**
+     * @var {Registry}
+     */
+    protected $managerRegistry = null;
+
+    public function __construct(ArrayCollectionHandler $handler, ManagerRegistry $managerRegistry)
     {
         $this->handler = $handler;
+        $this->managerRegistry = $managerRegistry;
     }
 
     public static function getSubscribedEvents()
@@ -39,18 +47,85 @@ class SerializerListener implements EventSubscriberInterface
 
     public function onPostDeserialize(ObjectEvent $event)
     {
+        // Changes must be applied at the end of the serialization process!
+        // Only commit the changes if this event is fired for the parent entity (depth 0).
         if ($event->getContext()->getDepth() === 0) {
             $queue = $this->handler->getCollectionsTransactionQueue();
 
             if ($queue !== false) {
-
-                foreach ($queue->movedItems as $item) {
-                    $item['oldCollection']->removeItem($item['entity']);
-                    $item['newCollection']->add($item['entity']);
-                }
-
+                $this->commitArrayCollectionChanges($queue);
             }
         }
     }
-}
 
+    private function commitArrayCollectionChanges($queue)
+    {
+        // Move items from one collection to another collection
+        foreach ($queue->movedItems as $item) {
+            $map = $item['oldCollection']->getMapping();
+
+            if (isset($map['orphanRemoval']) && $map['orphanRemoval']) {
+                throw new \Exception(
+                    'Unable to move entity ' . get_class($item['entity']) . ' to a different collection. ' .
+                    'The orphanRemoval attribute is set on the OneToMany relation definition in ' . get_class($item['oldCollection']->getOwner())
+                );
+            }
+
+            $item['oldCollection']->removeElement($item['entity']);
+
+            $this->addEntityBidirectional($item['entity'], $item['owner'], $item['newCollection'], $item['oldCollection']);
+        }
+
+        // Add new items to a collection
+        foreach ($queue->addedItems as $item) {
+            if ($item !== false) {
+                $this->addEntityBidirectional($item['entity'], $item['owner'], $item['collection']);
+            }
+        }
+
+        // Schedule removed items for deletion
+        foreach ($queue->removedItems as $item) {
+            if ($item !== false) {
+                $objectManager = $this->managerRegistry->getManagerForClass(get_class($item['entity']));
+
+                $item['collection']->removeElement($item['entity']);
+
+                $ouw = $objectManager->getUnitOfWork();
+                $ouw->scheduleForDelete($item['entity']);
+            }
+        }
+    }
+
+    private function addEntityBidirectional($entity, $owner, Collection $collection, Collection $oldCollection = null)
+    {
+        throw new \Exception('This method is broken.');
+        return;
+
+        if ($oldCollection !== null) {
+            // If possible always use the old collection entity, the new one is possibly not a PersistentCollection
+            $map = $oldCollection->getMapping();
+        } else {
+            if ($collection instanceOf ArrayCollection) {
+                return $collection->add($entity);
+            }
+
+            $map = $collection->getMapping();
+        }
+
+        if (isset($map['mappedBy'])) {
+            $map = $map['mappedBy'];
+        } else {
+            $map = false;
+        }
+
+        // Set bi-directional property based on mappedBy ORM attribute
+        if ($map) {
+            call_user_func(array($entity, 'set' . $map), $owner);
+        } else {
+            throw new \Exception('No map property present on ' . get_class($entity));
+        }
+
+        // Add to the collection
+        return $collection->add($entity);
+    }
+}

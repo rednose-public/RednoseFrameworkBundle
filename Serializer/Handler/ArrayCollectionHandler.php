@@ -13,11 +13,13 @@ namespace Rednose\FrameworkBundle\Serializer\Handler;
 
 use stdClass;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\PersistentCollection;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use JMS\Serializer\Context;
 use JMS\Serializer\GraphNavigator;
-use JMS\Serializer\VisitorInterface;
-use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
+use JMS\Serializer\VisitorInterface;
 
 class ArrayCollectionHandler implements SubscribingHandlerInterface
 {
@@ -70,14 +72,20 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
 
         foreach ($this->addedItems as $objectHash => $value) {
             if (isset($this->removedItems[$objectHash])) {
-                $movedItems[] = $this->addedItems[$objectHash];
+                $movedItems[] = array(
+                    'name'          => $this->addedItems[$objectHash]['name'],
+                    'oldCollection' => $this->removedItems[$objectHash]['collection'],
+                    'newCollection' => $this->addedItems[$objectHash]['collection'],
+                    'entity'        => $this->addedItems[$objectHash]['entity'],
+                    'owner'         => $this->addedItems[$objectHash]['owner'],
+                );
 
-                unset($this->addedItems[$objectHash]);
-                unset($this->removedItems[$objectHash]);
+                $this->addedItems[$objectHash] = false;
+                $this->removedItems[$objectHash] = false;
             }
         }
 
-        if (count($this->addedItems) > 0 || count($this->removedItems) || count($movedItems) > 0) {
+        if (count($this->addedItems) > 0 || count($this->removedItems) > 0 || count($movedItems) > 0) {
             $return = new stdClass();
 
             $return->addedItems   = $this->addedItems;
@@ -100,9 +108,10 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
 
     public function deserializeCollection(VisitorInterface $visitor, $data, array $type, Context $context)
     {
+        $currentObject      = $visitor->getCurrentObject();
         $propertyMetadata   = $context->getMetadataStack()->offsetGet(0);
         $reflectionProperty = $propertyMetadata->reflection;
-        $currentCollection  = $reflectionProperty->getValue($visitor->getCurrentObject());
+        $currentCollection  = $reflectionProperty->getValue($currentObject);
 
         $type['name'] = 'array';
 
@@ -111,43 +120,44 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
         // If there is a current collection on the object, we need to return the same collection instance,
         // or we end up with 2 collections in the database because the current collection isn't cleared.
 
-        // Warning: If your entity has orphanRemoval and you move it from one collection to another doctrine will mark
-        // it for removal!!
-
-        if ($currentCollection instanceof Collection) {
-
-            // Add new items
-            $existingIdList = array();
-
-            foreach ($currentCollection as $item) {
-                $existingIdList[] = $item->getId();
-            }
-
-            foreach ($items as $item) {
-                if (in_array($item->getId(), $existingIdList, true) === false) {
-                    $this->addedItems[spl_object_hash($item)] = false;//array($item, $currentCollection);
-                }
-            }
-
-            // Remove deleted items
-            $existingIdList = array();
-
-            foreach ($items as $item) {
-                $existingIdList[] = $item->getId();
-            }
-
-            $self = $this;
-            $currentCollection->forAll(function($key, $item) use ($existingIdList, $currentCollection, &$self) {
-                if (in_array($item->getId(), $existingIdList, true) === false) {
-                    $self->removedItems[spl_object_hash($item)] = false;//array($item, $currentCollection);
-                }
-
-                return true;
-            });
-
-            return $currentCollection;
+        if (($currentCollection instanceof Collection) === false) {
+            // This is a freshly created entity
+            $currentCollection = new ArrayCollection();
         }
 
-        return new ArrayCollection($items);
+        // Add new items
+        $existingIdList = array();
+
+        foreach ($currentCollection as $item) {
+            $existingIdList[] = $item->getId();
+        }
+
+        foreach ($items as $item) {
+            if (in_array($item->getId(), $existingIdList, true) === false) {
+                $this->addedItems[spl_object_hash($item) . get_class($item)] = array(
+                    'name' => $propertyMetadata->name, 'entity' => $item, 'collection' => $currentCollection, 'owner' => $currentObject
+                );
+            }
+        }
+
+        // Remove deleted items
+        $existingIdList = array();
+
+        foreach ($items as $item) {
+            $existingIdList[] = $item->getId();
+        }
+
+        $self = $this;
+        $currentCollection->forAll(function($key, $item) use ($existingIdList, $currentCollection, &$self) {
+            if (in_array($item->getId(), $existingIdList, true) === false) {
+                $self->removedItems[spl_object_hash($item) . get_class($item)] = array(
+                    'name' => $propertyMetadata->name, 'entity' => $item, 'collection' => $currentCollection, 'owner' => $currentObject
+                );
+            }
+
+            return true;
+        });
+
+        return $currentCollection;
     }
 }
