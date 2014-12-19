@@ -117,15 +117,13 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
 
         $items = $visitor->visitArray($data, $type, $context);
 
-        // If there is a current collection on the object, we need to return the same collection instance,
-        // or we end up with 2 collections in the database because the current collection isn't cleared.
-
+        // If there is a current collection on the object, we need to return the same collection doctrine managed instance.
         if (($currentCollection instanceof Collection) === false) {
             // This is a freshly created entity
             $currentCollection = new ArrayCollection();
         }
 
-        // Add new items
+        // Index new items
         $existingIdList = array();
 
         foreach ($currentCollection as $item) {
@@ -140,7 +138,7 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
             }
         }
 
-        // Remove deleted items
+        // Index deleted items
         $existingIdList = array();
 
         foreach ($items as $item) {
@@ -148,7 +146,7 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
         }
 
         $self = $this;
-        $currentCollection->forAll(function($key, $item) use ($existingIdList, $currentCollection, &$self) {
+        $currentCollection->forAll(function($key, $item) use ($existingIdList, $currentCollection, $propertyMetadata, $currentObject, &$self) {
             if (in_array($item->getId(), $existingIdList, true) === false) {
                 $self->removedItems[spl_object_hash($item) . get_class($item)] = array(
                     'name' => $propertyMetadata->name, 'entity' => $item, 'collection' => $currentCollection, 'owner' => $currentObject

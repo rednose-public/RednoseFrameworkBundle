@@ -73,13 +73,13 @@ class SerializerListener implements EventSubscriberInterface
 
             $item['oldCollection']->removeElement($item['entity']);
 
-            $this->addEntityBidirectional($item['entity'], $item['owner'], $item['newCollection'], $item['oldCollection']);
+            $this->addEntityBidirectional($item['entity'], $item['owner'], $item['name'], $item['newCollection']);
         }
 
         // Add new items to a collection
         foreach ($queue->addedItems as $item) {
             if ($item !== false) {
-                $this->addEntityBidirectional($item['entity'], $item['owner'], $item['collection']);
+                $this->addEntityBidirectional($item['entity'], $item['owner'], $item['name'], $item['collection']);
             }
         }
 
@@ -96,19 +96,12 @@ class SerializerListener implements EventSubscriberInterface
         }
     }
 
-    private function addEntityBidirectional($entity, $owner, Collection $collection, Collection $oldCollection = null)
+    private function addEntityBidirectional($entity, $owner, $propertyName, Collection $collection)
     {
-        throw new \Exception('This method is broken.');
-        return;
-
-        if ($oldCollection !== null) {
-            // If possible always use the old collection entity, the new one is possibly not a PersistentCollection
-            $map = $oldCollection->getMapping();
+        if ($collection instanceOf ArrayCollection) {
+            // If this is a ArrayCollection there is no mapping available.
+            $map = $this->getMappingFromEntity($owner, $propertyName);
         } else {
-            if ($collection instanceOf ArrayCollection) {
-                return $collection->add($entity);
-            }
-
             $map = $collection->getMapping();
         }
 
@@ -122,10 +115,19 @@ class SerializerListener implements EventSubscriberInterface
         if ($map) {
             call_user_func(array($entity, 'set' . $map), $owner);
         } else {
-            throw new \Exception('No map property present on ' . get_class($entity));
+            throw new \Exception('No required mappedBy property present on ' . get_class($entity) . ' (' . $propertyName . ')');
         }
 
         // Add to the collection
         return $collection->add($entity);
+    }
+
+    private function getMappingFromEntity($owner, $propertyName) {
+        $objectManager   = $this->managerRegistry->getManagerForClass(get_class($owner));
+        $metadataFactory = $objectManager->getMetadataFactory();
+
+        return $metadataFactory
+            ->getMetadataFor(get_class($owner))
+            ->getAssociationMapping($propertyName);
     }
 }
