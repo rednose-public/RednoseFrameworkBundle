@@ -16,6 +16,5 @@
     </route>
     <route id="rednose_framework_get_user" pattern="/user">
         <default key="_controller">RednoseFrameworkBundle:Security:getUser</default>
-
     </route>
 </routes>
