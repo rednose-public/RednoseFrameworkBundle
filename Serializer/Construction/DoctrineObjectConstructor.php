@@ -52,6 +52,7 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
 
         $id = $context->attributes->get('id');
 
+        // Id is supplied by the DeserializationContext
         if ($id->isDefined()) {
             $object = $objectManager->getRepository($metadata->name)->findOneById($id->get());
 
@@ -66,6 +67,24 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
             }
         }
 
-        return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
+        // Id is null (new entity) or supplied by the entity (update existing entity)
+        $classMetadata = $objectManager->getClassMetadata($metadata->name);
+        $identifierList = array();
+
+        foreach ($classMetadata->getIdentifierFieldNames() as $name) {
+            if (array_key_exists($name, $data) === false) {
+                // No identifier present
+                return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
+            }
+
+            $identifierList[$name] = $data[$name];
+        }
+
+        // Entity update, load it from database
+        $object = $objectManager->find($metadata->name, $identifierList);
+
+        $objectManager->initializeObject($object);
+
+        return $object;
     }
 }

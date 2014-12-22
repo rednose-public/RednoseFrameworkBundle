@@ -90,6 +90,7 @@ class DataControl implements DataControlInterface
     /**
      * @Serializer\Accessor(getter="getPath")
      * @Serializer\XmlAttribute
+     * @Serializer\Type("string")
      * @Serializer\Groups({"list", "details"})
      */
     protected $path = '/';

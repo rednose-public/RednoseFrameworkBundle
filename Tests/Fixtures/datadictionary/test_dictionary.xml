@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionary xmlns="http://rednose.nl/schema/framework/dictionary" name="Test-Dictionary">
+    <control name="TestFields" type="composite">
+        <control name="TestField" type="string"/>
+        <control name="TestDate" type="date"/>
+        <control name="TestIngeger" type="number"/>
+        <control name="MoreTestFields" type="collection">
+            <control name="TestBoolean" type="boolean"/>
+        </control>
+    </control>
+</dictionary>
