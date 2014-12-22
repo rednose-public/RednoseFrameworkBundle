@@ -26,7 +26,7 @@ class OrganizationManager implements OrganizationManagerInterface
      */
     public function findOrganizations()
     {
-        return $this->em->getRepository('Rednose\FrameworkBundle\Entity\Organization')->findAll();
+        return $this->em->getRepository('Rednose\FrameworkBundle\Entity\Organization')->findBy(array(), array('name' => 'ASC'));
     }
 
     /**

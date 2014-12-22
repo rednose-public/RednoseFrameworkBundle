@@ -11,6 +11,8 @@
 
 namespace Rednose\FrameworkBundle\Controller;
 
+use FOS\RestBundle\View\View;
+use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
 
@@ -56,5 +58,28 @@ class SecurityController extends Controller
     public function logoutAction()
     {
         throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
+    }
+
+    /**
+     * Returns information about the current user.
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getUserAction()
+    {
+        /** @var UserInterface $user */
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        $data = array(
+            'username' => $user->getUsername(),
+            'bestname' => $user->getBestname(),
+            'email'    => $user->getEmail()
+        );
+
+        $view = new View();
+        $view->setData($data);
+        $view->setFormat('json');
+
+        return $this->get('fos_rest.view_handler')->handle($view);
     }
 }
