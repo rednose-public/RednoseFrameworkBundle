@@ -41,7 +41,7 @@ class DataDictionary implements DataDictionaryInterface
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="DataControl", mappedBy="dictionary", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="DataControl", mappedBy="dictionary", cascade={"persist", "remove"})
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      *
      * @Serializer\XmlList(inline = true, entry = "control")
@@ -172,9 +172,11 @@ class DataDictionary implements DataDictionaryInterface
     {
         $sortOrder = 0;
 
-        foreach ($this->getControls() as $control) {
-            $control->setDictionary($this);
-            $control->setSortOrder($sortOrder++);
+        if ($this->getControls()) {
+            foreach ($this->getControls() as $control) {
+                $control->setDictionary($this);
+                $control->setSortOrder($sortOrder++);
+            }
         }
     }
 

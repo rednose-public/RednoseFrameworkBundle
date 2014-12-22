@@ -73,7 +73,7 @@ class DataControl implements DataControlInterface
     protected $type;
 
     /**
-     * @ORM\OneToMany(targetEntity="DataControl", mappedBy="parent", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="DataControl", mappedBy="parent", cascade={"persist", "remove"})
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      *
      * @Serializer\XmlList(inline = true, entry = "control")

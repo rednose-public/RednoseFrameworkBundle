@@ -155,8 +155,6 @@ class SerializerTest extends WebTestCase
         $this->em->persist($updatedDataDictionary);
         $this->em->flush();
 
-        $this->assertObject($dataDictionary, $entityJson);
-
         return array($dataDictionaryId, $entityJson);
     }
 
@@ -170,6 +168,193 @@ class SerializerTest extends WebTestCase
         $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($state[0]);
 
         $this->assertObject($dataDictionary, $state[1]);
+
+        return $state[0];
+    }
+
+    /**
+     * @depends testUpdateAndKeepAllAssociatedEntitiesPersisted
+     */
+    public function testUpdateSinglePropertyUsingContextAndKeepAllAssociatedEntities($dataDictionaryId)
+    {
+        $entityJson = new \stdClass;
+        $entityJson->name = 'Renamed-Test-Dictionary';
+        $entityJson = json_encode($entityJson);
+
+        $updatedDataDictionary = $this->deserializeFromJson('Rednose\FrameworkBundle\Entity\DataDictionary', $entityJson, 'details', $dataDictionaryId);
+
+        $this->em->persist($updatedDataDictionary);
+        $this->em->flush();
+
+        return array($dataDictionaryId, $entityJson);
+    }
+
+    /**
+     * Check the persistend state in a different test to make sure doctrine fetched a new instance of the object.
+     *
+     * @depends testUpdateSinglePropertyUsingContextAndKeepAllAssociatedEntities
+     */
+    public function testUpdateSinglePropertyUsingContextAndKeepAllAssociatedEntitiesPersisted($state)
+    {
+        $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($state[0]);
+
+        $this->assertObject($dataDictionary, $state[1]);
+        $this->assertTrue($dataDictionary->getControls()->count() > 0);
+        $this->assertTrue($dataDictionary->getControls()->get(0)->getChildren(0)->count() > 0);
+    }
+
+    /**
+     * @depends testUpdateAndKeepAllAssociatedEntitiesPersisted
+     */
+    public function testRemoveChildEntities($dataDictionaryId)
+    {
+        $entityJson = new \stdClass;
+        $entityJson->controls = []; // Delete all controls
+        $entityJson = json_encode($entityJson);
+
+        $updatedDataDictionary = $this->deserializeFromJson('Rednose\FrameworkBundle\Entity\DataDictionary', $entityJson, 'details', $dataDictionaryId);
+
+        $this->em->persist($updatedDataDictionary);
+        $this->em->flush();
+
+        return array($dataDictionaryId, $entityJson);
+    }
+
+    /**
+     * Check the persistend state in a different test to make sure doctrine fetched a new instance of the object.
+     *
+     * @depends testRemoveChildEntities
+     */
+    public function testRemoveChildEntitiesPersisted($state)
+    {
+        $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($state[0]);
+
+        $this->assertTrue($dataDictionary->getControls()->count() === 0);
+    }
+
+    /**
+     * @depends testUpdateAndKeepAllAssociatedEntitiesPersisted
+     */
+    public function testAddChildEntities($dataDictionaryId)
+    {
+        $fixture = json_decode($this->json);
+
+        $entityJson = new \stdClass;
+        $entityJson->controls = $fixture->controls; // Brand new shiny controls
+        $entityJson = json_encode($entityJson);
+
+        $updatedDataDictionary = $this->deserializeFromJson('Rednose\FrameworkBundle\Entity\DataDictionary', $entityJson, 'details', $dataDictionaryId);
+
+        $this->em->persist($updatedDataDictionary);
+        $this->em->flush();
+
+        return array($dataDictionaryId, $entityJson);
+    }
+
+    /**
+     * Check the persistend state in a different test to make sure doctrine fetched a new instance of the object.
+     *
+     * @depends testAddChildEntities
+     */
+    public function testAddChildEntitiesPersisted($state)
+    {
+        $fixture = json_decode($this->json);
+
+        $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($state[0]);
+
+        $this->assertTrue($dataDictionary->getControls()->get(0)->getChildren()->count() === count($fixture->controls[0]->children));
+    }
+
+    /**
+     * @depends testUpdateAndKeepAllAssociatedEntitiesPersisted
+     */
+    public function testReplaceChildEntities($dataDictionaryId)
+    {
+        $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($dataDictionaryId);
+
+        $fixture = json_decode($this->json);
+
+        $entityJson = $this->serializeToJson($dataDictionary, 'details');
+        $entityJson = json_decode($entityJson);
+        $entityJson->controls = $fixture->controls; // Brand new shiny controls
+        $entityJson = json_encode($entityJson, JSON_PRETTY_PRINT);
+
+        $updatedDataDictionary = $this->deserializeFromJson('Rednose\FrameworkBundle\Entity\DataDictionary', $entityJson, 'details', $dataDictionaryId);
+
+        $this->em->persist($updatedDataDictionary);
+        $this->em->flush();
+
+        return array($dataDictionaryId, $entityJson);
+    }
+
+    /**
+     * Check the persistend state in a different test to make sure doctrine fetched a new instance of the object.
+     *
+     * @depends testReplaceChildEntities
+     */
+    public function testReplaceChildEntitiesPersisted($state)
+    {
+        $fixture = json_decode($this->json);
+
+        $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($state[0]);
+
+        $this->assertTrue($dataDictionary->getControls()->get(0)->getChildren()->count() === count($fixture->controls[0]->children));
+    }
+
+
+    /**
+     * @depends testUpdateAndKeepAllAssociatedEntitiesPersisted
+     */
+    public function testMoveChildEntityToDifferentParent($dataDictionaryId)
+    {
+        $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($dataDictionaryId);
+
+        $entityJson = $this->serializeToJson($dataDictionary, 'details');
+        $entityJson = json_decode($entityJson);
+
+
+        $moveControl = $entityJson->controls[0]->children[0];
+        $idMovedTo   = 0;
+        $idMoved     = $moveControl->id;
+        unset($entityJson->controls[0]->children[0]);
+
+        foreach ($entityJson->controls[0]->children as $child) {
+            if ($child->type === 'collection') {
+                $idMovedTo         = $child->id;
+                $child->children[] = $moveControl;
+            }
+        }
+        $entityJson = json_encode($entityJson, JSON_PRETTY_PRINT);
+
+        $updatedDataDictionary = $this->deserializeFromJson('Rednose\FrameworkBundle\Entity\DataDictionary', $entityJson, 'details', $dataDictionaryId);
+
+        $this->em->persist($updatedDataDictionary);
+        $this->em->flush();
+
+        return array($dataDictionaryId, $idMoved, $idMovedTo);
+    }
+
+    /**
+     * Check the persistend state in a different test to make sure doctrine fetched a new instance of the object.
+     *
+     * @depends testMoveChildEntityToDifferentParent
+     */
+    public function testMoveChildEntyToDifferentParentPersisted($ids)
+    {
+        $found = false;
+        $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($ids[0]);
+
+        foreach ($dataDictionary->getControls()->get(0)->getChildren() as $control) {
+            if ($control->getId() === $ids[2]) {
+                foreach ($control->getChildren() as $childControl) {
+                    if ($childControl->getId() === $ids[1]) {
+                        $found = true;
+                    }
+                }
+            }
+        }
+
+        $this->assertTrue(true === $found);
     }
 
     /*
@@ -214,10 +399,14 @@ class SerializerTest extends WebTestCase
      * @param json $json
      * @return string
      */
-    private function deserializeFromJson($className, $json, $group = 'file')
+    private function deserializeFromJson($className, $json, $group = 'file', $id = 0)
     {
         $context = new DeserializationContext();
         $context->setGroups(array($group));
+
+        if ($id) {
+            $context->setAttribute('id', $id);
+        }
 
         $entity = $this->serializer->deserialize(
             $json, $className, 'json', $context
@@ -232,10 +421,14 @@ class SerializerTest extends WebTestCase
      * @param object $entity
      * @return string
      */
-    private function serializeToJson($entity, $group = 'file')
+    private function serializeToJson($entity, $group = 'file', $id = 0)
     {
         $context = new SerializationContext();
         $context->setGroups(array($group));
+
+        if ($id) {
+            $context->setAttribute('id', $id);
+        }
 
         $json = $this->serializer->serialize(
             $entity, 'json', $context
