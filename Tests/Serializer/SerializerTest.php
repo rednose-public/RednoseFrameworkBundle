@@ -358,10 +358,10 @@ class SerializerTest extends WebTestCase
     }
 
     /*
-     * Test object properties based on provided xml using getters and setters.
+     * Test object properties based on provided json using getters and setters.
      *
-     * @param {object} $object
-     * @param {string} $xml
+     * @param object $object
+     * @param string $json
      */
     private function assertObject($object, $json)
     {
@@ -396,8 +396,11 @@ class SerializerTest extends WebTestCase
     /*
      * Deserialize entity
      *
-     * @param json $json
-     * @return string
+     * @param string $className
+     * @param string $json
+     * @param string $group
+     * @param integer $id
+     * @return object
      */
     private function deserializeFromJson($className, $json, $group = 'file', $id = 0)
     {
@@ -419,6 +422,8 @@ class SerializerTest extends WebTestCase
      * Serialize entity and return json
      *
      * @param object $entity
+     * @param string $group
+     * @param integer $id
      * @return string
      */
     private function serializeToJson($entity, $group = 'file', $id = 0)
