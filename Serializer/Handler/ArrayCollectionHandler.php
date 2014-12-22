@@ -73,10 +73,6 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
 
         // If there is a current collection on the object, we need to return the same collection instance,
         // or we end up with 2 collections in the database because the current collection isn't cleared.
-
-        // Warning: If your entity has orphanRemoval and you move it from one collection to another doctrine will mark
-        // it for removal!!
-
         if ($currentCollection instanceof Collection) {
             // Remove deleted items
             $existingIdList = array();
@@ -87,7 +83,9 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
 
             $currentCollection->forAll(function($key, $value) use ($existingIdList, &$currentCollection) {
                 if (in_array($value->getId(), $existingIdList, true) === false) {
-                    $currentCollection->remove($value);
+                    
+                    die(get_class($currentCollection));
+                    $currentCollection->removeElement($value);
                 }
 
                 return true;
