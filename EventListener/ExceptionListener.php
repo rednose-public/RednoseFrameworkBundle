@@ -11,12 +11,13 @@
 
 namespace Rednose\FrameworkBundle\EventListener;
 
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\AcceptHeader;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Exception handler for error pages.
@@ -51,13 +52,16 @@ class ExceptionListener implements EventSubscriberInterface
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
+        $request   = $event->getRequest();
         $response  = new Response();
 
         if ($this->kernel->getEnvironment() === 'test') {
             return;
         }
 
-        if ($event->getRequest()->headers->get('Content-Type') === 'application/json') {
+        $accept = AcceptHeader::fromString($request->headers->get('Accept'));
+
+        if ($request->headers->get('Content-Type') === 'application/json' || $accept->has('application/json')) {
             $err = array(
                 'message' => $exception->getMessage(),
                 'code'    => $exception->getCode(),
