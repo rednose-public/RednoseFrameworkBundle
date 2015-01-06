@@ -1,0 +1,1 @@
+{"name":"Test-Dictionary","controls":[{"name":"TestFields","type":"composite","children":[{"name":"TestField","type":"string","children":[]},{"name":"TestDate","type":"date","children":[]},{"name":"TestIngeger","type":"number","children":[]},{"name":"MoreTestFields","type":"collection","children":[{"name":"TestBoolean","type":"boolean","children":[]}]}]}]}
