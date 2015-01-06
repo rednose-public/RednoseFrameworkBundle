@@ -71,7 +71,7 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
         $movedItems = array();
 
         foreach ($this->addedItems as $objectHash => $value) {
-            if (isset($this->removedItems[$objectHash])) {
+            if (isset($this->removedItems[$objectHash]) && $this->removedItems[$objectHash] !== false) {
                 $movedItems[] = array(
                     'name'          => $this->addedItems[$objectHash]['name'],
                     'oldCollection' => $this->removedItems[$objectHash]['collection'],
@@ -96,6 +96,12 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
         }
 
         return false;
+    }
+
+    public function cleanTransactionState()
+    {
+        $this->adddedItems  = array();
+        $this->removedItems = array();
     }
 
     public function serializeCollection(VisitorInterface $visitor, Collection $collection, array $type, Context $context)

@@ -11,6 +11,8 @@
 
 namespace Rednose\FrameworkBundle\Serializer\Construction;
 
+use Rednose\FrameworkBundle\EventListener\SerializerListener;
+
 use Doctrine\Common\Persistence\ManagerRegistry;
 use JMS\Serializer\VisitorInterface;
 use JMS\Serializer\Metadata\ClassMetadata;
@@ -24,6 +26,7 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
 {
     private $managerRegistry;
     private $fallbackConstructor;
+    private $listener;
 
     /**
      * Constructor.
@@ -31,10 +34,11 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
      * @param ManagerRegistry            $managerRegistry     Manager registry
      * @param ObjectConstructorInterface $fallbackConstructor Fallback object constructor
      */
-    public function __construct(ManagerRegistry $managerRegistry, ObjectConstructorInterface $fallbackConstructor)
+    public function __construct(ManagerRegistry $managerRegistry, ObjectConstructorInterface $fallbackConstructor, SerializerListener $listener)
     {
         $this->managerRegistry     = $managerRegistry;
         $this->fallbackConstructor = $fallbackConstructor;
+        $this->listener            = $listener;
     }
 
     /**
@@ -48,6 +52,19 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
         if (!$objectManager) {
             // No ObjectManager found, proceed with normal deserialization
             return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
+        }
+
+        if ($context->getDepth() === 1) {
+            // Register a callback method to make sure the changes are applied to the object collections before
+            // other serializer events are fired.
+            $metadataMethod = new MethodMetadata(
+                'Rednose\FrameworkBundle\Serializer\Construction\DoctrineObjectConstructor', 'onPostDeserialize'
+            );
+
+            $metadataMethod->setListener($this->listener);
+
+            // Prepend to the beginning of the postDeserializeMethod array
+            array_unshift($metadata->postDeserializeMethods, $metadataMethod);
         }
 
         $id = $context->attributes->get('id');
@@ -86,5 +103,9 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
         $objectManager->initializeObject($object);
 
         return $object;
+    }
+
+    private function onPostDeserialize() {
+        // Dummy
     }
 }
