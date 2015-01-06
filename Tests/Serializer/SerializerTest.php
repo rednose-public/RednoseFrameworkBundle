@@ -339,7 +339,7 @@ class SerializerTest extends WebTestCase
      *
      * @depends testMoveChildEntityToDifferentParent
      */
-    public function testMoveChildEntyToDifferentParentPersisted($ids)
+    public function testMoveChildEntityToDifferentParentPersisted($ids)
     {
         $found = false;
         $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($ids[0]);

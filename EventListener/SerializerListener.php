@@ -13,14 +13,11 @@ namespace Rednose\FrameworkBundle\EventListener;
 
 use Rednose\FrameworkBundle\Serializer\Handler\ArrayCollectionHandler;
 
-use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
-use JMS\Serializer\EventDispatcher\ObjectEvent;
-
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class SerializerListener implements EventSubscriberInterface
+class SerializerListener
 {
     /**
      * @var {ArrayCollectionHandler}
@@ -38,24 +35,15 @@ class SerializerListener implements EventSubscriberInterface
         $this->managerRegistry = $managerRegistry;
     }
 
-    public static function getSubscribedEvents()
+    public function onPostDeserialize()
     {
-        return array(
-            array('event' => 'serializer.post_deserialize', 'method' => 'onPostDeserialize'),
-        );
-    }
+        $queue = $this->handler->getCollectionsTransactionQueue();
 
-    public function onPostDeserialize(ObjectEvent $event)
-    {
-        // Changes must be applied at the end of the serialization process!
-        // Only commit the changes if this event is fired for the parent entity (depth 0).
-        if ($event->getContext()->getDepth() === 0) {
-            $queue = $this->handler->getCollectionsTransactionQueue();
-
-            if ($queue !== false) {
-                $this->commitArrayCollectionChanges($queue);
-            }
+        if ($queue !== false) {
+            $this->commitArrayCollectionChanges($queue);
         }
+
+        $this->handler->cleanTransactionState();
     }
 
     private function commitArrayCollectionChanges($queue)
@@ -78,7 +66,7 @@ class SerializerListener implements EventSubscriberInterface
 
         // Add new items to a collection
         foreach ($queue->addedItems as $item) {
-            if ($item !== false) {
+            if ($item !== false && !isset($item['skip'])) {
                 $this->addEntityBidirectional($item['entity'], $item['owner'], $item['name'], $item['collection']);
             }
         }
@@ -113,21 +101,38 @@ class SerializerListener implements EventSubscriberInterface
 
         // Set bi-directional property based on mappedBy ORM attribute
         if ($map) {
-            call_user_func(array($entity, 'set' . $map), $owner);
+            if (method_exists($entity, 'set' . $map)) {
+                call_user_func(array($entity, 'set' . $map), $owner);
+            }
         } else {
             throw new \Exception('No required mappedBy property present on ' . get_class($entity) . ' (' . $propertyName . ')');
         }
 
         // Add to the collection
-        return $collection->add($entity);
+        if ($collection->indexOf($entity) === false) {
+            return $collection->add($entity);
+        }
+
+        return false;
     }
 
-    private function getMappingFromEntity($owner, $propertyName) {
+    private function getMappingFromEntity($owner, $propertyName)
+    {
+        static $cache = array();
+
+        if (isset($cache[get_class($owner) . '-' . $propertyName])) {
+            return $cache[get_class($owner) . '-' . $propertyName];
+        }
+
         $objectManager   = $this->managerRegistry->getManagerForClass(get_class($owner));
         $metadataFactory = $objectManager->getMetadataFactory();
 
-        return $metadataFactory
+        $map = $metadataFactory
             ->getMetadataFor(get_class($owner))
             ->getAssociationMapping($propertyName);
+
+        $cache[get_class($owner) . '-' . $propertyName] = $map;
+
+        return $map;
     }
 }
