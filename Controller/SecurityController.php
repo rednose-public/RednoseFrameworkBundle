@@ -62,8 +62,6 @@ class SecurityController extends Controller
 
     /**
      * Returns information about the current user.
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getUserAction()
     {
@@ -71,9 +69,12 @@ class SecurityController extends Controller
         $user = $this->get('security.context')->getToken()->getUser();
 
         $data = array(
-            'username' => $user->getUsername(),
-            'bestname' => $user->getBestname(),
-            'email'    => $user->getEmail()
+            'id'           => $user->getId(),
+            'username'     => $user->getUsername(),
+            'bestname'     => $user->getBestname(),
+            'email'        => $user->getEmail(),
+            'locale'       => $user->getLocale(),
+            'organization' => $user->getOrganization()->getId(),
         );
 
         $view = new View();
@@ -81,5 +82,25 @@ class SecurityController extends Controller
         $view->setFormat('json');
 
         return $this->get('fos_rest.view_handler')->handle($view);
+    }
+
+    public function postUserAction()
+    {
+        /** @var UserInterface $user */
+        $user   = $this->get('security.context')->getToken()->getUser();
+        $params = json_decode($this->getRequest()->getContent(), true);
+
+        if (array_key_exists('locale', $params)) {
+            $user->setLocale($params['locale']);
+        }
+
+        if (array_key_exists('organization', $params)) {
+            $organization = $this->get('rednose_framework.organization_manager')->findOrganizationById($params['organization']);
+            $user->setOrganization($organization);
+        }
+
+        $this->get('rednose_framework.user_manager')->updateUser($user);
+
+        return $this->redirect($this->generateUrl('rednose_framework_get_user'));
     }
 }

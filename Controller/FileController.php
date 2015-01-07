@@ -49,7 +49,7 @@ class FileController extends Controller
             }
         }
 
-        return new Response(null, 500);
+        return new Response(null, 400);
     }
 
     /**

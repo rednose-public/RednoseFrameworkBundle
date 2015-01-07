@@ -26,4 +26,11 @@ interface OrganizationManagerInterface
      * @return OrganizationInterface[]
      */
     public function findOrganizations();
+
+    /**
+     * @param array $criteria
+     *
+     * @return OrganizationInterface
+     */
+    public function findOrganizationBy(array $criteria);
 }
