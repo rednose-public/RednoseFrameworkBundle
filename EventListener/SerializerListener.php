@@ -86,8 +86,6 @@ class SerializerListener
 
     private function addEntityBidirectional($entity, $owner, $propertyName, Collection $collection)
     {
-        $name = '';
-
         if ($collection instanceOf ArrayCollection) {
             // If this is a ArrayCollection there is no mapping available.
             $map = $this->getMappingFromEntity($owner, $propertyName);
