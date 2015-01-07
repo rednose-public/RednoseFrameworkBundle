@@ -86,6 +86,8 @@ class SerializerListener
 
     private function addEntityBidirectional($entity, $owner, $propertyName, Collection $collection)
     {
+        $name = '';
+
         if ($collection instanceOf ArrayCollection) {
             // If this is a ArrayCollection there is no mapping available.
             $map = $this->getMappingFromEntity($owner, $propertyName);
@@ -101,9 +103,9 @@ class SerializerListener
 
         // Set bi-directional property based on mappedBy ORM attribute
         if ($map) {
-            if (method_exists($entity, 'set' . $map)) {
-                call_user_func(array($entity, 'set' . $map), $owner);
-            }
+            $reflect = new \ReflectionProperty(get_class($entity), $map);
+            $reflect->setAccessible(true);
+            $reflect->setValue($entity, $owner);
         } else {
             throw new \Exception('No required mappedBy property present on ' . get_class($entity) . ' (' . $propertyName . ')');
         }
