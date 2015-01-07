@@ -74,7 +74,7 @@ class SecurityController extends Controller
             'bestname'     => $user->getBestname(),
             'email'        => $user->getEmail(),
             'locale'       => $user->getLocale(),
-            'organization' => $user->getOrganization()->getId(),
+            'organization' => $user->getOrganization() ? $user->getOrganization()->getId() : null,
         );
 
         $view = new View();
