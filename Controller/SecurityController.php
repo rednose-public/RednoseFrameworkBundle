@@ -66,15 +66,20 @@ class SecurityController extends Controller
     public function getUserAction()
     {
         /** @var UserInterface $user */
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user    = $this->get('security.context')->getToken()->getUser();
+        $request = $this->getRequest();
+        $manager = $this->get('rednose_framework.organization_manager');
+
+        $locale       = $user->getLocale() ?: $request->getLocale();
+        $organization = $user->getOrganization() ?: $manager->findOrganizationBy(array());
 
         $data = array(
             'id'           => $user->getId(),
             'username'     => $user->getUsername(),
             'bestname'     => $user->getBestname(),
             'email'        => $user->getEmail(),
-            'locale'       => $user->getLocale(),
-            'organization' => $user->getOrganization() ? $user->getOrganization()->getId() : null,
+            'locale'       => $locale,
+            'organization' => $organization ? $organization->getId() : null,
         );
 
         $view = new View();

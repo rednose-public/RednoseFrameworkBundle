@@ -59,7 +59,7 @@ class User extends BaseUser implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Rednose\FrameworkBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      **/
     protected $organization;
 
