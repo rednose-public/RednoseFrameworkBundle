@@ -11,11 +11,12 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
-use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Entity\User as BaseUser;
+use JMS\Serializer\Annotation as Serializer;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\User\UserInterface as CoreUserInterface;
-use JMS\Serializer\Annotation as Serializer;
 
 /**
  * A RedNose framework user
@@ -55,6 +56,12 @@ class User extends BaseUser implements UserInterface
      * @ORM\Column(type="string", nullable=true)
      */
     protected $locale;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Rednose\FrameworkBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     **/
+    protected $organization;
 
     /**
      * Transient API property.
@@ -174,6 +181,26 @@ class User extends BaseUser implements UserInterface
     public function setLocale($locale)
     {
         $this->locale = $locale;
+    }
+
+    /**
+     * Gets the preferred organization for this user.
+     *
+     * @return OrganizationInterface
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * Sets the preferred organization for this user.
+     *
+     * @param OrganizationInterface $organization
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
     }
 
     /**

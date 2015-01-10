@@ -30,6 +30,16 @@ class OrganizationManager implements OrganizationManagerInterface
     }
 
     /**
+     * @param array $criteria
+     *
+     * @return OrganizationInterface
+     */
+    public function findOrganizationBy(array $criteria)
+    {
+        return $this->em->getRepository('Rednose\FrameworkBundle\Entity\Organization')->findOneBy($criteria);
+    }
+
+    /**
      * @param string $id
      *
      * @return OrganizationInterface

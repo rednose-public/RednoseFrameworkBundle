@@ -4,7 +4,7 @@ namespace Rednose\FrameworkBundle\Tests\Util;
 
 use Rednose\FrameworkBundle\Util\ArrayUtil;
 
-class StyleTransformerTest extends \PHPUnit_Framework_TestCase
+class ArrayUtilTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var array

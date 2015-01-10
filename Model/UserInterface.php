@@ -11,9 +11,9 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
+use FOS\UserBundle\Model\GroupableInterface;
 use FOS\UserBundle\Model\UserInterface as BaseUserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
-use FOS\UserBundle\Model\GroupableInterface;
 
 /**
  * A RedNose framework user
@@ -35,6 +35,9 @@ interface UserInterface extends BaseUserInterface, GroupableInterface, Equatable
      */
     public function getBestname();
 
+    /**
+     * @return \DateTime
+     */
     public function getCredentialsExpireAt();
 
     /**
@@ -58,6 +61,9 @@ interface UserInterface extends BaseUserInterface, GroupableInterface, Equatable
      */
     public function setAdmin($boolean);
 
+    /**
+     * @return \DateTime
+     */
     public function getExpiresAt();
 
     /**
@@ -73,4 +79,18 @@ interface UserInterface extends BaseUserInterface, GroupableInterface, Equatable
      * @param string $locale
      */
     public function setLocale($locale);
+
+    /**
+     * Gets the preferred organization for this user.
+     *
+     * @return OrganizationInterface
+     */
+    public function getOrganization();
+
+    /**
+     * Sets the preferred organization for this user.
+     *
+     * @param OrganizationInterface $organization
+     */
+    public function setOrganization($organization);
 }

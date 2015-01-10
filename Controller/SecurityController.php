@@ -62,18 +62,24 @@ class SecurityController extends Controller
 
     /**
      * Returns information about the current user.
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getUserAction()
     {
         /** @var UserInterface $user */
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user    = $this->get('security.context')->getToken()->getUser();
+        $request = $this->getRequest();
+        $manager = $this->get('rednose_framework.organization_manager');
+
+        $locale       = $user->getLocale() ?: $request->getLocale();
+        $organization = $user->getOrganization() ?: $manager->findOrganizationBy(array());
 
         $data = array(
-            'username' => $user->getUsername(),
-            'bestname' => $user->getBestname(),
-            'email'    => $user->getEmail()
+            'id'           => $user->getId(),
+            'username'     => $user->getUsername(),
+            'bestname'     => $user->getBestname(),
+            'email'        => $user->getEmail(),
+            'locale'       => $locale,
+            'organization' => $organization ? $organization->getId() : null,
         );
 
         $view = new View();
@@ -81,5 +87,25 @@ class SecurityController extends Controller
         $view->setFormat('json');
 
         return $this->get('fos_rest.view_handler')->handle($view);
+    }
+
+    public function postUserAction()
+    {
+        /** @var UserInterface $user */
+        $user   = $this->get('security.context')->getToken()->getUser();
+        $params = json_decode($this->getRequest()->getContent(), true);
+
+        if (array_key_exists('locale', $params)) {
+            $user->setLocale($params['locale']);
+        }
+
+        if (array_key_exists('organization', $params)) {
+            $organization = $this->get('rednose_framework.organization_manager')->findOrganizationById($params['organization']);
+            $user->setOrganization($organization);
+        }
+
+        $this->get('rednose_framework.user_manager')->updateUser($user);
+
+        return $this->redirect($this->generateUrl('rednose_framework_get_user'));
     }
 }
