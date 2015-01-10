@@ -312,7 +312,6 @@ class SerializerTest extends WebTestCase
         $entityJson = $this->serializeToJson($dataDictionary, 'details');
         $entityJson = json_decode($entityJson);
 
-
         $moveControl = $entityJson->controls[0]->children[0];
         $idMovedTo   = 0;
         $idMoved     = $moveControl->id;
@@ -355,6 +354,80 @@ class SerializerTest extends WebTestCase
         }
 
         $this->assertTrue(true === $found);
+
+        return $dataDictionary->getId();
+    }
+
+    /**
+     * @depends testMoveChildEntityToDifferentParentPersisted
+     */
+    public function testMoveChildEntityToDifferentParentAndRemoveOldParent($dataDictionaryId)
+    {
+        $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($dataDictionaryId);
+
+        $entityJson = $this->serializeToJson($dataDictionary, 'details');
+        $entityJson = json_decode($entityJson);
+
+        // Find existing sub child
+        foreach ($entityJson->controls[0]->children as $offset => $child) {
+            if ($child->type === 'collection') {
+                $idMoved   = $child->children[0]->id;
+                $moveChild = $child->children[0];
+                $moveChild->children[] = $child->children[1];
+
+                // Remove child parent
+                unset($entityJson->controls[0]->children[$offset]);
+
+                break;
+            }
+        }
+        // Create new unpersisted parent
+        $newParent = new \stdClass;
+        $newParent->name = 'NewTestParent';
+        $newParent->type = 'collection';
+        $newParent->children = array($moveChild);
+
+        array_unshift($entityJson->controls, $newParent);
+
+        $entityJson = json_encode($entityJson, JSON_PRETTY_PRINT);
+
+        $updatedDataDictionary = $this->deserializeFromJson('Rednose\FrameworkBundle\Entity\DataDictionary', $entityJson, 'details', $dataDictionaryId);
+
+        $this->em->persist($updatedDataDictionary);
+        $this->em->flush();
+
+        return array($dataDictionaryId, $idMoved);
+    }
+
+    /**
+     * @depends testMoveChildEntityToDifferentParentAndRemoveOldParent
+     */
+    public function testMoveChildEntityToDifferentParentAndRemoveOldParentPersisted($ids)
+    {
+        $hasChild       = false;
+        $childFound     = false;
+        $newParentFound = false;
+
+        $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($ids[0]);
+
+        foreach ($dataDictionary->getControls() as $control) {
+            if ($control->getName() === 'NewTestParent') {
+                $newParentFound = true;
+
+                if ($child = $control->getChildren()->get(0)) {
+                    if ($child->getId() === $ids[1]) {
+                        $childFound = true;
+                        $hasChild   = ($child->getChildren()->count() > 0);
+                    }
+                }
+            }
+
+        }
+
+        $this->assertEquals($dataDictionary->getControls()->count(), 2);
+        $this->assertTrue(true === $newParentFound);
+        $this->assertTrue(true === $childFound);
+        $this->assertTrue(true === $hasChild);
     }
 
     /*

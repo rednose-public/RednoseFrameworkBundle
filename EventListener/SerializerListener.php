@@ -74,6 +74,15 @@ class SerializerListener
         // Schedule removed items for deletion
         foreach ($queue->removedItems as $item) {
             if ($item !== false) {
+                $map = $item['collection']->getMapping();
+
+                if (isset($map['orphanRemoval']) && $map['orphanRemoval']) {
+                    throw new \Exception(
+                        'Unable to remove entity ' . get_class($item['entity']) . '.' .
+                        'The orphanRemoval attribute is set on the OneToMany relation definition in ' . get_class($item['collection']->getOwner())
+                    );
+                }
+
                 $objectManager = $this->managerRegistry->getManagerForClass(get_class($item['entity']));
 
                 $item['collection']->removeElement($item['entity']);
