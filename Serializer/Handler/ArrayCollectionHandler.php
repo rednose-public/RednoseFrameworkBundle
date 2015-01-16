@@ -151,10 +151,10 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
             $existingIdList[] = $item->getId();
         }
 
-        $self = $this;
-        $currentCollection->forAll(function($key, $item) use ($existingIdList, $currentCollection, $propertyMetadata, $currentObject, &$self) {
+        $removedItems = &$this->removedItems;
+        $currentCollection->forAll(function($key, $item) use ($existingIdList, $currentCollection, $propertyMetadata, $currentObject, &$removedItems) {
             if (in_array($item->getId(), $existingIdList, true) === false) {
-                $self->removedItems[spl_object_hash($item) . get_class($item)] = array(
+                $removedItems[spl_object_hash($item) . get_class($item)] = array(
                     'name' => $propertyMetadata->name, 'entity' => $item, 'collection' => $currentCollection, 'owner' => $currentObject
                 );
             }
