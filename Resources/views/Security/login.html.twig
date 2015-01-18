@@ -23,17 +23,17 @@
                             {% endif %}
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" autofocus="autofocus" required="required" placeholder="{% trans %}sign_in_username{% endtrans %}" name="_username" type="text">
+                                    <input id="username" class="form-control" autofocus="autofocus" required="required" placeholder="{% trans %}sign_in_username{% endtrans %}" name="_username" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" required="required" placeholder="{% trans %}sign_in_password{% endtrans %}" name="_password" type="password">
+                                    <input id="password" class="form-control" required="required" placeholder="{% trans %}sign_in_password{% endtrans %}" name="_password" type="password">
                                 </div>
                                 <div class="checkbox">
                                     <label>
                                         <input name="_remember_me" type="checkbox"> {% trans %}remember_me{% endtrans %}
                                     </label>
                                 </div>
-                                <input class="btn btn-lg btn-success btn-block" type="submit" name="_submit" value="{% trans %}sign_in_button{% endtrans %}">
+                                <input id="submit" class="btn btn-lg btn-success btn-block" type="submit" name="_submit" value="{% trans %}sign_in_button{% endtrans %}">
                             </fieldset>
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
                         </form>
