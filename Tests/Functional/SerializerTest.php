@@ -1,6 +1,6 @@
 <?php
 
-namespace Rednose\FrameworkBundle\Tests\Serializer;
+namespace Rednose\FrameworkBundle\Tests\Functional;
 
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
@@ -8,6 +8,7 @@ use JMS\Serializer\SerializationContext;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Tools\SchemaTool;
 
+use Rednose\FrameworkBundle\Tests\Serializer\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SerializerTest extends WebTestCase
