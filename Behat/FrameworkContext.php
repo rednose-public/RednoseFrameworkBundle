@@ -24,6 +24,14 @@ class FrameworkContext extends RawMinkContext implements Context, KernelAwareCon
     }
 
     /**
+     * @Then /^I wait 1 second$/
+     */
+    public function iWait1Second()
+    {
+        $this->getSession()->wait(1000);
+    }
+
+    /**
      * @Then /^I wait$/
      */
     public function iWait()
