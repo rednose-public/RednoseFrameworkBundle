@@ -52,9 +52,7 @@
         <service id="rednose_framework.deserialization_listener" class="Rednose\FrameworkBundle\EventListener\SerializerListener">
             <argument type="service" id="jms_serializer.array_collection_handler" />
             <argument type="service" id="doctrine"/>
-            <!--<tag name="jms_serializer.event_subscriber" event="serializer.post_deserialize" method="onPostDeserialize" priority="0" />-->
         </service>
-
 
         <!-- Doctrine event listener -->
         <service id="rednose_framework.doctrine_listener" class="%rednose_framework.doctrine_listener.class%">
