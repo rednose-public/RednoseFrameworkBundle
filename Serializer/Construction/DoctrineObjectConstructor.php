@@ -54,7 +54,10 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
             return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
         }
 
-        if (count($metadata->postDeserializeMethods) > 0 && ($metadata->postDeserializeMethods[0] instanceOf MethodMetadata) === false) {
+        if (
+            count($metadata->postDeserializeMethods) > 0 && ($metadata->postDeserializeMethods[0] instanceOf MethodMetadata) === false ||
+            count($metadata->postDeserializeMethods) === 0
+        ) {
             // Register a callback method to make sure the changes are applied to the object collections before
             // other serializer events are fired.
             $metadataMethod = new MethodMetadata(
