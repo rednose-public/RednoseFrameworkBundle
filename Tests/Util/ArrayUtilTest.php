@@ -26,71 +26,71 @@ class ArrayUtilTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function test_Has_Should_Return_True_For_Root_Key_With_Scalar()
+    public function testHasShouldReturnTrueForRootKeyWithScalar()
     {
         $this->assertTrue(ArrayUtil::has($this->array, 'level1a'));
     }
 
-    public function test_Has_Should_Return_True_For_Root_Key_With_Array()
+    public function testHasShouldReturnTrueForRootKeyWithArray()
     {
         $this->assertTrue(ArrayUtil::has($this->array, 'level1b'));
     }
 
-    public function test_Has_Should_Return_True_For_Nested_Key_With_Value()
+    public function testHasShouldReturnTrueForNestedKeyWithValue()
     {
         $this->assertTrue(ArrayUtil::has($this->array, 'level1c.level2b.level3a'));
     }
 
-    public function test_Has_Should_Return_False_For_Root_Key_Without_Value()
+    public function testHasShouldReturnFalseForRootKeyWithoutValue()
     {
         $this->assertFalse(ArrayUtil::has($this->array, 'level1x'));
     }
 
-    public function test_Has_Should_Return_False_For_Nested_Key_Without_Value()
+    public function testHasShouldReturnFalseForNestedKeyWithoutValue()
     {
         $this->assertFalse(ArrayUtil::has($this->array, 'level1c.level2b.level3x'));
     }
 
-    public function test_Get_Should_Return_Value_For_Root_Key_With_Scalar()
+    public function testGetShouldReturnValueForRootKeyWithScalar()
     {
         $this->assertEquals('test1', ArrayUtil::get($this->array, 'level1a'));
     }
 
-    public function test_Get_Should_Return_Value_For_Root_Key_With_Array()
+    public function testGetShouldReturnValueForRootKeyWithArray()
     {
         $this->assertTrue(is_array(ArrayUtil::get($this->array, 'level1b')));
     }
 
-    public function test_Get_Should_Return_Value_For_Nested_Key_With_Value()
+    public function testGetShouldReturnValueForNestedKeyWithValue()
     {
         $this->assertEquals('test3', ArrayUtil::get($this->array, 'level1c.level2b.level3a'));
     }
 
-    public function test_Get_Should_Return_Null_For_Root_Key_Without_Value()
+    public function testGetShouldReturnNullForRootKeyWithoutValue()
     {
         $this->assertNull(ArrayUtil::get($this->array, 'level1x'));
     }
 
-    public function test_Get_Should_Return_Null_For_Nested_Key_Without_Value()
+    public function testGetShouldReturnNullForNestedKeyWithoutValue()
     {
         $this->assertNull(ArrayUtil::get($this->array, 'level1x.level2x.level3x'));
     }
 
-    public function test_Set_Should_Override_Scalar_With_Value()
+    public function testSetShouldOverrideScalarWithValue()
     {
         ArrayUtil::set($this->array, 'level1a', 'test');
 
         $this->assertEquals('test', $this->array['level1a']);
     }
 
-    public function test_Set_Should_Override_Array_With_Value()
+    public function testSetShouldOverrideArrayWithValue()
     {
         ArrayUtil::set($this->array, 'level1b', 'test');
 
         $this->assertEquals('test', $this->array['level1b']);
     }
 
-    public function test_Set_Should_Create_Nested_Keys_When_Non_Existent()
+    public function testSetShouldCreateNestedKeysWhenNonExistent()
     {
         ArrayUtil::set($this->array, 'level1x.level2x.level3x', 'test');
 

@@ -108,7 +108,8 @@ class DataControl implements DataControlInterface
      */
     public function __construct(DataDictionaryInterface $dictionary)
     {
-        $this->children = new ArrayCollection();
+        $this->dictionary = $dictionary;
+        $this->children   = new ArrayCollection();
     }
 
     /**
@@ -336,6 +337,17 @@ class DataControl implements DataControlInterface
         }
 
         return null;
+    }
+
+    /**
+     * @param DataControlInterface $child
+     */
+    public function addChild(DataControlInterface $child)
+    {
+        $child->setParent($this);
+        $child->setSortOrder(count($this->children));
+
+        $this->children->add($child);
     }
 
     /**

@@ -124,7 +124,13 @@ class DataDictionary implements DataDictionaryInterface
      */
     public function getControl($path)
     {
-        $segments = explode('.', $path);
+        $segments = array_filter(explode('/', $path), function($segment) {
+            return $segment !== '';
+        });
+
+        if (array_shift($segments) !== $this->getName()) {
+            return null;
+        }
 
         $cur = $this;
 

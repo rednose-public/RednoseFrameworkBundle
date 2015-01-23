@@ -2,13 +2,11 @@
 
 namespace Rednose\FrameworkBundle\Tests\Functional;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\SchemaTool;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
-
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Tools\SchemaTool;
-
-use Rednose\FrameworkBundle\Tests\Serializer\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SerializerTest extends WebTestCase
@@ -431,7 +429,7 @@ class SerializerTest extends WebTestCase
         $this->assertTrue(true === $hasChild);
     }
 
-    /*
+    /**
      * Test object properties based on provided json using getters and setters.
      *
      * @param object $object
@@ -467,7 +465,7 @@ class SerializerTest extends WebTestCase
         );
     }
 
-    /*
+    /**
      * Deserialize entity
      *
      * @param string $className
@@ -492,7 +490,7 @@ class SerializerTest extends WebTestCase
         return $entity;
     }
 
-    /*
+    /**
      * Serialize entity and return json
      *
      * @param object $entity

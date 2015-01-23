@@ -115,4 +115,9 @@ interface DataControlInterface
      * @return bool
      */
     public function isInContext($context);
+
+    /**
+     * @param DataControlInterface $child
+     */
+    public function addChild(DataControlInterface $child);
 }
