@@ -2,6 +2,8 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
+use Rednose\FrameworkBundle\Entity\Organization;
+
 interface OrganizationManagerInterface
 {
     /**
@@ -33,4 +35,9 @@ interface OrganizationManagerInterface
      * @return OrganizationInterface
      */
     public function findOrganizationBy(array $criteria);
+
+    /**
+     * @return OrganizationInterface
+     */
+    public function createOrganization();
 }

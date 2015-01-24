@@ -5,8 +5,10 @@ namespace Rednose\FrameworkBundle\Behat;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Context\Context;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
+use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Rednose\FrameworkBundle\Model\UserInterface;
 
 class FrameworkContext extends RawMinkContext implements Context, KernelAwareContext
 {
@@ -52,6 +54,14 @@ class FrameworkContext extends RawMinkContext implements Context, KernelAwareCon
      */
     public function iAmLoggedInAsAdministrator()
     {
+        $util = $this->getContainer()->get('fos_user.util.user_manipulator');
+        $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        /** @var UserInterface $admin */
+        $admin = $util->create('admin', 'adminpasswd', 'info@rednose.nl', true, true);
+        $admin->setRealname('Administrator');
+        $em->persist($admin);
+
         $this->iAmLoggedInAsRole('ROLE_SUPER_ADMIN');
     }
 
@@ -61,6 +71,27 @@ class FrameworkContext extends RawMinkContext implements Context, KernelAwareCon
     public function iAmNotLoggedIn()
     {
         $this->getSession()->visit($this->generateUrl('_rednose_framework_security_logout'));
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following organizations are defined:$/
+     */
+    public function thereAreOrganizations(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->createOrganization($data);
+        }
+    }
+
+    protected function createOrganization($data)
+    {
+        $sm = $this->getContainer()->get('rednose_framework.organization_manager');
+
+        $organization = $sm->createOrganization();
+        $organization->setName($data['name']);
+        $sm->updateOrganization($organization);
     }
 
     /**

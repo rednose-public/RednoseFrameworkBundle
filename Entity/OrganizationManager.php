@@ -22,6 +22,14 @@ class OrganizationManager implements OrganizationManagerInterface
     }
 
     /**
+     * @return OrganizationInterface
+     */
+    public function createOrganization()
+    {
+        return new Organization();
+    }
+
+    /**
      * @return OrganizationInterface[]
      */
     public function findOrganizations()
