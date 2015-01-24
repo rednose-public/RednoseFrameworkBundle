@@ -59,10 +59,18 @@ class FrameworkContext extends RawMinkContext implements Context, KernelAwareCon
 
         /** @var UserInterface $admin */
         $admin = $util->create('admin', 'adminpasswd', 'info@rednose.nl', true, true);
-        $admin->setRealname('Administrator');
         $em->persist($admin);
 
-        $this->iAmLoggedInAsRole('ROLE_SUPER_ADMIN');
+        $this->login('admin', 'adminpasswd');
+    }
+
+    /**
+     * @Given /^I am logged in as administrator for organization "([^"]*)"$/
+     */
+    public function iAmLoggedInAsAdministratorForOrganization($organization)
+    {
+        $this->createOrganization(array('name' => $organization));
+        $this->iAmLoggedInAsAdministrator();
     }
 
     /**
@@ -82,6 +90,23 @@ class FrameworkContext extends RawMinkContext implements Context, KernelAwareCon
     {
         foreach ($table->getHash() as $data) {
             $this->createOrganization($data);
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following users are defined:$/
+     */
+    public function thereAreUsers(TableNode $table)
+    {
+        $util = $this->getContainer()->get('fos_user.util.user_manipulator');
+        $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        foreach ($table->getHash() as $data) {
+            /** @var UserInterface $admin */
+            $user = $util->create($data['name'], $data['password'], $data['email'], true, false);
+            $em->persist($user);
         }
     }
 
@@ -167,18 +192,15 @@ class FrameworkContext extends RawMinkContext implements Context, KernelAwareCon
     }
 
     /**
-     * Create user and login with given role.
-     *
-     * @param string $role
      * @param string $name
+     * @param string $password
      */
-    private function iAmLoggedInAsRole($role, $name = 'admin')
+    private function login($name, $password)
     {
-//        $this->thereIsUser($email, 'rednose', $role);
         $this->getSession()->visit($this->generateUrl('_rednose_framework_security_login'));
 
         $this->fillField('username', $name);
-        $this->fillField('password', 'adminpasswd');
+        $this->fillField('password', $password);
         $this->pressButton('submit');
     }
 }
