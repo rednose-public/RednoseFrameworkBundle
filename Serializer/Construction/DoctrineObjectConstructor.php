@@ -103,6 +103,12 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
         // Entity update, load it from database
         $object = $objectManager->find($metadata->name, $identifierList);
 
+        // Entity update requested on a deleted object, create a new one instead.
+        // This can happen if there is a undo action applied after the entity was saved.
+        if (!$object) {
+            return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
+        }
+
         $objectManager->initializeObject($object);
 
         return $object;
