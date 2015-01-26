@@ -8,11 +8,16 @@ class MethodMetadata extends BaseMetaData
 {
     private $listener;
 
-    public function invoke($object) {
+    /**
+     * {@inheritdoc}
+     */
+    public function invoke($obj, array $args = array())
+    {
         $this->listener->{$this->name}();
     }
 
-    public function setListener($listener) {
+    public function setListener($listener)
+    {
         $this->listener = $listener;
     }
 }
