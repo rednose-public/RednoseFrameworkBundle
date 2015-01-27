@@ -1,6 +1,6 @@
 {% extends 'RednoseFrameworkBundle::layout.html.twig' %}
 
-{% block title %}{% trans %}sign_in_title{% endtrans %}{% endblock %}
+{% block title %}{% trans %}error{% endtrans %}{% endblock %}
 
 {% block content %}
     <div class="container text-center">
@@ -9,5 +9,7 @@
         </div>
         <p class="lead">Er heeft zich een fout voorgedaan op de server van deze applicatie.</p>
         <p>Neem contact op met de serverbeheerder.</p>
+        <br />
+        <p>Debug: {{ msg }}</p>
     </div>
 {% endblock %}

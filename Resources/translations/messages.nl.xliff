@@ -10,6 +10,10 @@
                 <source>sign_in</source>
                 <target>Inloggen</target>
             </trans-unit>
+            <trans-unit id="not_found">
+                <source>not_found</source>
+                <target>Niet gevonden</target>
+            </trans-unit>
             <trans-unit id="error">
                 <source>error</source>
                 <target>Foutmelding</target>

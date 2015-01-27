@@ -80,10 +80,16 @@ class ExceptionListener implements EventSubscriberInterface
             return;
         }
 
+        $msg = 'Unknown error';
+
         if ($exception instanceof NotFoundHttpException) {
             $response->setContent($this->templating->render('RednoseFrameworkBundle:Exception:404.html.twig'));
         } else {
-            $response->setContent($this->templating->render('RednoseFrameworkBundle:Exception:500.html.twig'));
+            if ($exception->getMessage()) {
+                $msg = $exception->getMessage();
+            }
+
+            $response->setContent($this->templating->render('RednoseFrameworkBundle:Exception:500.html.twig', array('msg' => $msg)));
         }
 
         $event->setResponse($response);
