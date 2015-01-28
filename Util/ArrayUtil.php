@@ -12,16 +12,17 @@ class ArrayUtil
      *
      * @param array $arr
      * @param string $path
+     * @param string $separatorChar = '.'
      *
      * @return mixed
      */
-    public static function has(array $arr, $path)
+    public static function has(array $arr, $path, $separatorChar = '.')
     {
         if (!$path) {
             return null;
         }
 
-        $segments = is_array($path) ? $path : explode('.', $path);
+        $segments = is_array($path) ? $path : explode($separatorChar, $path);
 
         $cur = &$arr;
 
@@ -41,16 +42,17 @@ class ArrayUtil
      *
      * @param array $arr
      * @param string $path
+     * @param string $separatorChar = '.'
      *
      * @return mixed
      */
-    public static function get(array $arr, $path)
+    public static function get(array $arr, $path, $separatorChar = '.')
     {
         if (!$path) {
             return null;
         }
 
-        $segments = is_array($path) ? $path : explode('.', $path);
+        $segments = is_array($path) ? $path : explode($separatorChar, $path);
 
         $cur = &$arr;
 
@@ -71,14 +73,17 @@ class ArrayUtil
      * @param array  $arr
      * @param string $path
      * @param mixed  $value
+     * @param string $separatorChar = '.'
+     *
+     * @return void
      */
-    public static function set(array &$arr, $path, $value)
+    public static function set(array &$arr, $path, $value, $separatorChar = '.')
     {
         if (!$path) {
             return;
         }
 
-        $segments = is_array($path) ? $path : explode('.', $path);
+        $segments = is_array($path) ? $path : explode($separatorChar, $path);
 
         $cur = &$arr;
 
