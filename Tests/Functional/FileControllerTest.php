@@ -37,7 +37,7 @@ class FileControllerTest extends WebTestCase
             array(),
             array('file' => $file)
         );
-
+//
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals($contents, file_get_contents(sprintf('%s%s', $this->getTempDir(), $client->getResponse()->getContent())));
     }
