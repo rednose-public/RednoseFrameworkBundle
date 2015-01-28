@@ -47,12 +47,36 @@ class FrameworkContext extends AbstractContext
     }
 
     /**
+     * @Given /^I am logged in as user$/
+     */
+    public function iAmLoggedInAsUser()
+    {
+        $util = $this->getContainer()->get('fos_user.util.user_manipulator');
+        $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        /** @var UserInterface $admin */
+        $user = $util->create('user', 'userpasswd', 'info@rednose.nl', true, false);
+        $em->persist($user);
+
+        $this->login('user', 'userpasswd');
+    }
+
+    /**
      * @Given /^I am logged in as administrator for organization "([^"]*)"$/
      */
     public function iAmLoggedInAsAdministratorForOrganization($organization)
     {
         $this->createOrganization(array('name' => $organization));
         $this->iAmLoggedInAsAdministrator();
+    }
+
+    /**
+     * @Given /^I am logged in as user for organization "([^"]*)"$/
+     */
+    public function iAmLoggedInAsUserForOrganization($organization)
+    {
+        $this->createOrganization(array('name' => $organization));
+        $this->iAmLoggedInAsUser();
     }
 
     /**
