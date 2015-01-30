@@ -23,6 +23,11 @@ class SecurityController extends Controller
         $userManager = $this->get('rednose_framework.user_manager');
         $request = $this->get('request');
 
+        // Saml authentication
+        if ($this->container->getParameter('rednose_framework.use_saml') === true) {
+            return $this->redirect($this->generateUrl('aerial_ship_saml_sp.security.login'));
+        }
+
         // Token authentication
         if ($userManager->tokenAuthentication($this->container)) {
             if ($request->get('redirect')) {

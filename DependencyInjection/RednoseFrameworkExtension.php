@@ -52,12 +52,20 @@ class RednoseFrameworkExtension extends Extension
 
         if ($config['user']) {
             $loader->load('admin.xml');
+
             $this->loadAccount($config['auto_account_creation'], $container);
         }
+
+        $this->setSAMLParameter($container, $config);
     }
 
     private function loadAccount($config, ContainerBuilder $container)
     {
         $container->getDefinition('rednose_framework.user_manager')->replaceArgument(5, $config);
+    }
+
+    private function setSAMLParameter(ContainerBuilder $container, $config)
+    {
+        $container->setParameter('rednose_framework.use_saml', $config['use_saml']);
     }
 }
