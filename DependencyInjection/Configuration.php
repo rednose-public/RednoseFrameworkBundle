@@ -74,7 +74,14 @@ class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->booleanNode('use_saml')->defaultFalse()->end()
+                ->arrayNode('saml')
+                    ->addDefaultsIfNotSet()
+                        ->children()
+                            ->booleanNode('enabled')->defaultFalse()->end()
+                            ->scalarNode('username_attr')->defaultNull()->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
     }
 }

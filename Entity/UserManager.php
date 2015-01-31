@@ -30,6 +30,11 @@ class UserManager extends BaseUserManager implements UserManagerInterface, SamlU
     protected $autoAccountCreation;
 
     /**
+     * @var string|null
+     */
+    protected $samlUsernameAttr = null;
+
+    /**
      * Constructor.
      *
      * @param EncoderFactoryInterface $encoderFactory
@@ -38,12 +43,14 @@ class UserManager extends BaseUserManager implements UserManagerInterface, SamlU
      * @param ObjectManager           $om
      * @param string                  $class
      * @param bool                    $autoAccountCreation
+     * @param string|null             $samlUserAttr
      */
-    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, $autoAccountCreation = false)
+    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, $autoAccountCreation = false, $samlUserAttr = null)
     {
         parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class);
 
         $this->autoAccountCreation = $autoAccountCreation;
+        $this->samlUsernameAttr    = $samlUserAttr;
     }
 
     /**
@@ -135,7 +142,19 @@ class UserManager extends BaseUserManager implements UserManagerInterface, SamlU
      */
     public function loadUserBySamlInfo(SamlSpInfo $samlInfo)
     {
-        $username = $this->loadUserByUsername($samlInfo->getNameID()->getValue());
+        if ($this->samlUsernameAttr !== null) {
+            $attrs = $samlInfo->getAttributes();
+
+            foreach ($attrs as $attr) {
+                if ($attr->getName() === $this->samlUsernameAttr) {
+                    $username = $attr->getFirstValue();
+
+                    break;
+                }
+            }
+        } else {
+            $username = $samlInfo->getNameID()->getValue();
+        }
 
         return $this->loadUserByUsername($username);
     }
