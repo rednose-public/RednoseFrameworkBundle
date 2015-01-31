@@ -44,6 +44,8 @@
         "friendsofsymfony/jsrouting-bundle": "1.5.*",
         "friendsofsymfony/rest-bundle": "1.4.*",
 
+	"aerialship/saml-sp-bundle": "1.0.1",
+
         "sonata-project/doctrine-orm-admin-bundle": "2.3.0",
         "sonata-project/intl-bundle": "2.2.*",
 
