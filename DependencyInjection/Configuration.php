@@ -33,6 +33,7 @@ class Configuration implements ConfigurationInterface
         $this->addOauthSection($rootNode);
         $this->addAclSection($rootNode);
         $this->addAccountSection($rootNode);
+        $this->addSamlSection($rootNode);
 
         return $treeBuilder;
     }
@@ -66,6 +67,21 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->booleanNode('auto_account_creation')->defaultFalse()->end()
+            ->end();
+    }
+
+    private function addSamlSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('saml')
+                    ->addDefaultsIfNotSet()
+                        ->children()
+                            ->booleanNode('enabled')->defaultFalse()->end()
+                            ->scalarNode('username_attr')->defaultNull()->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
     }
 }

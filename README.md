@@ -34,6 +34,8 @@ Configuration reference:
         oauth: false # Enables Oauth2 authentication
         acl:   false # Enables ACL services and permission maps
 
+* [Enable SAML support](Resources/doc/Enable SAML support.md)
+
 About
 -----
 
@@ -45,4 +47,3 @@ License
 This bundle is under the MIT license. See the complete license in the bundle:
 
     Resources/meta/LICENSE
-

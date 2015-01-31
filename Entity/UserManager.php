@@ -11,20 +11,28 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
-use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Rednose\FrameworkBundle\Model\UserManagerInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use FOS\UserBundle\Util\CanonicalizerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 
-class UserManager extends BaseUserManager implements UserManagerInterface
+use AerialShip\SamlSPBundle\Bridge\SamlSpInfo;
+use Doctrine\Common\Persistence\ObjectManager;
+use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
+use FOS\UserBundle\Util\CanonicalizerInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use AerialShip\SamlSPBundle\Security\Core\User\UserManagerInterface as SamlUserManagerInterface;
+
+class UserManager extends BaseUserManager implements UserManagerInterface, SamlUserManagerInterface
 {
     /**
      * @var bool
      */
     protected $autoAccountCreation;
+
+    /**
+     * @var string|null
+     */
+    protected $samlUsernameAttr = null;
 
     /**
      * Constructor.
@@ -35,12 +43,14 @@ class UserManager extends BaseUserManager implements UserManagerInterface
      * @param ObjectManager           $om
      * @param string                  $class
      * @param bool                    $autoAccountCreation
+     * @param string|null             $samlUserAttr
      */
-    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, $autoAccountCreation = false)
+    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, $autoAccountCreation = false, $samlUserAttr = null)
     {
         parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class);
 
         $this->autoAccountCreation = $autoAccountCreation;
+        $this->samlUsernameAttr    = $samlUserAttr;
     }
 
     /**
@@ -117,6 +127,36 @@ class UserManager extends BaseUserManager implements UserManagerInterface
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createUserFromSamlInfo(SamlSpInfo $samlInfo)
+    {
+        /* See loadUserByUsername */
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadUserBySamlInfo(SamlSpInfo $samlInfo)
+    {
+        if ($this->samlUsernameAttr !== null) {
+            $attrs = $samlInfo->getAttributes();
+
+            foreach ($attrs as $attr) {
+                if ($attr->getName() === $this->samlUsernameAttr) {
+                    $username = $attr->getFirstValue();
+
+                    break;
+                }
+            }
+        } else {
+            $username = $samlInfo->getNameID()->getValue();
+        }
+
+        return $this->loadUserByUsername($username);
     }
 
     /**
