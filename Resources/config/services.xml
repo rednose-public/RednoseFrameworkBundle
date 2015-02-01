@@ -37,7 +37,6 @@
         <service id="rednose_framework.doctrine_object_constructor" class="Rednose\FrameworkBundle\Serializer\Construction\DoctrineObjectConstructor" public="false">
             <argument type="service" id="doctrine"/>
             <argument type="service" id="jms_serializer.unserialize_object_constructor"/>
-            <argument type="service" id="rednose_framework.deserialization_listener" />
         </service>
 
         <service id="jms_serializer.object_constructor" alias="rednose_framework.doctrine_object_constructor" public="false"/>
@@ -47,12 +46,6 @@
         </service>
 
         <service id="jms_serializer.array_collection_handler" alias="rednose_framework.array_collection_handler"/>
-
-        <!-- JMS Serializer event listener -->
-        <service id="rednose_framework.deserialization_listener" class="Rednose\FrameworkBundle\EventListener\SerializerListener">
-            <argument type="service" id="jms_serializer.array_collection_handler" />
-            <argument type="service" id="doctrine"/>
-        </service>
 
         <!-- Doctrine event listener -->
         <service id="rednose_framework.doctrine_listener" class="%rednose_framework.doctrine_listener.class%">
