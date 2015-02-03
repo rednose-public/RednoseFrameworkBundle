@@ -12,10 +12,10 @@
 namespace Rednose\FrameworkBundle\Serializer\Construction;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use JMS\Serializer\VisitorInterface;
-use JMS\Serializer\Metadata\ClassMetadata;
-use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\Construction\ObjectConstructorInterface;
+use JMS\Serializer\DeserializationContext;
+use JMS\Serializer\Metadata\ClassMetadata;
+use JMS\Serializer\VisitorInterface;
 
 /**
  * Doctrine object constructor for new (or existing) objects during deserialization.
@@ -64,6 +64,27 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
 
                 return $object;
             }
+        }
+
+        // Fallback to default constructor if missing identifier(s)
+        $classMetadata  = $objectManager->getClassMetadata($metadata->name);
+        $identifierList = array();
+
+        foreach ($classMetadata->getIdentifierFieldNames() as $name) {
+            if ( ! array_key_exists($name, $data)) {
+                return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
+            }
+
+            $identifierList[$name] = $data[$name];
+        }
+
+        // Entity update, load it from database
+        $object = $objectManager->find($metadata->name, $identifierList);
+
+        if ($object) {
+            $objectManager->initializeObject($object);
+
+            return $object;
         }
 
         return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
