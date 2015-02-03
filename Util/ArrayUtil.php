@@ -95,6 +95,10 @@ class ArrayUtil
             $cur = &$cur[$segment];
         }
 
-        $cur = $value;
+        if (is_array($cur) && is_array($value) && count($cur) > 0) {
+            $cur = array_merge($cur, $value);
+        } else {
+            $cur = $value;
+        }
     }
 }
