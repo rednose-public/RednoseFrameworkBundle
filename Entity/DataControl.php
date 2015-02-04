@@ -223,13 +223,13 @@ class DataControl implements DataControlInterface
     {
         switch ($this->type) {
             case self::TYPE_COMPOSITE:
-                return 'icon-list';
+                return 'glyphicon-list';
 
             case self::TYPE_COLLECTION:
-                return 'icon-repeat';
+                return 'glyphicon-repeat';
 
             case self::TYPE_DATE:
-                return 'icon-calendar';
+                return 'glyphicon-calendar';
 
             case self::TYPE_STRING:
                 return 'rednose-icon-text';
@@ -238,7 +238,7 @@ class DataControl implements DataControlInterface
                 return 'rednose-icon-textarea';
 
             case self::TYPE_HTML:
-                return 'icon-align-left';
+                return 'glyphicon-align-left';
         }
 
         return null;
