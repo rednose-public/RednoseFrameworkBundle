@@ -30,7 +30,7 @@ class Organization implements OrganizationInterface
      * @ORM\GeneratedValue(strategy="UUID")
      *
      * @Serializer\Type("string")
-     * @Serializer\Groups({"list"})
+     * @Serializer\Groups({"list", "details"})
      */
     protected $id;
 
