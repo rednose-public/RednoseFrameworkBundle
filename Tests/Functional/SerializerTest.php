@@ -158,7 +158,7 @@ class SerializerTest extends WebTestCase
     }
 
     /**
-     * Check the persistend state in a different test to make sure doctrine fetched a new instance of the object.
+     * Check the persisted state in a different test to make sure doctrine fetched a new instance of the object.
      *
      * @depends testUpdateAndKeepAllAssociatedEntities
      */
@@ -189,7 +189,7 @@ class SerializerTest extends WebTestCase
     }
 
     /**
-     * Check the persistend state in a different test to make sure doctrine fetched a new instance of the object.
+     * Check the persisted state in a different test to make sure doctrine fetched a new instance of the object.
      *
      * @depends testUpdateSinglePropertyUsingContextAndKeepAllAssociatedEntities
      */
@@ -208,7 +208,7 @@ class SerializerTest extends WebTestCase
     public function testRemoveChildEntities($dataDictionaryId)
     {
         $entityJson = new \stdClass;
-        $entityJson->controls = []; // Delete all controls
+        $entityJson->controls = array(); // Delete all controls
         $entityJson = json_encode($entityJson);
 
         $updatedDataDictionary = $this->deserializeFromJson('Rednose\FrameworkBundle\Entity\DataDictionary', $entityJson, 'details', $dataDictionaryId);
@@ -217,18 +217,6 @@ class SerializerTest extends WebTestCase
         $this->em->flush();
 
         return array($dataDictionaryId, $entityJson);
-    }
-
-    /**
-     * Check the persistend state in a different test to make sure doctrine fetched a new instance of the object.
-     *
-     * @depends testRemoveChildEntities
-     */
-    public function testRemoveChildEntitiesPersisted($state)
-    {
-        $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($state[0]);
-
-        $this->assertTrue($dataDictionary->getControls()->count() === 0);
     }
 
     /**
@@ -251,7 +239,7 @@ class SerializerTest extends WebTestCase
     }
 
     /**
-     * Check the persistend state in a different test to make sure doctrine fetched a new instance of the object.
+     * Check the persisted state in a different test to make sure doctrine fetched a new instance of the object.
      *
      * @depends testAddChildEntities
      */
@@ -287,7 +275,7 @@ class SerializerTest extends WebTestCase
     }
 
     /**
-     * Check the persistend state in a different test to make sure doctrine fetched a new instance of the object.
+     * Check the persisted state in a different test to make sure doctrine fetched a new instance of the object.
      *
      * @depends testReplaceChildEntities
      */
@@ -299,7 +287,6 @@ class SerializerTest extends WebTestCase
 
         $this->assertTrue($dataDictionary->getControls()->get(0)->getChildren()->count() === count($fixture->controls[0]->children));
     }
-
 
     /**
      * @depends testUpdateAndKeepAllAssociatedEntitiesPersisted
@@ -330,103 +317,6 @@ class SerializerTest extends WebTestCase
         $this->em->flush();
 
         return array($dataDictionaryId, $idMoved, $idMovedTo);
-    }
-
-    /**
-     * Check the persistend state in a different test to make sure doctrine fetched a new instance of the object.
-     *
-     * @depends testMoveChildEntityToDifferentParent
-     */
-    public function testMoveChildEntityToDifferentParentPersisted($ids)
-    {
-        $found = false;
-        $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($ids[0]);
-
-        foreach ($dataDictionary->getControls()->get(0)->getChildren() as $control) {
-            if ($control->getId() === $ids[2]) {
-                foreach ($control->getChildren() as $childControl) {
-                    if ($childControl->getId() === $ids[1]) {
-                        $found = true;
-                    }
-                }
-            }
-        }
-
-        $this->assertTrue(true === $found);
-
-        return $dataDictionary->getId();
-    }
-
-    /**
-     * @depends testMoveChildEntityToDifferentParentPersisted
-     */
-    public function testMoveChildEntityToDifferentParentAndRemoveOldParent($dataDictionaryId)
-    {
-        $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($dataDictionaryId);
-
-        $entityJson = $this->serializeToJson($dataDictionary, 'details');
-        $entityJson = json_decode($entityJson);
-
-        // Find existing sub child
-        foreach ($entityJson->controls[0]->children as $offset => $child) {
-            if ($child->type === 'collection') {
-                $idMoved   = $child->children[0]->id;
-                $moveChild = $child->children[0];
-                $moveChild->children[] = $child->children[1];
-
-                // Remove child parent
-                unset($entityJson->controls[0]->children[$offset]);
-
-                break;
-            }
-        }
-        // Create new unpersisted parent
-        $newParent = new \stdClass;
-        $newParent->name = 'NewTestParent';
-        $newParent->type = 'collection';
-        $newParent->children = array($moveChild);
-
-        array_unshift($entityJson->controls, $newParent);
-
-        $entityJson = json_encode($entityJson, JSON_PRETTY_PRINT);
-
-        $updatedDataDictionary = $this->deserializeFromJson('Rednose\FrameworkBundle\Entity\DataDictionary', $entityJson, 'details', $dataDictionaryId);
-
-        $this->em->persist($updatedDataDictionary);
-        $this->em->flush();
-
-        return array($dataDictionaryId, $idMoved);
-    }
-
-    /**
-     * @depends testMoveChildEntityToDifferentParentAndRemoveOldParent
-     */
-    public function testMoveChildEntityToDifferentParentAndRemoveOldParentPersisted($ids)
-    {
-        $hasChild       = false;
-        $childFound     = false;
-        $newParentFound = false;
-
-        $dataDictionary = $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneById($ids[0]);
-
-        foreach ($dataDictionary->getControls() as $control) {
-            if ($control->getName() === 'NewTestParent') {
-                $newParentFound = true;
-
-                if ($child = $control->getChildren()->get(0)) {
-                    if ($child->getId() === $ids[1]) {
-                        $childFound = true;
-                        $hasChild   = ($child->getChildren()->count() > 0);
-                    }
-                }
-            }
-
-        }
-
-        $this->assertEquals($dataDictionary->getControls()->count(), 2);
-        $this->assertTrue(true === $newParentFound);
-        $this->assertTrue(true === $childFound);
-        $this->assertTrue(true === $hasChild);
     }
 
     /**
