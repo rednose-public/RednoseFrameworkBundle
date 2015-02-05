@@ -11,6 +11,8 @@
 
 namespace Rednose\FrameworkBundle\Controller;
 
+use Rednose\FrameworkBundle\Entity\File;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +31,8 @@ class FileController extends Controller
         foreach($request->files as $uploadedFile) {
             if ($uploadedFile instanceof UploadedFile && $uploadedFile->isValid()) {
                 $base = $this->get('kernel')->getRootDir().'/../web';
-                $dir  = $this->getTempDir();
+                $file = new File();
+                $dir  = $file->getTempDir();
                 $name = sprintf('%s.%s', uniqid(), $uploadedFile->getClientOriginalExtension());
 
                 $metadata = array(
@@ -50,13 +53,5 @@ class FileController extends Controller
         }
 
         return new Response(null, 400);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getTempDir()
-    {
-        return 'cache/rednose_framework/file';
     }
 }

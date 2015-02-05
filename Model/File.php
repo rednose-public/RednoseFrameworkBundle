@@ -11,7 +11,7 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
-class File
+class File implements FileInterface
 {
     /**
      * @var integer
@@ -129,5 +129,15 @@ class File
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Get temp directory
+     *
+     * @return string
+     */
+    public function getTempDir()
+    {
+        return 'cache/rednose_framework/file';
     }
 }
