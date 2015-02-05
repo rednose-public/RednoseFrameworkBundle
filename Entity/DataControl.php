@@ -105,10 +105,14 @@ class DataControl implements DataControlInterface
      * Constructor.
      *
      * @param DataDictionaryInterface $dictionary
+     * @param string                  $name
+     * @param string                  $type
      */
-    public function __construct(DataDictionaryInterface $dictionary)
+    public function __construct(DataDictionaryInterface $dictionary, $name = null, $type = null)
     {
         $this->dictionary = $dictionary;
+        $this->name       = $name;
+        $this->type       = $type;
         $this->children   = new ArrayCollection();
     }
 
