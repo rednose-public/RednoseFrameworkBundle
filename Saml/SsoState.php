@@ -1,6 +1,6 @@
 <?php
 
-namespace Rednose\FrameworkBundle\Entity;
+namespace Rednose\FrameworkBundle\Saml;
 
 use AerialShip\SamlSPBundle\Entity\SSOStateEntity;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,14 +21,16 @@ class SsoState extends SSOStateEntity
     /**
      * @param string $id
      */
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
     }
 
     /**
      * @return string
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 }

@@ -9,15 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Rednose\FrameworkBundle\Entity;
+namespace Rednose\FrameworkBundle\Saml;
 
 use AerialShip\SamlSPBundle\Bridge\SamlSpInfo;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Rednose\FrameworkBundle\Entity\UserManager as BaseUserManager;
 use AerialShip\SamlSPBundle\Security\Core\User\UserManagerInterface as SamlUserManagerInterface;
 
-class SamlUserManager extends UserManager implements SamlUserManagerInterface
+class UserManager extends BaseUserManager implements SamlUserManagerInterface
 {
     /**
      * @var string|null

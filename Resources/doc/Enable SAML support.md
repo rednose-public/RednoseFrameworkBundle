@@ -2,9 +2,9 @@ Enable SAML support
 ===================
 
 Before applying this configuration make sure you are already using the user management
-meganisms provided by the RedNoseFrameworkBundle.
+mechanisms provided by the RedNoseFrameworkBundle.
 
-Step 1: Add SamlSpBundle dependancy to AppKernel.php
+Step 1: Add SamlSpBundle dependency to AppKernel.php
 ----------------------------------------------------
 - Add Bundle class
 <pre>
