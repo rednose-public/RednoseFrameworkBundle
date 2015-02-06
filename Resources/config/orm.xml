@@ -21,8 +21,6 @@
             <argument type="service" id="fos_user.entity_manager"/>
             <argument>Rednose\FrameworkBundle\Entity\User</argument>
             <argument>false</argument>
-            <argument />
         </service>
-
     </services>
 </container>

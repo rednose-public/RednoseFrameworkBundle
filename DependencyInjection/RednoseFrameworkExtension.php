@@ -33,8 +33,9 @@ class RednoseFrameworkExtension extends Extension
         $configuration = new Configuration();
 
         $config = $processor->processConfiguration($configuration, $configs);
-
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+
+        $bundles = $container->getParameter('kernel.bundles');
 
         if ($config['oauth']) {
             $loader->load('oauth.xml');
@@ -56,8 +57,12 @@ class RednoseFrameworkExtension extends Extension
             $this->loadAccount($config, $container);
         }
 
-        if ($config['saml']) {
-            $this->setSAMLParameter($container, $config);
+        if (isset($bundles['AerialShipSamlSPBundle'])) {
+            $loader->load('saml.xml');
+
+            if ($config['saml']) {
+                $this->setSAMLParameter($container, $config);
+            }
         }
     }
 
