@@ -1,4 +1,4 @@
-Enable SAML support
+Enabling SAML support
 ===================
 
 Before applying this configuration make sure you are already using the user management
@@ -18,6 +18,19 @@ Step 1: Add SamlSpBundle dependency to AppKernel.php
 # SAML
 aerialship_saml_sp_bundle:
     resource: "@AerialShipSamlSPBundle/Resources/config/routing.yml"
+</pre>
+
+- Add SAML entity mapping to config.yml
+<pre>
+doctrine:
+    orm:
+        mappings:
+            saml:
+                type:      annotation
+                dir:       %kernel.root_dir%/../vendor/rednose/framework-bundle/Rednose/FrameworkBundle/Saml
+                prefix:    Rednose\FrameworkBundle\Saml\SsoState
+                alias:     SsoState
+                is_bundle: false
 </pre>
 
 Step 2: FederationMetadata exchange
