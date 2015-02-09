@@ -25,5 +25,5 @@ interface DataDictionaryManagerInterface
     /**
      * @return DataDictionaryInterface[]
      */
-    public function findDictionaries();
+    public function findDictionaries(OrganizationInterface $organization = null);
 }

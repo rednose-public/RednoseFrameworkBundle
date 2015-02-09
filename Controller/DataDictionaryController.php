@@ -19,6 +19,8 @@ class DataDictionaryController extends Controller
      */
     public function updateDictionaryAction($id = null)
     {
+        $organization = $this->get('request')->get('organization');
+
         $serializer = $this->get('serializer');
         $manager = $this->get('rednose_framework.data_dictionary_manager');
         $request = $this->getRequest();
@@ -40,6 +42,17 @@ class DataDictionaryController extends Controller
 
         $manager->updateDictionary($dictionary, true);
 
+        // Bind the dictionary to a supplied organization. Warning: existing connection will be lost.
+        if ($organization !== null) {
+            $organizationManager = $this->get('rednose_framework.organization_manager');
+
+            if ($organization = $organizationManager->findOrganizationById($organization)) {
+                $organization->setDataDictionary($dictionary);
+
+                $organizationManager->updateOrganization($organization);
+            }
+        }
+
         return new JsonResponse(array('id' => $dictionary->getId()), Codes::HTTP_CREATED);
     }
 
@@ -48,7 +61,13 @@ class DataDictionaryController extends Controller
      */
     public function getDictionariesAction()
     {
-        $dictionaries = $this->get('rednose_framework.data_dictionary_manager')->findDictionaries();
+        $organization = $this->get('request')->get('organization');
+
+        if ($organization !== null) {
+            $organization = $this->get('rednose_framework.organization_manager')->findOrganizationById($organization);
+        }
+
+        $dictionaries = $this->get('rednose_framework.data_dictionary_manager')->findDictionaries($organization);
 
         $context = new SerializationContext();
         $context->setGroups('list');

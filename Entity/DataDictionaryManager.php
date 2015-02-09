@@ -3,6 +3,7 @@
 namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
 use Rednose\FrameworkBundle\Model\DataDictionaryManagerInterface;
 
@@ -22,11 +23,17 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
     }
 
     /**
+     * @param OrganizationInterface $organization
+     *
      * @return DataDictionaryInterface[]
      */
-    public function findDictionaries()
+    public function findDictionaries(OrganizationInterface $organization = null)
     {
-        return $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findAll();
+        if ($organization) {
+            return array($organization->getDataDictionary());
+        } else {
+            return $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findAll();
+        }
     }
 
     /**
