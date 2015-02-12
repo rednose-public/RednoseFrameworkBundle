@@ -26,4 +26,11 @@ interface DataDictionaryManagerInterface
      * @return DataDictionaryInterface[]
      */
     public function findDictionaries(OrganizationInterface $organization = null);
+
+    /**
+     * @param array $criteria
+     *
+     * @return DataDictionaryInterface
+     */
+    public function findDictionaryBy(array $criteria);
 }

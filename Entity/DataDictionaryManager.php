@@ -37,6 +37,16 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
     }
 
     /**
+     * @param array $criteria
+     *
+     * @return DataDictionaryInterface
+     */
+    public function findDictionaryBy(array $criteria)
+    {
+        return $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneBy($criteria);
+    }
+
+    /**
      * @param string $id
      *
      * @return DataDictionaryInterface

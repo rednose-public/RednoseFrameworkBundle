@@ -10,8 +10,6 @@ use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Blueprint
- *
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_data_dictionary")
  * @ORM\HasLifecycleCallbacks()
@@ -50,6 +48,13 @@ class DataDictionary implements DataDictionaryInterface
     protected $controls;
 
     /**
+     * @ORM\Column(type="text", name="test_data", nullable=true)
+     *
+     * @Serializer\Groups({"file", "details"})
+     */
+    protected $testData;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -79,6 +84,33 @@ class DataDictionary implements DataDictionaryInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return \DOMDocument|null
+     */
+    public function getTestData()
+    {
+        if (!$this->testData) {
+            return null;
+        }
+
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom->loadXML($this->testData);
+
+        return $dom;
+    }
+
+    /**
+     * @param \DOMDocument|null $data
+     */
+    public function setTestData($data)
+    {
+        if ($data instanceof \DOMDocument) {
+            $this->testData = $data->saveXML();
+        } else {
+            $this->testData = null;
+        }
     }
 
     /**
@@ -136,7 +168,7 @@ class DataDictionary implements DataDictionaryInterface
 
         foreach ($segments as $segment) {
             if ($cur->hasChild($segment) === false) {
-                return null;
+
             }
 
             $cur = $cur->getChild($segment);

@@ -88,4 +88,14 @@ interface DataDictionaryInterface
      * @return array
      */
     public function toList(array $types = array(), $context = null);
+
+    /**
+     * @return \DOMDocument|null
+     */
+    public function getTestData();
+
+    /**
+     * @param \DOMDocument|null $data
+     */
+    public function setTestData($data);
 }
