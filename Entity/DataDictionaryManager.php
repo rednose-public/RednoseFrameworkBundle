@@ -8,6 +8,7 @@ use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
 use Rednose\FrameworkBundle\Model\DataDictionaryManagerInterface;
 use Rednose\FrameworkBundle\Util\XpathUtil;
+use Symfony\Component\Config\Util\XmlUtils;
 
 class DataDictionaryManager implements DataDictionaryManagerInterface
 {
@@ -78,11 +79,10 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
         if ($node !== null) {
             $value = $node->nodeValue;
 
-
             if ($control->getType() === DataControlInterface::TYPE_DATE) {
                 $value = new \DateTime($value);
             } else  if ($control->getType() === DataControlInterface::TYPE_BOOLEAN) {
-                $value = (boolean) $value;
+                $value = (boolean) XmlUtils::phpize($value);
             }
 
             $control->setValue($value);
