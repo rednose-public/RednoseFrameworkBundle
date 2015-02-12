@@ -33,4 +33,14 @@ interface DataDictionaryManagerInterface
      * @return DataDictionaryInterface
      */
     public function findDictionaryBy(array $criteria);
+
+    /**
+     * Merges a data set into a data dictionary
+     *
+     * @param DataDictionaryInterface $dictionary
+     * @param \DOMDocument $data
+     *
+     * @return DataDictionaryInterface
+     */
+    public function merge(DataDictionaryInterface $dictionary, \DOMDocument $data);
 }

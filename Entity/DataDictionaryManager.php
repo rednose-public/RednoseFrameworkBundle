@@ -95,7 +95,7 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
      * @param DataDictionaryInterface $dictionary
      * @param \DOMDocument $data
      *
-     * @return Object
+     * @return DataDictionaryInterface
      */
     public function merge(DataDictionaryInterface $dictionary, \DOMDocument $data)
     {
@@ -104,7 +104,7 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
             $this->traverse($control, $data);
         }
 
-        return $dictionary->toObject();
+        return $dictionary;
     }
 
     /**
