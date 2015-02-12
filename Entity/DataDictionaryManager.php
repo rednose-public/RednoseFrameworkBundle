@@ -3,9 +3,11 @@
 namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
+use Rednose\FrameworkBundle\Model\DataControlInterface;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
 use Rednose\FrameworkBundle\Model\DataDictionaryManagerInterface;
+use Rednose\FrameworkBundle\Util\XpathUtil;
 
 class DataDictionaryManager implements DataDictionaryManagerInterface
 {
@@ -54,6 +56,55 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
     public function findDictionaryById($id)
     {
         return $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findOneBy(array('id' => $id));
+    }
+
+    /**
+     * @param DataControlInterface $control
+     * @param \DOMDocument         $data
+     */
+    protected function traverse(DataControlInterface $control, \DOMDocument $data)
+    {
+        // TODO: Move method to util class.
+        if (in_array($control->getType(), array(DataControlInterface::TYPE_COMPOSITE, DataControlInterface::TYPE_COLLECTION))) {
+            foreach ($control->getChildren() as $child) {
+                $this->traverse($child, $data);
+            }
+
+            return;
+        }
+
+        $node = XpathUtil::getXpathNode($data, $control->getPath());
+
+        if ($node !== null) {
+            $value = $node->nodeValue;
+
+
+            if ($control->getType() === DataControlInterface::TYPE_DATE) {
+                $value = new \DateTime($value);
+            } else  if ($control->getType() === DataControlInterface::TYPE_BOOLEAN) {
+                $value = (boolean) $value;
+            }
+
+            $control->setValue($value);
+        }
+    }
+
+    /**
+     * Merges a data set into a data dictionary
+     *
+     * @param DataDictionaryInterface $dictionary
+     * @param \DOMDocument $data
+     *
+     * @return Object
+     */
+    public function merge(DataDictionaryInterface $dictionary, \DOMDocument $data)
+    {
+        // TODO: Move method to util class.
+        foreach ($dictionary->getControls() as $control) {
+            $this->traverse($control, $data);
+        }
+
+        return $dictionary->toObject();
     }
 
     /**

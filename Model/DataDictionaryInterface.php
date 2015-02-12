@@ -97,5 +97,9 @@ interface DataDictionaryInterface
     /**
      * @param \DOMDocument|null $data
      */
-    public function setTestData($data);
+    public function setTestData($data);/**
+     * Return the dictionary as an object
+     *
+     * @return Object
+     */
 }

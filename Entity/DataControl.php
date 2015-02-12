@@ -102,6 +102,11 @@ class DataControl implements DataControlInterface
     protected $dictionary;
 
     /**
+     * @var mixed
+     */
+    protected $value;
+
+    /**
      * Constructor.
      *
      * @param DataDictionaryInterface $dictionary
@@ -355,6 +360,31 @@ class DataControl implements DataControlInterface
     }
 
     /**
+     * @return Object|Array
+     */
+    public function toProperty()
+    {
+        if ($this->getType() === self::TYPE_COLLECTION) {
+            return array_map(function($child) {
+                /** @var DataControlInterface $child */
+                $child->toProperty();
+            }, $this->getChildren());
+        }
+
+        if ($this->getType() === self::TYPE_COMPOSITE) {
+            $object = new \stdClass();
+
+            foreach ($this->getChildren() as $child) {
+                $object->{$child->getName()} = $child->toProperty();
+            }
+
+            return $object;
+        }
+
+        return $this->getValue();
+    }
+
+    /**
      * @Serializer\PostDeserialize
      */
     public function postDeserialize()
@@ -382,5 +412,21 @@ class DataControl implements DataControlInterface
         }
 
         throw new \InvalidArgumentException(sprintf('Invalid data-control type `%s` for control `%s`', $this->type, $this->name));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
     }
 }

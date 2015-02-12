@@ -256,6 +256,22 @@ class DataDictionary implements DataDictionaryInterface
     }
 
     /**
+     * Return the dictionary as an object
+     *
+     * @return Object
+     */
+    public function toObject()
+    {
+        $object = new \stdClass();
+
+        foreach ($this->getControls() as $control) {
+            $object->{$control->getName()} = $control->toProperty();
+        }
+
+        return $object;
+    }
+
+    /**
      * @param DataControlInterface $control
      * @param array                $types
      * @param string               $context

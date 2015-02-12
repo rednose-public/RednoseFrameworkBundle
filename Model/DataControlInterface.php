@@ -2,6 +2,8 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
+use Rednose\FrameworkBundle\Entity\DataControl;
+
 interface DataControlInterface
 {
     const TYPE_COMPOSITE  = 'composite';
@@ -120,4 +122,19 @@ interface DataControlInterface
      * @param DataControlInterface $child
      */
     public function addChild(DataControlInterface $child);
+
+    /**
+     * @return Object|Array
+     */
+    public function toProperty();
+
+    /**
+     * @return mixed
+     */
+    public function getValue();
+
+    /**
+     * @param mixed $value
+     */
+    public function setValue($value);
 }
