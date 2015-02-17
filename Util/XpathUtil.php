@@ -61,6 +61,6 @@ class XpathUtil
             return $result->item(0)->nodeValue;
         }
 
-        return $result;
+        return null;
     }
 }
