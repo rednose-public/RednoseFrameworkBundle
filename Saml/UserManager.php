@@ -55,7 +55,7 @@ class UserManager extends BaseUserManager implements SamlUserManagerInterface
      */
     public function loadUserBySamlInfo(SamlSpInfo $samlInfo)
     {
-        if ($this->samlUsernameAttr !== null) {
+        if ($this->samlUsernameAttr) {
             $attrs = $samlInfo->getAttributes();
 
             foreach ($attrs as $attr) {
