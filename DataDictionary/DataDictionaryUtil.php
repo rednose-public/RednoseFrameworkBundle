@@ -23,8 +23,6 @@ class DataDictionaryUtil
         foreach ($dictionary->getControls() as $control) {
             self::traverse($control, $data);
         }
-
-        return $dictionary;
     }
 
     /**
