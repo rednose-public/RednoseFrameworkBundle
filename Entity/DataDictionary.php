@@ -168,7 +168,7 @@ class DataDictionary implements DataDictionaryInterface
 
         foreach ($segments as $segment) {
             if ($cur->hasChild($segment) === false) {
-
+                return null;
             }
 
             $cur = $cur->getChild($segment);
@@ -190,7 +190,7 @@ class DataDictionary implements DataDictionaryInterface
     /**
      * @param string $name
      *
-     * @return bool
+     * @return DataControlInterface
      */
     public function getChild($name)
     {

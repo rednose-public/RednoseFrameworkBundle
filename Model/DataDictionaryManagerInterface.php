@@ -5,9 +5,9 @@ namespace Rednose\FrameworkBundle\Model;
 interface DataDictionaryManagerInterface
 {
     /**
-     * @param DataDictionaryInterface $dictionary
+     * @return DataDictionaryInterface[]
      */
-    public function deleteDictionary(DataDictionaryInterface $dictionary);
+    public function findDictionaries(OrganizationInterface $organization = null);
 
     /**
      * @param string $id
@@ -17,17 +17,6 @@ interface DataDictionaryManagerInterface
     public function findDictionaryById($id);
 
     /**
-     * @param DataDictionaryInterface $dictionary
-     * @param bool $flush
-     */
-    public function updateDictionary(DataDictionaryInterface $dictionary, $flush = true);
-
-    /**
-     * @return DataDictionaryInterface[]
-     */
-    public function findDictionaries(OrganizationInterface $organization = null);
-
-    /**
      * @param array $criteria
      *
      * @return DataDictionaryInterface
@@ -35,12 +24,13 @@ interface DataDictionaryManagerInterface
     public function findDictionaryBy(array $criteria);
 
     /**
-     * Merges a data set into a data dictionary
-     *
      * @param DataDictionaryInterface $dictionary
-     * @param \DOMDocument $data
-     *
-     * @return DataDictionaryInterface
+     * @param bool $flush
      */
-    public function merge(DataDictionaryInterface $dictionary, \DOMDocument $data);
+    public function updateDictionary(DataDictionaryInterface $dictionary, $flush = true);
+
+    /**
+     * @param DataDictionaryInterface $dictionary
+     */
+    public function deleteDictionary(DataDictionaryInterface $dictionary);
 }

@@ -66,7 +66,7 @@ interface DataDictionaryInterface
     /**
      * @param string $name
      *
-     * @return bool
+     * @return DataControlInterface
      */
     public function getChild($name);
 
