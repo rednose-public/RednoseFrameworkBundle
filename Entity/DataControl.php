@@ -381,7 +381,14 @@ class DataControl implements DataControlInterface
             return $object;
         }
 
-        return $this->getValue();
+        // XXX
+        $value = $this->getValue();
+
+        if ($value instanceof \DateTime) {
+            $value = $value->getTimestamp();
+        }
+
+        return $value;
     }
 
     /**
