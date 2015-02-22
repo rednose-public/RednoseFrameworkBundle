@@ -3,7 +3,6 @@
 namespace Rednose\FrameworkBundle\Model;
 
 use JMS\Serializer\Annotation as Serializer;
-use Rednose\FrameworkBundle\Model\DataControlInterface;
 
 /**
  * A data control list.
@@ -97,9 +96,12 @@ interface DataDictionaryInterface
     /**
      * @param \DOMDocument|null $data
      */
-    public function setTestData($data);/**
+    public function setTestData($data);
+
+    /**
      * Return the dictionary as an object
      *
      * @return Object
      */
+    public function toObject();
 }
