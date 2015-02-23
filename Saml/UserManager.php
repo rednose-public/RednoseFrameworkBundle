@@ -33,14 +33,14 @@ class UserManager extends BaseUserManager implements SamlUserManagerInterface
      * @param CanonicalizerInterface   $usernameCanonicalizer
      * @param CanonicalizerInterface   $emailCanonicalizer
      * @param ObjectManager            $om
-     * @param EventDispatcherInterface $dispatcher
      * @param string                   $class
+     * @param EventDispatcherInterface $dispatcher
      * @param bool                     $autoAccountCreation
      * @param string|null              $samlUserAttr
      */
-    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, EventDispatcherInterface $dispatcher, $class, $autoAccountCreation = false, $samlUserAttr = null)
+    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, EventDispatcherInterface $dispatcher, $autoAccountCreation = false, $samlUserAttr = null)
     {
-        parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $dispatcher,$class, $autoAccountCreation);
+        parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class, $dispatcher, $autoAccountCreation);
 
         $this->samlUsernameAttr = $samlUserAttr;
     }

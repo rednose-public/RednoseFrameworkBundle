@@ -7,8 +7,8 @@
             <argument type="service" id="fos_user.util.username_canonicalizer"/>
             <argument type="service" id="fos_user.util.email_canonicalizer"/>
             <argument type="service" id="fos_user.entity_manager"/>
-            <argument type="service" id="event_dispatcher"/>
             <argument>Rednose\FrameworkBundle\Entity\User</argument>
+            <argument type="service" id="event_dispatcher"/>
             <argument>false</argument>
             <argument/>
         </service>

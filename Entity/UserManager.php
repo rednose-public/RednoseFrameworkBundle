@@ -41,11 +41,11 @@ class UserManager extends BaseUserManager implements UserManagerInterface
      * @param CanonicalizerInterface   $usernameCanonicalizer
      * @param CanonicalizerInterface   $emailCanonicalizer
      * @param ObjectManager            $om
-     * @param EventDispatcherInterface $dispatcher
      * @param string                   $class
+     * @param EventDispatcherInterface $dispatcher
      * @param bool                     $autoAccountCreation
      */
-    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, EventDispatcherInterface $dispatcher, $class, $autoAccountCreation = false)
+    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class,EventDispatcherInterface $dispatcher, $autoAccountCreation = false)
     {
         parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class);
 
