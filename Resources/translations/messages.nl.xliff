@@ -56,9 +56,9 @@
                 <source>groups</source>
                 <target>Groepen</target>
             </trans-unit>
-            <trans-unit id="forms">
-                <source>forms</source>
-                <target>Formulieren</target>
+            <trans-unit id="organizations">
+                <source>organizations</source>
+                <target>Organisaties</target>
             </trans-unit>
         </body>
     </file>

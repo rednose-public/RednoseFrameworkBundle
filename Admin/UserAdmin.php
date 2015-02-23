@@ -84,6 +84,7 @@ class UserAdmin extends Admin
                 ->add('email_canonical')
             ->end()
             ->with('Details')
+                ->add('organization')
                 ->add('groups')
                 ->add('enabled')
                 ->add('locked')
@@ -107,6 +108,7 @@ class UserAdmin extends Admin
             ->end()
 
             ->with('Details')
+                ->add('organization', 'sonata_type_model', array('required' => false,'multiple' => false))
                 ->add('groups', 'sonata_type_model', array('required' => false,'multiple' => true))
                 ->add('enabled', 'checkbox', array('required' => false))
                 ->add('locked', 'checkbox', array('required' => false))

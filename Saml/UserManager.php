@@ -12,6 +12,7 @@
 namespace Rednose\FrameworkBundle\Saml;
 
 use AerialShip\SamlSPBundle\Bridge\SamlSpInfo;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -28,17 +29,19 @@ class UserManager extends BaseUserManager implements SamlUserManagerInterface
     /**
      * Constructor.
      *
-     * @param EncoderFactoryInterface $encoderFactory
-     * @param CanonicalizerInterface  $usernameCanonicalizer
-     * @param CanonicalizerInterface  $emailCanonicalizer
-     * @param ObjectManager           $om
-     * @param string                  $class
-     * @param bool                    $autoAccountCreation
-     * @param string|null             $samlUserAttr
+     * @param EncoderFactoryInterface  $encoderFactory
+     * @param CanonicalizerInterface   $usernameCanonicalizer
+     * @param CanonicalizerInterface   $emailCanonicalizer
+     * @param ObjectManager            $om
+     * @param EventDispatcherInterface $dispatcher
+     * @param string                   $class
+     * @param bool                     $autoAccountCreation
+     * @param string|null              $samlUserAttr
      */
-    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, $autoAccountCreation = false, $samlUserAttr = null)
+    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, EventDispatcherInterface $dispatcher, $class, $autoAccountCreation = false, $samlUserAttr = null)
     {
-        parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class, $autoAccountCreation);
+        parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $dispatcher,$class, $autoAccountCreation);
+
         $this->samlUsernameAttr = $samlUserAttr;
     }
 

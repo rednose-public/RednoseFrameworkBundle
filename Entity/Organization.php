@@ -103,4 +103,12 @@ class Organization implements OrganizationInterface
 
         return $this->getDataDictionary()->getId();
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->name;
+    }
 }
