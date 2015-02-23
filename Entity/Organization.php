@@ -49,6 +49,39 @@ class Organization implements OrganizationInterface
     protected $dictionary;
 
     /**
+     * @ORM\Column(type="array", nullable=true)
+     *
+     * @Serializer\XmlList(inline = false, entry = "conditions")
+     * @Serializer\Type("array<string>")
+     * @Serializer\Groups({"file", "details"})
+     */
+    protected $conditions;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->conditions = array();
+    }
+
+    /**
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("data_dictionary")
+     * @Serializer\Groups({"list"})
+     *
+     * @return string
+     */
+    public function getDataDictionaryId()
+    {
+        if ($this->getDataDictionary() === null) {
+            return null;
+        }
+
+        return $this->getDataDictionary()->getId();
+    }
+
+    /**
      * @return integer
      */
     public function getId()
@@ -81,7 +114,7 @@ class Organization implements OrganizationInterface
     }
 
     /**
-     * @param mixed DataDictionaryInterface
+     * @param DataDictionaryInterface $dictionary
      */
     public function setDataDictionary($dictionary)
     {
@@ -89,19 +122,36 @@ class Organization implements OrganizationInterface
     }
 
     /**
-     * @Serializer\VirtualProperty
-     * @Serializer\SerializedName("data_dictionary")
-     * @Serializer\Groups({"list"})
+     * A list of OR conditions to evaluate on a user object
+     * when deciding to assign a user to this organization.
      *
-     * @return string
+     * @return string[]
      */
-    public function getDataDictionaryId()
+    public function getConditions()
     {
-        if ($this->getDataDictionary() === null) {
-            return null;
-        }
+        return $this->conditions;
+    }
 
-        return $this->getDataDictionary()->getId();
+    /**
+     * A list of OR conditions to evaluate on a user object
+     * when deciding to assign a user to this organization.
+     *
+     * @param string[] $conditions
+     */
+    public function setConditions($conditions)
+    {
+        $this->conditions = $conditions;
+    }
+
+    /**
+     * A list of OR conditions to evaluate on a user object
+     * when deciding to assign a user to this organization.
+     *
+     * @param string $condition
+     */
+    public function addCondition($condition)
+    {
+        $this->conditions[] = $condition;
     }
 
     /**

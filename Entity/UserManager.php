@@ -137,7 +137,7 @@ class UserManager extends BaseUserManager implements UserManagerInterface
         if ($this->autoAccountCreation && $this->findUserBy(array('username' => $username)) === null) {
             $user = $this->createUser();
 
-            $user->setUserName($username);
+            $user->setUsername($username);
             $user->setEnabled(true);
             $user->setEmail($username);
             $user->setPassword($this->randomPassword());
