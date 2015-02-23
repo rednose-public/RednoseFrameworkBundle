@@ -101,6 +101,7 @@ class AssignOrganizationListener implements EventSubscriberInterface
     {
         return array('user' => (object) array(
             'username' => $user->getUsername(false),
+            'email' => $user->getEmail(),
         ));
     }
 }
