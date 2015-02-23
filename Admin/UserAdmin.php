@@ -52,6 +52,7 @@ class UserAdmin extends Admin
         $listMapper
             ->addIdentifier('username')
             ->add('realname')
+            ->add('organization')
             ->add('enabled')
             ->add('locked')
             ->add('expired')
