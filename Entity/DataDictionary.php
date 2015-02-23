@@ -141,22 +141,24 @@ class DataDictionary implements DataDictionaryInterface
      * Returns whether a control for a given path exists or not.
      *
      * @param string $path
+     * @param string $separator
      *
      * @return bool
      */
-    public function hasControl($path)
+    public function hasControl($path, $separator = '/')
     {
-        return ($this->getControl($path) instanceof DataControlInterface);
+        return ($this->getControl($path, $separator) instanceof DataControlInterface);
     }
 
     /**
      * @param string $path
+     * @param string $separator
      *
      * @return DataControlInterface
      */
-    public function getControl($path)
+    public function getControl($path, $separator = '/')
     {
-        $segments = array_filter(explode('/', $path), function($segment) {
+        $segments = array_filter(explode($separator, $path), function($segment) {
             return $segment !== '';
         });
 

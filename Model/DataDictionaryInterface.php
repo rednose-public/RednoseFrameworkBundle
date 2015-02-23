@@ -43,17 +43,19 @@ interface DataDictionaryInterface
      * Returns whether a control for a given path exists or not.
      *
      * @param string $path
+     * @param string $separator
      *
      * @return bool
      */
-    public function hasControl($path);
+    public function hasControl($path, $separator = '/');
 
     /**
      * @param string $path
+     * @param string $separator
      *
      * @return DataControlInterface
      */
-    public function getControl($path);
+    public function getControl($path, $separator = '/');
 
     /**
      * @param string $name
