@@ -46,9 +46,9 @@
                 <source>groups</source>
                 <target>Groups</target>
             </trans-unit>
-            <trans-unit id="clients">
-                <source>clients</source>
-                <target>Clients</target>
+            <trans-unit id="organizations">
+                <source>organizations</source>
+                <target>Organizations</target>
             </trans-unit>
             <trans-unit id="type_here_placeholder">
                 <source>type_here_placeholder</source>

@@ -26,6 +26,21 @@ class DataDictionaryUtil
     }
 
     /**
+     * Merges a data set into a data dictionary
+     *
+     * @param DataDictionaryInterface $dictionary
+     * @param array                   $hash
+     */
+    public static function mergeArray(DataDictionaryInterface $dictionary, array $hash)
+    {
+        foreach ($hash as $path => $value) {
+            if ($control = $dictionary->getControl($path, '.')) {
+                $control->setValue($value);
+            }
+        }
+    }
+
+    /**
      * @param DataControlInterface $control
      * @param \DOMDocument         $data
      */

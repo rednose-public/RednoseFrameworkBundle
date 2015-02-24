@@ -60,6 +60,11 @@
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest"/>
         </service>
 
+        <service id="rednose_framework.listener.assign_organization" class="Rednose\FrameworkBundle\EventListener\AssignOrganizationListener">
+            <argument type="service" id="rednose_framework.organization_manager" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
         <!-- HTML purifier / lexer -->
         <service id="rednose_framework.purifier.factory" class="%rednose_framework.purifier.factory.class%"/>
         <service id="rednose_framework.purifier" factory-method="create" factory-service="rednose_framework.purifier.factory" class="%rednose_framework.purifier.factory.class%"/>
