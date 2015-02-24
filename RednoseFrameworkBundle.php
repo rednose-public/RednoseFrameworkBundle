@@ -26,5 +26,5 @@ class RednoseFrameworkBundle extends Bundle
      *
      * @var string
      */
-    const VERSION = '1.3';
+    const VERSION = '1.7';
 }

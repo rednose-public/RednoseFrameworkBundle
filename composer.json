@@ -21,6 +21,7 @@
     "require": {
         "php": ">=5.4.0",
         "symfony/symfony": "2.3.*",
+        "symfony/expression-language": "2.7.*@dev",
         "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "1.2.*",
         "twig/extensions": "1.0.*",
@@ -53,6 +54,7 @@
         "liip/monitor-bundle": "2.0.*",
 
         "ezyang/htmlpurifier": "4.6.0",
+        "aerialship/saml-sp-bundle": "1.0.1",
 
         "rednose/api-doc-bundle": "dev-master"
     },
