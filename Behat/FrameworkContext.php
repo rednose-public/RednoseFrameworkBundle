@@ -107,22 +107,28 @@ class FrameworkContext extends AbstractContext
     public function thereAreUsers(TableNode $table)
     {
         $util = $this->getContainer()->get('fos_user.util.user_manipulator');
-        $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $um   = $this->getContainer()->get('rednose_framework.user_manager');
 
         foreach ($table->getHash() as $data) {
             /** @var UserInterface $admin */
             $user = $util->create($data['name'], $data['password'], $data['email'], true, false);
-            $em->persist($user);
+
+            if (isset($data['organization'])) {
+                $manager = $this->getContainer()->get('rednose_framework.organization_manager');
+                $user->setOrganization($manager->findOrganizationBy(array('name' => $data['organization'])));
+            }
+
+            $um->updateUser($user);
         }
     }
 
     protected function createOrganization($data)
     {
-        $sm = $this->getContainer()->get('rednose_framework.organization_manager');
+        $manager = $this->getContainer()->get('rednose_framework.organization_manager');
 
-        $organization = $sm->createOrganization();
+        $organization = $manager->createOrganization();
         $organization->setName($data['name']);
-        $sm->updateOrganization($organization);
+        $manager->updateOrganization($organization);
     }
 
 
