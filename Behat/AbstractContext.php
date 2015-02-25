@@ -94,17 +94,4 @@ abstract class AbstractContext extends RawMinkContext implements Context, Kernel
     {
         return str_replace('\\"', '"', $argument);
     }
-
-    /**
-     * @param string $name
-     * @param string $password
-     */
-    private function login($name, $password)
-    {
-        $this->getSession()->visit($this->generateUrl('_rednose_framework_security_login'));
-
-        $this->fillField('username', $name);
-        $this->fillField('password', $password);
-        $this->pressButton('submit');
-    }
 }
