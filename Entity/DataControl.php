@@ -50,11 +50,11 @@ class DataControl implements DataControlInterface
     protected $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false)
      *
      * @Serializer\Groups({"details"})
      */
-    protected $sortOrder = 0;
+    protected $sortOrder;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)

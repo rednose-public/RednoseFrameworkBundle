@@ -215,7 +215,10 @@ class DataDictionary implements DataDictionaryInterface
         if ($this->getControls()) {
             foreach ($this->getControls() as $control) {
                 $control->setDictionary($this);
-                $control->setSortOrder($sortOrder++);
+
+                if ($control->getSortOrder() === null) {
+                    $control->setSortOrder($sortOrder++);
+                }
             }
         }
     }
