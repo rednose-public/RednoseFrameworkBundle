@@ -3,7 +3,6 @@
 namespace Rednose\FrameworkBundle\Model;
 
 use JMS\Serializer\Annotation as Serializer;
-use Rednose\FrameworkBundle\Model\DataControlInterface;
 
 /**
  * A data control list.
@@ -44,17 +43,19 @@ interface DataDictionaryInterface
      * Returns whether a control for a given path exists or not.
      *
      * @param string $path
+     * @param string $separator
      *
      * @return bool
      */
-    public function hasControl($path);
+    public function hasControl($path, $separator = '/');
 
     /**
      * @param string $path
+     * @param string $separator
      *
      * @return DataControlInterface
      */
-    public function getControl($path);
+    public function getControl($path, $separator = '/');
 
     /**
      * @param string $name
@@ -66,7 +67,7 @@ interface DataDictionaryInterface
     /**
      * @param string $name
      *
-     * @return bool
+     * @return DataControlInterface
      */
     public function getChild($name);
 
@@ -97,9 +98,12 @@ interface DataDictionaryInterface
     /**
      * @param \DOMDocument|null $data
      */
-    public function setTestData($data);/**
+    public function setTestData($data);
+
+    /**
      * Return the dictionary as an object
      *
      * @return Object
      */
+    public function toObject();
 }

@@ -50,11 +50,11 @@ class DataControl implements DataControlInterface
     protected $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=false)
      *
      * @Serializer\Groups({"details"})
      */
-    protected $sortOrder = 0;
+    protected $sortOrder;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -381,7 +381,14 @@ class DataControl implements DataControlInterface
             return $object;
         }
 
-        return $this->getValue();
+        // XXX
+        $value = $this->getValue();
+
+        if ($value instanceof \DateTime) {
+            $value = $value->getTimestamp();
+        }
+
+        return $value;
     }
 
     /**

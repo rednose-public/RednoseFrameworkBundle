@@ -1,6 +1,6 @@
 <?php
 
-namespace Rednose\FrameworkBundle\Saml;
+namespace Rednose\FrameworkBundle\Entity;
 
 use AerialShip\SamlSPBundle\Entity\SSOStateEntity;
 use Doctrine\ORM\Mapping as ORM;

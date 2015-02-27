@@ -2,8 +2,8 @@
 
 namespace Rednose\FrameworkBundle\Tests\Util;
 
-use Rednose\FrameworkBundle\Entity\DataControl;
 use Rednose\FrameworkBundle\Entity\DataDictionary;
+use Rednose\FrameworkBundle\Entity\DataControl;
 
 class DataDictionaryTest extends \PHPUnit_Framework_TestCase
 {

@@ -32,6 +32,12 @@ final class Events
     const USER_POST_REMOVE = 'rednose_framework.user.post_remove';
 
     /**
+     * This event occurs when a user was automatically created.
+     * The listener receives a Rednose\FrameworkBundle\Event\UserEvent instance.
+     */
+    const USER_AUTO_CREATE = 'rednose_framework.user.auto_create';
+
+    /**
      * This event occurs after a new group has been persisted to the backend.
      * The listener receives a Rednose\FrameworkBundle\Event\GroupEvent instance.
      */
