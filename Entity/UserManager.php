@@ -45,7 +45,7 @@ class UserManager extends BaseUserManager implements UserManagerInterface
      * @param EventDispatcherInterface $dispatcher
      * @param bool                     $autoAccountCreation
      */
-    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class,EventDispatcherInterface $dispatcher, $autoAccountCreation = false)
+    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, EventDispatcherInterface $dispatcher, $autoAccountCreation = false)
     {
         parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class);
 
@@ -134,7 +134,7 @@ class UserManager extends BaseUserManager implements UserManagerInterface
      */
     public function loadUserByUsername($username)
     {
-        if ($this->autoAccountCreation && $this->findUserBy(array('username' => $username)) === null) {
+        if ($this->autoAccountCreation && !$this->findUserBy(array('username' => $username))) {
             $user = $this->createUser();
 
             $user->setUsername($username);

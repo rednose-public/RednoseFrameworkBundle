@@ -3,6 +3,7 @@
 namespace Rednose\FrameworkBundle\Model;
 
 use JMS\Serializer\Annotation as Serializer;
+use Rednose\FrameworkBundle\Entity\DataDictionary;
 
 /**
  * A data control list.
@@ -106,4 +107,18 @@ interface DataDictionaryInterface
      * @return Object
      */
     public function toObject();
+
+    /**
+     * Utility method.
+     *
+     * @return \DOMDocument
+     */
+    public function toXml();
+
+    /**
+     * Merges a data set into a data dictionary
+     *
+     * @param \DOMDocument $data
+     */
+    public function merge(\DOMDocument $data);
 }

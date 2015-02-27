@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Rednose\FrameworkBundle\Model\DataControlInterface;
 use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
+use Rednose\FrameworkBundle\Util\XpathUtil;
+use Symfony\Component\Config\Util\XmlUtils;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -274,6 +276,87 @@ class DataDictionary implements DataDictionaryInterface
         }
 
         return $object;
+    }
+
+    /**
+     * Merges a data set into a data dictionary
+     *
+     * @param \DOMDocument $data
+     */
+    public function merge(\DOMDocument $data)
+    {
+        foreach ($this->getControls() as $control) {
+            $this->traverse($control, $data);
+        }
+    }
+
+    /**
+     * Utility method.
+     *
+     * @return \DOMDocument
+     */
+    public function toXml()
+    {
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+
+        // Create root element.
+        $root = $dom->createElement($this->getName());
+        $dom->appendChild($root);
+
+        foreach ($this->getControls() as $control) {
+            $root->appendChild(self::createControlNode($dom, $control));
+        }
+
+        return $dom;
+    }
+
+    /**
+     * @param \DOMDocument         $dom
+     * @param DataControlInterface $control
+     *
+     * @return \DOMElement
+     */
+    protected function createControlNode(\DOMDocument $dom, DataControlInterface $control)
+    {
+        $node = $dom->createElement($control->getName());
+
+        if ($control->hasChildren()) {
+            foreach ($control->getChildren() as $child) {
+                $node->appendChild($this->createControlNode($dom, $child));
+            }
+        }
+
+        return $node;
+    }
+
+    /**
+     * @param DataControlInterface $control
+     * @param \DOMDocument         $data
+     */
+    protected function traverse(DataControlInterface $control, \DOMDocument $data)
+    {
+        if (in_array($control->getType(), array(DataControlInterface::TYPE_COMPOSITE, DataControlInterface::TYPE_COLLECTION))) {
+            foreach ($control->getChildren() as $child) {
+                $this->traverse($child, $data);
+            }
+
+            return;
+        }
+
+        $node = XpathUtil::getXpathNode($data, $control->getPath());
+
+        if ($node !== null) {
+            $value = $node->nodeValue;
+
+            if ($control->getType() === DataControlInterface::TYPE_DATE) {
+                $value = new \DateTime($value);
+            } else  if ($control->getType() === DataControlInterface::TYPE_BOOLEAN) {
+                $value = (boolean) XmlUtils::phpize($value);
+            }
+
+            $control->setValue($value);
+        }
     }
 
     /**
