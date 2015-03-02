@@ -4,8 +4,8 @@ namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
-use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
-use Rednose\FrameworkBundle\Model\DataDictionaryManagerInterface;
+use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
+use Rednose\FrameworkBundle\DataDictionary\DataDictionaryManagerInterface;
 
 class DataDictionaryManager implements DataDictionaryManagerInterface
 {
@@ -49,7 +49,7 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
     /**
      * @param string $id
      *
-     * @return DataDictionaryInterface
+     * @return \Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface
      */
     public function findDictionaryById($id)
     {
@@ -80,7 +80,7 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
     }
 
     /**
-     * @param DataDictionaryInterface $dictionary
+     * @param \Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface $dictionary
      */
     public function deleteDictionary(DataDictionaryInterface $dictionary)
     {

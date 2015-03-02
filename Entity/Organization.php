@@ -14,7 +14,7 @@ namespace Rednose\FrameworkBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
-use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
+use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 
 /**
  * @ORM\Entity
@@ -114,7 +114,7 @@ class Organization implements OrganizationInterface
     }
 
     /**
-     * @param DataDictionaryInterface $dictionary
+     * @param \Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface $dictionary
      */
     public function setDataDictionary($dictionary)
     {

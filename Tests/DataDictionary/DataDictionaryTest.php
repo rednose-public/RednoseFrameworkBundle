@@ -1,6 +1,6 @@
 <?php
 
-namespace Rednose\FrameworkBundle\Tests\Util;
+namespace Rednose\FrameworkBundle\Tests\DataDictionary;
 
 use Rednose\FrameworkBundle\Entity\DataDictionary;
 use Rednose\FrameworkBundle\Entity\DataControl;

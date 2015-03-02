@@ -5,8 +5,8 @@ namespace Rednose\FrameworkBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
-use Rednose\FrameworkBundle\Model\DataControlInterface;
-use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
+use Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface;
+use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 use Rednose\FrameworkBundle\Util\XpathUtil;
 use Symfony\Component\Config\Util\XmlUtils;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -116,7 +116,7 @@ class DataDictionary implements DataDictionaryInterface
     }
 
     /**
-     * @return \Rednose\FrameworkBundle\Model\DataControlInterface[]
+     * @return \Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface[]
      */
     public function getControls()
     {
@@ -124,7 +124,7 @@ class DataDictionary implements DataDictionaryInterface
     }
 
     /**
-     * @param \Rednose\FrameworkBundle\Model\DataControlInterface $control
+     * @param \Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface $control
      */
     public function addControl(DataControlInterface $control)
     {
@@ -194,7 +194,7 @@ class DataDictionary implements DataDictionaryInterface
     /**
      * @param string $name
      *
-     * @return DataControlInterface
+     * @return \Rednose\FrameworkBundle\DataDictionary\DataControlInterface
      */
     public function getChild($name)
     {
@@ -313,7 +313,7 @@ class DataDictionary implements DataDictionaryInterface
 
     /**
      * @param \DOMDocument         $dom
-     * @param DataControlInterface $control
+     * @param \Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface $control
      *
      * @return \DOMElement
      */
@@ -360,7 +360,7 @@ class DataDictionary implements DataDictionaryInterface
     }
 
     /**
-     * @param DataControlInterface $control
+     * @param \Rednose\FrameworkBundle\DataDictionary\DataControlInterface $control
      * @param array                $types
      * @param string               $context
      *

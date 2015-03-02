@@ -1,8 +1,8 @@
 <?php
 
-namespace Rednose\FrameworkBundle\Model;
+namespace Rednose\FrameworkBundle\DataDictionary\DataControl;
 
-use Rednose\FrameworkBundle\Entity\DataControl;
+use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 
 interface DataControlInterface
 {

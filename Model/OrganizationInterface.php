@@ -11,6 +11,8 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
+use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
+
 interface OrganizationInterface
 {
     /**

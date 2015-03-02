@@ -1,9 +1,9 @@
 <?php
 
-namespace Rednose\FrameworkBundle\Model;
+namespace Rednose\FrameworkBundle\DataDictionary;
 
 use JMS\Serializer\Annotation as Serializer;
-use Rednose\FrameworkBundle\Entity\DataDictionary;
+use Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface;
 
 /**
  * A data control list.

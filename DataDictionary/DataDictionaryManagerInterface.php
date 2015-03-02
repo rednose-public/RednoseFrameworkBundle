@@ -1,6 +1,9 @@
 <?php
 
-namespace Rednose\FrameworkBundle\Model;
+namespace Rednose\FrameworkBundle\DataDictionary;
+
+use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
 
 interface DataDictionaryManagerInterface
 {

@@ -5,8 +5,8 @@ namespace Rednose\FrameworkBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
-use Rednose\FrameworkBundle\Model\DataControlInterface;
-use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
+use Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface;
+use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -194,7 +194,7 @@ class DataControl implements DataControlInterface
     }
 
     /**
-     * @return \Rednose\FrameworkBundle\Model\DataControlInterface[]
+     * @return \Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface[]
      */
     public function getChildren()
     {
@@ -218,7 +218,7 @@ class DataControl implements DataControlInterface
     }
 
     /**
-     * @return DataDictionaryInterface
+     * @return \Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface
      */
     public function getDictionary()
     {
@@ -349,7 +349,7 @@ class DataControl implements DataControlInterface
     }
 
     /**
-     * @param DataControlInterface $child
+     * @param \Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface $child
      */
     public function addChild(DataControlInterface $child)
     {
@@ -431,9 +431,23 @@ class DataControl implements DataControlInterface
 
     /**
      * @param mixed $value
+     *
+     * @throws \InvalidArgumentException when the argument type doesn't match the required format
      */
     public function setValue($value)
     {
+        if ((
+            $this->type === DataControlInterface::TYPE_DATE && !$value instanceof \DateTime ||
+            $this->type === DataControlInterface::TYPE_COLLECTION && !is_array($value) ||
+            $this->type === DataControlInterface::TYPE_NUMBER && !is_numeric($value) ||
+            $this->type === DataControlInterface::TYPE_STRING && !is_string($value) ||
+            $this->type === DataControlInterface::TYPE_TEXT && !is_string($value) ||
+            $this->type === DataControlInterface::TYPE_HTML && !is_string($value)) &&
+            $value !== null
+        ) {
+            throw new \InvalidArgumentException(sprintf('Invalid value for data control with type "%s"', $this->type));
+        }
+
         $this->value = $value;
     }
 }
