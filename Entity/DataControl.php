@@ -116,7 +116,7 @@ class DataControl implements DataControlInterface
      * @param string                  $name
      * @param string                  $type
      */
-    public function __construct(DataDictionaryInterface $dictionary, $name = null, $type = null)
+    public function __construct(DataDictionaryInterface $dictionary = null, $name = null, $type = null)
     {
         $this->dictionary = $dictionary;
         $this->name       = $name;
@@ -429,7 +429,7 @@ class DataControl implements DataControlInterface
      */
     public function cloneNode()
     {
-        $node = new DataControl($this->dictionary);
+        $node = new DataControl();
         $node->setParent($this->parent);
         $node->setName($this->name);
         $node->setType($this->type);
