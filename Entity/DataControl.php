@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface;
+use Rednose\FrameworkBundle\DataDictionary\DataControl\HasValueTrait;
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -22,6 +23,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class DataControl implements DataControlInterface
 {
+    use HasValueTrait;
+
     /**
      * @Serializer\SerializedName("icon")
      * @Serializer\Type("string")
@@ -419,35 +422,5 @@ class DataControl implements DataControlInterface
         }
 
         throw new \InvalidArgumentException(sprintf('Invalid data-control type `%s` for control `%s`', $this->type, $this->name));
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @throws \InvalidArgumentException when the argument type doesn't match the required format
-     */
-    public function setValue($value)
-    {
-        if ((
-            $this->type === DataControlInterface::TYPE_DATE && !$value instanceof \DateTime ||
-            $this->type === DataControlInterface::TYPE_COLLECTION && !is_array($value) ||
-            $this->type === DataControlInterface::TYPE_NUMBER && !is_numeric($value) ||
-            $this->type === DataControlInterface::TYPE_STRING && !is_string($value) ||
-            $this->type === DataControlInterface::TYPE_TEXT && !is_string($value) ||
-            $this->type === DataControlInterface::TYPE_HTML && !is_string($value)) &&
-            $value !== null
-        ) {
-            throw new \InvalidArgumentException(sprintf('Invalid value for data control with type "%s"', $this->type));
-        }
-
-        $this->value = $value;
     }
 }

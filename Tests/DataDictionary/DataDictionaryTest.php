@@ -127,6 +127,8 @@ class DataDictionaryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->dictionary->hasControl('/Root/Composite/Invalid'));
     }
 
+    // -- Mergeable ------------------------------------------------------------
+
     public function testNoMerge()
     {
         $dictionary = $this->getMergeDictionary();
@@ -145,6 +147,16 @@ class DataDictionaryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('TestOndertekenaar', $child->getValue(), 'A merged control should have the same value as the XML element value.');
     }
 
+    public function testMergeCollection()
+    {
+    }
+
+    public function testToXml()
+    {
+        $dictionary = $this->getMergeDictionary();
+        $this->assertEquals($this->getToXml()->saveXML(), $dictionary->toXml()->saveXML());
+    }
+
     public function getMergeDictionary()
     {
         $dictionary = new DataDictionary();
@@ -153,6 +165,18 @@ class DataDictionaryTest extends \PHPUnit_Framework_TestCase
         $control = new DataControl($dictionary);
         $control->setName('Ondertekenaar');
         $dictionary->addControl($control);
+
+        $collection = new DataControl($dictionary);
+        $collection->setName('Tekstblokken');
+        $dictionary->addControl($collection);
+
+        $control = new DataControl($dictionary);
+        $control->setName('Tekstblok1');
+        $collection->addChild($control);
+
+        $control = new DataControl($dictionary);
+        $control->setName('Tekstblok2');
+        $collection->addChild($control);
 
         return $dictionary;
     }
@@ -168,6 +192,26 @@ class DataDictionaryTest extends \PHPUnit_Framework_TestCase
 <?xml version="1.0" encoding="UTF-8"?>
 <Correspondentie>
   <Ondertekenaar>TestOndertekenaar</Ondertekenaar>
+</Correspondentie>
+EOF;
+
+        $dom->loadXML($xml);
+
+        return $dom;
+    }
+
+    protected function getToXml()
+    {
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+
+        $xml = <<<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<Correspondentie>
+  <Ondertekenaar/>
+  <Tekstblokken>
+    <Tekstblok1/>
+    <Tekstblok2/>
+  </Tekstblokken>
 </Correspondentie>
 EOF;
 

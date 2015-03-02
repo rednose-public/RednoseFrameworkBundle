@@ -6,7 +6,7 @@ use Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface;
 use Rednose\FrameworkBundle\Entity\DataControl;
 use Rednose\FrameworkBundle\Entity\DataDictionary;
 
-class DataControlTest extends \PHPUnit_Framework_TestCase
+class HasValueTraitTest extends \PHPUnit_Framework_TestCase
 {
     protected $mock;
 

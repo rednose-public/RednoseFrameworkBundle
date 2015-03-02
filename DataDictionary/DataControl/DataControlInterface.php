@@ -4,7 +4,7 @@ namespace Rednose\FrameworkBundle\DataDictionary\DataControl;
 
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 
-interface DataControlInterface
+interface DataControlInterface extends HasValueInterface
 {
     const TYPE_COMPOSITE  = 'composite';
     const TYPE_COLLECTION = 'collection';
@@ -127,14 +127,4 @@ interface DataControlInterface
      * @return Object|Array
      */
     public function toProperty();
-
-    /**
-     * @return mixed
-     */
-    public function getValue();
-
-    /**
-     * @param mixed $value
-     */
-    public function setValue($value);
 }
