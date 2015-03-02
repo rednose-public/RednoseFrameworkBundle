@@ -423,4 +423,22 @@ class DataControl implements DataControlInterface
 
         throw new \InvalidArgumentException(sprintf('Invalid data-control type `%s` for control `%s`', $this->type, $this->name));
     }
+
+    /**
+     * @return DataControlInterface
+     */
+    public function cloneNode()
+    {
+        $node = new DataControl($this->dictionary);
+        $node->setParent($this->parent);
+        $node->setName($this->name);
+        $node->setType($this->type);
+        $node->setValue($this->value);
+
+        foreach ($this->children as $child) {
+            $node->addChild($child->cloneNode());
+        }
+
+        return $node;
+    }
 }

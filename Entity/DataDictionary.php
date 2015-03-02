@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface;
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
+use Rednose\FrameworkBundle\DataDictionary\MergeableTrait;
 use Rednose\FrameworkBundle\Util\XpathUtil;
 use Symfony\Component\Config\Util\XmlUtils;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,6 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class DataDictionary implements DataDictionaryInterface
 {
+    use MergeableTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="guid")
@@ -279,18 +282,6 @@ class DataDictionary implements DataDictionaryInterface
     }
 
     /**
-     * Merges a data set into a data dictionary
-     *
-     * @param \DOMDocument $data
-     */
-    public function merge(\DOMDocument $data)
-    {
-        foreach ($this->getControls() as $control) {
-            $this->traverse($control, $data);
-        }
-    }
-
-    /**
      * Utility method.
      *
      * @return \DOMDocument
@@ -328,35 +319,6 @@ class DataDictionary implements DataDictionaryInterface
         }
 
         return $node;
-    }
-
-    /**
-     * @param DataControlInterface $control
-     * @param \DOMDocument         $data
-     */
-    protected function traverse(DataControlInterface $control, \DOMDocument $data)
-    {
-        if (in_array($control->getType(), array(DataControlInterface::TYPE_COMPOSITE, DataControlInterface::TYPE_COLLECTION))) {
-            foreach ($control->getChildren() as $child) {
-                $this->traverse($child, $data);
-            }
-
-            return;
-        }
-
-        $node = XpathUtil::getXpathNode($data, $control->getPath());
-
-        if ($node !== null) {
-            $value = $node->nodeValue;
-
-            if ($control->getType() === DataControlInterface::TYPE_DATE) {
-                $value = new \DateTime($value);
-            } else  if ($control->getType() === DataControlInterface::TYPE_BOOLEAN) {
-                $value = (boolean) XmlUtils::phpize($value);
-            }
-
-            $control->setValue($value);
-        }
     }
 
     /**

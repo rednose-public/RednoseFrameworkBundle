@@ -16,7 +16,7 @@ class XpathUtil
      *
      * @return \DOMNode
      */
-    public static function getXpathNode(\DOMDocument $data, $location, $context = null)
+    public static function getXpathNode(\DOMDocument $data, $location, \DOMNode $context = null)
     {
         if ($location === null) {
             return null;

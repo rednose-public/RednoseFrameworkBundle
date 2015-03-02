@@ -127,34 +127,29 @@ class DataDictionaryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->dictionary->hasControl('/Root/Composite/Invalid'));
     }
 
-    // -- Mergeable ------------------------------------------------------------
-
-    public function testNoMerge()
-    {
-        $dictionary = $this->getMergeDictionary();
-
-        $child = $dictionary->getChild('Ondertekenaar');
-        $this->assertNull($child->getValue(), 'An unmerged control should have value `null` when it has no default value.');
-    }
-
-    public function testMerge()
-    {
-        $dictionary = $this->getMergeDictionary();
-        $dictionary->merge($this->getData());
-
-        $child = $dictionary->getChild('Ondertekenaar');
-
-        $this->assertEquals('TestOndertekenaar', $child->getValue(), 'A merged control should have the same value as the XML element value.');
-    }
-
-    public function testMergeCollection()
-    {
-    }
-
     public function testToXml()
     {
         $dictionary = $this->getMergeDictionary();
         $this->assertEquals($this->getToXml()->saveXML(), $dictionary->toXml()->saveXML());
+    }
+
+    /**
+     * @return \DOMDocument
+     */
+    protected function getData()
+    {
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+
+        $xml = <<<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<Correspondentie>
+  <Ondertekenaar>TestOndertekenaar</Ondertekenaar>
+</Correspondentie>
+EOF;
+
+        $dom->loadXML($xml);
+
+        return $dom;
     }
 
     public function getMergeDictionary()
@@ -179,25 +174,6 @@ class DataDictionaryTest extends \PHPUnit_Framework_TestCase
         $collection->addChild($control);
 
         return $dictionary;
-    }
-
-    /**
-     * @return \DOMDocument
-     */
-    protected function getData()
-    {
-        $dom = new \DOMDocument('1.0', 'UTF-8');
-
-        $xml = <<<EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<Correspondentie>
-  <Ondertekenaar>TestOndertekenaar</Ondertekenaar>
-</Correspondentie>
-EOF;
-
-        $dom->loadXML($xml);
-
-        return $dom;
     }
 
     protected function getToXml()

@@ -3,6 +3,7 @@
 namespace Rednose\FrameworkBundle\DataDictionary\DataControl;
 
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
+use Rednose\FrameworkBundle\Entity\DataControl;
 
 interface DataControlInterface extends HasValueInterface
 {
@@ -90,7 +91,7 @@ interface DataControlInterface extends HasValueInterface
     /**
      * @param string $name
      *
-     * @return bool
+     * @return DataControlInterface
      */
     public function getChild($name);
 
@@ -127,4 +128,9 @@ interface DataControlInterface extends HasValueInterface
      * @return Object|Array
      */
     public function toProperty();
+
+    /**
+     * @return DataControlInterface
+     */
+    public function cloneNode();
 }

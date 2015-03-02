@@ -8,7 +8,7 @@ use Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface;
 /**
  * A data control list.
  */
-interface DataDictionaryInterface
+interface DataDictionaryInterface extends MergeableInterface
 {
     /**
      * @return string
@@ -114,11 +114,4 @@ interface DataDictionaryInterface
      * @return \DOMDocument
      */
     public function toXml();
-
-    /**
-     * Merges a data set into a data dictionary
-     *
-     * @param \DOMDocument $data
-     */
-    public function merge(\DOMDocument $data);
 }
