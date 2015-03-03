@@ -128,12 +128,6 @@ class DataDictionaryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->dictionary->hasControl('/Root/Composite/Invalid'));
     }
 
-    public function testToXmlShouldNotIncludeCollectionPrototypes()
-    {
-        $dictionary = $this->getMergeDictionary();
-        $this->assertEquals($this->getToXml()->saveXML(), $dictionary->toXml()->saveXML());
-    }
-
     /**
      * @return \DOMDocument
      */

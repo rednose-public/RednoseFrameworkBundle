@@ -314,11 +314,6 @@ class DataDictionary implements DataDictionaryInterface
      */
     protected function createControlNode(\DOMDocument $dom, DataControlInterface $control)
     {
-        // Don't create nodes for relative prototypes.
-        if ($control->isRelative()) {
-            return null;
-        }
-
         $node = $dom->createElement($control->getName());
 
         if ($control->hasChildren()) {
