@@ -144,14 +144,27 @@ class Organization implements OrganizationInterface
     }
 
     /**
-     * A list of OR conditions to evaluate on a user object
-     * when deciding to assign a user to this organization.
+     * Adds a condition.
      *
      * @param string $condition
      */
     public function addCondition($condition)
     {
         $this->conditions[] = $condition;
+    }
+
+    /**
+     * Removes a condition.
+     *
+     * @param string $condition
+     */
+    public function removeCondition($condition)
+    {
+        $index = array_search($condition, $this->conditions);
+
+        if ($index !== false) {
+            unset($this->conditions[$index]);
+        }
     }
 
     /**

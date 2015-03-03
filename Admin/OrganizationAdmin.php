@@ -41,13 +41,22 @@ class OrganizationAdmin extends Admin
     {
         $showMapper
             ->with('General')
-                ->add('name');
+                ->add('name')
+                ->add('conditions', 'array', array('label' => 'User assignment conditions'));
+
     }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->with('General')
-                ->add('name');
+                ->add('name')
+                ->add('conditions', 'collection', array(
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                    'label'        => 'User assignment conditions',
+                    'required'     => false,
+                ));
     }
 }
