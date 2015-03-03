@@ -2,6 +2,7 @@
 
 namespace Rednose\FrameworkBundle\Tests\DataDictionary;
 
+use Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface;
 use Rednose\FrameworkBundle\Entity\DataDictionary;
 use Rednose\FrameworkBundle\Entity\DataControl;
 
@@ -127,7 +128,7 @@ class DataDictionaryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->dictionary->hasControl('/Root/Composite/Invalid'));
     }
 
-    public function testToXml()
+    public function testToXmlShouldNotIncludeCollectionPrototypes()
     {
         $dictionary = $this->getMergeDictionary();
         $this->assertEquals($this->getToXml()->saveXML(), $dictionary->toXml()->saveXML());
@@ -158,18 +159,22 @@ EOF;
         $dictionary->setName('Correspondentie');
 
         $control = new DataControl($dictionary);
+        $control->setType(DataControlInterface::TYPE_TEXT);
         $control->setName('Ondertekenaar');
         $dictionary->addControl($control);
 
         $collection = new DataControl($dictionary);
+        $collection->setType(DataControlInterface::TYPE_COLLECTION);
         $collection->setName('Tekstblokken');
         $dictionary->addControl($collection);
 
         $control = new DataControl($dictionary);
+        $control->setType(DataControlInterface::TYPE_COMPOSITE);
         $control->setName('Tekstblok1');
         $collection->addChild($control);
 
         $control = new DataControl($dictionary);
+        $control->setType(DataControlInterface::TYPE_COMPOSITE);
         $control->setName('Tekstblok2');
         $collection->addChild($control);
 
@@ -184,10 +189,7 @@ EOF;
 <?xml version="1.0" encoding="UTF-8"?>
 <Correspondentie>
   <Ondertekenaar/>
-  <Tekstblokken>
-    <Tekstblok1/>
-    <Tekstblok2/>
-  </Tekstblokken>
+  <Tekstblokken/>
 </Correspondentie>
 EOF;
 

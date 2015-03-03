@@ -72,7 +72,7 @@ trait MergeableTrait
     }
 
     /**
-     * @return DataControlInterface
+     * @return DataControlInterface[]
      */
     abstract public function getControls();
 }

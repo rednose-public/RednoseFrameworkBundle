@@ -296,7 +296,11 @@ class DataDictionary implements DataDictionaryInterface
         $dom->appendChild($root);
 
         foreach ($this->getControls() as $control) {
-            $root->appendChild(self::createControlNode($dom, $control));
+            $node = $this->createControlNode($dom, $control);
+
+            if ($node) {
+                $root->appendChild($node);
+            }
         }
 
         return $dom;
@@ -310,11 +314,20 @@ class DataDictionary implements DataDictionaryInterface
      */
     protected function createControlNode(\DOMDocument $dom, DataControlInterface $control)
     {
+        // Don't create nodes for relative prototypes.
+        if ($control->isRelative()) {
+            return null;
+        }
+
         $node = $dom->createElement($control->getName());
 
         if ($control->hasChildren()) {
             foreach ($control->getChildren() as $child) {
-                $node->appendChild($this->createControlNode($dom, $child));
+                $childNode = $this->createControlNode($dom, $child);
+
+                if ($childNode) {
+                    $node->appendChild($childNode);
+                }
             }
         }
 
