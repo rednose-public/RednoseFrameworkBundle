@@ -70,5 +70,9 @@
         <service id="rednose_framework.purifier" factory-method="create" factory-service="rednose_framework.purifier.factory" class="%rednose_framework.purifier.factory.class%"/>
         <service id="rednose_framework.purifier.lexer" factory-method="createLexer" factory-service="rednose_framework.purifier.factory" class="%rednose_framework.purifier.factory.class%"/>
 
+        <service id="rednose_framework.organization_param_converter" class="Rednose\FrameworkBundle\Request\ParamConverter\OrganizationParamConverter">
+            <argument type="service" id="rednose_framework.organization_manager" />
+            <tag name="request.param_converter" converter="organization" priority="10" />
+        </service>
     </services>
 </container>
