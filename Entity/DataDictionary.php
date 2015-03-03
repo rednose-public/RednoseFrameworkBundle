@@ -119,7 +119,7 @@ class DataDictionary implements DataDictionaryInterface
     }
 
     /**
-     * @return \Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface[]
+     * @return DataControlInterface[]
      */
     public function getControls()
     {
@@ -127,7 +127,7 @@ class DataDictionary implements DataDictionaryInterface
     }
 
     /**
-     * @param \Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface $control
+     * @param DataControlInterface $control
      */
     public function addControl(DataControlInterface $control)
     {
@@ -197,7 +197,7 @@ class DataDictionary implements DataDictionaryInterface
     /**
      * @param string $name
      *
-     * @return \Rednose\FrameworkBundle\DataDictionary\DataControlInterface
+     * @return DataControlInterface
      */
     public function getChild($name)
     {
@@ -304,7 +304,7 @@ class DataDictionary implements DataDictionaryInterface
 
     /**
      * @param \DOMDocument         $dom
-     * @param \Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface $control
+     * @param DataControlInterface $control
      *
      * @return \DOMElement
      */
@@ -322,7 +322,7 @@ class DataDictionary implements DataDictionaryInterface
     }
 
     /**
-     * @param \Rednose\FrameworkBundle\DataDictionary\DataControlInterface $control
+     * @param DataControlInterface $control
      * @param array                $types
      * @param string               $context
      *
