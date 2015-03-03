@@ -56,17 +56,20 @@ class MergeableTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(4, count($value));
 
         $names = array();
+        $fields = array();
         $values = array();
 
         foreach ($value as $textBlockNode) {
             $names[] = $textBlockNode->getName();
 
             foreach ($textBlockNode->getChildren() as $fieldNode) {
+                $fields[] = $fieldNode->getName();
                 $values[] = $fieldNode->getValue();
             }
         };
 
         $this->assertEquals(array('Tekstblok1', 'Tekstblok2', 'Tekstblok1', 'Tekstblok2'), $names);
+        $this->assertEquals(array('Content1', 'Content2', 'Content1', 'Content2'), $fields);
         $this->assertEquals(array('Value1', 'Value2', 'Value3', 'Value4'), $values);
     }
 

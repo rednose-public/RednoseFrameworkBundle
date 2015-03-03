@@ -197,11 +197,11 @@ class DataControl implements DataControlInterface
     }
 
     /**
-     * @return \Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface[]
+     * @return DataControlInterface[]
      */
     public function getChildren()
     {
-        return $this->children;
+        return $this->children->toArray();
     }
 
     /**
@@ -221,7 +221,7 @@ class DataControl implements DataControlInterface
     }
 
     /**
-     * @return \Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface
+     * @return DataDictionaryInterface
      */
     public function getDictionary()
     {
