@@ -284,12 +284,24 @@ class DataDictionary implements DataDictionaryInterface
     /**
      * Utility method.
      *
+     * @param DataControlInterface $control
+     *
      * @return \DOMDocument
      */
-    public function toXml()
+    public function toXml(DataControlInterface $control = null)
     {
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
+
+        if ($control) {
+            $node = $this->createControlNode($dom, $control, true);
+
+            if ($node) {
+                $dom->appendChild($node);
+            }
+
+            return $dom;
+        }
 
         // Create root element.
         $root = $dom->createElement($this->getName());
@@ -309,16 +321,22 @@ class DataDictionary implements DataDictionaryInterface
     /**
      * @param \DOMDocument         $dom
      * @param DataControlInterface $control
+     * @param bool                 $relative
      *
      * @return \DOMElement
      */
-    protected function createControlNode(\DOMDocument $dom, DataControlInterface $control)
+    protected function createControlNode(\DOMDocument $dom, DataControlInterface $control, $relative = false)
     {
+        // Don't create nodes for relative prototypes.
+        if ($control->isRelative() && !$relative) {
+            return null;
+        }
+
         $node = $dom->createElement($control->getName());
 
         if ($control->hasChildren()) {
             foreach ($control->getChildren() as $child) {
-                $childNode = $this->createControlNode($dom, $child);
+                $childNode = $this->createControlNode($dom, $child, $relative);
 
                 if ($childNode) {
                     $node->appendChild($childNode);

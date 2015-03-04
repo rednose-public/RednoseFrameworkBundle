@@ -111,7 +111,9 @@ interface DataDictionaryInterface extends MergeableInterface
     /**
      * Utility method.
      *
+     * @param DataControlInterface $control
+     *
      * @return \DOMDocument
      */
-    public function toXml();
+    public function toXml(DataControlInterface $control = null);
 }
