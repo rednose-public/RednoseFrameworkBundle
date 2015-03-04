@@ -73,6 +73,36 @@ class MergeableTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('Value1', 'Value2', 'Value3', 'Value4'), $values);
     }
 
+    public function testMergeCollectionLocator()
+    {
+        $dictionary = $this->getMergeDictionary();
+
+        $dictionary->merge($this->getCollectionData1(), '/Correspondentie/Tekstblokken/Tekstblok1');
+        $dictionary->merge($this->getCollectionData2(), '/Correspondentie/Tekstblokken/Tekstblok2');
+
+        $collection = $dictionary->getChild('Tekstblokken');
+        $value = $collection->getValue();
+
+        $this->assertEquals(2, count($value));
+
+        $names = array();
+        $fields = array();
+        $values = array();
+
+        foreach ($value as $textBlockNode) {
+            $names[] = $textBlockNode->getName();
+
+            foreach ($textBlockNode->getChildren() as $fieldNode) {
+                $fields[] = $fieldNode->getName();
+                $values[] = $fieldNode->getValue();
+            }
+        };
+
+        $this->assertEquals(array('Tekstblok1', 'Tekstblok2'), $names);
+        $this->assertEquals(array('Content1', 'Content2'), $fields);
+        $this->assertEquals(array('Value1', 'Value2'), $values);
+    }
+
     public function getMergeDictionary()
     {
         $dictionary = new DataDictionary();
@@ -157,6 +187,46 @@ class MergeableTraitTest extends \PHPUnit_Framework_TestCase
     </Tekstblok2>
   </Tekstblokken>
 </Correspondentie>
+EOF;
+
+        $dom->loadXML($xml);
+
+        return $dom;
+    }
+
+    /**
+     * @return \DOMDocument
+     */
+    protected function getCollectionData1()
+    {
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom->preserveWhiteSpace = false;
+
+        $xml = <<<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<Tekstblok1>
+  <Content1>Value1</Content1>
+</Tekstblok1>
+EOF;
+
+        $dom->loadXML($xml);
+
+        return $dom;
+    }
+
+    /**
+     * @return \DOMDocument
+     */
+    protected function getCollectionData2()
+    {
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom->preserveWhiteSpace = false;
+
+        $xml = <<<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<Tekstblok2>
+  <Content2>Value2</Content2>
+</Tekstblok2>
 EOF;
 
         $dom->loadXML($xml);

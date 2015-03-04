@@ -105,11 +105,6 @@ class DataControl implements DataControlInterface
     protected $dictionary;
 
     /**
-     * @var mixed
-     */
-    protected $value;
-
-    /**
      * Constructor.
      *
      * @param DataDictionaryInterface $dictionary
@@ -225,7 +220,15 @@ class DataControl implements DataControlInterface
      */
     public function getDictionary()
     {
-        return $this->dictionary;
+        if ($this->dictionary) {
+            return $this->dictionary;
+        }
+
+        if ($this->getParent()) {
+            return $this->getParent()->getDictionary();
+        }
+
+        return null;
     }
 
     /**

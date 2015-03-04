@@ -12,11 +12,31 @@ trait MergeableTrait
      * Merges a data set into a data dictionary
      *
      * @param \DOMDocument $data
+     * @param string       $locator
      */
-    public function merge(\DOMDocument $data)
+    public function merge(\DOMDocument $data, $locator = null)
     {
-        foreach ($this->getControls() as $control) {
-            $this->traverse($control, $data);
+        if ($locator) {
+            $control = $this->getControl($locator);
+
+            if (!$control) {
+                return;
+            }
+
+            $dom = $control->getDictionary()->toXml();
+            $collection = XpathUtil::getXpathNode($dom, $control->getParent()->getPath());
+
+            if ($collection && $data->documentElement) {
+                $collection->appendChild($dom->importNode($data->documentElement, true));
+            }
+
+            $this->merge($dom);
+        }
+
+        else {
+            foreach ($this->getControls() as $control) {
+                $this->traverse($control, $data);
+            }
         }
     }
 
@@ -36,7 +56,7 @@ trait MergeableTrait
         }
 
         elseif ($control->getType() === DataControlInterface::TYPE_COLLECTION) {
-            $value = array();
+            $value = is_array($control->getValue()) ? $control->getValue() : array();
 
             if ($node) {
                 foreach ($node->childNodes as $childNode) {
@@ -75,4 +95,12 @@ trait MergeableTrait
      * @return DataControlInterface[]
      */
     abstract public function getControls();
+
+    /**
+     * @param string $path
+     * @param string $separator
+     *
+     * @return DataControlInterface
+     */
+    abstract public function getControl($path, $separator = '/');
 }
