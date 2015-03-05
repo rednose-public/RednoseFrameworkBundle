@@ -319,6 +319,74 @@ class DataDictionary implements DataDictionaryInterface
     }
 
     /**
+     * Utility method.
+     *
+     * @param DataControlInterface $control
+     *
+     * @return \DOMDocument
+     */
+    public function toXsd(DataControlInterface $control = null)
+    {
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+
+        $namespace = 'http://www.w3.org/2001/XMLSchema';
+
+        $schema = $dom->createElementNS($namespace, 'xs:schema');
+        $dom->appendChild($schema);
+
+        $element = $dom->createElementNS($namespace, 'element');
+        $element->setAttribute('name', $this->getName());
+        $schema->appendChild($element);
+
+        $complexType = $dom->createElementNS($namespace, 'complexType');
+        $element->appendChild($complexType);
+
+        $sequence = $dom->createElementNS($namespace, 'sequence');
+        $complexType->appendChild($sequence);
+
+        foreach ($this->getControls() as $control) {
+            $sequence->appendChild($this->createDefinitionNode($dom, $control));
+        }
+
+        return $dom;
+    }
+
+    /**
+     * @param \DOMDocument         $dom
+     * @param DataControlInterface $control
+     *
+     * @return \DOMElement
+     */
+    protected function createDefinitionNode(\DOMDocument $dom, DataControlInterface $control)
+    {
+        $namespace = 'http://www.w3.org/2001/XMLSchema';
+
+        $node = $currentNode = $dom->createElementNS($namespace, 'element');
+        $node->setAttribute('name', $control->getName());
+
+        if ($control->getType() === DataControlInterface::TYPE_STRING) {
+            $node->setAttribute('type', 'xs:string');
+        }
+
+        elseif (in_array($control->getType(), array(DataControlInterface::TYPE_COLLECTION, DataControlInterface::TYPE_COMPOSITE))) {
+            $complexType = $dom->createElementNS($namespace, 'complexType');
+            $node->appendChild($complexType);
+
+            $sequence = $dom->createElementNS($namespace, 'sequence');
+            $complexType->appendChild($sequence);
+
+            $currentNode = $sequence;
+        }
+
+        foreach ($control->getChildren() as $child) {
+            $currentNode->appendChild($this->createDefinitionNode($dom, $child));
+        }
+
+        return $node;
+    }
+
+    /**
      * @param \DOMDocument         $dom
      * @param DataControlInterface $control
      * @param bool                 $relative

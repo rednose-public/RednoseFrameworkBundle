@@ -141,6 +141,24 @@ class DataDictionaryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->getData()->saveXML(), $dictionary->toXml()->saveXML());
     }
 
+    public function testToXsd()
+    {
+        $this->assertEquals($this->getToXsd()->saveXML(), $this->getDictionary()->toXsd()->saveXML());
+    }
+
+    public function testToXmlWithValuesValidatesToXsd()
+    {
+        $dictionary = $this->getDictionary();
+        $dictionary->merge($this->getData());
+
+        $xsd = sprintf('%s/%s.xsd', sys_get_temp_dir(), uniqid());
+        $dictionary->toXsd()->save($xsd);
+
+        $xml = $dictionary->toXml();
+
+        $this->assertTrue($xml->schemaValidate($xsd));
+    }
+
     /**
      * @return \DOMDocument
      */
@@ -171,7 +189,7 @@ EOF;
         $dictionary->setName('Correspondentie');
 
         $control = new DataControl($dictionary);
-        $control->setType(DataControlInterface::TYPE_TEXT);
+        $control->setType(DataControlInterface::TYPE_STRING);
         $control->setName('Ondertekenaar');
         $dictionary->addControl($control);
 
@@ -186,7 +204,7 @@ EOF;
         $collection->addChild($composite);
 
         $control = new DataControl($dictionary);
-        $control->setType(DataControlInterface::TYPE_TEXT);
+        $control->setType(DataControlInterface::TYPE_STRING);
         $control->setName('Inhoud');
         $composite->addChild($control);
 
@@ -203,6 +221,41 @@ EOF;
   <Ondertekenaar/>
   <Tekstblokken/>
 </Correspondentie>
+EOF;
+
+        $dom->loadXML($xml);
+
+        return $dom;
+    }
+
+    protected function getToXsd()
+    {
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+
+        $xml = <<<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Correspondentie">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Ondertekenaar" type="xs:string"/>
+        <xs:element name="Tekstblokken">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Tekstblok">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Inhoud" type="xs:string"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
 EOF;
 
         $dom->loadXML($xml);
