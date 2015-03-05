@@ -78,6 +78,11 @@ trait MergeableTrait
             if ($node !== null) {
                 $value = $node->nodeValue;
 
+                // Don't write empty strings when merging.
+                if (!$value) {
+                    return;
+                }
+
                 if ($control->getType() === DataControlInterface::TYPE_DATE) {
                     $value = new \DateTime($value);
                 }

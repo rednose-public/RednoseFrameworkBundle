@@ -444,4 +444,17 @@ class DataControl implements DataControlInterface
 
         return $node;
     }
+
+    public function __clone()
+    {
+        if ($this->getId()) {
+            $children = $this->getChildren();
+
+            $this->children = new ArrayCollection();
+
+            foreach ($children as $child) {
+                $this->addChild(clone $child);
+            }
+        }
+    }
 }

@@ -420,4 +420,17 @@ class DataDictionary implements DataDictionaryInterface
             ),
         );
     }
+
+    public function __clone()
+    {
+        if ($this->getId()) {
+            $controls = $this->getControls();
+
+            $this->controls = new ArrayCollection();
+
+            foreach ($controls as $control) {
+                $this->addControl(clone $control);
+            }
+        }
+    }
 }

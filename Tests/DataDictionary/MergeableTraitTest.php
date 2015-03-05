@@ -103,6 +103,21 @@ class MergeableTraitTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('Value1', 'Value2'), $values);
     }
 
+    public function testMergeEmptyFieldShouldNotClearPreviousValue()
+    {
+        $dictionary = $this->getMergeDictionary();
+
+        $dom1 = new \DOMDocument('1.0', 'UTF-8');
+        $dom1->loadXML('<Correspondentie><Ondertekenaar>TestOndertekenaar</Ondertekenaar></Correspondentie>');
+        $dictionary->merge($dom1);
+
+        $dom2 = new \DOMDocument('1.0', 'UTF-8');
+        $dom2->loadXML('<Correspondentie><Ondertekenaar></Ondertekenaar></Correspondentie>');
+        $dictionary->merge($dom2);
+
+        $this->assertEquals('TestOndertekenaar', $dictionary->getChild('Ondertekenaar')->getValue(), 'Merging an empty field should not overwrite any previous value');
+    }
+
     public function getMergeDictionary()
     {
         $dictionary = new DataDictionary();
