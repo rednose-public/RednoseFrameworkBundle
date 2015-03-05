@@ -334,6 +334,26 @@ class DataDictionary implements DataDictionaryInterface
 
         $node = $dom->createElement($control->getName());
 
+        if ($value = $control->getValue()) {
+            if ($control->getType() === DataControlInterface::TYPE_COLLECTION && is_array($value)) {
+                foreach ($value as $child) {
+                    $childNode = $this->createControlNode($dom, $child, true);
+
+                    if ($childNode) {
+                        $node->appendChild($childNode);
+                    }
+                }
+            }
+
+            else {
+                if ($value instanceof \DateTime) {
+                    $value = $value->format(\DateTime::ISO8601);
+                }
+
+                $node->appendChild($dom->createCDATASection($value));
+            }
+        }
+
         if ($control->hasChildren()) {
             foreach ($control->getChildren() as $child) {
                 $childNode = $this->createControlNode($dom, $child, $relative);

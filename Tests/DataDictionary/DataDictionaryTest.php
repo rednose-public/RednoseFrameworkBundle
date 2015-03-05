@@ -128,6 +128,19 @@ class DataDictionaryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->dictionary->hasControl('/Root/Composite/Invalid'));
     }
 
+    public function testToXml()
+    {
+        $this->assertEquals($this->getToXml()->saveXML(), $this->getDictionary()->toXml()->saveXML());
+    }
+
+    public function testToXmlWithValues()
+    {
+        $dictionary = $this->getDictionary();
+        $dictionary->merge($this->getData());
+
+        $this->assertEquals($this->getData()->saveXML(), $dictionary->toXml()->saveXML());
+    }
+
     /**
      * @return \DOMDocument
      */
@@ -138,7 +151,12 @@ class DataDictionaryTest extends \PHPUnit_Framework_TestCase
         $xml = <<<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <Correspondentie>
-  <Ondertekenaar>TestOndertekenaar</Ondertekenaar>
+  <Ondertekenaar><![CDATA[TestOndertekenaar]]></Ondertekenaar>
+  <Tekstblokken>
+    <Tekstblok>
+      <Inhoud><![CDATA[TestInhoud]]></Inhoud>
+    </Tekstblok>
+  </Tekstblokken>
 </Correspondentie>
 EOF;
 
@@ -147,7 +165,7 @@ EOF;
         return $dom;
     }
 
-    public function getMergeDictionary()
+    protected function getDictionary()
     {
         $dictionary = new DataDictionary();
         $dictionary->setName('Correspondentie');
@@ -162,15 +180,15 @@ EOF;
         $collection->setName('Tekstblokken');
         $dictionary->addControl($collection);
 
-        $control = new DataControl($dictionary);
-        $control->setType(DataControlInterface::TYPE_COMPOSITE);
-        $control->setName('Tekstblok1');
-        $collection->addChild($control);
+        $composite = new DataControl($dictionary);
+        $composite->setType(DataControlInterface::TYPE_COMPOSITE);
+        $composite->setName('Tekstblok');
+        $collection->addChild($composite);
 
         $control = new DataControl($dictionary);
-        $control->setType(DataControlInterface::TYPE_COMPOSITE);
-        $control->setName('Tekstblok2');
-        $collection->addChild($control);
+        $control->setType(DataControlInterface::TYPE_TEXT);
+        $control->setName('Inhoud');
+        $composite->addChild($control);
 
         return $dictionary;
     }
