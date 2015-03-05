@@ -56,7 +56,7 @@ trait MergeableTrait
         }
 
         elseif ($control->getType() === DataControlInterface::TYPE_COLLECTION) {
-            $value = is_array($control->getValue()) ? $control->getValue() : array();
+            $value = array();
 
             if ($node) {
                 foreach ($node->childNodes as $childNode) {
