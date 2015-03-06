@@ -44,7 +44,7 @@ class DataDictionary implements DataDictionaryInterface
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="DataControl", mappedBy="dictionary", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="DataControl", mappedBy="dictionary", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      *
      * @Serializer\XmlList(inline = true, entry = "control")

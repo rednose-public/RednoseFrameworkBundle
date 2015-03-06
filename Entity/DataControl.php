@@ -26,21 +26,11 @@ class DataControl implements DataControlInterface
     use HasValueTrait;
 
     /**
-     * @Serializer\SerializedName("icon")
-     * @Serializer\Type("string")
-     * @Serializer\Accessor(getter="getIcon")
-     * @Serializer\Groups({"list", "details"})
-     */
-    protected $icon;
-
-    /**
      * Unique id.
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @Serializer\Groups({"list", "details"})
      */
     protected $id;
 
@@ -103,6 +93,14 @@ class DataControl implements DataControlInterface
      * @ORM\JoinColumn(name="dictionary_id", referencedColumnName="id", nullable=true)
      */
     protected $dictionary;
+
+    /**
+     * @Serializer\SerializedName("icon")
+     * @Serializer\Type("string")
+     * @Serializer\Accessor(getter="getIcon")
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $icon;
 
     /**
      * Constructor.
