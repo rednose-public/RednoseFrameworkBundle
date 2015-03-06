@@ -136,6 +136,53 @@ class DataDictionaryController extends Controller
     }
 
     /**
+     * @Rest\Post("/dictionaries/upload", name="rednose_dictionary_upload", options={"expose"=true})
+     */
+    public function uploadDictionaryAction()
+    {
+        $request = $this->get('request');
+        $manager = $this->get('rednose_framework.data_dictionary_manager');
+
+        $serializer = $this->get('serializer');
+
+        $context = new DeserializationContext();
+        $context->setGroups(array('file'));
+
+        $organization = $this->get('request')->get('organization');
+
+        if (!$organization) {
+            return new Response('', Codes::HTTP_BAD_REQUEST);
+        }
+
+        if ($file = $request->files->get('assetFile')) {
+            if ($file->getClientOriginalExtension() === 'xml') {
+                if ($xml = file_get_contents($file->getPathname())) {
+                    if ($object = $serializer->deserialize($xml, 'Rednose\FrameworkBundle\Entity\DataDictionary', 'xml', $context)) {
+                        // Bind the dictionary to a supplied organization. Warning: existing connection will be lost.
+                        if ($organization !== null) {
+                            $organizationManager = $this->get('rednose_framework.organization_manager');
+
+                            if ($organization = $organizationManager->findOrganizationById($organization)) {
+                                $manager->updateDictionary($object, true);
+
+                                $organization->setDataDictionary($object);
+
+                                $organizationManager->updateOrganization($organization);
+                            } else {
+                                return new Response('Dictionary not found.', Codes::HTTP_NOT_FOUND);
+                            }
+                        }
+
+                        return new Response($object->getId());
+                    }
+                }
+            }
+        }
+
+        return new Response('', Codes::HTTP_BAD_REQUEST);
+    }
+
+    /**
      * @Rest\Get("/dictionaries/{id}/tree", name="rednose_framework_get_dictionary_tree", options={"expose"=true})
      */
     public function getDictionaryTreeAction($id)
