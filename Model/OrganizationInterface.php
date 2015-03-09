@@ -2,6 +2,8 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
+use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 interface OrganizationInterface
 {

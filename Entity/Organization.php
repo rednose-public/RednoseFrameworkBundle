@@ -70,6 +70,6 @@ class Organization extends BaseOrganization
      */
     public function __toString()
     {
-        return $this->conditions;
+        return (string) $this->name;
     }
 }
