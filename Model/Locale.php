@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the RednoseFrameworkBundle package.
+ *
+ * (c) RedNose <http://www.rednose.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Rednose\FrameworkBundle\Model;
 
 
@@ -9,6 +18,7 @@ class Locale implements LocaleInterface
     protected $name;
     protected $binding;
     protected $organization;
+    protected $isDefault;
 
     /**
      * Set the id
@@ -53,11 +63,11 @@ class Locale implements LocaleInterface
     /**
      * Set the data-dictionary binding path
      *
-     * @param string $name
+     * @param string $binding
      */
-    public function setBinding($name)
+    public function setBinding($binding)
     {
-        $this->binding = $name;
+        $this->binding = $binding;
     }
 
     /**
@@ -73,11 +83,11 @@ class Locale implements LocaleInterface
     /**
      * Set the organization
      *
-     * @param OrganizationInterface $name
+     * @param OrganizationInterface $organization
      */
-    public function setOrganization(OrganizationInterface $name)
+    public function setOrganization(OrganizationInterface $organization)
     {
-        $this->organization = $name;
+        $this->organization = $organization;
     }
 
     /**
@@ -88,5 +98,25 @@ class Locale implements LocaleInterface
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * Set locale as default
+     *
+     * @param boolean $default
+     */
+    public function setDefault($default)
+    {
+        $this->isDefault = $default;
+    }
+
+    /**
+     * Get the default state
+     *
+     * @return boolean
+     */
+    public function getDefault()
+    {
+        return $this->isDefault;
     }
 }

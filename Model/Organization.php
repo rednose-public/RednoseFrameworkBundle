@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the RednoseFrameworkBundle package.
+ *
+ * (c) RedNose <http://www.rednose.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Rednose\FrameworkBundle\Model;
 
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
@@ -58,7 +67,7 @@ class Organization implements OrganizationInterface
      *
      * @param DataDictionaryInterface $dictionary
      */
-    public function setDictionary(DataDictionaryInterface $dictionary)
+    public function setDataDictionary(DataDictionaryInterface $dictionary)
     {
         $this->dictionary = $dictionary;
     }
@@ -68,7 +77,7 @@ class Organization implements OrganizationInterface
      *
      * @return DataDictionaryInterface
      */
-    public function getDictionary()
+    public function getDataDictionary()
     {
         return $this->dictionary;
     }
@@ -94,6 +103,19 @@ class Organization implements OrganizationInterface
     }
 
     // -- [ Additional ] -----------------------------------------------------------
+
+    /**
+     * Add a locale
+     *
+     * @param LocaleInterface $locale
+     */
+    public function addLocale(LocaleInterface $locale)
+    {
+        $locale->setOrganization($this);
+        
+        $this->getLocale()->add($locale);
+    }
+
 
     /**
      * A list of OR conditions to evaluate on a user object

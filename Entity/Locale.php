@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the RednoseFrameworkBundle package.
+ *
+ * (c) RedNose <http://www.rednose.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -42,6 +51,11 @@ class Locale extends BaseLocale
      *   onDelete="CASCADE")
      */
     protected $organization;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    protected $isDefault;
 
     /**
      * @return string

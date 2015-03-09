@@ -1,9 +1,19 @@
 <?php
 
+/*
+ * This file is part of the RednoseFrameworkBundle package.
+ *
+ * (c) RedNose <http://www.rednose.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Doctrine\Common\Collections\ArrayCollection;
 use Rednose\FrameworkBundle\Model\Organization as BaseOrganization;
 
 /**

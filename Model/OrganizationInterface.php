@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the RednoseFrameworkBundle package.
+ *
+ * (c) RedNose <http://www.rednose.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Rednose\FrameworkBundle\Model;
 
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
@@ -40,14 +49,14 @@ interface OrganizationInterface
      *
      * @param DataDictionaryInterface $dictionary
      */
-    public function setDictionary(DataDictionaryInterface $dictionary);
+    public function setDataDictionary(DataDictionaryInterface $dictionary);
 
     /**
      * Get organization dictionary
      *
      * @return DataDictionaryInterface
      */
-    public function getDictionary();
+    public function getDataDictionary();
 
     /**
      * Set organizations available locale
@@ -64,6 +73,13 @@ interface OrganizationInterface
     public function getLocale();
 
     // -- [ Additional ] -----------------------------------------------------------
+
+    /**
+     * Add a locale
+     *
+     * @param LocaleInterface $locale
+     */
+    public function addLocale(LocaleInterface $locale);
 
     /**
      * A list of OR conditions to evaluate on a user object

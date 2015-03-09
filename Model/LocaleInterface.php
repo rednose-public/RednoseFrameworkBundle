@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the RednoseFrameworkBundle package.
+ *
+ * (c) RedNose <http://www.rednose.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Rednose\FrameworkBundle\Model;
 
 
@@ -36,9 +45,9 @@ interface LocaleInterface
     /**
      * Set the data-dictionary binding path
      *
-     * @param string $name
+     * @param string $binding
      */
-    public function setBinding($name);
+    public function setBinding($binding);
 
     /**
      * Get the data-dictionary binding path
@@ -50,9 +59,9 @@ interface LocaleInterface
     /**
      * Set the organization
      *
-     * @param OrganizationInterface $name
+     * @param OrganizationInterface $organization
      */
-    public function setOrganization(OrganizationInterface $name);
+    public function setOrganization(OrganizationInterface $organization);
 
     /**
      * Get the organization
@@ -60,4 +69,18 @@ interface LocaleInterface
      * @return OrganizationInterface
      */
     public function getOrganization();
+
+    /**
+     * Set locale as default
+     *
+     * @param boolean $default
+     */
+    public function setDefault($default);
+
+    /**
+     * Get the default state
+     *
+     * @return boolean
+     */
+    public function getDefault();
 }
