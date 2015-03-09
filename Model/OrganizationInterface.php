@@ -1,44 +1,67 @@
 <?php
 
-/*
- * This file is part of the RednoseFrameworkBundle package.
- *
- * (c) RedNose <http://www.rednose.nl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Rednose\FrameworkBundle\Model;
 
-use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 
 interface OrganizationInterface
 {
     /**
-     * @return integer
+     * Set the id
+     *
+     * @param string $id
+     */
+    public function setId($id);
+
+    /**
+     * Get the id
+     *
+     * @return string
      */
     public function getId();
 
     /**
-     * @return string
-     */
-    public function getName();
-
-    /**
+     * Set organization name
+     *
      * @param string $name
      */
     public function setName($name);
 
     /**
-     * @return DataDictionaryInterface
+     * Get organization
+     *
+     * @return string
      */
-    public function getDataDictionary();
+    public function getName();
 
     /**
+     * Set organization dictionary
+     *
      * @param DataDictionaryInterface $dictionary
      */
-    public function setDataDictionary($dictionary);
+    public function setDictionary(DataDictionaryInterface $dictionary);
+
+    /**
+     * Get organization dictionary
+     *
+     * @return DataDictionaryInterface
+     */
+    public function getDictionary();
+
+    /**
+     * Set organizations available locale
+     *
+     * @param ArrayCollection<LocaleInterface> $locale
+     */
+    public function setLocale(ArrayCollection $locale);
+
+    /**
+     * Get organizations available available
+     *
+     * @return ArrayCollection<LocaleInterface>
+     */
+    public function getLocale();
+
+    // -- [ Additional ] -----------------------------------------------------------
 
     /**
      * A list of OR conditions to evaluate on a user object
