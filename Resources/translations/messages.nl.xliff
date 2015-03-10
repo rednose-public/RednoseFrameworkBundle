@@ -60,6 +60,11 @@
                 <source>organizations</source>
                 <target>Organisaties</target>
             </trans-unit>
+            <trans-unit id="languages">
+                <source>languages</source>
+                <target>Talen</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

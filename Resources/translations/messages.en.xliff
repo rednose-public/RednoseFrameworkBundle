@@ -50,6 +50,10 @@
                 <source>organizations</source>
                 <target>Organizations</target>
             </trans-unit>
+            <trans-unit id="languages">
+                <source>languages</source>
+                <target>Languages</target>
+            </trans-unit>
             <trans-unit id="type_here_placeholder">
                 <source>type_here_placeholder</source>
                 <target>Type here…</target>

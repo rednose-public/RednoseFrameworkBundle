@@ -14,6 +14,10 @@
         <parameter key="rednose.framework.admin.organization.controller">RednoseFrameworkBundle:Admin\OrganizationAdmin</parameter>
         <parameter key="rednose.framework.admin.organization.entity">Rednose\FrameworkBundle\Entity\Organization</parameter>
 
+        <parameter key="rednose.framework.admin.locale.class">Rednose\FrameworkBundle\Admin\LocaleAdmin</parameter>
+        <parameter key="rednose.framework.admin.locale.controller">RednoseFrameworkBundle:Admin\LocaleAdmin</parameter>
+        <parameter key="rednose.framework.admin.locale.entity">Rednose\FrameworkBundle\Entity\Locale</parameter>
+
         <parameter key="rednose.framework.admin.client.class">Rednose\FrameworkBundle\Admin\ClientAdmin</parameter>
         <parameter key="rednose.framework.admin.client.controller">RednoseFrameworkBundle:Admin\ClientAdmin</parameter>
         <parameter key="rednose.framework.admin.client.entity">Rednose\FrameworkBundle\Entity\Client</parameter>
@@ -41,5 +45,13 @@
             <argument>%rednose.framework.admin.organization.entity%</argument>
             <argument>%rednose.framework.admin.organization.controller%</argument>
         </service>
+
+        <service id="rednose.framework.admin.locale" class="%rednose.framework.admin.locale.class%">
+            <tag name="sonata.admin" manager_type="orm" group="user_management" label="languages"/>
+            <argument/>
+            <argument>%rednose.framework.admin.locale.entity%</argument>
+            <argument>%rednose.framework.admin.locale.controller%</argument>
+        </service>
+
     </services>
 </container>
