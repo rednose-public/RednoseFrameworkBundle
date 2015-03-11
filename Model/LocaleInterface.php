@@ -17,14 +17,14 @@ interface LocaleInterface
     /**
      * Set the id
      *
-     * @param integer $id
+     * @param string $id
      */
     public function setId($id);
 
     /**
      * Get the id
      *
-     * @return integer
+     * @return string
      */
     public function getId();
 

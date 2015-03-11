@@ -23,7 +23,7 @@ class Locale implements LocaleInterface
     /**
      * Set the id
      *
-     * @param integer $id
+     * @param string $id
      */
     public function setId($id)
     {
@@ -33,7 +33,7 @@ class Locale implements LocaleInterface
     /**
      * Get the id
      *
-     * @return integer
+     * @return string
      */
     public function getId()
     {

@@ -18,27 +18,35 @@ use Rednose\FrameworkBundle\Model\Locale as BaseLocale;
 /**
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_locale")
+ *
+ * @Serializer\XmlRoot("locale")
  */
 class Locale extends BaseLocale
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
+     *
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"list", "details", "file"})
+     * @Serializer\XmlAttribute
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", nullable=false)
      *
-     * @Serializer\Groups("detail")
+     * @Serializer\Groups({"detail", "file"})
+     * @Serializer\XmlAttribute
      */
     protected $name;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      *
-     * @Serializer\Groups("detail")
+     * @Serializer\Groups({"detail", "file"})
+     * @Serializer\XmlAttribute
      */
     protected $binding;
 
@@ -54,6 +62,10 @@ class Locale extends BaseLocale
 
     /**
      * @ORM\Column(type="boolean", nullable=false)
+     *
+     * @Serializer\SerializedName("default")
+     * @Serializer\Groups({"detail", "file"})
+     * @Serializer\XmlAttribute
      */
     protected $isDefault;
 
