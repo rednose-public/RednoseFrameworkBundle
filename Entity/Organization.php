@@ -76,6 +76,22 @@ class Organization extends BaseOrganization
     protected $conditions;
 
     /**
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("data_dictionary")
+     * @Serializer\Groups({"list"})
+     *
+     * @return string
+     */
+    public function getDataDictionaryId()
+    {
+        if ($this->getDataDictionary() === null) {
+            return null;
+        }
+
+        return $this->getDataDictionary()->getId();
+    }
+
+    /**
      * @return string
      */
     public function __toString()
