@@ -63,6 +63,8 @@ class Organization extends BaseOrganization
      *     mappedBy="organization",
      *     cascade={"persist", "remove"}
      * )
+     *
+     * @Serializer\Groups({"list"})
      */
     protected $locale;
 

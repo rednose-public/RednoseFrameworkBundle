@@ -37,7 +37,7 @@ class Locale extends BaseLocale
     /**
      * @ORM\Column(type="string", nullable=false)
      *
-     * @Serializer\Groups({"detail", "file"})
+     * @Serializer\Groups({"list", "details", "file"})
      * @Serializer\XmlAttribute
      */
     protected $name;
@@ -45,7 +45,7 @@ class Locale extends BaseLocale
     /**
      * @ORM\Column(type="string", nullable=true)
      *
-     * @Serializer\Groups({"detail", "file"})
+     * @Serializer\Groups({"details", "file"})
      * @Serializer\XmlAttribute
      */
     protected $binding;
@@ -64,7 +64,7 @@ class Locale extends BaseLocale
      * @ORM\Column(type="boolean", nullable=false)
      *
      * @Serializer\SerializedName("default")
-     * @Serializer\Groups({"detail", "file"})
+     * @Serializer\Groups({"list", "details", "file"})
      * @Serializer\XmlAttribute
      */
     protected $isDefault;
