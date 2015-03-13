@@ -43,6 +43,20 @@ interface LocaleInterface
     public function getName();
 
     /**
+     * Set the display name
+     *
+     * @param string $displayName
+     */
+    public function setDisplayName($displayName);
+
+    /**
+     * Get the display name
+     *
+     * @return string
+     */
+    public function getDisplayName();
+
+    /**
      * Set the data-dictionary binding path
      *
      * @param string $binding

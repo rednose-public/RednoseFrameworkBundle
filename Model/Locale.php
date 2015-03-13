@@ -16,6 +16,7 @@ class Locale implements LocaleInterface
 {
     protected $id;
     protected $name;
+    protected $displayName;
     protected $binding;
     protected $organization;
     protected $isDefault;
@@ -58,6 +59,26 @@ class Locale implements LocaleInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set the display name
+     *
+     * @param string $displayName
+     */
+    public function setDisplayName($displayName)
+    {
+        $this->displayName = $displayName;
+    }
+
+    /**
+     * Get the display name
+     *
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        return $this->displayName;
     }
 
     /**

@@ -43,6 +43,14 @@ class Locale extends BaseLocale
     protected $name;
 
     /**
+     * @ORM\Column(type="string", nullable=false)
+     *
+     * @Serializer\Groups({"details", "file"})
+     * @Serializer\XmlAttribute
+     */
+    protected $displayName;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      *
      * @Serializer\Groups({"details", "file"})

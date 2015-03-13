@@ -28,6 +28,7 @@ class LocaleAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('name')
+            ->add('displayName')
             ->add('default', 'boolean')
             ->add('organization')
             ->add('_action', 'actions', array(
@@ -44,6 +45,7 @@ class LocaleAdmin extends Admin
         $showMapper
             ->with('General')
             ->add('name')
+            ->add('displayName')
             ->add('default', 'boolean');
 
     }
@@ -53,6 +55,7 @@ class LocaleAdmin extends Admin
         $formMapper
             ->with('General')
             ->add('name')
+            ->add('displayName')
             ->add('organization', 'sonata_type_model', array('required' => false,'multiple' => false))
             ->add('default', 'checkbox');
     }
