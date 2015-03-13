@@ -64,7 +64,10 @@
                 <source>languages</source>
                 <target>Talen</target>
             </trans-unit>
-
+            <trans-unit id="language_choice_label">
+                <source>language_choice_label</source>
+                <target>Taalkeuze</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
