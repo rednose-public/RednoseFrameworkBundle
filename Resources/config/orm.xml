@@ -3,6 +3,7 @@
     <services>
         <service id="rednose_framework.data_dictionary_manager" class="Rednose\FrameworkBundle\Entity\DataDictionaryManager">
             <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="validator"/>
         </service>
 
         <service id="rednose_framework.organization_manager" class="Rednose\FrameworkBundle\Entity\OrganizationManager">

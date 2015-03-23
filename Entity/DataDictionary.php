@@ -47,6 +47,8 @@ class DataDictionary implements DataDictionaryInterface
      * @ORM\OneToMany(targetEntity="DataControl", mappedBy="dictionary", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      *
+     * @Assert\Valid
+     *
      * @Serializer\XmlList(inline = true, entry = "control")
      * @Serializer\Groups({"file", "details"})
      */

@@ -40,7 +40,11 @@ class DataDictionaryController extends Controller
 
         $dictionary = $serializer->deserialize($request->getContent(), 'Rednose\FrameworkBundle\Entity\DataDictionary', 'json', $context);
 
-        $manager->updateDictionary($dictionary, true);
+        $err = $manager->updateDictionary($dictionary, true);
+
+        if ($err !== true) {
+            return new JsonResponse(array('message' => (string)$err), Codes::HTTP_BAD_REQUEST);
+        }
 
         // Bind the dictionary to a supplied organization. Warning: existing connection will be lost.
         if ($organization !== null) {
@@ -163,7 +167,11 @@ class DataDictionaryController extends Controller
                             $organizationManager = $this->get('rednose_framework.organization_manager');
 
                             if ($organization = $organizationManager->findOrganizationById($organization)) {
-                                $manager->updateDictionary($object, true);
+                                $err = $manager->updateDictionary($object, true);
+
+                                if ($err !== true) {
+                                    return new Response((string) $err, Codes::HTTP_BAD_REQUEST);
+                                }
 
                                 $organization->setDataDictionary($object);
 

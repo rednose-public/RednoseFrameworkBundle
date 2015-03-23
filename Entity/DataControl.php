@@ -9,6 +9,7 @@ use Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface;
 use Rednose\FrameworkBundle\DataDictionary\DataControl\HasValueTrait;
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * A data control object.
@@ -36,6 +37,10 @@ class DataControl implements DataControlInterface
 
     /**
      * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank(message="Please enter a name.")
+     * @Assert\NotNull(message="Please enter a name.")
+     * @Assert\Regex("/^[a-zA-Z0-9_]*$/i")
      *
      * @Serializer\XmlAttribute
      * @Serializer\Groups({"file", "list", "details"})

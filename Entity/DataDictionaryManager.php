@@ -3,6 +3,8 @@
 namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Validator\ValidatorInterface;
+
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryManagerInterface;
@@ -15,11 +17,13 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
     protected $em;
 
     /**
-     * @param EntityManager $em
+     * @param EntityManager         $em
+     * @param ValidatorInterface    $validator
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, ValidatorInterface $validator)
     {
-        $this->em = $em;
+        $this->em        = $em;
+        $this->validator = $validator;
     }
 
     /**
@@ -69,7 +73,16 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
             $metadata->setIdGenerator(new \Doctrine\ORM\Id\AssignedGenerator());
         }
 
-        $this->em->persist($dictionary);
+        $err = $this->validator->validate($dictionary);
+
+        if (count($err) === 0) {
+            $this->em->persist($dictionary);
+        } else {
+            $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_UUID);
+            $metadata->setIdGenerator(new \Doctrine\ORM\Id\UuidGenerator());
+
+            return $err;
+        }
 
         if ($flush === true) {
             $this->em->flush();
@@ -77,6 +90,8 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
 
         $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_UUID);
         $metadata->setIdGenerator(new \Doctrine\ORM\Id\UuidGenerator());
+
+        return true;
     }
 
     /**
