@@ -57,6 +57,6 @@ class LocaleAdmin extends Admin
             ->add('name')
             ->add('displayName')
             ->add('organization', 'sonata_type_model', array('required' => false,'multiple' => false))
-            ->add('default', 'checkbox');
+            ->add('default', 'checkbox', array('required' => false));
     }
 }
