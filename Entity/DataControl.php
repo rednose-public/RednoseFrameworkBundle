@@ -74,6 +74,8 @@ class DataControl implements DataControlInterface
      * @ORM\OneToMany(targetEntity="DataControl", mappedBy="parent", cascade={"persist", "remove"})
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      *
+     * @Assert\Valid
+     *
      * @Serializer\XmlList(inline = true, entry = "control")
      * @Serializer\Groups({"file", "list", "details"})
      */

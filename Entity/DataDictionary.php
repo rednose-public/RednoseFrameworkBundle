@@ -38,6 +38,10 @@ class DataDictionary implements DataDictionaryInterface
     /**
      * @ORM\Column(type="string", unique=true)
      *
+     * @Assert\NotBlank(message="Please enter a name.")
+     * @Assert\NotNull(message="Please enter a name.")
+     * @Assert\Regex("/^[a-zA-Z0-9_]*$/i")
+     *
      * @Serializer\XmlAttribute
      * @Serializer\Groups({"file", "list", "details"})
      */
