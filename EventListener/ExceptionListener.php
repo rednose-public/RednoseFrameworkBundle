@@ -14,6 +14,7 @@ namespace Rednose\FrameworkBundle\EventListener;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\AcceptHeader;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -53,7 +54,6 @@ class ExceptionListener implements EventSubscriberInterface
     {
         $exception = $event->getException();
         $request   = $event->getRequest();
-        $response  = new Response();
 
         if ($this->kernel->getEnvironment() === 'test') {
             return;
@@ -62,15 +62,14 @@ class ExceptionListener implements EventSubscriberInterface
         $accept = AcceptHeader::fromString($request->headers->get('Accept'));
 
         if ($request->headers->get('Content-Type') === 'application/json' || $accept->has('application/json')) {
-            $err = array(
-                'message' => $exception->getMessage(),
-                'code'    => $exception->getCode(),
-            );
-
-            $response->setContent(json_encode($err));
-            $response->headers->set('Content-Type', 'application/json');
-
-            $event->setResponse($response);
+            $event->setResponse(new JsonResponse(array(
+                'messages' => array(
+                    array(
+                        'text' => $exception->getMessage(),
+                        'severity' => 'error',
+                    ),
+                )
+            )));
 
             return;
         }
@@ -80,11 +79,13 @@ class ExceptionListener implements EventSubscriberInterface
             return;
         }
 
-        $msg = 'Unknown error';
+        $response  = new Response();
 
         if ($exception instanceof NotFoundHttpException) {
             $response->setContent($this->templating->render('RednoseFrameworkBundle:Exception:404.html.twig'));
         } else {
+            $msg = 'Unknown error';
+
             if ($exception->getMessage()) {
                 $msg = $exception->getMessage();
             }
