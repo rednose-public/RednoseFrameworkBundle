@@ -11,10 +11,11 @@
 
 namespace Rednose\FrameworkBundle\EventListener;
 
+use Rednose\FrameworkBundle\HttpFoundation\MessageResponse;
+use Rednose\FrameworkBundle\Message\Message;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\AcceptHeader;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -62,14 +63,7 @@ class ExceptionListener implements EventSubscriberInterface
         $accept = AcceptHeader::fromString($request->headers->get('Accept'));
 
         if ($request->headers->get('Content-Type') === 'application/json' || $accept->has('application/json')) {
-            $event->setResponse(new JsonResponse(array(
-                'messages' => array(
-                    array(
-                        'text' => $exception->getMessage(),
-                        'severity' => 'error',
-                    ),
-                )
-            )));
+            $event->setResponse(new MessageResponse(new Message($exception->getMessage(), Message::ERROR_TYPE)));
 
             return;
         }
