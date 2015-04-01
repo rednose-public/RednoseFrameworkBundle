@@ -6,7 +6,7 @@ class Message
 {
     const SUCCESS_TYPE = 'success';
     const INFO_TYPE    = 'info';
-    const WARN_TYPE    = 'warn';
+    const WARNING_TYPE = 'warning';
     const ERROR_TYPE   = 'error';
 
     /**
