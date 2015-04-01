@@ -33,6 +33,6 @@ class MessageResponse extends JsonResponse
             throw new \LogicException('The messages must not be empty.');
         }
 
-        parent::__construct(array('messages' => $messages), 200, $headers);
+        parent::__construct(array('messages' => $messages), $status, $headers);
     }
 }
