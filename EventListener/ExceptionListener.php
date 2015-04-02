@@ -11,7 +11,6 @@
 
 namespace Rednose\FrameworkBundle\EventListener;
 
-use FOS\RestBundle\Util\Codes;
 use Rednose\FrameworkBundle\HttpFoundation\MessageResponse;
 use Rednose\FrameworkBundle\Message\Message;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -60,9 +59,7 @@ class ExceptionListener implements EventSubscriberInterface
         $accept = AcceptHeader::fromString($request->headers->get('Accept'));
 
         if ($request->headers->get('Content-Type') === 'application/json' || $accept->has('application/json')) {
-            $event->setResponse(new MessageResponse(new Message($exception->getMessage(), Message::ERROR_TYPE), Codes::HTTP_FORBIDDEN, array(
-                array('X-Status-Code' => Codes::HTTP_FORBIDDEN)
-            )));
+            $event->setResponse(new MessageResponse(new Message($exception->getMessage(), Message::ERROR_TYPE)));
 
             return;
         }
