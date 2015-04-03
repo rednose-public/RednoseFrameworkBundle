@@ -396,7 +396,7 @@ class DataControl implements DataControlInterface
         $value = $this->getValue();
 
         if ($value instanceof \DateTime) {
-            $value = $value->getTimestamp();
+            $value = $value->format(\DateTime::ISO8601);
         }
 
         return $value;
