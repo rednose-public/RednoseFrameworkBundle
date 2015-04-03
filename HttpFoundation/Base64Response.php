@@ -24,6 +24,6 @@ class Base64Response extends Response
      */
     public function __construct($content = '', $status = 200, $headers = array())
     {
-        parent::__construct(base64_encode($content), 200, $headers);
+        parent::__construct(base64_encode($content), $status, $headers);
     }
 }
