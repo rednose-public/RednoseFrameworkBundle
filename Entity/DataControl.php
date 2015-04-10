@@ -411,7 +411,10 @@ class DataControl implements DataControlInterface
 
         foreach ($this->getChildren() as $child) {
             $child->setParent($this);
-            $child->setSortOrder($sortOrder++);
+
+            if (is_numeric($child->getSortOrder()) === false) {
+                $child->setSortOrder($sortOrder++);
+            }
         }
     }
 
