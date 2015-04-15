@@ -4,6 +4,7 @@ namespace Rednose\FrameworkBundle\DataDictionary;
 
 use JMS\Serializer\Annotation as Serializer;
 use Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
 
 /**
  * A data control list.
@@ -125,4 +126,14 @@ interface DataDictionaryInterface extends MergeableInterface
      * @return \DOMDocument
      */
     public function toXsd(DataControlInterface $control = null);
+
+    /**
+     * @return OrganizationInterface
+     */
+    public function getOrganization();
+
+    /**
+     * @param OrganizationInterface $organization
+     */
+    public function setOrganization(OrganizationInterface $organization);
 }

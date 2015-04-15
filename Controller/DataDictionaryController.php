@@ -17,10 +17,15 @@ class DataDictionaryController extends Controller
     /**
      * @Rest\Post("/dictionaries", name="rednose_framework_post_dictionary",  options={"expose"=true})
      * @Rest\Put("/dictionaries/{id}", name="rednose_framework_put_dictionary",  options={"expose"=true})
+     *
+     * @Rest\QueryParam(name="organization_id", nullable=true, strict=true)
      */
-    public function updateDictionaryAction($id = null)
+    public function updateDictionaryAction(ParamFetcherInterface $paramFetcher, $id = null)
     {
-        $organization = $this->get('request')->get('organization');
+        $organizationManager = $this->get('rednose_framework.organization_manager');
+
+        // 'organization' param is deprecated, use 'organization_id'
+        $organization = $paramFetcher->get('organization_id') ?: $this->get('request')->get('organization');
 
         $serializer = $this->get('serializer');
         $manager = $this->get('rednose_framework.data_dictionary_manager');
@@ -41,16 +46,18 @@ class DataDictionaryController extends Controller
 
         $dictionary = $serializer->deserialize($request->getContent(), 'Rednose\FrameworkBundle\Entity\DataDictionary', 'json', $context);
 
+        if ($id === null) {
+            $dictionary->setOrganization($organizationManager->findOrganizationById($organization));
+        }
+
         $err = $manager->updateDictionary($dictionary, true);
 
+        // Bind the dictionary to a supplied organization. Warning: existing connection will be lost.
         if ($err !== true) {
             return new JsonResponse(array('message' => (string)$err), Codes::HTTP_BAD_REQUEST);
         }
 
-        // Bind the dictionary to a supplied organization. Warning: existing connection will be lost.
         if ($organization !== null) {
-            $organizationManager = $this->get('rednose_framework.organization_manager');
-
             if ($organization = $organizationManager->findOrganizationById($organization)) {
                 $organization->setDataDictionary($dictionary);
 

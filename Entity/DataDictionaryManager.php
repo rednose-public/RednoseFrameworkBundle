@@ -3,11 +3,11 @@
 namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Validator\ValidatorInterface;
-
-use Rednose\FrameworkBundle\Model\OrganizationInterface;
+use Doctrine\ORM\EntityRepository;
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryManagerInterface;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 class DataDictionaryManager implements DataDictionaryManagerInterface
 {
@@ -17,13 +17,19 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
     protected $em;
 
     /**
+     * @var EntityRepository
+     */
+    protected $repository;
+
+    /**
      * @param EntityManager         $em
      * @param ValidatorInterface    $validator
      */
     public function __construct(EntityManager $em, ValidatorInterface $validator)
     {
-        $this->em        = $em;
-        $this->validator = $validator;
+        $this->em         = $em;
+        $this->validator  = $validator;
+        $this->repository = $em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary');
     }
 
     /**
@@ -33,11 +39,11 @@ class DataDictionaryManager implements DataDictionaryManagerInterface
      */
     public function findDictionaries(OrganizationInterface $organization = null)
     {
-        if ($organization) {
-            return array($organization->getDataDictionary());
-        } else {
-            return $this->em->getRepository('Rednose\FrameworkBundle\Entity\DataDictionary')->findAll();
+        if (!$organization) {
+            return $this->repository->findAll();
         }
+
+        return $this->repository->findBy(array('organization' => $organization));
     }
 
     /**

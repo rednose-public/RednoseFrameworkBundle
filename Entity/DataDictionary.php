@@ -8,8 +8,7 @@ use JMS\Serializer\Annotation as Serializer;
 use Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface;
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 use Rednose\FrameworkBundle\DataDictionary\MergeableTrait;
-use Rednose\FrameworkBundle\Util\XpathUtil;
-use Symfony\Component\Config\Util\XmlUtils;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -64,6 +63,12 @@ class DataDictionary implements DataDictionaryInterface
      * @Serializer\Groups({"file", "details"})
      */
     protected $testData;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=false)
+     */
+    protected $organization;
 
     /**
      * Constructor.
@@ -122,6 +127,22 @@ class DataDictionary implements DataDictionaryInterface
         } else {
             $this->testData = null;
         }
+    }
+
+    /**
+     * @return OrganizationInterface
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @param OrganizationInterface $organization
+     */
+    public function setOrganization(OrganizationInterface $organization)
+    {
+        $this->organization = $organization;
     }
 
     /**
