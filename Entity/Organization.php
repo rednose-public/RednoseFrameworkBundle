@@ -52,7 +52,7 @@ class Organization extends BaseOrganization
 
     /**
      * @ORM\ManyToOne(targetEntity="DataDictionary")
-     * @ORM\JoinColumn(name="dictionary_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="dictionary_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      */
     protected $dictionary;
 
