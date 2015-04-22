@@ -2,7 +2,7 @@
 
 namespace Rednose\FrameworkBundle\Controller;
 
-use Doctanium\Bundle\CoreBundle\Util\XmlUtil;
+use Rednose\DocgenBundle\Util\XmlUtil;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Util\Codes;
