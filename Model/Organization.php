@@ -11,7 +11,6 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
-use Doctanium\Bundle\DataDictionaryBundle\Entity\DataDictionaryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class Organization implements OrganizationInterface
@@ -60,26 +59,6 @@ class Organization implements OrganizationInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set organization dictionary
-     *
-     * @param DataDictionaryInterface $dictionary
-     */
-    public function setDataDictionary(DataDictionaryInterface $dictionary)
-    {
-        $this->dictionary = $dictionary;
-    }
-
-    /**
-     * Get organization dictionary
-     *
-     * @return DataDictionaryInterface
-     */
-    public function getDataDictionary()
-    {
-        return $this->dictionary;
     }
 
     /**

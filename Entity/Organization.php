@@ -11,9 +11,9 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
-use Doctrine\Common\Collections\ArrayCollection;
 use Rednose\FrameworkBundle\Model\Organization as BaseOrganization;
 
 /**
@@ -51,12 +51,6 @@ class Organization extends BaseOrganization
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="DataDictionary")
-     * @ORM\JoinColumn(name="dictionary_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
-     */
-    protected $dictionary;
-
-    /**
      * @ORM\OneToMany(
      *     targetEntity="Locale",
      *     orphanRemoval=true,
@@ -76,22 +70,6 @@ class Organization extends BaseOrganization
      * @Serializer\Groups({"file", "details"})
      */
     protected $conditions;
-
-    /**
-     * @Serializer\VirtualProperty
-     * @Serializer\SerializedName("data_dictionary")
-     * @Serializer\Groups({"list"})
-     *
-     * @return string
-     */
-    public function getDataDictionaryId()
-    {
-        if ($this->getDataDictionary() === null) {
-            return null;
-        }
-
-        return $this->getDataDictionary()->getId();
-    }
 
     /**
      * @return string
