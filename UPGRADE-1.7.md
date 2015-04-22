@@ -5,3 +5,4 @@ Depracations
 ------------
 
 The data dictionary component has been removed form the framework
+The deprecated LiipMonitorBundle has been removed
