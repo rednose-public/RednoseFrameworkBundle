@@ -11,7 +11,7 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
-use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
+use Doctanium\Bundle\DataDictionaryBundle\Entity\DataDictionaryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class Organization implements OrganizationInterface
