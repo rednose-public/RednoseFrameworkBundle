@@ -2,13 +2,13 @@
 
 namespace Rednose\FrameworkBundle\Controller;
 
+use Doctanium\Bundle\CoreBundle\Util\XmlUtil;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
-use Rednose\DocgenBundle\Util\XmlUtil;
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
