@@ -13,12 +13,13 @@ namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Rednose\FrameworkBundle\Model\File as BaseFile;
+use Rednose\FrameworkBundle\Model\FileInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_file")
  */
-class File extends BaseFile
+class File implements FileInterface
 {
     /**
      * @ORM\Id
@@ -51,4 +52,102 @@ class File extends BaseFile
      * @ORM\Column(type="text")
      */
     protected $content;
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $content
+     */
+    public function setContent($content)
+    {
+        $this->content = base64_encode($content);
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return base64_decode($this->content);
+    }
+
+    /**
+     * @param \DateTime $dateCreated
+     */
+    public function setDateCreated($dateCreated)
+    {
+        $this->dateCreated = $dateCreated;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * @param \DateTime $dateModified
+     */
+    public function setDateModified($dateModified)
+    {
+        $this->dateModified = $dateModified;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateModified()
+    {
+        return $this->dateModified;
+    }
+
+    /**
+     * @param string $mimeType
+     */
+    public function setMimeType($mimeType)
+    {
+        $this->mimeType = $mimeType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMimeType()
+    {
+        return $this->mimeType;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get temp directory
+     *
+     * @return string
+     */
+    public function getTempDir()
+    {
+        return 'cache/rednose_framework/file';
+    }
 }
