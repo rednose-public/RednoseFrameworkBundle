@@ -11,3 +11,6 @@ rednose_framework_file:
 
 rednose_framework_user:
     resource: "@RednoseFrameworkBundle/Resources/config/routing/user.xml"
+
+rednose_framework_security_api:
+    resource: "@RednoseFrameworkBundle/Resources/config/routing/security.xml"
