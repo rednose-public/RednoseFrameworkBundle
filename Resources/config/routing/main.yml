@@ -1,5 +1,5 @@
 rednose_framework_core:
-    resource: "@RednoseFrameworkBundle/Resources/config/routing.yml"
+    resource: "@RednoseFrameworkBundle/Resources/config/routing/framework.yml"
 
 rednose_framework_security:
     resource: "@RednoseFrameworkBundle/Resources/config/routing/security.xml"

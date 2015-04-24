@@ -8,6 +8,3 @@ device:
 
 file:
     resource: "@RednoseFrameworkBundle/Resources/config/routing/file.yml"
-
-security:
-    resource: "@RednoseFrameworkBundle/Resources/config/routing/security.xml"
