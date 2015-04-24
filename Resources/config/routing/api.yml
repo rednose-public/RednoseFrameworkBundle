@@ -3,8 +3,11 @@ rednose_framework:
     type:     annotation
     prefix:   /
 
-device:
+rednose_framework_device:
     resource: "@RednoseFrameworkBundle/Resources/config/routing/device.xml"
 
-file:
+rednose_framework_file:
     resource: "@RednoseFrameworkBundle/Resources/config/routing/file.yml"
+
+rednose_framework_user:
+    resource: "@RednoseFrameworkBundle/Resources/config/routing/user.xml"
