@@ -78,7 +78,7 @@ class SerializerIdListener implements EventSubscriberInterface
 
             if ($annotation) {
                 $property->setAccessible(true);
-                $property->setValue($object, $this->toEntity($annotation->type, $annotation->property,$property->getValue($object)));
+                $property->setValue($object, $this->toEntity($annotation->type, $annotation->property, $property->getValue($object)));
             }
         }
     }
