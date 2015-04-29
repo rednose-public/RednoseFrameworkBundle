@@ -30,7 +30,10 @@
 
         <!-- Formatting -->
         <service id="rednose_framework.datetime_formatter" class="%rednose_framework.datetime_formatter.class%">
-            <argument type="service" id="service_container"/>
+            <argument type="service" id="time.datetime_formatter"/>
+            <call method="setRequest">
+                <argument type="service" id="request" on-invalid="null" strict="false" />
+            </call>
         </service>
 
         <!-- JMS Object constructor alias -->
