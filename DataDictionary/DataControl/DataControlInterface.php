@@ -5,7 +5,7 @@ namespace Rednose\FrameworkBundle\DataDictionary\DataControl;
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 use Rednose\FrameworkBundle\Entity\DataControl;
 
-interface DataControlInterface extends HasValueInterface
+interface DataControlInterface extends HasValueInterface, HasAttributesInterface
 {
     const TYPE_COMPOSITE  = 'composite';
     const TYPE_COLLECTION = 'collection';

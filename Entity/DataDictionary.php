@@ -429,6 +429,12 @@ class DataDictionary implements DataDictionaryInterface
 
         $node = $dom->createElement($control->getName());
 
+        if ($control->hasAttributes() === true) {
+            foreach ($control->getAttributes() as $key => $value) {
+                $node->setAttribute($key, $value);
+            }
+        }
+
         if ($value = $control->getValue()) {
             if ($control->getType() === DataControlInterface::TYPE_COLLECTION && is_array($value)) {
                 foreach ($value as $child) {
@@ -438,9 +444,9 @@ class DataDictionary implements DataDictionaryInterface
                         $node->appendChild($childNode);
                     }
                 }
-            }
 
-            else {
+            } else {
+
                 if ($value instanceof \DateTime) {
                     $value = $value->format(\DateTime::ISO8601);
                 }

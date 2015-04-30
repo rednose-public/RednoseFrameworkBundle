@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Rednose\FrameworkBundle\DataDictionary\DataControl\DataControlInterface;
 use Rednose\FrameworkBundle\DataDictionary\DataControl\HasValueTrait;
+use Rednose\FrameworkBundle\DataDictionary\DataControl\HasAttributesTrait;
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -25,6 +26,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class DataControl implements DataControlInterface
 {
     use HasValueTrait;
+
+    use HasAttributesTrait;
 
     /**
      * Unique id.
@@ -445,6 +448,7 @@ class DataControl implements DataControlInterface
         $node->setName($this->name);
         $node->setType($this->type);
         $node->setValue($this->value);
+        $node->setAttributes($this->getAttributes());
 
         foreach ($this->children as $child) {
             $node->addChild($child->cloneNode());

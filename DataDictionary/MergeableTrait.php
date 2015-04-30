@@ -49,6 +49,21 @@ trait MergeableTrait
     {
         $node = XpathUtil::getXpathNode($data, $control->getPath(), $context);
 
+        // Merge attributes
+        if ($node === null && $context) {
+            if ($context->attributes->length > 0) {
+                foreach ($context->attributes as $attr) {
+                    $control->setAttribute($attr->name, $attr->value);
+                }
+            }
+        } else {
+            if ($node->attributes->length > 0) {
+                foreach ($node->attributes as $attr) {
+                    $control->setAttribute($attr->name, $attr->value);
+                }
+            }
+        }
+
         if ($control->getType() === DataControlInterface::TYPE_COMPOSITE) {
             foreach ($control->getChildren() as $child) {
                 $this->traverse($child, $data, $context);
