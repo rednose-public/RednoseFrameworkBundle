@@ -54,4 +54,22 @@ final class Events
      * The listener receives a Rednose\FrameworkBundle\Event\GroupEvent instance.
      */
     const GROUP_POST_REMOVE = 'rednose_framework.group.post_remove';
+
+    /**
+     * This event occurs after a new organization has been persisted to the backend.
+     * The listener receives a Rednose\FrameworkBundle\Event\OrganizationEvent instance.
+     */
+    const ORGANIZATION_POST_PERSIST = 'rednose_framework.organization.post_persist';
+
+    /**
+     * This event occurs after an existing organization has been updated to the backend.
+     * The listener receives a Rednose\FrameworkBundle\Event\OrganizationEvent instance.
+     */
+    const ORGANIZATION_POST_UPDATE = 'rednose_framework.organization.post_update';
+
+    /**
+     * This event occurs after an organization has been removed from the backend.
+     * The listener receives a Rednose\FrameworkBundle\Event\OrganizationEvent instance.
+     */
+    const ORGANIZATION_POST_REMOVE = 'rednose_framework.organization.post_remove';
 }
