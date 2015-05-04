@@ -76,9 +76,11 @@ interface DataDictionaryInterface extends MergeableInterface
     /**
      * Return the dictionary as an array tree structure.
      *
+     * @param string $composite Only return collections containing the provided composite.
+     *
      * @return array
      */
-    public function toArray();
+    public function toArray($composite = null);
 
     /**
      * Return the dictionary as a list, filtered by control type.

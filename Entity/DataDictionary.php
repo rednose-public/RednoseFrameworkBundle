@@ -258,14 +258,24 @@ class DataDictionary implements DataDictionaryInterface
     /**
      * Return the dictionary as an array tree structure.
      *
+     * @param string $composite Only return collections containing the provided composite.
+     *
      * @return array
      */
-    public function toArray()
+    public function toArray($composite = null)
     {
         $nodes = array();
 
         foreach ($this->getControls() as $control) {
-            $nodes[] = $this->createTreeNode($control);
+            if ($composite && $control->hasChildren()) {
+                foreach ($control->getChildren() as $childControl) {
+                    if ($childControl->getName() === $composite) {
+                        $nodes[] = $this->createTreeNode($control, $composite);
+                    }
+                }
+            } else {
+                $nodes[] = $this->createTreeNode($control);
+            }
         }
 
         return $nodes;
@@ -497,11 +507,12 @@ class DataDictionary implements DataDictionaryInterface
     }
 
     /**
-     * @param DataControlInterface $control
+     * @param DataControlInterface  $control
+     * @param string                $composite
      *
      * @return array
      */
-    private function createTreeNode(DataControlInterface $control)
+    private function createTreeNode(DataControlInterface $control, $composite = null)
     {
         $node = array(
             'id'    => $control->getId(),
@@ -515,7 +526,9 @@ class DataDictionary implements DataDictionaryInterface
             $node['children'] = array();
 
             foreach ($control->getChildren() as $child) {
-                $node['children'][] = $this->createTreeNode($child);
+                if ($composite === null || $child->getName() === $composite) {
+                    $node['children'][] = $this->createTreeNode($child);
+                }
             }
         }
 

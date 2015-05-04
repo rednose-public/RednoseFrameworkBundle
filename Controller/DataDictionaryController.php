@@ -2,14 +2,17 @@
 
 namespace Rednose\FrameworkBundle\Controller;
 
-use Rednose\DocgenBundle\Util\XmlUtil;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\View\View;
+use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\DeserializationContext;
+use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use JMS\Serializer\SerializationContext;
+use Rednose\DocgenBundle\Util\XmlUtil;
 use Rednose\FrameworkBundle\DataDictionary\DataDictionaryInterface;
+use Rednose\FrameworkBundle\DataDictionary\Serializer\CollectionExclusionStrategy;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -236,7 +239,7 @@ class DataDictionaryController extends Controller
 
         $view = new View();
         $view->setSerializationContext($context);
-        $view->setData($dictionary->toArray());
+        $view->setData($dictionary->toArray($this->get('request')->get('composite')));
         $view->setFormat('json');
 
         return $this->get('fos_rest.view_handler')->handle($view);
