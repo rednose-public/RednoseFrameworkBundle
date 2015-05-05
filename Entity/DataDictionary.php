@@ -267,7 +267,7 @@ class DataDictionary implements DataDictionaryInterface
         $nodes = array();
 
         foreach ($this->getControls() as $control) {
-            if ($composite && $control->hasChildren()) {
+            if ($composite && $control->hasChildren() && $control->getType() != 'composite') {
                 foreach ($control->getChildren() as $childControl) {
                     if ($childControl->getName() === $composite) {
                         $nodes[] = $this->createTreeNode($control, $composite);
