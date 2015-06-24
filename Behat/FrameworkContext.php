@@ -36,11 +36,9 @@ class FrameworkContext extends AbstractContext
      */
     public function iAmLoggedInAsAdministrator($organization)
     {
-        $util = $this->getContainer()->get('fos_user.util.user_manipulator');
-        $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
-        /** @var UserInterface $admin */
-        $admin = $util->create('admin', 'adminpasswd', 'info@rednose.nl', true, true);
+        $admin = $this->getContainer()->get('rednose_framework.user_manager')->findUserByUsername('admin');
         $admin->setOrganization($organization);
         $em->persist($admin);
 
