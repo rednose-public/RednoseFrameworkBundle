@@ -104,6 +104,10 @@ class Organization implements OrganizationInterface
      */
     public function getConditions()
     {
+        if (!$this->conditions) {
+            return [];
+        }
+
         return $this->conditions;
     }
 
