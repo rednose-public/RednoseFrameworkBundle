@@ -2,34 +2,24 @@
 
 namespace Rednose\FrameworkBundle\EventListener;
 
+use Rednose\FrameworkBundle\Assigner\OrganizationAssigner;
 use Rednose\FrameworkBundle\Event\UserEvent;
 use Rednose\FrameworkBundle\Events;
-use Rednose\FrameworkBundle\Model\OrganizationInterface;
-use Rednose\FrameworkBundle\Model\OrganizationManagerInterface;
-use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 class AssignOrganizationListener implements EventSubscriberInterface
 {
     /**
-     * @var OrganizationManagerInterface
+     * @var OrganizationAssigner
      */
-    protected $manager;
+    protected $assigner;
 
     /**
-     * @var ExpressionLanguage
+     * @param OrganizationAssigner $assigner
      */
-    protected $language;
-
-    /**
-     * @param OrganizationManagerInterface $manager
-     * @param ExpressionLanguage           $language
-     */
-    public function __construct(OrganizationManagerInterface $manager, $language = null)
+    public function __construct(OrganizationAssigner $assigner)
     {
-        $this->language = $language ?: new ExpressionLanguage();
-        $this->manager = $manager;
+        $this->assigner = $assigner;
     }
 
     /**
@@ -37,15 +27,7 @@ class AssignOrganizationListener implements EventSubscriberInterface
      */
     public function onUserAutoCreate(UserEvent $event)
     {
-        $user = $event->getUser();
-
-        foreach ($this->manager->findOrganizations() as $organization) {
-            if ($this->shouldAssign($user, $organization)) {
-                $user->setOrganization($organization);
-
-                return;
-            }
-        }
+        $this->assigner->assign($event->getUser());
     }
 
     /**
@@ -71,37 +53,5 @@ class AssignOrganizationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(Events::USER_AUTO_CREATE => 'onUserAutoCreate');
-    }
-
-    /**
-     * @param UserInterface         $user
-     * @param OrganizationInterface $organization
-     *
-     * @return bool
-     */
-    protected function shouldAssign(UserInterface $user, OrganizationInterface $organization)
-    {
-        foreach ($organization->getConditions() as $condition) {
-            try {
-                if ($this->language->evaluate($condition, $this->createContext($user))) {
-                    return true;
-                }
-            } catch (\Exception $e) {}
-        }
-
-        return false;
-    }
-
-    /**
-     * @param UserInterface $user
-     *
-     * @return array
-     */
-    protected function createContext(UserInterface $user)
-    {
-        return array('user' => (object) array(
-            'username' => $user->getUsername(false),
-            'email' => $user->getEmail(),
-        ));
     }
 }
