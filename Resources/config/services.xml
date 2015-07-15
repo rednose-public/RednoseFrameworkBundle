@@ -82,6 +82,12 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
+        <!-- File caching -->
+        <service class="Rednose\FrameworkBundle\Cache\CacheFactory" id="rednose_framework.cache.cache_factory">
+            <argument>%kernel.cache_dir%/rednose_framework</argument>
+            <argument>%kernel.root_dir%/web/cache</argument>
+        </service>
+
         <!-- HTML purifier / lexer -->
         <service id="rednose_framework.purifier.factory" class="%rednose_framework.purifier.factory.class%"/>
         <service id="rednose_framework.purifier" factory-method="create" factory-service="rednose_framework.purifier.factory" class="%rednose_framework.purifier.factory.class%"/>
