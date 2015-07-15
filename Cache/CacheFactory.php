@@ -46,25 +46,4 @@ class CacheFactory
 
         return new CacheInstance($this->path . '/' . $filePath);
     }
-
-    /**
-     * Checks if the cache is still fresh.
-     *
-     * @param string $md5 The hash of the source content to check.
-     *
-     * @return bool true if the cache is fresh, false otherwise.
-     */
-    public function isFresh($md5)
-    {
-        if (!is_file($this->file)) {
-            return false;
-        }
-
-        $metadata = $this->file . '.meta';
-        if (!is_file($metadata)) {
-            return false;
-        }
-
-        return $md5 === file_get_contents($metadata);
-    }
 }
