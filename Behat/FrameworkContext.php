@@ -40,7 +40,9 @@ class FrameworkContext extends AbstractContext
 
         $admin = $this->getContainer()->get('rednose_framework.user_manager')->findUserByUsername('admin');
         $admin->setOrganization($organization);
+
         $em->persist($admin);
+        $em->flush();
 
         $this->login('admin', 'adminpasswd');
     }
@@ -56,7 +58,9 @@ class FrameworkContext extends AbstractContext
         /** @var UserInterface $admin */
         $user = $util->create('user', 'userpasswd', 'info@rednose.nl', true, false);
         $user->setOrganization($organization);
+
         $em->persist($user);
+        $em->flush();
 
         $this->login('user', 'userpasswd');
     }
