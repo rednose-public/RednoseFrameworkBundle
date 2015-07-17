@@ -84,8 +84,10 @@
 
         <!-- File caching -->
         <service class="Rednose\FrameworkBundle\Cache\CacheFactory" id="rednose_framework.cache.cache_factory">
+            <argument>%kernel.root_dir%</argument>
             <argument>%kernel.cache_dir%/rednose_framework</argument>
-            <argument>%kernel.root_dir%/web/cache</argument>
+            <argument>/cache</argument>
+            <argument type="service" id="router" />
         </service>
 
         <!-- HTML purifier / lexer -->

@@ -27,9 +27,15 @@ class CacheInstance implements CacheInstanceInterface
      */
     protected $dataType;
 
-    public function __construct($cachePath)
+    /**
+     * Constructor
+     *
+     * @param string $cachePath
+     * @param string $cacheName
+     */
+    public function __construct($cachePath, $cacheName)
     {
-        $this->path = $cachePath;
+        $this->path = $cachePath . '/' . $cacheName;
     }
 
     /**
