@@ -119,8 +119,16 @@ class FrameworkContext extends AbstractContext
 
             if (isset($data['organization'])) {
                 $manager = $this->getContainer()->get('rednose_framework.organization_manager');
+                $organization = $manager->findOrganizationBy(array('name' => $data['organization']));
 
-                $user->setOrganization($manager->findOrganizationBy(array('name' => $data['organization'])));
+                if (!$organization) {
+                    $organization = $manager->createOrganization();
+                    $organization->setName($data['organization']);
+                    $manager->updateOrganization($organization);
+                }
+
+
+                $user->setOrganization($organization);
             }
 
             $um->updateUser($user);
