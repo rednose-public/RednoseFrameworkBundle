@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: savagetiger
- * Date: 17/07/15
- * Time: 14:06
- */
-namespace Rednose\FrameworkBundle\Cache;
 
+namespace Rednose\FrameworkBundle\Cache;
 
 /**
  * Filesystem cache factory service

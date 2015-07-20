@@ -1,7 +1,8 @@
 <?php
 
 namespace Rednose\FrameworkBundle\Cache;
-use Symfony\Component\Routing\RouterInterface;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Filesystem cache factory service
@@ -24,41 +25,40 @@ class CacheFactory implements CacheFactoryInterface
     protected $publicPath;
 
     /**
-     * @var RouterInterface
+     * @var ContainerInterface
      */
-    protected $router;
+    protected $container;
 
     /**
      * Service constructor
      *
-     * @param string $rootPath          The application root path.
-     * @param string $cachePath         The absolute cache path.
-     * @param string $publicPath        The relative cache path for publicly accessable files (via the webserver).
-     * @param routerInterface $router   The Router
+     * @param string       $rootPath   The web root path.
+     * @param string       $cachePath  The absolute cache path.
+     * @param string       $publicPath The relative cache path for publicly accessible files (via the webserver).
+     * @param ContainerInterface $container
      */
-    public function __construct($rootPath, $cachePath, $publicPath, RouterInterface $router)
+    public function __construct($rootPath, $cachePath, $publicPath, ContainerInterface $container)
     {
-        $rootPath = explode('/', $rootPath);
-        array_pop($rootPath);
-
-        $this->rootPath   = join('/', $rootPath);
+        $this->rootPath   = $rootPath;
         $this->cachePath  = $cachePath;
         $this->publicPath = $publicPath;
-        $this->router     = $router;
+        $this->container  = $container;
     }
 
     /**
      * Create a new caching instance
      *
-     * @param string $filePath
+     * @param string  $filePath
      * @param boolean $public
      *
      * @return CacheInstanceInterface
      */
     public function create($filePath, $public = false)
     {
+        $helper = $this->container->get('templating.helper.assets');
+
         if ($public) {
-            return new PublicCacheInstance($filePath, $this->publicPath, $this->rootPath, $this->router);
+            return new PublicCacheInstance($filePath, $helper->getUrl($this->publicPath), $this->rootPath);
         }
 
         return new CacheInstance($this->cachePath, $filePath);
