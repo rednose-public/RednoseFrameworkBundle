@@ -12,10 +12,10 @@
 namespace Rednose\FrameworkBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class LocaleAdmin extends Admin
 {
@@ -30,14 +30,7 @@ class LocaleAdmin extends Admin
             ->addIdentifier('name')
             ->add('displayName')
             ->add('default', 'boolean')
-            ->add('organization')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'view'   => array(),
-                    'edit'   => array(),
-                    'delete' => array(),
-                )
-            ));
+            ->add('organization');
     }
 
     public function configureShowFields(ShowMapper $showMapper)

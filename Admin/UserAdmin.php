@@ -13,11 +13,10 @@ namespace Rednose\FrameworkBundle\Admin;
 
 use FOS\UserBundle\Model\UserManagerInterface;
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class UserAdmin extends Admin
 {
@@ -58,14 +57,7 @@ class UserAdmin extends Admin
             ->add('expired')
             ->add('admin', 'boolean')
             ->add('superAdmin', 'boolean')
-            ->add('lastLogin')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'view'    => array(),
-                    'edit'    => array(),
-                    'delete'  => array(),
-                )
-            ));
+            ->add('lastLogin');
 
           if ($this->isGranted('ROLE_ALLOWED_TO_SWITCH')) {
               $listMapper

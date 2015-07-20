@@ -25,7 +25,7 @@
 
     <services>
         <service id="rednose.framework.admin.user" class="%rednose.framework.admin.user.class%">
-            <tag name="sonata.admin" manager_type="orm" group="user_management" label="users"/>
+            <tag name="sonata.admin" manager_type="orm" group="sonata_administration" label="users"/>
             <argument/>
             <argument>%rednose.framework.admin.user.entity%</argument>
             <argument>%rednose.framework.admin.user.controller%</argument>
@@ -34,20 +34,20 @@
             </call>
         </service>
         <service id="rednose.framework.admin.group" class="%rednose.framework.admin.group.class%">
-            <tag name="sonata.admin" manager_type="orm" group="user_management" label="groups"/>
+            <tag name="sonata.admin" manager_type="orm" group="sonata_administration" label="groups"/>
             <argument/>
             <argument>%rednose.framework.admin.group.entity%</argument>
             <argument>%rednose.framework.admin.group.controller%</argument>
         </service>
         <service id="rednose.framework.admin.organization" class="%rednose.framework.admin.organization.class%">
-            <tag name="sonata.admin" manager_type="orm" group="user_management" label="organizations"/>
+            <tag name="sonata.admin" manager_type="orm" group="sonata_administration" label="organizations"/>
             <argument/>
             <argument>%rednose.framework.admin.organization.entity%</argument>
             <argument>%rednose.framework.admin.organization.controller%</argument>
         </service>
 
         <service id="rednose.framework.admin.locale" class="%rednose.framework.admin.locale.class%">
-            <tag name="sonata.admin" manager_type="orm" group="user_management" label="languages"/>
+            <tag name="sonata.admin" manager_type="orm" group="sonata_administration" label="languages"/>
             <argument/>
             <argument>%rednose.framework.admin.locale.entity%</argument>
             <argument>%rednose.framework.admin.locale.controller%</argument>

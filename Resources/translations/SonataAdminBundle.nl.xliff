@@ -5,11 +5,11 @@
             <!--Admin-->
             <trans-unit id="sonata_notification">
                 <source>sonata_notification</source>
-                <target>Achtergrond taken</target>
+                <target>Achtergrondtaken</target>
             </trans-unit>
-            <trans-unit id="user_management">
-                <source>user_management</source>
-                <target>Gebruikersbeheer</target>
+            <trans-unit id="sonata_administration">
+                <source>sonata_administration</source>
+                <target>Administratie</target>
             </trans-unit>
             <trans-unit id="oauth">
                 <source>oauth</source>

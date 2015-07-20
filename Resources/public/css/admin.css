@@ -1,0 +1,4 @@
+/* Override form labels to align left */
+.form-horizontal .form-group .control-label {
+    text-align: left;
+}
