@@ -11,6 +11,8 @@
 
 namespace Rednose\FrameworkBundle;
 
+use Rednose\FrameworkBundle\DependencyInjection\Compiler\AdminPoolCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -27,4 +29,12 @@ class RednoseFrameworkBundle extends Bundle
      * @var string
      */
     const VERSION = '1.7';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new AdminPoolCompilerPass());
+    }
 }
