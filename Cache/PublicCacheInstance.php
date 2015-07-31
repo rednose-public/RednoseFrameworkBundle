@@ -29,7 +29,7 @@ class PublicCacheInstance extends CacheInstance implements CacheInstanceInterfac
         $this->cacheName  = $cacheName;
         $this->publicPath = $publicPath;
 
-        parent::__construct($rootPath.$this->publicPath, $cacheName);
+        parent::__construct($rootPath.'/cache', $cacheName);
     }
 
     /**
