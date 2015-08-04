@@ -194,8 +194,9 @@ class CacheInstance implements CacheInstanceInterface
             if (@$metaData = file_get_contents($metaFile)) {
                 $meta = @unserialize($metaData);
 
+                // Do no throw when encountering cache files from a previous version that may be invalid now.
                 if (isset($meta['modified']) === false || isset($meta['dataType']) === false) {
-                    throw new \RuntimeException(sprintf('Invalid meta file for %s.meta', $this->path));
+                    return;
                 }
 
                 $this->dataType = $meta['dataType'];
