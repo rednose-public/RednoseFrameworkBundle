@@ -16,6 +16,8 @@
 
         <parameter key="rednose_framework.assigner.organization.class">Rednose\FrameworkBundle\Assigner\OrganizationAssigner</parameter>
         <parameter key="rednose_framework.listener.assign_organization.class">Rednose\FrameworkBundle\EventListener\AssignOrganizationListener</parameter>
+
+        <parameter key="rednose_framework.form.type.file.class">Rednose\FrameworkBundle\Form\Type\FileType</parameter>
     </parameters>
 
     <services>
@@ -98,6 +100,10 @@
         <service id="rednose_framework.organization_param_converter" class="Rednose\FrameworkBundle\Request\ParamConverter\OrganizationParamConverter">
             <argument type="service" id="rednose_framework.organization_manager" />
             <tag name="request.param_converter" converter="organization" priority="10" />
+        </service>
+
+        <service id="rednose_framework.form.type.file.class" class="%rednose_framework.form.type.file.class%">
+            <tag name="form.type" alias="rednose_file" />
         </service>
     </services>
 </container>
