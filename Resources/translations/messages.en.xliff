@@ -14,6 +14,10 @@
                 <source>error</source>
                 <target>Error</target>
             </trans-unit>
+            <trans-unit id="not_found">
+                <source>not_found</source>
+                <target>Not found</target>
+            </trans-unit>
             <trans-unit id="username">
                 <source>username</source>
                 <target>Username</target>
