@@ -69,7 +69,7 @@ class ExceptionListener implements EventSubscriberInterface
             return;
         }
 
-        $response  = new Response();
+        $response = new Response();
 
         if ($exception instanceof NotFoundHttpException) {
             $response->setContent($this->templating->render('RednoseFrameworkBundle:Exception:404.html.twig'));
