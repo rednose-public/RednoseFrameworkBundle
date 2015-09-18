@@ -2,8 +2,6 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
-use Rednose\FrameworkBundle\Entity\Organization;
-
 interface OrganizationManagerInterface
 {
     /**

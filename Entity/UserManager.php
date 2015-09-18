@@ -11,14 +11,14 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
-use Rednose\FrameworkBundle\Event\UserEvent;
-use Rednose\FrameworkBundle\Events;
-use Rednose\FrameworkBundle\Model\UserInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Rednose\FrameworkBundle\Model\UserManagerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 use FOS\UserBundle\Util\CanonicalizerInterface;
+use Rednose\FrameworkBundle\Event\UserEvent;
+use Rednose\FrameworkBundle\Events;
+use Rednose\FrameworkBundle\Model\UserInterface;
+use Rednose\FrameworkBundle\Model\UserManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -45,7 +45,7 @@ class UserManager extends BaseUserManager implements UserManagerInterface
      * @param EventDispatcherInterface $dispatcher
      * @param bool                     $autoAccountCreation
      */
-    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class,EventDispatcherInterface $dispatcher, $autoAccountCreation = false)
+    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, EventDispatcherInterface $dispatcher, $autoAccountCreation = false)
     {
         parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class);
 
@@ -130,11 +130,13 @@ class UserManager extends BaseUserManager implements UserManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $username
+     *
+     * @return UserInterface
      */
     public function loadUserByUsername($username)
     {
-        if ($this->autoAccountCreation && $this->findUserBy(array('username' => $username)) === null) {
+        if ($this->autoAccountCreation && !$this->findUserBy(array('username' => $username))) {
             $user = $this->createUser();
 
             $user->setUsername($username);

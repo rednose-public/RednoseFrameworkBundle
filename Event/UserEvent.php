@@ -11,18 +11,27 @@
 
 namespace Rednose\FrameworkBundle\Event;
 
-use Rednose\FrameworkBundle\Entity\User;
+use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class UserEvent extends Event
 {
+    /**
+     * @var UserInterface
+     */
     private $user;
 
-    public function __construct(User $user)
+    /**
+     * @param UserInterface $user
+     */
+    public function __construct(UserInterface $user)
     {
         $this->user = $user;
     }
 
+    /**
+     * @return UserInterface
+     */
     public function getUser()
     {
         return $this->user;

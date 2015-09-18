@@ -13,6 +13,11 @@
 
         <!-- Locale event listener -->
         <parameter key="rednose_framework.listener.locale.class">Rednose\FrameworkBundle\EventListener\LocaleListener</parameter>
+
+        <parameter key="rednose_framework.assigner.organization.class">Rednose\FrameworkBundle\Assigner\OrganizationAssigner</parameter>
+        <parameter key="rednose_framework.listener.assign_organization.class">Rednose\FrameworkBundle\EventListener\AssignOrganizationListener</parameter>
+
+        <parameter key="rednose_framework.form.type.file.class">Rednose\FrameworkBundle\Form\Type\FileType</parameter>
     </parameters>
 
     <services>
@@ -30,7 +35,10 @@
 
         <!-- Formatting -->
         <service id="rednose_framework.datetime_formatter" class="%rednose_framework.datetime_formatter.class%">
-            <argument type="service" id="service_container"/>
+            <argument type="service" id="time.datetime_formatter"/>
+            <call method="setRequest">
+                <argument type="service" id="request" on-invalid="null" strict="false" />
+            </call>
         </service>
 
         <!-- JMS Object constructor alias -->
@@ -55,14 +63,33 @@
             <tag name="doctrine.event_listener" event="postRemove" />
         </service>
 
+        <service id="rednose_framework.serializer_id_listener" class="Rednose\FrameworkBundle\EventListener\SerializerIdListener">
+            <argument type="service" id="annotation_reader" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <tag name="jms_serializer.event_subscriber" event="serializer.post_deserialize" method="onPostDeserialize" priority="-64" />
+            <tag name="jms_serializer.event_subscriber" event="serializer.pre_serialize" method="onPreSerialize" priority="-64" />
+        </service>
+
         <service id="rednose_framework.listener.locale" class="%rednose_framework.listener.locale.class%">
             <argument type="service" id="security.context" />
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest"/>
         </service>
 
-        <service id="rednose_framework.listener.assign_organization" class="Rednose\FrameworkBundle\EventListener\AssignOrganizationListener">
+        <service id="rednose_framework.assigner.organization" class="%rednose_framework.assigner.organization.class%">
             <argument type="service" id="rednose_framework.organization_manager" />
+        </service>
+
+        <service id="rednose_framework.listener.assign_organization" class="%rednose_framework.listener.assign_organization.class%">
+            <argument type="service" id="rednose_framework.assigner.organization" />
             <tag name="kernel.event_subscriber" />
+        </service>
+
+        <!-- File caching -->
+        <service class="Rednose\FrameworkBundle\Cache\CacheFactory" id="rednose_framework.cache.cache_factory">
+            <argument>%kernel.root_dir%/../web</argument>
+            <argument>%kernel.cache_dir%/rednose_framework</argument>
+            <argument>cache</argument>
+            <argument type="service" id="service_container" />
         </service>
 
         <!-- HTML purifier / lexer -->
@@ -70,5 +97,13 @@
         <service id="rednose_framework.purifier" factory-method="create" factory-service="rednose_framework.purifier.factory" class="%rednose_framework.purifier.factory.class%"/>
         <service id="rednose_framework.purifier.lexer" factory-method="createLexer" factory-service="rednose_framework.purifier.factory" class="%rednose_framework.purifier.factory.class%"/>
 
+        <service id="rednose_framework.organization_param_converter" class="Rednose\FrameworkBundle\Request\ParamConverter\OrganizationParamConverter">
+            <argument type="service" id="rednose_framework.organization_manager" />
+            <tag name="request.param_converter" converter="organization" priority="10" />
+        </service>
+
+        <service id="rednose_framework.form.type.file.class" class="%rednose_framework.form.type.file.class%">
+            <tag name="form.type" alias="rednose_file" />
+        </service>
     </services>
 </container>

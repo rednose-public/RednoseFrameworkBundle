@@ -13,14 +13,16 @@ namespace Rednose\FrameworkBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Rednose\FrameworkBundle\Entity\Group;
+use Rednose\FrameworkBundle\Entity\Organization;
 use Rednose\FrameworkBundle\Entity\User;
 use Rednose\FrameworkBundle\Event\GroupEvent;
+use Rednose\FrameworkBundle\Event\OrganizationEvent;
 use Rednose\FrameworkBundle\Event\UserEvent;
 use Rednose\FrameworkBundle\Events;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Fires events for the User and Group entities.
+ * Fires events for the User, Group and Organization entities.
  */
 class DoctrineListener
 {
@@ -50,14 +52,18 @@ class DoctrineListener
             $event = new UserEvent($entity);
 
             $this->dispatcher->dispatch(Events::USER_POST_PERSIST, $event);
-
-            return;
         }
 
-        if ($entity instanceof Group) {
+        elseif ($entity instanceof Group) {
             $event = new GroupEvent($entity);
 
             $this->dispatcher->dispatch(Events::GROUP_POST_PERSIST, $event);
+        }
+
+        elseif ($entity instanceof Organization) {
+            $event = new OrganizationEvent($entity);
+
+            $this->dispatcher->dispatch(Events::ORGANIZATION_POST_PERSIST, $event);
         }
     }
 
@@ -72,14 +78,18 @@ class DoctrineListener
             $event = new UserEvent($entity);
 
             $this->dispatcher->dispatch(Events::USER_POST_UPDATE, $event);
-
-            return;
         }
 
-        if ($entity instanceof Group) {
+        elseif ($entity instanceof Group) {
             $event = new GroupEvent($entity);
 
             $this->dispatcher->dispatch(Events::GROUP_POST_UPDATE, $event);
+        }
+
+        elseif ($entity instanceof Organization) {
+            $event = new OrganizationEvent($entity);
+
+            $this->dispatcher->dispatch(Events::ORGANIZATION_POST_UPDATE, $event);
         }
     }
 
@@ -94,14 +104,18 @@ class DoctrineListener
             $event = new UserEvent($entity);
 
             $this->dispatcher->dispatch(Events::USER_POST_REMOVE, $event);
-
-            return;
         }
 
-        if ($entity instanceof Group) {
+        elseif ($entity instanceof Group) {
             $event = new GroupEvent($entity);
 
             $this->dispatcher->dispatch(Events::GROUP_POST_REMOVE, $event);
+        }
+
+        elseif ($entity instanceof Organization) {
+            $event = new OrganizationEvent($entity);
+
+            $this->dispatcher->dispatch(Events::ORGANIZATION_POST_REMOVE, $event);
         }
     }
 }

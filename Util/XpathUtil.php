@@ -16,7 +16,7 @@ class XpathUtil
      *
      * @return \DOMNode
      */
-    public static function getXpathNode(\DOMDocument $data, $location, $context = null)
+    public static function getXpathNode(\DOMDocument $data, $location, \DOMNode $context = null)
     {
         if ($location === null) {
             return null;
@@ -62,5 +62,30 @@ class XpathUtil
         }
 
         return null;
+    }
+
+    /**
+     * Removes empty nodes from a DOM Document.
+     *
+     * Removes nodes based on these conditions:
+     *   - Node is empty or only contains spaces
+     *   - Node does not have any attributes
+     *   - Node does not have any child nodes
+     *
+     * @param \DOMDocument
+     *
+     * @return \DOMDocument
+     */
+    public static function clearEmptyNodes(\DOMDocument &$dom)
+    {
+        $xpath = new \DOMXPath($dom);
+
+        while (($nodes = $xpath->query('//*[not(*) and not(@*) and not(text()[normalize-space()])]')) && $nodes->length) {
+            foreach ($nodes as $node) {
+                $node->parentNode->removeChild($node);
+            }
+        }
+
+        return $dom;
     }
 }

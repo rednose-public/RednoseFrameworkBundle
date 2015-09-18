@@ -7,9 +7,9 @@
                 <source>sonata_notification</source>
                 <target>Background jobs</target>
             </trans-unit>
-            <trans-unit id="user_management">
-                <source>user_management</source>
-                <target>User management</target>
+            <trans-unit id="sonata_administration">
+                <source>administration</source>
+                <target>Administration</target>
             </trans-unit>
             <trans-unit id="oauth">
                 <source>oauth</source>

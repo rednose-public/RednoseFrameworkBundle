@@ -1,0 +1,55 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/rednoseframework/css/admin.css') }}">
+{% endblock %}
+
+{# Branding #}
+{% block logo %}
+    {% if admin_pool is defined %}
+        {% spaceless %}
+            <a style="text-align: left;" class="logo" href="{{ path('sonata_admin_dashboard') }}">
+                {% if 'single_text' == admin_pool.getOption('title_mode') or 'both' == admin_pool.getOption('title_mode') %}
+                    {{ admin_pool.title }}
+                {% endif %}
+            </a>
+        {% endspaceless %}
+    {% endif %}
+{% endblock %}
+
+{# Remove seach bar #}
+{% block sonata_sidebar_search %}
+{% endblock %}
+
+{# Sonata project link #}
+{% block side_bar_after_nav %}
+{% endblock %}
+
+{% block sonata_top_nav_menu %}
+    <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                {% set organizations = admin_pool.getOrganizations() %}
+
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    {{ app.user.organization }}{% if organizations|length > 0 %} <i class="fa fa-caret-down"></i>{% endif %}
+                </a>
+
+                <ul class="dropdown-menu">
+                    {% for organization in organizations %}
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{ path('rednose_framework_switch_organization', {'id': organization.id}) }}">{{ organization.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-plus-square fa-fw"></i> <i class="fa fa-caret-down"></i>
+                </a>
+                {% include admin_pool.getTemplate('add_block') %}
+            </li>
+        </ul>
+    </div>
+{% endblock %}

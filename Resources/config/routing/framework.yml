@@ -1,0 +1,2 @@
+rednose_framework_security:
+    resource: "@RednoseFrameworkBundle/Resources/config/routing/security.xml"

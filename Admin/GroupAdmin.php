@@ -12,10 +12,10 @@
 namespace Rednose\FrameworkBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class GroupAdmin extends Admin
 {
@@ -27,14 +27,7 @@ class GroupAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'view'   => array(),
-                    'edit'   => array(),
-                    'delete' => array(),
-                )
-            ));
+            ->addIdentifier('name');
     }
 
     public function configureShowFields(ShowMapper $showMapper)

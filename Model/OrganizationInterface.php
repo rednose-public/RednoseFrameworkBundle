@@ -14,29 +14,62 @@ namespace Rednose\FrameworkBundle\Model;
 interface OrganizationInterface
 {
     /**
-     * @return integer
+     * Set the id
+     *
+     * @param string $id
+     */
+    public function setId($id);
+
+    /**
+     * Get the id
+     *
+     * @return string
      */
     public function getId();
 
     /**
-     * @return string
-     */
-    public function getName();
-
-    /**
+     * Set organization name
+     *
      * @param string $name
      */
     public function setName($name);
 
     /**
-     * @return DataDictionaryInterface
+     * Get organization
+     *
+     * @return string
      */
-    public function getDataDictionary();
+    public function getName();
 
     /**
-     * @param DataDictionaryInterface $dictionary
+     * Set organization default locale
+     *
+     * @param string $locale
      */
-    public function setDataDictionary($dictionary);
+    public function setLocale($locale);
+
+    /**
+     * Get organization default locale
+     *
+     * @return string
+     */
+    public function getLocale();
+
+    /**
+     * Set available localizations
+     *
+     * @param array $localizations
+     */
+    public function setLocalizations($localizations);
+
+    /**
+     * Get available localizations
+     *
+     * @return $localizations
+     */
+    public function getLocalizations();
+
+    // -- [ Additional ] -----------------------------------------------------------
 
     /**
      * A list of OR conditions to evaluate on a user object

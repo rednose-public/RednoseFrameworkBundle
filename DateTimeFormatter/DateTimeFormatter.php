@@ -11,10 +11,9 @@
 
 namespace Rednose\FrameworkBundle\DateTimeFormatter;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Knp\Bundle\TimeBundle\DateTimeFormatter as BaseFormatter;
 use DateTime;
+use Knp\Bundle\TimeBundle\DateTimeFormatter as BaseFormatter;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Formats a DateTime object
@@ -36,14 +35,19 @@ class DateTimeFormatter
     protected $formatter;
 
     /**
-     * Constructor
-     *
-     * @param ContainerInterface $container Service container
+     * @param BaseFormatter $formatter
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(BaseFormatter $formatter)
     {
-        $this->request   = $container->get('request');
-        $this->formatter = $container->get('time.datetime_formatter');
+        $this->formatter = $formatter;
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request = null)
+    {
+        $this->request = $request;
     }
 
     public function format(DateTime $dateTime)
@@ -56,7 +60,7 @@ class DateTimeFormatter
         }
 
         // Return localized date and time.
-        $locale        = $this->request->getLocale();
+        $locale        = $this->request ? $this->request->getLocale() : 'en_US';
         $dateFormatter = \IntlDateFormatter::SHORT;
         $timeFormatter = \IntlDateFormatter::SHORT;
         $timezone      = date_default_timezone_get();

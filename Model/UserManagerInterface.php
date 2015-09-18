@@ -12,7 +12,6 @@
 namespace Rednose\FrameworkBundle\Model;
 
 use FOS\UserBundle\Model\UserManagerInterface as BaseUserManagerInterface;
-use Rednose\FrameworkBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 interface UserManagerInterface extends BaseUserManagerInterface
@@ -37,7 +36,9 @@ interface UserManagerInterface extends BaseUserManagerInterface
     public function tokenAuthentication($container);
 
     /**
-     * {@inheritdoc}
+     * @param string $username
+     *
+     * @return UserInterface
      */
     public function loadUserByUsername($username);
 

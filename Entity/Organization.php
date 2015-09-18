@@ -13,16 +13,15 @@ namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
-use Rednose\FrameworkBundle\Model\OrganizationInterface;
-use Rednose\FrameworkBundle\Model\DataDictionaryInterface;
+use Rednose\FrameworkBundle\Model\Organization as BaseOrganization;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_organization")
  *
- * @Serializer\AccessorOrder("custom", custom = {"id", "name" ,"DataDictionaryId"})
+ * @Serializer\AccessorOrder("custom", custom = {"id", "name"})
  */
-class Organization implements OrganizationInterface
+class Organization extends BaseOrganization
 {
     /**
      * @ORM\Id
@@ -43,10 +42,18 @@ class Organization implements OrganizationInterface
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="DataDictionary")
-     * @ORM\JoinColumn(name="dictionary_id", referencedColumnName="id", nullable=true)
+     * @ORM\Column(type="string")
+     *
+     * @Serializer\Groups({"list", "details"})
      */
-    protected $dictionary;
+    protected $locale;
+
+    /**
+     * @ORM\Column(type="array")
+     *
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $localizations;
 
     /**
      * @ORM\Column(type="array", nullable=true)
@@ -58,100 +65,11 @@ class Organization implements OrganizationInterface
     protected $conditions;
 
     /**
-     * Constructor.
+     * Constructor
      */
     public function __construct()
     {
-        $this->conditions = array();
-    }
-
-    /**
-     * @Serializer\VirtualProperty
-     * @Serializer\SerializedName("data_dictionary")
-     * @Serializer\Groups({"list"})
-     *
-     * @return string
-     */
-    public function getDataDictionaryId()
-    {
-        if ($this->getDataDictionary() === null) {
-            return null;
-        }
-
-        return $this->getDataDictionary()->getId();
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @return DataDictionaryInterface
-     */
-    public function getDataDictionary()
-    {
-        return $this->dictionary;
-    }
-
-    /**
-     * @param DataDictionaryInterface $dictionary
-     */
-    public function setDataDictionary($dictionary)
-    {
-        $this->dictionary = $dictionary;
-    }
-
-    /**
-     * A list of OR conditions to evaluate on a user object
-     * when deciding to assign a user to this organization.
-     *
-     * @return string[]
-     */
-    public function getConditions()
-    {
-        return $this->conditions;
-    }
-
-    /**
-     * A list of OR conditions to evaluate on a user object
-     * when deciding to assign a user to this organization.
-     *
-     * @param string[] $conditions
-     */
-    public function setConditions($conditions)
-    {
-        $this->conditions = $conditions;
-    }
-
-    /**
-     * A list of OR conditions to evaluate on a user object
-     * when deciding to assign a user to this organization.
-     *
-     * @param string $condition
-     */
-    public function addCondition($condition)
-    {
-        $this->conditions[] = $condition;
+        $this->localizations = [];
     }
 
     /**

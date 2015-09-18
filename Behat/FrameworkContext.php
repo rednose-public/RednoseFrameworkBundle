@@ -36,13 +36,13 @@ class FrameworkContext extends AbstractContext
      */
     public function iAmLoggedInAsAdministrator($organization)
     {
-        $util = $this->getContainer()->get('fos_user.util.user_manipulator');
-        $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
-        /** @var UserInterface $admin */
-        $admin = $util->create('admin', 'adminpasswd', 'info@rednose.nl', true, true);
+        $admin = $this->getContainer()->get('rednose_framework.user_manager')->findUserByUsername('admin');
         $admin->setOrganization($organization);
+
         $em->persist($admin);
+        $em->flush();
 
         $this->login('admin', 'adminpasswd');
     }
@@ -58,7 +58,9 @@ class FrameworkContext extends AbstractContext
         /** @var UserInterface $admin */
         $user = $util->create('user', 'userpasswd', 'info@rednose.nl', true, false);
         $user->setOrganization($organization);
+
         $em->persist($user);
+        $em->flush();
 
         $this->login('user', 'userpasswd');
     }
@@ -117,8 +119,16 @@ class FrameworkContext extends AbstractContext
 
             if (isset($data['organization'])) {
                 $manager = $this->getContainer()->get('rednose_framework.organization_manager');
+                $organization = $manager->findOrganizationBy(array('name' => $data['organization']));
 
-                $user->setOrganization($manager->findOrganizationBy(array('name' => $data['organization'])));
+                if (!$organization) {
+                    $organization = $manager->createOrganization();
+                    $organization->setName($data['organization']);
+                    $manager->updateOrganization($organization);
+                }
+
+
+                $user->setOrganization($organization);
             }
 
             $um->updateUser($user);
