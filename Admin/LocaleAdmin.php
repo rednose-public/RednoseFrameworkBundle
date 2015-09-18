@@ -17,7 +17,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class OrganizationAdmin extends Admin
+class LocaleAdmin extends Admin
 {
     protected function configureRoutes(RouteCollection $collection)
     {
@@ -27,15 +27,19 @@ class OrganizationAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name');
+            ->addIdentifier('name')
+            ->add('displayName')
+            ->add('default', 'boolean')
+            ->add('organization');
     }
 
     public function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
             ->with('General')
-                ->add('name')
-                ->add('conditions', 'array', array('label' => 'User assignment conditions'));
+            ->add('name')
+            ->add('displayName')
+            ->add('default', 'boolean');
 
     }
 
@@ -43,13 +47,9 @@ class OrganizationAdmin extends Admin
     {
         $formMapper
             ->with('General')
-                ->add('name')
-                ->add('conditions', 'collection', array(
-                    'allow_add'    => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                    'label'        => 'User assignment conditions',
-                    'required'     => false,
-                ));
+            ->add('name')
+            ->add('displayName')
+            ->add('organization', 'sonata_type_model', array('required' => false,'multiple' => false))
+            ->add('default', 'checkbox', array('required' => false));
     }
 }

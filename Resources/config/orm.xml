@@ -5,6 +5,10 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
 
+        <service id="rednose_framework.locale_manager" class="Rednose\FrameworkBundle\Entity\LocaleManager">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
         <service id="rednose_framework.group_manager" class="Rednose\FrameworkBundle\Entity\GroupManager">
             <argument type="service" id="fos_user.entity_manager"/>
             <argument>Rednose\FrameworkBundle\Entity\Group</argument>
