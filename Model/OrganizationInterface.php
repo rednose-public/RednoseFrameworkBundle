@@ -11,8 +11,6 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 interface OrganizationInterface
 {
     /**
@@ -44,27 +42,34 @@ interface OrganizationInterface
     public function getName();
 
     /**
-     * Set organizations available locale
+     * Set organization default locale
      *
-     * @param ArrayCollection<LocaleInterface> $locale
+     * @param string $locale
      */
-    public function setLocale(ArrayCollection $locale);
+    public function setLocale($locale);
 
     /**
-     * Get organizations available available
+     * Get organization default locale
      *
-     * @return ArrayCollection<LocaleInterface>
+     * @return string
      */
     public function getLocale();
 
-    // -- [ Additional ] -----------------------------------------------------------
+    /**
+     * Set available localizations
+     *
+     * @param array $localizations
+     */
+    public function setLocalizations($localizations);
 
     /**
-     * Add a locale
+     * Get available localizations
      *
-     * @param LocaleInterface $locale
+     * @return $localizations
      */
-    public function addLocale(LocaleInterface $locale);
+    public function getLocalizations();
+
+    // -- [ Additional ] -----------------------------------------------------------
 
     /**
      * A list of OR conditions to evaluate on a user object
