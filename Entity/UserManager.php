@@ -86,23 +86,6 @@ class UserManager extends BaseUserManager implements UserManagerInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function loadUserByUsername($username)
-    {
-        if ($this->findUserBy(array('username' => $username)) === null) {
-            $user = $this->createUser();
-            $user->setUserName($username);
-            $user->setEnabled(true);
-            $user->setEmail($username);
-            $user->setPassword($this->randomPassword());
-            $this->updateUser($user);
-        }
-
-        return parent::loadUserByUsername($username);
-    }
-
-    /**
      * @param int $length
      *
      * @return string
