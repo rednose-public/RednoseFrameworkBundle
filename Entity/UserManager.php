@@ -85,6 +85,11 @@ class UserManager extends BaseUserManager implements UserManagerInterface
         return false;
     }
 
+    public function loadUserByUsername($username)
+    {
+        return parent::loadUserByUsername($username);
+    }
+
     /**
      * @param int $length
      *
