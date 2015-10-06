@@ -50,8 +50,6 @@ class Organization extends BaseOrganization
 
     /**
      * @ORM\Column(type="array")
-     *
-     * @Serializer\Groups({"list", "details"})
      */
     protected $localizations;
 

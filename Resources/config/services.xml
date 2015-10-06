@@ -105,5 +105,10 @@
         <service id="rednose_framework.form.type.file.class" class="%rednose_framework.form.type.file.class%">
             <tag name="form.type" alias="rednose_file" />
         </service>
+
+        <service id="rednose_framework.organization_serialization_listener" class="Rednose\FrameworkBundle\EventListener\OrganizationSerializationListener">
+            <argument type="service" id="translator" />
+            <tag name="jms_serializer.event_subscriber" event="serializer.post_serialize" method="onPostSerialize" priority="-64" />
+        </service>
     </services>
 </container>
