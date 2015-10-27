@@ -56,7 +56,7 @@ class FrameworkContext extends AbstractContext
         $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         /** @var UserInterface $admin */
-        $user = $util->create('user', 'userpasswd', 'info@rednose.nl', true, false);
+        $user = $util->create('user', 'userpasswd', 'user@rednose.nl', true, false);
         $user->setOrganization($organization);
 
         $em->persist($user);
@@ -163,6 +163,28 @@ class FrameworkContext extends AbstractContext
         $manager->updateOrganization($organization);
     }
 
+
+    /**
+     * @Given /^I log in as user for organization "([^"]*)"$/
+     */
+    public function imLogInAsUserForOrganization($organization)
+    {
+        $organization = $this->getOrganization($organization);
+
+        $util = $this->getContainer()->get('fos_user.util.user_manipulator');
+        $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        /** @var UserInterface $admin */
+        $user = $util->create('user', 'userpasswd', 'user@rednose.nl', true, false);
+        $user->setOrganization($organization);
+
+        $em->persist($user);
+        $em->flush();
+
+        $this->fillField('username', 'user');
+        $this->fillField('password', 'userpasswd');
+        $this->pressButton('submit');
+    }
 
     /**
      * @param string $name
