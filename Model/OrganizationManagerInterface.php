@@ -38,4 +38,11 @@ interface OrganizationManagerInterface
      * @return OrganizationInterface
      */
     public function createOrganization();
+
+    /**
+     * @param string $name
+     *
+     * @return OrganizationInterface
+     */
+    public function findOrganizationByName($name);
 }
