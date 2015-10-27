@@ -115,7 +115,7 @@ class FrameworkContext extends AbstractContext
 
         foreach ($table->getHash() as $data) {
             /** @var UserInterface $admin */
-            $user = $util->create($data['name'], $data['password'], $data['email'], true, false);
+            $user = $util->create($data['name'], $data['password'], $data['email'], true, isset($data['admin']));
 
             if (isset($data['organization'])) {
                 $manager = $this->getContainer()->get('rednose_framework.organization_manager');
