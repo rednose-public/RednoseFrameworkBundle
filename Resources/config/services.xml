@@ -18,9 +18,14 @@
         <parameter key="rednose_framework.listener.assign_organization.class">Rednose\FrameworkBundle\EventListener\AssignOrganizationListener</parameter>
 
         <parameter key="rednose_framework.form.type.file.class">Rednose\FrameworkBundle\Form\Type\FileType</parameter>
+        <parameter key="rednose_framework.organization_context.class">Rednose\FrameworkBundle\Context\OrganizationContext</parameter>
     </parameters>
 
     <services>
+        <service id="rednose_framework.organization_context" class="%rednose_framework.organization_context.class%">
+            <argument type="service" id="security.context" />
+        </service>
+
         <!-- Exceptions -->
         <service id="rednose_framework.exceptionhandler" class="%rednose_framework.exceptionhandler.class%">
             <argument type="service" id="kernel" />
