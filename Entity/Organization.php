@@ -46,12 +46,12 @@ class Organization extends BaseOrganization
      *
      * @Serializer\Groups({"list", "details"})
      */
-    protected $locale;
+    protected $locale = 'nl_NL';
 
     /**
      * @ORM\Column(type="array")
      */
-    protected $localizations;
+    protected $localizations = ['nl_NL', 'en_GB'];
 
     /**
      * @ORM\Column(type="array", nullable=true)
@@ -61,14 +61,6 @@ class Organization extends BaseOrganization
      * @Serializer\Groups({"file", "details"})
      */
     protected $conditions;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->localizations = [];
-    }
 
     /**
      * @return string
