@@ -135,6 +135,50 @@ class FrameworkContext extends AbstractContext
         }
     }
 
+    /**
+     * @Given /^I log in as admin for organization "([^"]*)"$/
+     */
+    public function imLogInAsAdminForOrganization($organization)
+    {
+        $organization = $this->getOrganization($organization);
+
+        $util = $this->getContainer()->get('fos_user.util.user_manipulator');
+        $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        /** @var UserInterface $admin */
+        $user = $util->create('testadmin', 'testadminpasswd', 'testadmin@rednose.nl', true, true);
+        $user->setOrganization($organization);
+
+        $em->persist($user);
+        $em->flush();
+
+        $this->fillField('username', 'testadmin');
+        $this->fillField('password', 'testadminpasswd');
+        $this->pressButton('submit');
+    }
+
+    /**
+     * @Given /^I log in as user for organization "([^"]*)"$/
+     */
+    public function imLogInAsUserForOrganization($organization)
+    {
+        $organization = $this->getOrganization($organization);
+
+        $util = $this->getContainer()->get('fos_user.util.user_manipulator');
+        $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        /** @var UserInterface $admin */
+        $user = $util->create('user', 'userpasswd', 'user@rednose.nl', true, false);
+        $user->setOrganization($organization);
+
+        $em->persist($user);
+        $em->flush();
+
+        $this->fillField('username', 'user');
+        $this->fillField('password', 'userpasswd');
+        $this->pressButton('submit');
+    }
+
     protected function getOrganization($name)
     {
         if (!$name) {
@@ -161,29 +205,6 @@ class FrameworkContext extends AbstractContext
         $organization = $manager->createOrganization();
         $organization->setName($data['name']);
         $manager->updateOrganization($organization);
-    }
-
-
-    /**
-     * @Given /^I log in as user for organization "([^"]*)"$/
-     */
-    public function imLogInAsUserForOrganization($organization)
-    {
-        $organization = $this->getOrganization($organization);
-
-        $util = $this->getContainer()->get('fos_user.util.user_manipulator');
-        $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
-
-        /** @var UserInterface $admin */
-        $user = $util->create('user', 'userpasswd', 'user@rednose.nl', true, false);
-        $user->setOrganization($organization);
-
-        $em->persist($user);
-        $em->flush();
-
-        $this->fillField('username', 'user');
-        $this->fillField('password', 'userpasswd');
-        $this->pressButton('submit');
     }
 
     /**

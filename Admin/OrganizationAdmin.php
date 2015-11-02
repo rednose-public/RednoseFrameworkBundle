@@ -42,7 +42,7 @@ class OrganizationAdmin extends Admin
     {
         $formMapper
             ->with('General')
-                ->add('name', 'locale')
+                ->add('name')
                 ->add('conditions', 'collection', array(
                     'allow_add'    => true,
                     'allow_delete' => true,
