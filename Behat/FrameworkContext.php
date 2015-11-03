@@ -146,14 +146,14 @@ class FrameworkContext extends AbstractContext
         $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         /** @var UserInterface $admin */
-        $user = $util->create('testadmin', 'testadminpasswd', 'testadmin@rednose.nl', true, true);
+        $user = $util->create('testadmin', 'testadmin', 'testadmin@rednose.nl', true, true);
         $user->setOrganization($organization);
 
         $em->persist($user);
         $em->flush();
 
         $this->fillField('username', 'testadmin');
-        $this->fillField('password', 'testadminpasswd');
+        $this->fillField('password', 'testadmin');
         $this->pressButton('submit');
     }
 
