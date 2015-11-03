@@ -5,5 +5,10 @@
             <tag name="twig.extension"/>
             <argument type="service" id="rednose_framework.purifier"/>
         </service>
+
+        <service id="twig.extension.thumbnail" class="Rednose\FrameworkBundle\Twig\Extension\ThumbnailExtension" public="false">
+            <tag name="twig.extension"/>
+            <argument type="service" id="rednose_framework.thumbnail_generator"/>
+        </service>
     </services>
 </container>

@@ -19,6 +19,8 @@
 
         <parameter key="rednose_framework.form.type.file.class">Rednose\FrameworkBundle\Form\Type\FileType</parameter>
         <parameter key="rednose_framework.organization_context.class">Rednose\FrameworkBundle\Context\OrganizationContext</parameter>
+
+        <parameter key="rednose_framework.thumbnail_generator.class">Rednose\FrameworkBundle\Thumbnail\ThumbnailGenerator</parameter>
     </parameters>
 
     <services>
@@ -114,6 +116,10 @@
         <service id="rednose_framework.organization_serialization_listener" class="Rednose\FrameworkBundle\EventListener\OrganizationSerializationListener">
             <argument type="service" id="translator" />
             <tag name="jms_serializer.event_subscriber" event="serializer.post_serialize" method="onPostSerialize" priority="-64" />
+        </service>
+
+        <service id="rednose_framework.thumbnail_generator" class="%rednose_framework.thumbnail_generator.class%">
+            <argument type="service" id="rednose_framework.cache.cache_factory"/>
         </service>
     </services>
 </container>
