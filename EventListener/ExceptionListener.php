@@ -64,7 +64,8 @@ class ExceptionListener implements EventSubscriberInterface
         }
 
         if ($request->headers->get('Content-Type') === 'application/json' || $accept->has('application/json')) {
-            $event->setResponse(new MessageResponse(new Message($exception->getMessage(), Message::ERROR_TYPE)));
+            $type = $exception instanceof NotFoundHttpException ? Message::WARNING_TYPE : Message::ERROR_TYPE;
+            $event->setResponse(new MessageResponse(new Message($exception->getMessage(), $type)));
 
             return;
         }
