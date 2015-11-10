@@ -64,7 +64,7 @@
             </trans-unit>
             <trans-unit id="language_choice_label">
                 <source>language_choice_label</source>
-                <target>Languages</target>
+                <target>Language</target>
             </trans-unit>
         </body>
     </file>
