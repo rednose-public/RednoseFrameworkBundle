@@ -36,6 +36,11 @@ class File implements FileInterface
     /**
      * @ORM\Column(type="string")
      */
+    protected $extension;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     protected $mimeType;
 
     /**
@@ -59,6 +64,22 @@ class File implements FileInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+    /**
+     * @param string $extension
+     */
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
     }
 
     /**
