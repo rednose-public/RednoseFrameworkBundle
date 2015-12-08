@@ -2,3 +2,7 @@
 .form-horizontal .form-group .control-label {
     text-align: left;
 }
+
+.navbar-custom-menu {
+    float: right !important;
+}
