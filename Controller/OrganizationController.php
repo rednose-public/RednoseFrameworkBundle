@@ -17,6 +17,14 @@ class OrganizationController extends Controller
     {
         $organizations = $this->get('rednose_framework.organization_manager')->findOrganizations();
 
+        if ($this->get('security.context')->getToken()) {
+            $user = $this->get('security.context')->getToken()->getUser();
+
+            if ($user->hasRole('ROLE_ORGANIZATION_ADMIN')) {
+                $organizations = array($user->getOrganization());
+            }
+        }
+
         $context = new SerializationContext();
         $context->setGroups('list');
 

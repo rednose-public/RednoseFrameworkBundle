@@ -19,6 +19,12 @@ class OrganizationAwarePool extends Pool
      */
     public function getOrganizations()
     {
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
+        if ($user->hasRole('ROLE_ORGANIZATION_ADMIN')) {
+            return array($user->getOrganization());
+        }
+
         return $this->container->get('rednose_framework.organization_manager')->findOrganizations();
     }
 }
