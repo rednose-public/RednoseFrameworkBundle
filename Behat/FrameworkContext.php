@@ -3,6 +3,8 @@
 namespace Rednose\FrameworkBundle\Behat;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Exception\ExpectationException;
 use Rednose\FrameworkBundle\Model\UserInterface;
 
 class FrameworkContext extends AbstractContext
@@ -177,6 +179,41 @@ class FrameworkContext extends AbstractContext
         $this->fillField('username', 'user');
         $this->fillField('password', 'userpasswd');
         $this->pressButton('submit');
+    }
+
+    /**
+     * @Then /^(?:|I )should see "(?P<count>(?:[^"]|\\")*)" options in "(?P<field>(?:[^"]|\\")*)"$/
+     */
+    public function seeItemsInField($count, $locator)
+    {
+        $this->waitForAngular();
+
+        $count = $this->fixStepArgument($count);
+        $locator = $this->fixStepArgument($locator);
+
+        $field = $this->getSession()->getPage()->findField($locator);
+
+        if (null === $field) {
+            throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'id|name|label|value', $locator);
+        }
+
+        $optionCount = count($field->findAll('css', 'option'));
+
+        if ($optionCount !== (int) $count) {
+            throw new ExpectationException(sprintf('Expected %d options for field %s, but found %d options instead', $count, $locator, $optionCount), $this->getSession()->getDriver());
+        }
+    }
+
+    protected function waitForAngular()
+    {
+        if ($this->getSession()->evaluateScript('return (typeof angular !== \'undefined\')')) {
+            $this->getSession()->evaluateScript(
+                'angular.getTestability(document.body).whenStable(function() {
+                    window.__testable = true;
+                })');
+
+            $this->getSession()->wait(5000, 'window.__testable === true');
+        }
     }
 
     protected function getOrganization($name)
