@@ -182,9 +182,9 @@ class FrameworkContext extends AbstractContext
     }
 
     /**
-     * @Then /^(?:|I )should see "(?P<count>(?:[^"]|\\")*)" options in "(?P<field>(?:[^"]|\\")*)"$/
+     * @Then /^(?:|I )should see (?<at>|at least )"(?P<count>(?:[^"]|\\")*)" options in "(?P<field>(?:[^"]|\\")*)"$/
      */
-    public function seeItemsInField($count, $locator)
+    public function seeItemsInField($atLeast, $count, $locator)
     {
         $this->waitForAngular();
 
@@ -199,7 +199,7 @@ class FrameworkContext extends AbstractContext
 
         $optionCount = count($field->findAll('css', 'option'));
 
-        if ($optionCount !== (int) $count) {
+        if (!!$atLeast ? ($optionCount < (int) $count) : ($optionCount !== (int) $count)) {
             throw new ExpectationException(sprintf('Expected %d options for field %s, but found %d options instead', $count, $locator, $optionCount), $this->getSession()->getDriver());
         }
     }
