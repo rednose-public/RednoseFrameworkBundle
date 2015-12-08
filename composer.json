@@ -46,6 +46,7 @@
         "friendsofsymfony/rest-bundle": "1.4.1",
 
         "sonata-project/doctrine-orm-admin-bundle": "2.3.0",
+        "sonata-project/block-bundle": "2.3.9",
         "sonata-project/intl-bundle": "2.2.3",
         "sonata-project/core-bundle": "2.3.10",
 
