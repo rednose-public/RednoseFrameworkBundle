@@ -6,6 +6,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Rednose\FrameworkBundle\Entity\Organization;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -43,11 +44,18 @@ class HookContext implements Context, KernelAwareContext
 
         // Create required system user.
         $util = $this->getContainer()->get('fos_user.util.user_manipulator');
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         /** @var UserInterface $admin */
         $admin = $util->create('admin', 'adminpasswd', 'info@rednose.nl', true, true);
-        $em->persist($admin);
+
+        $organization = new Organization();
+        $organization->setName('Test');
+        $entityManager->persist($organization);
+
+        $admin->setOrganization($organization);
+        $entityManager->persist($admin);
+
+        $entityManager->flush();
     }
 
     /**
