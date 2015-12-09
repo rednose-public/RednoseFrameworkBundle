@@ -10,27 +10,11 @@ use Rednose\FrameworkBundle\Model\UserInterface;
 class FrameworkContext extends AbstractContext
 {
     /**
-     * @Then /^I wait 1 second$/
+     * @Then /^I pause$/
      */
-    public function iWait1Second()
-    {
-        $this->getSession()->wait(1000);
-    }
-
-    /**
-     * @Then /^I wait 1 hour$/
-     */
-    public function iWait1Hour()
+    public function iPause()
     {
         $this->getSession()->wait(3600000);
-    }
-
-    /**
-     * @Then /^I wait$/
-     */
-    public function iWait()
-    {
-        $this->getSession()->wait(5000);
     }
 
     /**
@@ -179,6 +163,46 @@ class FrameworkContext extends AbstractContext
         $this->fillField('username', 'user');
         $this->fillField('password', 'userpasswd');
         $this->pressButton('submit');
+    }
+
+    // -- Page interactions ----------------------------------------------------
+
+    /**
+     * @Then I should see an option :arg1 in :arg2
+     */
+    public function iShouldSeeAnOptionIn($arg1, $arg2)
+    {
+        $this->waitForAngular();
+
+        $arg1 = $this->fixStepArgument($arg1);
+        $arg2 = $this->fixStepArgument($arg2);
+
+        $field = $this->getSession()->getPage()->findField($arg2);
+
+        if (null === $field) {
+            throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'id|name|label|value', $arg2);
+        }
+
+        if (null === $field->find('css', 'option:contains(\''.$arg1.'\')')) {
+            throw new ExpectationException(sprintf('Option "%s" was expected in form field "%s"', $arg1, $arg2), $this->getSession());
+        }
+    }
+
+    /**
+     * @Then I should not see an option :arg1 in :arg2
+     */
+    public function iShouldNotSeeAnOptionIn($arg1, $arg2)
+    {
+        $this->waitForAngular();
+
+        $arg1 = $this->fixStepArgument($arg1);
+        $arg2 = $this->fixStepArgument($arg2);
+
+        $field = $this->getSession()->getPage()->findField($arg2);
+
+        if (null !== $field->find('css', 'option:contains(\''.$arg1.'\')')) {
+            throw new ExpectationException(sprintf('Option "%s" was not expected in form field "%s"', $arg1, $arg2), $this->getSession());
+        }
     }
 
     /**
