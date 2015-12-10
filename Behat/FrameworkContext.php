@@ -183,7 +183,13 @@ class FrameworkContext extends AbstractContext
             throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'id|name|label|value', $arg2);
         }
 
-        if (null === $field->find('css', 'option:contains(\''.$arg1.'\')')) {
+        if ($field->getAttribute('rn-autocomplete') === null) {
+            $option =  $field->find('css', 'option:contains(\'' . $arg1 . '\')');
+        } else {
+            $option =  $field->getParent()->find('css', '.tt-suggestion:contains(\'' . $arg1 . '\')');
+        }
+
+        if (null === $option) {
             throw new ExpectationException(sprintf('Option "%s" was expected in form field "%s"', $arg1, $arg2), $this->getSession());
         }
     }
@@ -200,7 +206,13 @@ class FrameworkContext extends AbstractContext
 
         $field = $this->getSession()->getPage()->findField($arg2);
 
-        if (null !== $field->find('css', 'option:contains(\''.$arg1.'\')')) {
+        if ($field->getAttribute('rn-autocomplete') === null) {
+            $option =  $field->find('css', 'option:contains(\'' . $arg1 . '\')');
+        } else {
+            $option =  $field->getParent()->find('css', '.tt-suggestion:contains(\'' . $arg1 . '\')');
+        }
+
+        if (null !== $option) {
             throw new ExpectationException(sprintf('Option "%s" was not expected in form field "%s"', $arg1, $arg2), $this->getSession());
         }
     }
@@ -208,7 +220,7 @@ class FrameworkContext extends AbstractContext
     /**
      * @Then /^(?:|I )should see (?<at>|at least )"(?P<count>(?:[^"]|\\")*)" options in "(?P<field>(?:[^"]|\\")*)"$/
      */
-    public function seeItemsInField($atLeast, $count, $locator)
+    public function iShouldSeeOptionsInField($atLeast, $count, $locator)
     {
         $this->waitForAngular();
 
@@ -221,12 +233,17 @@ class FrameworkContext extends AbstractContext
             throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'id|name|label|value', $locator);
         }
 
-        $optionCount = count($field->findAll('css', 'option'));
+        if ($field->getAttribute('rn-autocomplete') === null) {
+            $optionCount = count($field->findAll('css', 'option'));
+        } else {
+            $optionCount = count($field->getParent()->findAll('css', '.tt-suggestion'));
+        }
 
         if (!!$atLeast ? ($optionCount < (int) $count) : ($optionCount !== (int) $count)) {
             throw new ExpectationException(sprintf('Expected %d options for field %s, but found %d options instead', $count, $locator, $optionCount), $this->getSession()->getDriver());
         }
     }
+
 
     protected function waitForAngular()
     {
@@ -237,6 +254,10 @@ class FrameworkContext extends AbstractContext
                 })');
 
             $this->getSession()->wait(5000, 'window.__testable === true');
+        }
+
+        if ($this->getSession()->evaluateScript('return (typeof jQuery != \'undefined\')')) {
+            $this->getSession()->wait(5000, '(0 === jQuery.active && 0 === jQuery(\':animated\').length)');
         }
     }
 
