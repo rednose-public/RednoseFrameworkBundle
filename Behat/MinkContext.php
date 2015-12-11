@@ -24,7 +24,9 @@ class MinkContext extends \Behat\MinkExtension\Context\MinkContext
         }
 
         if ($element->getAttribute('rn-autocomplete') === null) {
-            return parent::fillField($field, $value);
+            parent::fillField($field, $value);
+
+            return;
         }
 
         $this->setAutocompleteValue($element, $value);
