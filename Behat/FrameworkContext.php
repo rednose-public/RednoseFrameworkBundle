@@ -168,6 +168,42 @@ class FrameworkContext extends AbstractContext
     // -- Page interactions ----------------------------------------------------
 
     /**
+     * @Then control :arg1 should have a label
+     */
+    public function controlShouldHaveALabel($arg1)
+    {
+        $field = $this->getSession()->getPage()->find('css', '[ng-model=\'' . $arg1 . '\']');
+
+        if (null === $field) {
+            throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'ng-model', $arg1);
+        }
+
+        $label = $this->getSession()->getPage()->find('css', 'label[for=\'' . $field->getAttribute('id') . '\']');
+
+        if (null === $label) {
+            throw new ExpectationException(sprintf('Control "%s" was expected to have a label', $arg1), $this->getSession());
+        }
+    }
+
+    /**
+     * @Then control :arg1 should not have a label
+     */
+    public function controlShouldNotHaveALabel($arg1)
+    {
+        $field = $this->getSession()->getPage()->find('css', '[ng-model=\'' . $arg1 . '\']');
+
+        if (null === $field) {
+            throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'ng-model', $arg1);
+        }
+
+        $label = $this->getSession()->getPage()->find('css', 'label[for=\'' . $field->getAttribute('id') . '\']');
+
+        if (null !== $label) {
+            throw new ExpectationException(sprintf('Control "%s" was expected to have no label', $arg1), $this->getSession());
+        }
+    }
+
+    /**
      * @Then I should see an option :arg1 in :arg2
      */
     public function iShouldSeeAnOptionIn($arg1, $arg2)
