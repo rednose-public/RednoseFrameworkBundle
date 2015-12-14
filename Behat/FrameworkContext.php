@@ -2,12 +2,13 @@
 
 namespace Rednose\FrameworkBundle\Behat;
 
+use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Rednose\FrameworkBundle\Model\UserInterface;
 
-class FrameworkContext extends AbstractContext
+class FrameworkContext extends AbstractContext implements SnippetAcceptingContext
 {
     /**
      * @Then /^I pause$/
@@ -15,6 +16,24 @@ class FrameworkContext extends AbstractContext
     public function iPause()
     {
         $this->getSession()->wait(3600000);
+    }
+
+    /**
+     * First, force logout, then go to the login page, fill the informations and finally go to requested page
+     *
+     * @Given /^I am connected with "([^"]*)" and "([^"]*)" on "([^"]*)"$/
+     *
+     * @param string $login
+     * @param string $rawPassword
+     * @param string $url
+     */
+    public function iAmConnectedWithOn($login, $rawPassword, $url)
+    {
+        $this->getSession()->visit($this->locatePath($url));
+
+        $this->fillField('username', $login);
+        $this->fillField('password', $rawPassword);
+        $this->pressButton('submit');
     }
 
     /**
@@ -102,6 +121,14 @@ class FrameworkContext extends AbstractContext
         foreach ($table->getHash() as $data) {
             /** @var UserInterface $admin */
             $user = $util->create($data['name'], $data['password'], $data['email'], true, isset($data['admin']));
+
+            if (isset($data['roles'])) {
+                $roles = explode(',', $data['roles']);
+
+                foreach ($roles as $role) {
+                    $user->addRole(trim($role));
+                }
+            }
 
             if (isset($data['organization'])) {
                 $manager = $this->getContainer()->get('rednose_framework.organization_manager');
