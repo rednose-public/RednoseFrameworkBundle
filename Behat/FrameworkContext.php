@@ -192,6 +192,38 @@ class FrameworkContext extends AbstractContext implements SnippetAcceptingContex
         $this->pressButton('submit');
     }
 
+    /**
+     * @Then :arg1 should have role :arg2
+     */
+    public function shouldHaveRole($arg1, $arg2)
+    {
+        $user = $this->get('rednose_framework.user_manager')->findUserByUsername($arg1);
+
+        if (!$user) {
+            throw new ExpectationException(sprintf('User "%s" not found', $arg1), $this->getSession());
+        }
+
+        if (!$user->hasRole($arg2)) {
+            throw new ExpectationException(sprintf('Expected user "%s" to have role "%s"', $arg1, $arg2), $this->getSession());
+        }
+    }
+
+    /**
+     * @Then :arg1 should not have role :arg2
+     */
+    public function shouldNotHaveRole($arg1, $arg2)
+    {
+        $user = $this->get('rednose_framework.user_manager')->findUserByUsername($arg1);
+
+        if (!$user) {
+            throw new ExpectationException(sprintf('User "%s" not found', $arg1), $this->getSession());
+        }
+
+        if ($user->hasRole($arg2)) {
+            throw new ExpectationException(sprintf('Expected user "%s" not to have role "%s"', $arg1, $arg2), $this->getSession());
+        }
+    }
+
     // -- Page interactions ----------------------------------------------------
 
     /**

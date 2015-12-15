@@ -80,6 +80,13 @@ class UserAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $roles = [];
+
+        foreach (array_keys($this->getConfigurationPool()->getContainer()->getParameter('security.role_hierarchy.roles')) as $role) {
+            $roles[$role] = $this->trans($role, [], 'SonataAdminBundle');
+            $roles[$role] = $this->trans($role, [], 'SonataAdminBundle');
+        }
+
         $user = $this->getSubject();
 
         $formMapper
@@ -87,7 +94,7 @@ class UserAdmin extends Admin
                 ->add('username', 'text', array('data' => $user->getUsername(false), 'required' => true))
                 ->add('realname')
                 ->add('email')
-                ->add('plainPassword', 'text', array('required' => false))
+                ->add('plainPassword', 'text', array('required' => !$this->getSubject()->getId()))
             ->end()
 
             ->with('Details')
@@ -102,12 +109,7 @@ class UserAdmin extends Admin
                     'expanded' => true,
                     'multiple' => true,
                     'required' => false,
-                    'choices' => array(
-                        'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
-                        'ROLE_ADMIN' => 'ROLE_ADMIN',
-                        'ROLE_DATA_ADMIN' => 'ROLE_DATA_ADMIN',
-                        'ROLE_DATA_EDITOR' => 'ROLE_DATA_EDITOR',
-                    )
+                    'choices' => $roles
                 ))
             ->end()
         ;
