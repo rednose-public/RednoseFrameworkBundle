@@ -86,7 +86,6 @@ class UserAdmin extends Admin
 
         foreach (array_keys($this->getConfigurationPool()->getContainer()->getParameter('security.role_hierarchy.roles')) as $role) {
             $roles[$role] = $this->trans($role, [], 'SonataAdminBundle');
-            $roles[$role] = $this->trans($role, [], 'SonataAdminBundle');
         }
 
         $user = $this->getSubject();
