@@ -136,6 +136,11 @@ class FrameworkContext extends AbstractContext implements SnippetAcceptingContex
 
                 foreach ($groups as $group) {
                     $group = trim($group);
+
+                    if (!$group) {
+                        continue;
+                    }
+
                     $model = $this->get('rednose_framework.group_manager')->findGroupByName($group);
 
                     if (!$model) {
