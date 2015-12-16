@@ -210,16 +210,4 @@ class User extends BaseUser implements UserInterface
     {
         return $this->getUsername() === $user->getUsername();
     }
-
-    /**
-     * @return array
-     */
-    public function getRoles()
-    {
-        return $this->roles;
-    }
-
-    public function setRoles(array $roles)
-    {
-    }
 }
