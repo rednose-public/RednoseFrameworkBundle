@@ -18,6 +18,13 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 class GroupAdmin extends AbstractAdmin
 {
+    protected $datagridValues = array(
+        '_page'       => 1,
+        '_per_page'   => 25,
+        '_sort_order' => 'ASC',
+        '_sort_by'    => 'name',
+    );
+
     /**
      * {@inheritdoc}
      */

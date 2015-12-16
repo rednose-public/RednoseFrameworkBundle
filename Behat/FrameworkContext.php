@@ -6,6 +6,7 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Rednose\FrameworkBundle\Entity\Group;
 use Rednose\FrameworkBundle\Model\UserInterface;
 
 class FrameworkContext extends AbstractContext implements SnippetAcceptingContext
@@ -127,6 +128,23 @@ class FrameworkContext extends AbstractContext implements SnippetAcceptingContex
 
                 foreach ($roles as $role) {
                     $user->addRole(trim($role));
+                }
+            }
+
+            if (isset($data['groups'])) {
+                $groups = explode(',', $data['groups']);
+
+                foreach ($groups as $group) {
+                    $group = trim($group);
+                    $model = $this->get('rednose_framework.group_manager')->findGroupByName($group);
+
+                    if (!$model) {
+                        $model = new Group($group);
+                        $model->setOrganization($this->get('rednose_framework.organization_manager')->findOrganizationBy(['name' => 'Test']));
+                        $this->get('rednose_framework.group_manager')->updateGroup($model);
+                    }
+
+                    $user->addGroup($model);
                 }
             }
 

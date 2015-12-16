@@ -19,6 +19,13 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 class OrganizationAdmin extends Admin
 {
+    protected $datagridValues = array(
+        '_page'       => 1,
+        '_per_page'   => 25,
+        '_sort_order' => 'ASC',
+        '_sort_by'    => 'name',
+    );
+
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('export');
