@@ -6,3 +6,33 @@
 .navbar-custom-menu {
     float: right !important;
 }
+
+.sonata-tree {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 15px;
+    margin-right: 15px;
+    overflow: hidden;
+    padding-bottom: 10px;
+}
+
+.sonata-tree ul {
+    list-style: none;
+    padding-left: 30px;
+}
+
+.sonata-tree--toggleable .sonata-tree__item {
+    margin-left: 20px;
+}
+
+.sonata-tree__item {
+    display: block;
+    padding: 7px 15px 7px 7px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    position: relative;
+    margin-bottom: 5px;
+    margin-right: 10px;
+    color: #444;
+    background: #fff;
+}
