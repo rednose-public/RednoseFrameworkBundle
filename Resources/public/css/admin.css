@@ -7,6 +7,10 @@
     float: right !important;
 }
 
+.sonata-tree__item__edit {
+    font-weight: bold;
+}
+
 .sonata-tree {
     list-style: none;
     padding-left: 0;
