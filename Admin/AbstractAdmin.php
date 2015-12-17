@@ -9,6 +9,14 @@ use Sonata\AdminBundle\Route\RouteCollection;
 abstract class AbstractAdmin extends Admin
 {
     /**
+     * Enable acl by default (to hide the edit ACL button)
+     */
+    public function isAclEnabled()
+    {
+        return false;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getListModes()

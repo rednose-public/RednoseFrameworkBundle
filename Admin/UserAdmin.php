@@ -22,6 +22,14 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 class UserAdmin extends Admin
 {
+    /**
+     * @return bool
+     */
+    public function isAclEnabled()
+    {
+        return false;
+    }
+
     protected $datagridValues = array(
         '_page'       => 1,
         '_per_page'   => 25,
