@@ -19,6 +19,22 @@ class FrameworkContext extends AbstractContext
     }
 
     /**
+     * @Given /^I am connected with "([^"]*)" and "([^"]*)" on "([^"]*)"$/
+     *
+     * @param string $login
+     * @param string $rawPassword
+     * @param string $url
+     */
+    public function iAmConnectedWithOn($login, $rawPassword, $url)
+    {
+        $this->getSession()->visit($this->locatePath($url));
+
+        $this->fillField('username', $login);
+        $this->fillField('password', $rawPassword);
+        $this->pressButton('submit');
+    }
+
+    /**
      * @Given /^I am logged in as administrator$/
      */
     public function iAmLoggedInAsAdministrator($organization)
