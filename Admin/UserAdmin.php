@@ -11,7 +11,9 @@
 
 namespace Rednose\FrameworkBundle\Admin;
 
+use Doctrine\ORM\EntityManager;
 use FOS\UserBundle\Model\UserManagerInterface;
+use Rednose\FrameworkBundle\Model\GroupInterface;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -20,6 +22,13 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 class UserAdmin extends Admin
 {
+    protected $datagridValues = array(
+        '_page'       => 1,
+        '_per_page'   => 25,
+        '_sort_order' => 'ASC',
+        '_sort_by'    => 'username',
+    );
+
     /**
      * @var UserManagerInterface
      */
@@ -90,6 +99,12 @@ class UserAdmin extends Admin
 
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $roles = [];
+
+        foreach (array_keys($this->getConfigurationPool()->getContainer()->getParameter('security.role_hierarchy.roles')) as $role) {
+            $roles[$role] = $this->trans($role, [], 'SonataAdminBundle');
+        }
+
         $user = $this->getSubject();
 
         $formMapper
@@ -97,20 +112,52 @@ class UserAdmin extends Admin
                 ->add('username', 'text', array('data' => $user->getUsername(false), 'required' => true))
                 ->add('realname')
                 ->add('email')
-                ->add('plainPassword', 'text', array('required' => false))
+                ->add('plainPassword', 'text', array('required' => !$this->getSubject()->getId()))
             ->end()
 
             ->with('Details')
-                ->add('organization', 'sonata_type_model', array('required' => false,'multiple' => false))
-                ->add('groups', 'sonata_type_model', array('required' => false,'multiple' => true))
+                ->add('organization', 'sonata_type_model', array('required' => false, 'multiple' => false))
+                ->add('groups', 'entity', array(
+                    'class' => 'RednoseFrameworkBundle:Group',
+                    'property' => 'name',
+                    'required' => false,
+                    'multiple' => true,
+                    'choices' => $this->getGroups(),
+                ))
                 ->add('enabled', 'checkbox', array('required' => false))
                 ->add('locked', 'checkbox', array('required' => false))
-                ->add('Admin', 'checkbox', array('required' => false))
-                ->add('superAdmin', 'checkbox', array('required' => false))
             ->end()
 
-            ->setHelps(array(
-               'username' => $this->trans('help_user_username')
-            ));
+            ->with('Roles')
+                ->add('roles', 'choice', array(
+                    'expanded' => true,
+                    'multiple' => true,
+                    'required' => false,
+                    'choices' => $roles
+                ))
+            ->end()
+        ;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getGroups()
+    {
+        /** @var EntityManager $em */
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
+
+        $choices = [];
+
+        /** @var GroupInterface $group */
+        foreach ($em->getRepository('RednoseFrameworkBundle:Group')->findBy([], ['name' => 'ASC']) as $group) {
+            if (!isset($choices[$group->getOrganization()->getName()])) {
+                $choices[$group->getOrganization()->getName()] = [];
+            }
+
+            $choices[$group->getOrganization()->getName()][$group->getId()] = $group;
+        }
+
+        return $choices;
     }
 }

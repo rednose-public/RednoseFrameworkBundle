@@ -11,18 +11,22 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
-use FOS\UserBundle\Entity\Group as BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Entity\Group as BaseGroup;
 use Rednose\FrameworkBundle\Model\GroupInterface;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
+use Rednose\FrameworkBundle\Model\UserInterface;
 
 /**
- * A Usergroup
+ * A User-group
  *
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_group")
  */
 class Group extends BaseGroup implements GroupInterface
 {
+    use HasOrganizationTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="guid")
@@ -48,14 +52,36 @@ class Group extends BaseGroup implements GroupInterface
         parent::__construct($name, $roles);
     }
 
+    /**
+     * @param UserInterface[] $users
+     */
     public function setUsers($users)
     {
         $this->users = $users;
     }
 
+    /**
+     * @return UserInterface[]
+     */
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * @return OrganizationInterface
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @param OrganizationInterface $organization
+     */
+    public function setOrganization(OrganizationInterface $organization)
+    {
+        $this->organization = $organization;
     }
 
     /**

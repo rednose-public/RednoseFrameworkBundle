@@ -5,6 +5,7 @@ namespace Rednose\FrameworkBundle\Behat;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Rednose\FrameworkBundle\Entity\Group;
 use Rednose\FrameworkBundle\Model\UserInterface;
 
 class FrameworkContext extends AbstractContext
@@ -103,6 +104,36 @@ class FrameworkContext extends AbstractContext
             /** @var UserInterface $admin */
             $user = $util->create($data['name'], $data['password'], $data['email'], true, isset($data['admin']));
 
+            if (isset($data['roles'])) {
+                $roles = explode(',', $data['roles']);
+
+                foreach ($roles as $role) {
+                    $user->addRole(trim($role));
+                }
+            }
+
+            if (isset($data['groups'])) {
+                $groups = explode(',', $data['groups']);
+
+                foreach ($groups as $group) {
+                    $group = trim($group);
+
+                    if (!$group) {
+                        continue;
+                    }
+
+                    $model = $this->get('rednose_framework.group_manager')->findGroupByName($group);
+
+                    if (!$model) {
+                        $model = new Group($group);
+                        $model->setOrganization($this->get('rednose_framework.organization_manager')->findOrganizationBy(['name' => 'Test']));
+                        $this->get('rednose_framework.group_manager')->updateGroup($model);
+                    }
+
+                    $user->addGroup($model);
+                }
+            }
+
             if (isset($data['organization'])) {
                 $manager = $this->getContainer()->get('rednose_framework.organization_manager');
                 $organization = $manager->findOrganizationBy(array('name' => $data['organization']));
@@ -163,6 +194,38 @@ class FrameworkContext extends AbstractContext
         $this->fillField('username', 'user');
         $this->fillField('password', 'userpasswd');
         $this->pressButton('submit');
+    }
+
+    /**
+     * @Then :arg1 should have role :arg2
+     */
+    public function shouldHaveRole($arg1, $arg2)
+    {
+        $user = $this->get('rednose_framework.user_manager')->findUserByUsername($arg1);
+
+        if (!$user) {
+            throw new ExpectationException(sprintf('User "%s" not found', $arg1), $this->getSession());
+        }
+
+        if (!$user->hasRole($arg2)) {
+            throw new ExpectationException(sprintf('Expected user "%s" to have role "%s"', $arg1, $arg2), $this->getSession());
+        }
+    }
+
+    /**
+     * @Then :arg1 should not have role :arg2
+     */
+    public function shouldNotHaveRole($arg1, $arg2)
+    {
+        $user = $this->get('rednose_framework.user_manager')->findUserByUsername($arg1);
+
+        if (!$user) {
+            throw new ExpectationException(sprintf('User "%s" not found', $arg1), $this->getSession());
+        }
+
+        if ($user->hasRole($arg2)) {
+            throw new ExpectationException(sprintf('Expected user "%s" not to have role "%s"', $arg1, $arg2), $this->getSession());
+        }
     }
 
     // -- Page interactions ----------------------------------------------------
