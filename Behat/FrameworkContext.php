@@ -360,6 +360,7 @@ class FrameworkContext extends AbstractContext
     }
 
 
+
     protected function waitForAngular()
     {
         if ($this->getSession()->evaluateScript('return (typeof angular !== \'undefined\')')) {
