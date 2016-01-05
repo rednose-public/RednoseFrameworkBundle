@@ -62,8 +62,8 @@ abstract class AbstractAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureRoutes(RouteCollection $collection)
+    public function getExportFormats()
     {
-        $collection->remove('export');
+        return [];
     }
 }
