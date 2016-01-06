@@ -51,7 +51,6 @@ class OrganizationAdmin extends Admin
             ->with('General')
                 ->add('name')
                 ->add('conditions', 'array', array('label' => 'User assignment conditions'));
-
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -65,6 +64,13 @@ class OrganizationAdmin extends Admin
                     'by_reference' => false,
                     'label'        => 'User assignment conditions',
                     'required'     => false,
-                ));
+                ))
+            ->end()
+            ->with('Localization')
+                ->add('locale', 'locale')
+                ->add('localizations', 'locale', array(
+                    'multiple' => true,
+                ))
+        ;
     }
 }
