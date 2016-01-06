@@ -3,7 +3,7 @@
 namespace Rednose\FrameworkBundle\Request\ParamConverter;
 
 use Rednose\FrameworkBundle\Model\OrganizationManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -26,14 +26,9 @@ class OrganizationParamConverter implements ParamConverterInterface
     }
 
     /**
-     * Stores the object in the request.
-     *
-     * @param Request                $request       The request
-     * @param ConfigurationInterface $configuration Contains the name, class and options of the object
-     *
-     * @return boolean True if the object has been successfully set, else false
+     * {@inheritdoc}
      */
-    public function apply(Request $request, ConfigurationInterface $configuration)
+    public function apply(Request $request, ParamConverter $configuration)
     {
         $id = $request->query->get('organization_id');
 
@@ -51,13 +46,9 @@ class OrganizationParamConverter implements ParamConverterInterface
     }
 
     /**
-     * Checks if the object is supported.
-     *
-     * @param ConfigurationInterface $configuration Should be an instance of ParamConverter
-     *
-     * @return boolean True if the object is supported, else false
+     * {@inheritdoc}
      */
-    public function supports(ConfigurationInterface $configuration)
+    public function supports(ParamConverter $configuration)
     {
         return $configuration->getClass() === 'Rednose\FrameworkBundle\Model\OrganizationInterface';
     }

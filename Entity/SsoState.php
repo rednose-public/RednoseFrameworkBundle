@@ -2,14 +2,13 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
-use AerialShip\SamlSPBundle\Entity\SSOStateEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_sso_state")
  */
-class SsoState extends SSOStateEntity
+class SsoState extends \AerialShip\SamlSPBundle\Model\SSOState
 {
     /**
      * @ORM\Id

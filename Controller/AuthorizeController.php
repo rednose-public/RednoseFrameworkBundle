@@ -11,15 +11,13 @@
 
 namespace Rednose\FrameworkBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Core\SecurityContext;
-use Symfony\Component\HttpFoundation\Request;
 use FOS\OAuthServerBundle\Controller\AuthorizeController as BaseAuthorizeController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FOS\RestBundle\Controller\Annotations\RequestParam;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Rednose\FrameworkBundle\Form\Model\Authorize;
 use Rednose\FrameworkBundle\Entity\Client;
+use Rednose\FrameworkBundle\Form\Model\Authorize;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AuthorizeController extends Controller
 {
@@ -72,10 +70,6 @@ class AuthorizeController extends Controller
      * @RequestParam(name="client_secret", strict=true, requirements="String", description="The secret for the client application.")
      * @RequestParam(name="username", strict=true, requirements="String", description="The user's username.")
      * @RequestParam(name="password", strict=true, requirements="String", description="The user's password.")
-     *
-     * @ApiDoc(
-     *     section="OAuth 2.0"
-     * )
      */
     public function tokenAction(Request $request)
     {
