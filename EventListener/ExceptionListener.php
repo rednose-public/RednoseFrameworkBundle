@@ -58,8 +58,14 @@ class ExceptionListener implements EventSubscriberInterface
 
         $accept = AcceptHeader::fromString($request->headers->get('Accept'));
 
+        // Do not apply templating to a xml content-type response.
+        if (strpos($request->headers->get('Content-Type'), '/xml') !== false) {
+            return;
+        }
+
         if ($request->headers->get('Content-Type') === 'application/json' || $accept->has('application/json')) {
-            $event->setResponse(new MessageResponse(new Message($exception->getMessage(), Message::ERROR_TYPE)));
+            $type = $exception instanceof NotFoundHttpException ? Message::WARNING_TYPE : Message::ERROR_TYPE;
+            $event->setResponse(new MessageResponse(new Message($exception->getMessage(), $type)));
 
             return;
         }

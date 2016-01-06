@@ -22,11 +22,19 @@ class OrganizationManager implements OrganizationManagerInterface
     }
 
     /**
+     * @param string $name
+     *
      * @return OrganizationInterface
      */
-    public function createOrganization()
+    public function createOrganization($name = null)
     {
-        return new Organization();
+        $organization = new Organization();
+
+        if ($name !== null) {
+            $organization->setName($name);
+        }
+
+        return $organization;
     }
 
     /**
@@ -55,6 +63,16 @@ class OrganizationManager implements OrganizationManagerInterface
     public function findOrganizationById($id)
     {
         return $this->em->getRepository('Rednose\FrameworkBundle\Entity\Organization')->findOneBy(array('id' => $id));
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return OrganizationInterface
+     */
+    public function findOrganizationByName($name)
+    {
+        return $this->em->getRepository('Rednose\FrameworkBundle\Entity\Organization')->findOneBy(array('name' => $name));
     }
 
     /**

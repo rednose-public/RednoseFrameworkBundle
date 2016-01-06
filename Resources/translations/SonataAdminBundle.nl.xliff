@@ -27,6 +27,23 @@
                 <source>search_placeholder</source>
                 <target>Type hier om te zoeken…</target>
             </trans-unit>
+            <!--Roles-->
+            <trans-unit id="ROLE_SUPER_ADMIN">
+                <source>ROLE_SUPER_ADMIN</source>
+                <target>Super admin</target>
+            </trans-unit>
+            <trans-unit id="ROLE_ADMIN">
+                <source>ROLE_ADMIN</source>
+                <target>Admin</target>
+            </trans-unit>
+            <trans-unit id="ROLE_DOCTANIUM_DATAGEN_ADMIN_TABLE_ADMIN">
+                <source>ROLE_DOCTANIUM_DATAGEN_ADMIN_TABLE_ADMIN</source>
+                <target>Data tabellenbeheerder</target>
+            </trans-unit>
+            <trans-unit id="ROLE_DOCTANIUM_DATAGEN_ADMIN_RECORD_ADMIN">
+                <source>ROLE_DOCTANIUM_DATAGEN_ADMIN_RECORD_ADMIN</source>
+                <target>Data recordbeheerder</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

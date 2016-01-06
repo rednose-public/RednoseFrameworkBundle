@@ -11,7 +11,6 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Rednose\FrameworkBundle\Model\Organization as BaseOrganization;
@@ -20,18 +19,10 @@ use Rednose\FrameworkBundle\Model\Organization as BaseOrganization;
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_organization")
  *
- * @Serializer\AccessorOrder("custom", custom = {"id", "name" ,"DataDictionaryId"})
+ * @Serializer\AccessorOrder("custom", custom = {"id", "name"})
  */
 class Organization extends BaseOrganization
 {
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->locale = new ArrayCollection();
-    }
-
     /**
      * @ORM\Id
      * @ORM\Column(type="guid")
@@ -51,16 +42,16 @@ class Organization extends BaseOrganization
     protected $name;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity="Locale",
-     *     orphanRemoval=true,
-     *     mappedBy="organization",
-     *     cascade={"persist", "remove"}
-     * )
+     * @ORM\Column(type="string", nullable=true)
      *
-     * @Serializer\Groups({"list"})
+     * @Serializer\Groups({"list", "details"})
      */
-    protected $locale;
+    protected $locale = 'nl_NL';
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    protected $localizations = ['nl_NL', 'en_GB'];
 
     /**
      * @ORM\Column(type="array", nullable=true)

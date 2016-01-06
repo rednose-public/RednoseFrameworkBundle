@@ -35,7 +35,16 @@ interface OrganizationManagerInterface
     public function findOrganizationBy(array $criteria);
 
     /**
+     * @param string $name
+     *
      * @return OrganizationInterface
      */
-    public function createOrganization();
+    public function createOrganization($name = null);
+
+    /**
+     * @param string $name
+     *
+     * @return OrganizationInterface
+     */
+    public function findOrganizationByName($name);
 }

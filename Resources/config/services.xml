@@ -18,9 +18,16 @@
         <parameter key="rednose_framework.listener.assign_organization.class">Rednose\FrameworkBundle\EventListener\AssignOrganizationListener</parameter>
 
         <parameter key="rednose_framework.form.type.file.class">Rednose\FrameworkBundle\Form\Type\FileType</parameter>
+        <parameter key="rednose_framework.organization_context.class">Rednose\FrameworkBundle\Context\OrganizationContext</parameter>
+
+        <parameter key="rednose_framework.thumbnail_generator.class">Rednose\FrameworkBundle\Thumbnail\ThumbnailGenerator</parameter>
     </parameters>
 
     <services>
+        <service id="rednose_framework.organization_context" class="%rednose_framework.organization_context.class%">
+            <argument type="service" id="security.context" />
+        </service>
+
         <!-- Exceptions -->
         <service id="rednose_framework.exceptionhandler" class="%rednose_framework.exceptionhandler.class%">
             <argument type="service" id="kernel" />
@@ -104,6 +111,15 @@
 
         <service id="rednose_framework.form.type.file.class" class="%rednose_framework.form.type.file.class%">
             <tag name="form.type" alias="rednose_file" />
+        </service>
+
+        <service id="rednose_framework.organization_serialization_listener" class="Rednose\FrameworkBundle\EventListener\OrganizationSerializationListener">
+            <argument type="service" id="translator" />
+            <tag name="jms_serializer.event_subscriber" event="serializer.post_serialize" method="onPostSerialize" priority="-64" />
+        </service>
+
+        <service id="rednose_framework.thumbnail_generator" class="%rednose_framework.thumbnail_generator.class%">
+            <argument type="service" id="rednose_framework.cache.cache_factory"/>
         </service>
     </services>
 </container>

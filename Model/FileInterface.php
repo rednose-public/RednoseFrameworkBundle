@@ -65,4 +65,14 @@ interface FileInterface
      * @return string
      */
     public function getTempDir();
+
+    /**
+     * @return string
+     */
+    public function getExtension();
+
+    /**
+     * @param string $extension
+     */
+    public function setExtension($extension);
 }

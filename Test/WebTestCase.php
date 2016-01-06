@@ -7,7 +7,7 @@ use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class WebTestCase extends BaseWebTestCase
+abstract class WebTestCase extends BaseWebTestCase
 {
     /**
      * @var ContainerInterface
