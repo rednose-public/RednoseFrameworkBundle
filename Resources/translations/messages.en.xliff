@@ -54,14 +54,6 @@
                 <source>languages</source>
                 <target>Languages</target>
             </trans-unit>
-            <trans-unit id="type_here_placeholder">
-                <source>type_here_placeholder</source>
-                <target>Type here…</target>
-            </trans-unit>
-            <trans-unit id="type_to_search_placeholder">
-                <source>type_to_search_placeholder</source>
-                <target>Type here to search…</target>
-            </trans-unit>
             <trans-unit id="language_choice_label">
                 <source>language_choice_label</source>
                 <target>Language</target>

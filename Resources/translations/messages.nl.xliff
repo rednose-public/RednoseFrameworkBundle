@@ -38,15 +38,6 @@
                 <source>sign_in_button</source>
                 <target>Inloggen</target>
             </trans-unit>
-            <!--Forms-->
-            <trans-unit id="type_here_placeholder">
-                <source>type_here_placeholder</source>
-                <target>Vul hier de tekst in…</target>
-            </trans-unit>
-            <trans-unit id="type_to_search_placeholder">
-                <source>type_to_search_placeholder</source>
-                <target>Type hier om te zoeken…</target>
-            </trans-unit>
             <!--Admin-->
             <trans-unit id="users">
                 <source>users</source>
