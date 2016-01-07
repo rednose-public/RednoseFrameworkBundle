@@ -39,7 +39,7 @@ class SecurityController extends Controller
             $error = $request->getSession()->get(SecurityContext::AUTHENTICATION_ERROR);
         }
 
-        $csrfToken = $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate');
+        $csrfToken = $this->container->get('security.csrf.token_manager')->getToken('authenticate');
 
         return $this->render('RednoseFrameworkBundle:Security:login.html.twig', array(
             'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
