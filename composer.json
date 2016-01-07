@@ -39,5 +39,10 @@
     "autoload": {
         "psr-0": { "Rednose\\FrameworkBundle": "" }
     },
-    "target-dir": "Rednose/FrameworkBundle"
+    "target-dir": "Rednose/FrameworkBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.8-dev"
+        }
+    }
 }
