@@ -11,15 +11,15 @@
 
 namespace Rednose\FrameworkBundle\Controller;
 
+use  Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
 
 class SecurityController extends Controller
 {
-    public function loginAction()
+    public function loginAction(Request $request)
     {
         $userManager = $this->get('rednose_framework.user_manager');
-        $request = $this->get('request');
 
         // Token authentication
         if ($userManager->tokenAuthentication($this->container)) {
@@ -42,7 +42,7 @@ class SecurityController extends Controller
         $csrfToken = $this->container->get('security.csrf.token_manager')->getToken('authenticate');
 
         return $this->render('RednoseFrameworkBundle:Security:login.html.twig', array(
-            'last_username' => $this->get('request')->getSession()->get(SecurityContext::LAST_USERNAME),
+            'last_username' => $request->getSession()->get(SecurityContext::LAST_USERNAME),
             'csrf_token'    => $csrfToken,
             'error'         => $error
         ));
