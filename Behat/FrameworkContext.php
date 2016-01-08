@@ -7,83 +7,37 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Rednose\FrameworkBundle\Entity\Group;
 use Rednose\FrameworkBundle\Model\UserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class FrameworkContext extends AbstractContext
 {
     /**
-     * @Then /^I pause$/
+     * @Given /^I am logged in as "([^"]*)"$/
      */
-    public function iPause()
+    public function iAmLoggedInAs($username)
     {
-        $this->getSession()->wait(3600000);
-    }
+        $session = $this->getContainer()->get('session');
 
-    /**
-     * @Given /^I am connected with "([^"]*)" and "([^"]*)" on "([^"]*)"$/
-     *
-     * @param string $login
-     * @param string $rawPassword
-     * @param string $url
-     */
-    public function iAmConnectedWithOn($login, $rawPassword, $url)
-    {
-        $this->getSession()->visit($this->locatePath($url));
+        $user = $this->getContainer()->get('rednose_framework.user_manager')->findUserByUsername($username);
+        $providerKey = $this->getContainer()->getParameter('fos_user.firewall_name');
 
-        $this->fillField('username', $login);
-        $this->fillField('password', $rawPassword);
-        $this->pressButton('submit');
-    }
+        $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
+        $session->set('_security_'.$providerKey, serialize($token));
 
-    /**
-     * @Given /^I am logged in as administrator$/
-     */
-    public function iAmLoggedInAsAdministrator($organization)
-    {
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        // Assume 'user' firewall context as well
+        $session->set('_security_user', serialize($token));
 
-        $admin = $this->getContainer()->get('rednose_framework.user_manager')->findUserByUsername('admin');
-        $admin->setOrganization($organization);
+        $session->save();
 
-        $em->persist($admin);
-        $em->flush();
+        // Hack for Selenium
+        // Before setting a cookie the browser needs to be launched
+        if ($this->getSession()->getDriver() instanceof \Behat\Mink\Driver\Selenium2Driver) {
+            $this->getSession()->visit($this->generateUrl('_rednose_framework_security_login'));
+        }
 
-        $this->login('admin', 'adminpasswd');
-    }
-
-    /**
-     * @Given /^I am logged in as user$/
-     */
-    public function iAmLoggedInAsUser($organization = null)
-    {
-        $util = $this->getContainer()->get('fos_user.util.user_manipulator');
-        $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
-
-        /** @var UserInterface $admin */
-        $user = $util->create('user', 'userpasswd', 'user@rednose.nl', true, false);
-        $user->setOrganization($organization);
-
-        $em->persist($user);
-        $em->flush();
-
-        $this->login('user', 'userpasswd');
-    }
-
-    /**
-     * @Given /^I am logged in as administrator for organization "([^"]*)"$/
-     */
-    public function iAmLoggedInAsAdministratorForOrganization($organization)
-    {
-        $organization = $this->getOrganization($organization);
-        $this->iAmLoggedInAsAdministrator($organization);
-    }
-
-    /**
-     * @Given /^I am logged in as user for organization "([^"]*)"$/
-     */
-    public function iAmLoggedInAsUserForOrganization($organization)
-    {
-        $organization = $this->getOrganization($organization);
-        $this->iAmLoggedInAsUser($organization);
+        // Set the cookie
+        $minkSession = $this->getSession();
+        $minkSession->setCookie($session->getName(), $session->getId());
     }
 
     /**
@@ -167,50 +121,6 @@ class FrameworkContext extends AbstractContext
 
             $um->updateUser($user);
         }
-    }
-
-    /**
-     * @Given /^I log in as admin for organization "([^"]*)"$/
-     */
-    public function imLogInAsAdminForOrganization($organization)
-    {
-        $organization = $this->getOrganization($organization);
-
-        $util = $this->getContainer()->get('fos_user.util.user_manipulator');
-        $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
-
-        /** @var UserInterface $admin */
-        $user = $util->create('testadmin', 'testadmin', 'testadmin@rednose.nl', true, true);
-        $user->setOrganization($organization);
-
-        $em->persist($user);
-        $em->flush();
-
-        $this->fillField('username', 'testadmin');
-        $this->fillField('password', 'testadmin');
-        $this->pressButton('submit');
-    }
-
-    /**
-     * @Given /^I log in as user for organization "([^"]*)"$/
-     */
-    public function imLogInAsUserForOrganization($organization)
-    {
-        $organization = $this->getOrganization($organization);
-
-        $util = $this->getContainer()->get('fos_user.util.user_manipulator');
-        $em   = $this->getContainer()->get('doctrine.orm.entity_manager');
-
-        /** @var UserInterface $admin */
-        $user = $util->create('user', 'userpasswd', 'user@rednose.nl', true, false);
-        $user->setOrganization($organization);
-
-        $em->persist($user);
-        $em->flush();
-
-        $this->fillField('username', 'user');
-        $this->fillField('password', 'userpasswd');
-        $this->pressButton('submit');
     }
 
     /**
@@ -360,8 +270,6 @@ class FrameworkContext extends AbstractContext
         }
     }
 
-
-
     protected function waitForAngular()
     {
         if ($this->getSession()->evaluateScript('return (typeof angular !== \'undefined\')')) {
@@ -404,18 +312,5 @@ class FrameworkContext extends AbstractContext
         $organization = $manager->createOrganization();
         $organization->setName($data['name']);
         $manager->updateOrganization($organization);
-    }
-
-    /**
-     * @param string $name
-     * @param string $password
-     */
-    private function login($name, $password)
-    {
-        $this->getSession()->visit($this->generateUrl('_rednose_framework_security_login'));
-
-        $this->fillField('username', $name);
-        $this->fillField('password', $password);
-        $this->pressButton('submit');
     }
 }
