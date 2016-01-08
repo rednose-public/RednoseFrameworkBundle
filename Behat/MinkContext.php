@@ -29,26 +29,17 @@ class MinkContext extends \Behat\MinkExtension\Context\MinkContext implements Ke
      */
     public function iAmLoggedInAs($username)
     {
-//        // Destroy the previous session
-//        if (Session::isStarted()) {
-//            Session::regenerate(true);
-//        } else {
-//            Session::start();
-//        }
-
         $session = $this->getContainer()->get('session');
 
-        // Login the user and since the driver and this code now
-        // share a session this will also login the driver session
         $user = $this->getContainer()->get('rednose_framework.user_manager')->findUserByUsername($username);
         $providerKey = $this->getContainer()->getParameter('fos_user.firewall_name');
 
         $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
         $session->set('_security_'.$providerKey, serialize($token));
-//        Auth::login($user);
 
-        // Save the session data to disk or to memcache
-//        Session::save();
+        // Assume 'user' firewall context as well
+        $session->set('_security_user', serialize($token));
+
         $session->save();
 
         // Hack for Selenium
@@ -57,16 +48,8 @@ class MinkContext extends \Behat\MinkExtension\Context\MinkContext implements Ke
             $this->visit('login');
         }
 
-        // Get the session identifier for the cookie
-//        $encryptedSessionId = Crypt::encrypt(Session::getId());
-//        $cookieName = Session::getName();
-
-//        $cookie = new Cookie($session->getName(), $session->getId());
-//        $client->getCookieJar()->set($cookie);
-
         // Set the cookie
         $minkSession = $this->getSession();
-//        $minkSession->setCookie($cookieName, $encryptedSessionId);
         $minkSession->setCookie($session->getName(), $session->getId());
     }
 
