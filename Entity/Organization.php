@@ -63,6 +63,14 @@ class Organization extends BaseOrganization
     protected $conditions;
 
     /**
+     * @param string $name
+     */
+    public function __construct($name = null)
+    {
+        $this->name = $name;
+    }
+
+    /**
      * @return string
      */
     public function __toString()

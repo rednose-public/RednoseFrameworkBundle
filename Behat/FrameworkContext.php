@@ -110,6 +110,7 @@ class FrameworkContext extends AbstractContext
      * @param TableNode $table
      *
      * @Given /^the following users are defined:$/
+     * @Given /^there are users:$/
      */
     public function thereAreUsers(TableNode $table)
     {
@@ -118,7 +119,7 @@ class FrameworkContext extends AbstractContext
 
         foreach ($table->getHash() as $data) {
             /** @var UserInterface $admin */
-            $user = $util->create($data['name'], $data['password'], $data['email'], true, isset($data['admin']));
+            $user = $util->create($data['username'], $data['password'], $data['email'], true, isset($data['admin']));
 
             if (isset($data['roles'])) {
                 $roles = explode(',', $data['roles']);
