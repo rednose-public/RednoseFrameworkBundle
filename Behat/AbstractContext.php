@@ -5,6 +5,7 @@ namespace Rednose\FrameworkBundle\Behat;
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -93,5 +94,13 @@ abstract class AbstractContext extends RawMinkContext implements Context, Kernel
     protected function fixStepArgument($argument)
     {
         return str_replace('\\"', '"', $argument);
+    }
+
+    /**
+     * @return EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->getContainer()->get('doctrine.orm.entity_manager');
     }
 }
