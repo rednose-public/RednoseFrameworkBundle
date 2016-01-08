@@ -122,7 +122,7 @@
             <argument type="service" id="rednose_framework.cache.cache_factory"/>
         </service>
 
-        <service id="security.access.post_voter" class="Rednose\FrameworkBundle\Security\Authorization\Voter\HasOrganizationVoter" public="false">
+        <service id="security.access.has_organization_voter" class="Rednose\FrameworkBundle\Security\Authorization\Voter\HasOrganizationVoter" public="false">
             <tag name="security.voter"/>
         </service>
     </services>
