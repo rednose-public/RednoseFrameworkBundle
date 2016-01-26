@@ -244,6 +244,34 @@ class FrameworkContext extends AbstractContext
     }
 
     /**
+     * @Then I should see an selected option :arg1 in :arg2
+     */
+    public function iShouldSeeSelectedOptionInField($arg1, $arg2)
+    {
+        $this->waitForAngular();
+
+        $arg1 = $this->fixStepArgument($arg1);
+        $arg2 = $this->fixStepArgument($arg2);
+
+        $field = $this->getSession()->getPage()->findField($arg2);
+
+        if ($arg1 === $field->getValue()) {
+            return;
+        }
+
+        // Option innerHTML
+        if ($option = $field->find
+        ('css', 'option[selected]')) {
+            if ($option->getHtml() === $arg1) {
+                return;
+            }
+
+        }
+
+        throw new ExpectationException(sprintf('Option "%s" was not found in form field "%s"', $arg1, $arg2), $this->getSession());
+    }
+
+    /**
      * @Then /^(?:|I )should see (?<at>|at least )"(?P<count>(?:[^"]|\\")*)" options in "(?P<field>(?:[^"]|\\")*)"$/
      */
     public function iShouldSeeOptionsInField($atLeast, $count, $locator)
