@@ -3,6 +3,7 @@
 namespace Rednose\FrameworkBundle\Behat;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Rednose\FrameworkBundle\Entity\Group;
@@ -284,19 +285,16 @@ class FrameworkContext extends AbstractContext
 
         $field = $this->getSession()->getPage()->findField($arg2);
 
-        if ($arg1 === $field->getValue()) {
-            return;
-        }
+        $options = $field->findAll('css', 'option');
 
-        // Option innerHTML
-        if ($option = $field->find('css', 'option[selected]')) {
-            if ($option->getHtml() === $arg1) {
+        /** @var NodeElement $option */
+        foreach ($options as $option) {
+            if ($option->isSelected()) {
                 return;
             }
-
         }
 
-        throw new ExpectationException(sprintf('Option "%s" was not found in form field "%s"', $arg1, $arg2), $this->getSession());
+        throw new ExpectationException(sprintf('Option "%s" was not found or selected in form field "%s"', $arg1, $arg2), $this->getSession());
     }
 
     /**
