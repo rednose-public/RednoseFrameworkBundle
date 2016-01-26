@@ -260,8 +260,7 @@ class FrameworkContext extends AbstractContext
         }
 
         // Option innerHTML
-        if ($option = $field->find
-        ('css', 'option[selected]')) {
+        if ($option = $field->find('css', 'option[selected]')) {
             if ($option->getHtml() === $arg1) {
                 return;
             }
