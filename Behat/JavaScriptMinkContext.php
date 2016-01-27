@@ -11,7 +11,7 @@ class JavaScriptMinkContext extends \Behat\MinkExtension\Context\MinkContext
     /**
      * @BeforeStep
      */
-    public function waitForAngular(BeforeStepScope $scope)
+    public function waitForJavaScript(BeforeStepScope $scope)
     {
         if ($this->getSession()->evaluateScript('return (typeof angular !== \'undefined\')')) {
             $this->getSession()->evaluateScript(
@@ -24,6 +24,10 @@ class JavaScriptMinkContext extends \Behat\MinkExtension\Context\MinkContext
 
         if ($this->getSession()->evaluateScript('return (typeof jQuery != \'undefined\')')) {
             $this->getSession()->wait(5000, '(0 === jQuery.active && 0 === jQuery(\':animated\').length)');
+        }
+
+        if ($this->getSession()->evaluateScript('return (typeof YUI !== \'undefined\' && typeof YUI.active !== \'undefined\')')) {
+            $this->getSession()->wait(5000, '0 === YUI.active');
         }
     }
 

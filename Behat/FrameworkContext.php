@@ -199,8 +199,6 @@ class FrameworkContext extends AbstractContext
      */
     public function iShouldSeeAnOptionIn($arg1, $arg2)
     {
-        $this->waitForAngular();
-
         $arg1 = $this->fixStepArgument($arg1);
         $arg2 = $this->fixStepArgument($arg2);
 
@@ -226,8 +224,6 @@ class FrameworkContext extends AbstractContext
      */
     public function iShouldNotSeeAnOptionIn($arg1, $arg2)
     {
-        $this->waitForAngular();
-
         $arg1 = $this->fixStepArgument($arg1);
         $arg2 = $this->fixStepArgument($arg2);
 
@@ -249,8 +245,6 @@ class FrameworkContext extends AbstractContext
      */
     public function iShouldSelectOptionInField($arg1, $arg2)
     {
-        $this->waitForAngular();
-
         $arg1 = $this->fixStepArgument($arg1);
         $arg2 = $this->fixStepArgument($arg2);
 
@@ -278,8 +272,6 @@ class FrameworkContext extends AbstractContext
      */
     public function iShouldSeeSelectedOptionInField($arg1, $arg2)
     {
-        $this->waitForAngular();
-
         $arg1 = $this->fixStepArgument($arg1);
         $arg2 = $this->fixStepArgument($arg2);
 
@@ -302,8 +294,6 @@ class FrameworkContext extends AbstractContext
      */
     public function iShouldSeeOptionsInField($atLeast, $count, $locator)
     {
-        $this->waitForAngular();
-
         $count = $this->fixStepArgument($count);
         $locator = $this->fixStepArgument($locator);
 
@@ -321,22 +311,6 @@ class FrameworkContext extends AbstractContext
 
         if (!!$atLeast ? ($optionCount < (int) $count) : ($optionCount !== (int) $count)) {
             throw new ExpectationException(sprintf('Expected %d options for field %s, but found %d options instead', $count, $locator, $optionCount), $this->getSession()->getDriver());
-        }
-    }
-
-    protected function waitForAngular()
-    {
-        if ($this->getSession()->evaluateScript('return (typeof angular !== \'undefined\')')) {
-            $this->getSession()->evaluateScript(
-                'angular.getTestability(document.body).whenStable(function() {
-                    window.__testable = true;
-                })');
-
-            $this->getSession()->wait(5000, 'window.__testable === true');
-        }
-
-        if ($this->getSession()->evaluateScript('return (typeof jQuery != \'undefined\')')) {
-            $this->getSession()->wait(5000, '(0 === jQuery.active && 0 === jQuery(\':animated\').length)');
         }
     }
 
