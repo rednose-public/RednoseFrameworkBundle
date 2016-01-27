@@ -289,7 +289,7 @@ class FrameworkContext extends AbstractContext
 
         /** @var NodeElement $option */
         foreach ($options as $option) {
-            if ($option->isSelected()) {
+            if ($option->isSelected() && ($option->getValue() === $arg1 || $option->getText() === $arg1)) {
                 return;
             }
         }
