@@ -2,20 +2,36 @@
 
 namespace Rednose\FrameworkBundle\Behat;
 
+use Behat\Behat\Hook\Scope\BeforeStepScope;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 
 class JavaScriptMinkContext extends \Behat\MinkExtension\Context\MinkContext
 {
-    use HasAngularTrait;
+    /**
+     * @BeforeStep
+     */
+    public function waitForAngular(BeforeStepScope $scope)
+    {
+        if ($this->getSession()->evaluateScript('return (typeof angular !== \'undefined\')')) {
+            $this->getSession()->evaluateScript(
+                'angular.getTestability(document.body).whenStable(function() {
+                    window.__testable = true;
+                })');
+
+            $this->getSession()->wait(5000, 'window.__testable === true');
+        }
+
+        if ($this->getSession()->evaluateScript('return (typeof jQuery != \'undefined\')')) {
+            $this->getSession()->wait(5000, '(0 === jQuery.active && 0 === jQuery(\':animated\').length)');
+        }
+    }
 
     /**
      * {@inheritdoc}
      */
     public function fillField($field, $value)
     {
-        $this->waitForAngular();
-
         $field = $this->fixStepArgument($field);
         $value = $this->fixStepArgument($value);
 
