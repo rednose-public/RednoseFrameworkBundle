@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class FrameworkContext extends AbstractContext
 {
+    protected $scenario;
+
     /**
      * @Given /^I am logged in as "([^"]*)"$/
      */
@@ -312,6 +314,16 @@ class FrameworkContext extends AbstractContext
         if (!!$atLeast ? ($optionCount < (int) $count) : ($optionCount !== (int) $count)) {
             throw new ExpectationException(sprintf('Expected %d options for field %s, but found %d options instead', $count, $locator, $optionCount), $this->getSession()->getDriver());
         }
+    }
+
+    /**
+     * @Then I break
+     */
+    public function iBreak()
+    {
+        fwrite(STDOUT, "\033[s\033[33m[Breakpoint] Press \033[1;33m[RETURN]\033[0;33m to continue...\033[0m");
+        while (fgets(STDIN, 1024) === '') {}
+        fwrite(STDOUT, "\033[u");
     }
 
     protected function getOrganization($name)
