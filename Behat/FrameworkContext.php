@@ -317,6 +317,17 @@ class FrameworkContext extends AbstractContext
     }
 
     /**
+     * @When /^I fill CodeMirror with "([^"]*)"$/
+     */
+    public function iFillCodeMirror($string)
+    {
+        $this->getSession()->executeScript(
+            "var editor = $('.CodeMirror')[0].CodeMirror;" .
+            "editor.setValue('" . str_replace("'", "\\'", $string) . "');"
+        );
+    }
+
+    /**
      * @Then I break
      */
     public function iBreak()
