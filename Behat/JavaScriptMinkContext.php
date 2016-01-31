@@ -63,4 +63,19 @@ class JavaScriptMinkContext extends \Behat\MinkExtension\Context\MinkContext
         $this->getSession()->getDriver()->focus($element->getXpath());
         $this->getSession()->evaluateScript('$("#'.$element->getAttribute('id').'").typeahead("val", "'.$value.'");');
     }
+
+    /**
+     * @When /^I hover over the element "([^"]*)"$/
+     */
+    public function iHoverOverTheElement($locator)
+    {
+        $session = $this->getSession();
+        $element = $session->getPage()->find('css', $locator);
+
+        if (null === $element) {
+            throw new \InvalidArgumentException(sprintf('Could not evaluate CSS selector: "%s"', $locator));
+        }
+
+        $element->mouseOver();
+    }
 }
