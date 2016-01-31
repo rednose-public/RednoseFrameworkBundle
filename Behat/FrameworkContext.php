@@ -305,15 +305,28 @@ class FrameworkContext extends AbstractContext
             throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'id|name|label|value', $locator);
         }
 
-        if ($field->getAttribute('rn-autocomplete') === null) {
-            $optionCount = count($field->findAll('css', 'option'));
-        } else {
+        if ($field->getAttribute('rn-autocomplete') !== null) {
             $optionCount = count($field->getParent()->findAll('css', '.tt-suggestion'));
+        } elseif ($field->getAttribute('rn-combobox') !== null) {
+            $optionCount = count($field->getParent()->findAll('css', 'li'));
+        } else {
+            $optionCount = count($field->findAll('css', 'option'));
         }
 
         if (!!$atLeast ? ($optionCount < (int) $count) : ($optionCount !== (int) $count)) {
             throw new ExpectationException(sprintf('Expected %d options for field %s, but found %d options instead', $count, $locator, $optionCount), $this->getSession()->getDriver());
         }
+    }
+
+    /**
+     * @When I click :arg1
+     */
+    public function iClickOpen($arg1)
+    {
+        // Quickfix: Trigger click twice for the combobox to open
+        $this->getSession()->executeScript(
+            '$(\'[title="'.$arg1.'"]\').click().click();'
+        );
     }
 
     /**
