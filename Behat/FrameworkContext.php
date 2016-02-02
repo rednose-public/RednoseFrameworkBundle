@@ -12,8 +12,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class FrameworkContext extends AbstractContext
 {
-    protected $scenario;
-
     /**
      * @Given /^I am logged in as "([^"]*)"$/
      */
