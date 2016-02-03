@@ -339,6 +339,38 @@ class FrameworkContext extends AbstractContext
     }
 
     /**
+     * @Then /^the "(?P<field>(?:[^"]|\\")*)" field should not be empty$/
+     */
+    public function assertFieldNotEmpty($field)
+    {
+        $node = $this->getSession()->getPage()->findField($field);
+
+        if (null === $node) {
+            throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'id|name|label|value', $field);
+        }
+
+        if ($node->getValue() === '') {
+            throw new ExpectationException('Expected field not to be empty', $this->getSession());
+        }
+    }
+
+    /**
+     * @Then /^the "(?P<field>(?:[^"]|\\")*)" field should be empty$/
+     */
+    public function assertFieldEmpty($field)
+    {
+        $node = $this->getSession()->getPage()->findField($field);
+
+        if (null === $node) {
+            throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'id|name|label|value', $field);
+        }
+
+        if ($node->getValue() !== '') {
+            throw new ExpectationException('Expected field to be empty', $this->getSession());
+        }
+    }
+
+    /**
      * @Then I break
      */
     public function iBreak()
