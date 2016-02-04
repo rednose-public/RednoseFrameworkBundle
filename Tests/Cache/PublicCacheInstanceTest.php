@@ -14,22 +14,22 @@ class PublicCacheInstanceTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $cacheName = 'doctanium_asset/thumbnail/232.png';
-        $publicPath = '/cache';
-        $rootPath = '/../Fixtures/web';
+        $publicPath = '/cache/test';
+        $rootPath = __DIR__.'/../Fixtures/web';
 
         $this->cache = new PublicCacheInstance($cacheName, $publicPath, $rootPath);
     }
 
-    public function testCreateCache()
+    public function testFlush()
     {
+        $this->cache->setData('test');
+        $this->cache->flush();
+
+        $this->assertFileExists(__DIR__.'/../Fixtures/web/cache/test/doctanium_asset/thumbnail/232.png');
     }
 
-    public function testIsFresh()
+    public function testPublicUrl()
     {
-    }
-
-    public function publicUrl()
-    {
-        $this->assertEquals('/cache/doctanium_asset/thumbnail/232.png', $this->cache->getPublicUrl());
+        $this->assertEquals('/cache/test/doctanium_asset/thumbnail/232.png', $this->cache->getPublicUrl());
     }
 }

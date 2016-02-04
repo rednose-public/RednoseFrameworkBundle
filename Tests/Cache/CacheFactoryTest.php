@@ -15,7 +15,7 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $rootPath = __DIR__.'/../Fixtures/web';
         $cachePath = __DIR__.'/../Fixtures/app/cache/dev/rednose_framework';
-        $publicPath = 'cache';
+        $publicPath = 'cache/test';
 
         $helper = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper')
             ->disableOriginalConstructor()
@@ -41,6 +41,6 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase
         $cache = $this->factory->create('doctanium_asset/thumbnail/232.png', true);
 
         $this->assertInstanceOf('Rednose\FrameworkBundle\Cache\PublicCacheInstance', $cache);
-        $this->assertEquals('/cache/doctanium_asset/thumbnail/232.png', $cache->getPublicUrl());
+        $this->assertEquals('/cache/test/doctanium_asset/thumbnail/232.png', $cache->getPublicUrl());
     }
 }
