@@ -26,11 +26,6 @@ class PublicCacheInstance extends CacheInstance implements CacheInstanceInterfac
      */
     public function __construct($cacheName, $publicPath, $rootPath)
     {
-        var_dump($cacheName);
-        var_dump($publicPath);
-        var_dump($rootPath);
-        exit;
-
         $this->cacheName  = $cacheName;
         $this->publicPath = $publicPath;
 

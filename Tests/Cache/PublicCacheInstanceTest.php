@@ -2,16 +2,22 @@
 
 namespace Rednose\FrameworkBundle\Tests\Util;
 
+use Rednose\FrameworkBundle\Cache\PublicCacheInstance;
+
 class PublicCacheInstanceTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var array
+     * @var PublicCacheInstance
      */
-    protected $array;
+    protected $cache;
 
     public function setUp()
     {
-//        $cache = $this->cacheFactory->create($path, true);
+        $cacheName = 'doctanium_asset/thumbnail/232.png';
+        $publicPath = '/cache';
+        $rootPath = '/../Fixtures/web';
+
+        $this->cache = new PublicCacheInstance($cacheName, $publicPath, $rootPath);
     }
 
     public function testCreateCache()
@@ -24,5 +30,6 @@ class PublicCacheInstanceTest extends \PHPUnit_Framework_TestCase
 
     public function publicUrl()
     {
+        $this->assertEquals('/cache/doctanium_asset/thumbnail/232.png', $this->cache->getPublicUrl());
     }
 }
