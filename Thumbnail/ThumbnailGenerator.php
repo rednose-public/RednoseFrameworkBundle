@@ -36,6 +36,8 @@ class ThumbnailGenerator
     {
         $path = sprintf('doctanium_asset/thumbnail/%s.%s', $file->getId(), $this->getExtension($file));
 
+        var_dump($path);
+        exit;
         $cache = $this->cacheFactory->create($path, true);
 
         if ($cache->isFresh($file->getDateModified()) === false) {

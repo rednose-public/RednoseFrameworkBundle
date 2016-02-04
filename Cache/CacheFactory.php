@@ -32,9 +32,9 @@ class CacheFactory implements CacheFactoryInterface
     /**
      * Service constructor
      *
-     * @param string       $rootPath   The web root path.
-     * @param string       $cachePath  The absolute cache path.
-     * @param string       $publicPath The relative cache path for publicly accessible files (via the webserver).
+     * @param string             $rootPath   The web root path.
+     * @param string             $cachePath  The absolute cache path.
+     * @param string             $publicPath The relative cache path for publicly accessible files (via the webserver).
      * @param ContainerInterface $container
      */
     public function __construct($rootPath, $cachePath, $publicPath, ContainerInterface $container)
