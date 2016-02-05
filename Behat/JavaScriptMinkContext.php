@@ -45,13 +45,19 @@ class JavaScriptMinkContext extends \Behat\MinkExtension\Context\MinkContext
             throw new ElementNotFoundException($this->getSession()->getDriver(), 'form field', 'id|name|label|value|placeholder', $element);
         }
 
-        if ($element->getAttribute('rn-autocomplete') === null) {
+        if ($element->getAttribute('rn-autocomplete') !== null) {
+            $this->setAutocompleteValue($element, $value);
+        } else {
             parent::fillField($field, $value);
-
-            return;
         }
+    }
 
-        $this->setAutocompleteValue($element, $value);
+    /**
+     * @Given I fill editor :arg1 with :arg2
+     */
+    public function iFillEditorWith($arg1, $arg2)
+    {
+        $this->getSession()->evaluateScript('tinymce.activeEditor.setContent("'.$arg2.'")');
     }
 
     /**
