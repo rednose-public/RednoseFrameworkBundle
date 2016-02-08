@@ -29,6 +29,8 @@ class PublicCacheInstance extends CacheInstance implements CacheInstanceInterfac
         $this->cacheName  = $cacheName;
         $this->publicPath = $publicPath;
 
+        $publicPath = substr($publicPath, strpos($publicPath, '/cache'));
+
         parent::__construct($rootPath.$publicPath, $cacheName);
     }
 
@@ -37,7 +39,7 @@ class PublicCacheInstance extends CacheInstance implements CacheInstanceInterfac
      */
     public function getPublicUrl()
     {
-        return $this->publicPath.'/'.$this->cacheName;
+        return $this->publicPath . '/' . $this->cacheName;
     }
 
     /**
