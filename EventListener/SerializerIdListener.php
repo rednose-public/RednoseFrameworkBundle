@@ -31,6 +31,13 @@ class SerializerIdListener implements EventSubscriberInterface
     }
 
     /**
+     * Keep a list of classes that have no usable annotations
+     *
+     * @var array
+     */
+    protected $skipClass = [];
+
+    /**
      * {@inheritdoc}
      */
     static public function getSubscribedEvents()
@@ -45,10 +52,11 @@ class SerializerIdListener implements EventSubscriberInterface
     {
         $type = $event->getType();
 
-        if (!class_exists($type['name'])) {
+        if (!class_exists($type['name']) || (class_exists($type['name']) && isset($this->skipClass[$type['name']]))) {
             return;
         }
 
+        $skipClass = true;
         $class = new \ReflectionClass($type['name']);
         $object = $event->getObject();
 
@@ -56,9 +64,15 @@ class SerializerIdListener implements EventSubscriberInterface
             $annotation = $this->reader->getPropertyAnnotation($property, 'Rednose\FrameworkBundle\Serializer\Annotation\SerializerId');
 
             if ($annotation) {
+                $skipClass = false;
+
                 $property->setAccessible(true);
-                $property->setValue($object, $this->toProperty($annotation->type, $annotation->property,$property->getValue($object)));
+                $property->setValue($object, $this->toProperty($annotation->type, $annotation->property, $property->getValue($object)));
             }
+        }
+
+        if ($skipClass === true) {
+            $this->skipClass[$type['name']] = true;
         }
     }
 
@@ -66,10 +80,11 @@ class SerializerIdListener implements EventSubscriberInterface
     {
         $type = $event->getType();
 
-        if (!class_exists($type['name'])) {
+        if (!class_exists($type['name']) || (class_exists($type['name']) && isset($this->skipClass[$type['name']]))) {
             return;
         }
 
+        $skipClass = true;
         $class = new \ReflectionClass($type['name']);
         $object = $event->getObject();
 
@@ -77,9 +92,15 @@ class SerializerIdListener implements EventSubscriberInterface
             $annotation = $this->reader->getPropertyAnnotation($property, 'Rednose\FrameworkBundle\Serializer\Annotation\SerializerId');
 
             if ($annotation) {
+                $skipClass = false;
+
                 $property->setAccessible(true);
                 $property->setValue($object, $this->toEntity($annotation->type, $annotation->property, $property->getValue($object)));
             }
+        }
+
+        if ($skipClass === true) {
+            $this->skipClass[$type['name']] = true;
         }
     }
 
