@@ -14,6 +14,12 @@ namespace Rednose\FrameworkBundle;
 final class Events
 {
     /**
+     * This event occurs after a user is logged in
+     * The listener receives a Rednose\FrameworkBundle\Event\UserEvent instance.
+     */
+    const USER_LOGIN = 'rednose_framework.user.login';
+
+    /**
      * This event occurs after a new user has been persisted to the backend.
      * The listener receives a Rednose\FrameworkBundle\Event\UserEvent instance.
      */

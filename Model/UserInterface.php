@@ -62,6 +62,18 @@ interface UserInterface extends BaseUserInterface, GroupableInterface, Equatable
     public function setAdmin($boolean);
 
     /**
+     * Set the static status
+     *
+     * @param boolean $static
+     */
+    public function setStatic($static = false);
+
+    /**
+     * Tells if this is a static user
+     */
+    public function isStatic();
+
+    /**
      * @return \DateTime
      */
     public function getExpiresAt();

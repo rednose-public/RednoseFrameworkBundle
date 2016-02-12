@@ -41,7 +41,15 @@ class OrganizationAssigner
      */
     public function assign(UserInterface $user)
     {
-        $user->setOrganization($this->resolve($user->getUsername(false)));
+        if ($user->isStatic()) {
+            return;
+        }
+
+        $organization = $this->resolve($user->getUsername(false));
+
+        if ($organization) {
+            $user->setOrganization($organization);
+        }
     }
 
     /**

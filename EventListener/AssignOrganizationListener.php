@@ -25,7 +25,7 @@ class AssignOrganizationListener implements EventSubscriberInterface
     /**
      * @param UserEvent $event
      */
-    public function onUserAutoCreate(UserEvent $event)
+    public function onUserLogin(UserEvent $event)
     {
         $this->assigner->assign($event->getUser());
     }
@@ -52,6 +52,6 @@ class AssignOrganizationListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(Events::USER_AUTO_CREATE => 'onUserAutoCreate');
+        return array(Events::USER_LOGIN => 'onUserLogin');
     }
 }

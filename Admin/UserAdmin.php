@@ -70,6 +70,7 @@ class UserAdmin extends Admin
             ->add('realname')
             ->add('organization')
             ->add('enabled')
+            ->add('static')
             ->add('locked')
             ->add('expired')
             ->add('admin', 'boolean')
@@ -125,6 +126,7 @@ class UserAdmin extends Admin
 
             ->with('Details')
                 ->add('organization', 'sonata_type_model', array('required' => false, 'multiple' => false))
+                ->add('static')
                 ->add('groups', 'entity', array(
                     'class' => 'RednoseFrameworkBundle:Group',
                     'property' => 'name',

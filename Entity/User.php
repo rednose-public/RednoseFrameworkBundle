@@ -73,6 +73,13 @@ class User extends BaseUser implements UserInterface
     protected $bestName;
 
     /**
+     * Static users will never be automatically assigned
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    protected $static = false;
+
+    /**
      * Gets the username
      *
      * Will automatically return the username in lowercase for
@@ -161,6 +168,24 @@ class User extends BaseUser implements UserInterface
         } else {
             $this->removeRole(static::ROLE_ADMIN);
         }
+    }
+
+    /**
+     * Set the static status
+     *
+     * @param boolean $static
+     */
+    public function setStatic($static = false)
+    {
+        $this->static = $static;
+    }
+
+    /**
+     * Tells if this is a static user
+     */
+    public function isStatic()
+    {
+        return $this->static;
     }
 
     /**

@@ -20,7 +20,6 @@ use Rednose\FrameworkBundle\Model\UserInterface;
 use Rednose\FrameworkBundle\Model\UserManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserManager extends BaseUserManager implements UserManagerInterface
 {
@@ -95,12 +94,16 @@ class UserManager extends BaseUserManager implements UserManagerInterface
             $user->setPassword($this->randomPassword());
 
             $event = new UserEvent($user);
-            $this->dispatcher->dispatch(Events::USER_AUTO_CREATE, $event);
+            $this->dispatcher->dipatch(Events::USER_AUTO_CREATE, $event);
 
             $this->updateUser($user);
         }
 
-        return parent::loadUserByUsername($username);
+        $user = parent::loadUserByUsername($username);
+
+        $this->dispatcher->dispatch(Events::USER_LOGIN, new UserEvent($user));
+
+        return $user;
     }
 
     /**
