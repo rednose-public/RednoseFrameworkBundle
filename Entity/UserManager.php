@@ -94,7 +94,7 @@ class UserManager extends BaseUserManager implements UserManagerInterface
             $user->setPassword($this->randomPassword());
 
             $event = new UserEvent($user);
-            $this->dispatcher->dipatch(Events::USER_AUTO_CREATE, $event);
+            $this->dispatcher->dispatch(Events::USER_AUTO_CREATE, $event);
 
             $this->updateUser($user);
         }
