@@ -13,6 +13,7 @@ use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\OrganizationManagerInterface;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class OrganizationAssigner
 {
@@ -27,13 +28,19 @@ class OrganizationAssigner
     protected $language;
 
     /**
+     * @var SessionInterface
+     */
+    protected $session;
+
+    /**
      * @param OrganizationManagerInterface $manager
      * @param ExpressionLanguage           $language
      */
-    public function __construct(OrganizationManagerInterface $manager, $language = null)
+    public function __construct(OrganizationManagerInterface $manager, SessionInterface $session, $language = null)
     {
         $this->language = $language ?: new ExpressionLanguage();
-        $this->manager = $manager;
+        $this->session  = $session;
+        $this->manager  = $manager;
     }
 
     /**
@@ -94,8 +101,19 @@ class OrganizationAssigner
      */
     protected function createContext($username)
     {
-        return ['user' => (object) [
-            'username' => $username
-        ]];
+        $session = [];
+
+        foreach ($this->session->all() as $key => $sessionItem) {
+            if (is_object($sessionItem)) {
+                $session[$key] = $sessionItem;
+            }
+        }
+
+        return [
+            'user' => (object) [
+                'username' => $username
+            ],
+            'session' => (object)$session
+        ];
     }
 }

@@ -52,6 +52,6 @@ class AssignOrganizationListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(Events::USER_LOGIN => 'onUserLogin');
+        return array(Events::USER_LOGIN => ['onUserLogin', -64]);
     }
 }
