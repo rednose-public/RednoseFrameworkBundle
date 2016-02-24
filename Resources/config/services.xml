@@ -25,7 +25,7 @@
 
     <services>
         <service id="rednose_framework.organization_context" class="%rednose_framework.organization_context.class%">
-            <argument type="service" id="security.context" />
+            <argument type="service" id="security.token_storage" />
         </service>
 
         <!-- Exceptions -->
