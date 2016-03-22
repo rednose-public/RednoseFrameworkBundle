@@ -58,10 +58,9 @@ class OrganizationAdmin extends Admin
         $formMapper
             ->with('General')
                 ->add('name')
-                ->add('conditions', 'collection', array(
+                ->add('conditions', 'rednose_prioritized_collection', array(
                     'allow_add'    => true,
                     'allow_delete' => true,
-                    'by_reference' => false,
                     'label'        => 'User assignment conditions',
                     'required'     => false,
                 ))

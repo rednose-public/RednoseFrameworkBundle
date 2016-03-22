@@ -21,6 +21,7 @@ class ArrayUtilTest extends \PHPUnit_Framework_TestCase
             'level1c' => array(
                 'level2b' => array(
                     'level3a' => 'test3',
+                    'level3b' => '',
                 )
             )
         );
@@ -59,6 +60,11 @@ class ArrayUtilTest extends \PHPUnit_Framework_TestCase
     public function testGetShouldReturnValueForRootKeyWithArray()
     {
         $this->assertTrue(is_array(ArrayUtil::get($this->array, 'level1b')));
+    }
+
+    public function testGetShouldReturnEmptyStringValueForNestedKeyWithValue()
+    {
+        $this->assertEquals('', ArrayUtil::get($this->array, 'level1c.level2b.level3b'));
     }
 
     public function testGetShouldReturnValueForNestedKeyWithValue()
