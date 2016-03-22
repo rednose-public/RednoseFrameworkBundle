@@ -1,8 +1,8 @@
+
 sonata_doctrine_orm_admin:
     templates:
         form:
-            - SonataDoctrineORMAdminBundle:Form:form_admin_field.html.twig
-
+            - RednoseFrameworkBundle:Admin:fields.html.twig
 
 sonata_admin:
     title: RedNose Admin
