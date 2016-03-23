@@ -4,19 +4,19 @@ namespace Rednose\FrameworkBundle\Context;
 
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\UserInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class OrganizationContext
 {
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
     protected $context;
 
     /**
-     * @param SecurityContextInterface $context
+     * @param TokenStorageInterface $context
      */
-    public function __construct(SecurityContextInterface $context)
+    public function __construct(TokenStorageInterface $context)
     {
         $this->context = $context;
     }

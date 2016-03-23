@@ -17,10 +17,10 @@ abstract class WebTestCase extends BaseWebTestCase
     public function setUp()
     {
         $client = static::createClient();
-        $container = $client->getContainer();
+        $this->container = $client->getContainer();
 
         // Purge DB
-        $em = $container->get('doctrine.orm.entity_manager');
+        $em = $this->container->get('doctrine.orm.entity_manager');
         $em->getConnection()->getConfiguration()->setSQLLogger(null);
         $em->getConnection()->executeUpdate("SET foreign_key_checks = 0;");
 
@@ -31,7 +31,7 @@ abstract class WebTestCase extends BaseWebTestCase
         $em->clear();
 
         // Create required system user.
-        $util = $container->get('fos_user.util.user_manipulator');
+        $util = $this->container->get('fos_user.util.user_manipulator');
 
         /** @var UserInterface $admin */
         $admin = $util->create('admin', 'adminpasswd', 'info@rednose.nl', true, true);
