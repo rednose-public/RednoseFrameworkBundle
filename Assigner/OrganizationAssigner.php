@@ -66,10 +66,22 @@ class OrganizationAssigner
      */
     public function resolve($username)
     {
+        $organizations = [];
+
         foreach ($this->manager->findOrganizations() as $organization) {
-            if ($this->shouldAssign($organization, $username)) {
-                return $organization;
+            $priority = $this->shouldAssign($organization, $username);
+
+            if ($priority !== false) {
+                $priority = (int)$priority;
+
+                $organizations[$priority] = $organization;
             }
+        }
+
+        if (count($organizations) > 0) {
+            krsort($organizations, SORT_NUMERIC);
+
+            return array_shift($organizations);
         }
 
         return null;
@@ -79,19 +91,49 @@ class OrganizationAssigner
      * @param OrganizationInterface $organization
      * @param string                $username
      *
-     * @return bool
+     * @return bool|int
      */
     protected function shouldAssign(OrganizationInterface $organization, $username)
     {
-        foreach ($organization->getConditions() as $condition) {
+        $conditions = $this->normalizeConditions($organization->getConditions());
+
+        if (count($conditions) === 0) {
+            return false;
+        }
+
+        foreach ($conditions['conditions'] as $offset => $condition) {
             try {
                 if ($this->language->evaluate($condition, $this->createContext($username))) {
-                    return true;
+                    return $conditions['priority'][$offset];
                 }
             } catch (\Exception $e) {}
         }
 
         return false;
+    }
+
+    protected function normalizeConditions($conditions)
+    {
+        if (count($conditions) !== 2) {
+            return [];
+        }
+
+        $first  = array_pop($conditions);
+        $second = array_pop($conditions);
+
+        if (is_array($first)) {
+            if (isset($first[0])) {
+                $key = $first[0];
+
+                if (strpos($key, 'priority') !== false) {
+                    return ['conditions' => $second[1], 'priority' => $first[1]];
+                }
+
+                return ['conditions' => $first[1], 'priority' => $second[1]];
+            }
+        }
+
+        return [];
     }
 
     /**

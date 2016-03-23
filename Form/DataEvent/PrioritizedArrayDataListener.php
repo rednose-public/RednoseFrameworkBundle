@@ -56,6 +56,10 @@ class PrioritizedArrayDataListener implements EventSubscriberInterface
         $form   = $event->getForm();
         $data   = $event->getData();
 
+        if (null === $data) {
+            $data = array();
+        }
+
         // 0 = Data
         // 1 = Priority
 
