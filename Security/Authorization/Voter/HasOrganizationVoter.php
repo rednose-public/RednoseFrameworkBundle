@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class HasOrganizationVoter implements VoterInterface
 {
-    const VIEW = 'view';
+    const VIEW = 'VIEW';
 
     public function supportsAttribute($attribute)
     {

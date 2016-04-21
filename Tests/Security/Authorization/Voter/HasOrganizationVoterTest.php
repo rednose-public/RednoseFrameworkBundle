@@ -23,8 +23,8 @@ class HasOrganizationVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testSupportsAttribute()
     {
-        $this->assertTrue($this->voter->supportsAttribute('view'));
-        $this->assertFalse($this->voter->supportsAttribute('edit'));
+        $this->assertTrue($this->voter->supportsAttribute('VIEW'));
+        $this->assertFalse($this->voter->supportsAttribute('EDIT'));
     }
 
     public function testSupportsClass()
@@ -51,11 +51,11 @@ class HasOrganizationVoterTest extends \PHPUnit_Framework_TestCase
         $group1 = $this->getGroup($organization1);
         $group2 = $this->getGroup($organization2);
 
-        $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $this->voter->vote($token, $user, ['view']));
-        $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $this->voter->vote($token, $group1, ['edit']));
+        $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $this->voter->vote($token, $user, ['VIEW']));
+        $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $this->voter->vote($token, $group1, ['EDIT']));
 
-        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $this->voter->vote($token, $group1, ['view']));
-        $this->assertEquals(VoterInterface::ACCESS_DENIED, $this->voter->vote($token, $group2, ['view']));
+        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $this->voter->vote($token, $group1, ['VIEW']));
+        $this->assertEquals(VoterInterface::ACCESS_DENIED, $this->voter->vote($token, $group2, ['VIEW']));
     }
 
     protected function getUser(OrganizationInterface $organization)
