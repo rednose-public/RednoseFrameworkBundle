@@ -53,6 +53,42 @@ class UserAdmin extends Admin
         $this->userManager->updatePassword($user);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getPersistentParameters()
+    {
+        if (!$this->getRequest()) {
+            return [];
+        }
+
+        return [
+            'organization_id' => $this->getRequest()->get('organization_id'),
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        $params = $this->getPersistentParameters();
+
+        if (isset($params['organization_id'])) {
+            $organization = $this->getConfigurationPool()->getContainer()->get('rednose_framework.organization_manager')->findOrganizationById($params['organization_id']);
+
+            $query->andWhere(
+                $query->expr()->eq($query->getRootAliases()[0].'.organization', ':organization')
+            );
+
+            $query->setParameter('organization', $organization);
+        }
+
+        return $query;
+    }
+
     public function prePersist($user)
     {
         $this->preUpdate($user);

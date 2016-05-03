@@ -3,8 +3,8 @@
 namespace Rednose\FrameworkBundle\Admin;
 
 use Rednose\FrameworkBundle\Entity\HasOrganizationInterface;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Route\RouteCollection;
 
 abstract class AbstractAdmin extends Admin
 {
@@ -57,6 +57,14 @@ abstract class AbstractAdmin extends Admin
         $query->setParameter('organization', $context->getOrganization());
 
         return $query;
+    }
+
+    /**
+     * @return OrganizationInterface
+     */
+    public function getOrganization()
+    {
+        return $this->getConfigurationPool()->getContainer()->get('rednose_framework.organization_context')->getOrganization();
     }
 
     /**
