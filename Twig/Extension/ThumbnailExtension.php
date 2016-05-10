@@ -25,9 +25,9 @@ class ThumbnailExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            'rednose_framework_url' => new \Twig_Filter_Method($this, 'thumbnail')
-        );
+        return [
+            new \Twig_SimpleFilter('rednose_framework_url', array($this, 'thumbnail'))
+        ];
     }
 
     public function thumbnail(FileInterface $file)

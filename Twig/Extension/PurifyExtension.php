@@ -35,9 +35,9 @@ class PurifyExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            'rednose_framework_purify' => new \Twig_Filter_Method($this, 'purify', array('is_safe' => array('html'))),
-        );
+        return [
+            new \Twig_SimpleFilter('rednose_framework_purify', array($this, 'purify'), array('is_safe' => array('html')))
+        ];
     }
 
     /**
