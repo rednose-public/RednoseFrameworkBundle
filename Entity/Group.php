@@ -25,6 +25,7 @@ use Rednose\FrameworkBundle\Model\UserInterface;
  */
 class Group extends BaseGroup implements GroupInterface
 {
+    use HasConditionsTrait;
     use HasOrganizationTrait;
 
     /**

@@ -54,15 +54,6 @@ class Organization extends BaseOrganization
     protected $localizations = ['nl_NL', 'en_GB'];
 
     /**
-     * @ORM\Column(type="array", nullable=true)
-     *
-     * @Serializer\XmlList(inline = false, entry = "conditions")
-     * @Serializer\Type("array<string>")
-     * @Serializer\Groups({"file", "details"})
-     */
-    protected $conditions;
-
-    /**
      * @param string $name
      */
     public function __construct($name = null)

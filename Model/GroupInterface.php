@@ -12,18 +12,18 @@
 namespace Rednose\FrameworkBundle\Model;
 
 use FOS\UserBundle\Model\GroupInterface as BaseGroupInterface;
+use Rednose\FrameworkBundle\Entity\HasConditionsInterface;
 use Rednose\FrameworkBundle\Entity\HasOrganizationInterface;
 
 /**
  * A User-group.
  */
-interface GroupInterface extends BaseGroupInterface, HasOrganizationInterface
+interface GroupInterface extends BaseGroupInterface, HasOrganizationInterface, HasConditionsInterface
 {
     /**
      * @param UserInterface[] $users
      */
     public function setUsers($users);
-
 
     /**
      * @return UserInterface[]

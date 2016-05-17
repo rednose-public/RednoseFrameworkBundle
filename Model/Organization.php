@@ -11,14 +11,17 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
+use Rednose\FrameworkBundle\Entity\HasConditionsTrait;
+
 class Organization implements OrganizationInterface
 {
+    use HasConditionsTrait;
+
     protected $id;
     protected $name;
     protected $dictionary;
     protected $locale;
     protected $localizations;
-    protected $conditions;
 
     /**
      * Set the id
@@ -98,57 +101,5 @@ class Organization implements OrganizationInterface
     public function getLocalizations()
     {
         return $this->localizations;
-    }
-
-    // -- [ Additional ] -----------------------------------------------------------
-
-    /**
-     * A list of OR conditions to evaluate on a user object
-     * when deciding to assign a user to this organization.
-     *
-     * @return string[]
-     */
-    public function getConditions()
-    {
-        if (!$this->conditions) {
-            return [];
-        }
-
-        return $this->conditions;
-    }
-
-    /**
-     * A list of OR conditions to evaluate on a user object
-     * when deciding to assign a user to this organization.
-     *
-     * @param string[] $conditions
-     */
-    public function setConditions($conditions)
-    {
-        $this->conditions = $conditions;
-    }
-
-    /**
-     * Adds a condition.
-     *
-     * @param string $condition
-     */
-    public function addCondition($condition)
-    {
-        $this->conditions[] = $condition;
-    }
-
-    /**
-     * Removes a condition.
-     *
-     * @param string $condition
-     */
-    public function removeCondition($condition)
-    {
-        $index = array_search($condition, $this->conditions);
-
-        if ($index !== false) {
-            unset($this->conditions[$index]);
-        }
     }
 }
