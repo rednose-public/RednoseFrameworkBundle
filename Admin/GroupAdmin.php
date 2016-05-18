@@ -59,6 +59,14 @@ class GroupAdmin extends AbstractAdmin
     {
         $formMapper
             ->with('General')
-                ->add('name');
+                ->add('name')
+                ->add('conditions', 'rednose_prioritized_collection', array(
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                    'label'        => 'User assignment conditions',
+                    'required'     => false,
+                ))
+            ->end()
+        ;
     }
 }
