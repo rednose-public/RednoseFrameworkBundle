@@ -155,7 +155,7 @@ class OrganizationAssigner
             'user' => (object) [
                 'username' => $username
             ],
-            'session' => (object)$session
+            'session' => (object) $session
         ];
     }
 }
