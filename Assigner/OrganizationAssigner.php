@@ -48,10 +48,6 @@ class OrganizationAssigner implements AssignerInterface
      */
     public function assign(UserInterface $user)
     {
-        if ($user->isStatic()) {
-            return;
-        }
-
         $organization = $this->resolve($user->getUsername(false));
 
         if ($organization) {

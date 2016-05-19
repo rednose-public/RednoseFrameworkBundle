@@ -3,7 +3,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
         <parameter key="rednose_framework.assigner.organization.class">Rednose\FrameworkBundle\Assigner\OrganizationAssigner</parameter>
-        <parameter key="rednose_framework.listener.assign_organization.class">Rednose\FrameworkBundle\EventListener\AssignOrganizationListener</parameter>
+        <parameter key="rednose_framework.listener.assigner.class">Rednose\FrameworkBundle\EventListener\AssignerListener</parameter>
     </parameters>
     <services>
         <service id="rednose_framework.assigner.organization" class="%rednose_framework.assigner.organization.class%">
@@ -11,7 +11,7 @@
             <argument type="service" id="session" />
         </service>
 
-        <service id="rednose_framework.listener.assign_organization" class="%rednose_framework.listener.assign_organization.class%">
+        <service id="rednose_framework.listener.assigner" class="%rednose_framework.listener.assigner.class%">
             <argument type="service" id="rednose_framework.assigner.organization" />
             <tag name="kernel.event_subscriber" />
         </service>
