@@ -1,4 +1,4 @@
-RednoseFrameworkBundle [![Build status...](https://secure.travis-ci.org/rednose-public/RednoseFrameworkBundleBundle.png?branch=master)](http://travis-ci.org/rednose-public/RednoseFrameworkBundleBundle)
+RednoseFrameworkBundle [![Build status...](https://secure.travis-ci.org/rednose-public/RednoseFrameworkBundle.png?branch=1.7)](http://travis-ci.org/rednose-public/RednoseFrameworkBundle)
 ======================
 
 Provides several core features used throughout the RedNose bundles.
