@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="rednose_framework.assigner.organization.class">Rednose\FrameworkBundle\Assigner\OrganizationAssigner</parameter>
+        <parameter key="rednose_framework.assigner.group.class">Rednose\FrameworkBundle\Assigner\GroupAssigner</parameter>
+
+        <parameter key="rednose_framework.listener.assigner.class">Rednose\FrameworkBundle\EventListener\AssignerListener</parameter>
+    </parameters>
+    <services>
+        <service id="rednose_framework.assigner.organization" class="%rednose_framework.assigner.organization.class%">
+            <argument type="service" id="rednose_framework.organization_manager" />
+            <argument type="service" id="rednose_framework.session_context" />
+        </service>
+
+        <service id="rednose_framework.assigner.group" class="%rednose_framework.assigner.group.class%">
+            <argument type="service" id="rednose_framework.group_manager" />
+            <argument type="service" id="rednose_framework.session_context" />
+        </service>
+
+        <service id="rednose_framework.listener.assigner" class="%rednose_framework.listener.assigner.class%">
+            <argument type="service" id="rednose_framework.assigner.organization" />
+            <argument type="service" id="rednose_framework.assigner.group" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+    </services>
+</container>
