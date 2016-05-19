@@ -11,11 +11,11 @@
 
 namespace Rednose\FrameworkBundle\DependencyInjection;
 
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Loads the configuration files and injects them to the service container.
@@ -45,7 +45,7 @@ class RednoseFrameworkExtension extends Extension
             $loader->load('acl.xml');
         }
 
-        $serviceFiles = array('orm', 'services', 'twig');
+        $serviceFiles = array('assigner', 'orm', 'services', 'twig');
 
         foreach ($serviceFiles as $basename) {
             $loader->load(sprintf('%s.xml', $basename));

@@ -15,7 +15,7 @@ use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class OrganizationAssigner
+class OrganizationAssigner implements AssignerInterface
 {
     /**
      * @var OrganizationManagerInterface

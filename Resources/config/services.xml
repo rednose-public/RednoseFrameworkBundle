@@ -14,9 +14,6 @@
         <!-- Locale event listener -->
         <parameter key="rednose_framework.listener.locale.class">Rednose\FrameworkBundle\EventListener\LocaleListener</parameter>
 
-        <parameter key="rednose_framework.assigner.organization.class">Rednose\FrameworkBundle\Assigner\OrganizationAssigner</parameter>
-        <parameter key="rednose_framework.listener.assign_organization.class">Rednose\FrameworkBundle\EventListener\AssignOrganizationListener</parameter>
-
         <parameter key="rednose_framework.form.type.file.class">Rednose\FrameworkBundle\Form\Type\FileType</parameter>
         <parameter key="rednose_framework.form.type.prioritized_collection.class">Rednose\FrameworkBundle\Form\Type\PrioritizedCollectionType</parameter>
         <parameter key="rednose_framework.organization_context.class">Rednose\FrameworkBundle\Context\OrganizationContext</parameter>
@@ -81,16 +78,6 @@
         <service id="rednose_framework.listener.locale" class="%rednose_framework.listener.locale.class%">
             <argument type="service" id="security.context" />
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest"/>
-        </service>
-
-        <service id="rednose_framework.assigner.organization" class="%rednose_framework.assigner.organization.class%">
-            <argument type="service" id="rednose_framework.organization_manager" />
-            <argument type="service" id="session" />
-        </service>
-
-        <service id="rednose_framework.listener.assign_organization" class="%rednose_framework.listener.assign_organization.class%">
-            <argument type="service" id="rednose_framework.assigner.organization" />
-            <tag name="kernel.event_subscriber" />
         </service>
 
         <!-- File caching -->
