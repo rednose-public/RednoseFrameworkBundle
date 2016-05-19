@@ -51,7 +51,7 @@ class AssignerListener implements EventSubscriberInterface
     {
         $user = $event->getUser();
 
-        if ($user->isStatic()) {
+        if ($user->isStatic() || !$user->getOrganization()) {
             return;
         }
 

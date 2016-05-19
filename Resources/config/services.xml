@@ -16,14 +16,20 @@
 
         <parameter key="rednose_framework.form.type.file.class">Rednose\FrameworkBundle\Form\Type\FileType</parameter>
         <parameter key="rednose_framework.form.type.prioritized_collection.class">Rednose\FrameworkBundle\Form\Type\PrioritizedCollectionType</parameter>
-        <parameter key="rednose_framework.organization_context.class">Rednose\FrameworkBundle\Context\OrganizationContext</parameter>
 
         <parameter key="rednose_framework.thumbnail_generator.class">Rednose\FrameworkBundle\Thumbnail\ThumbnailGenerator</parameter>
+
+        <parameter key="rednose_framework.organization_context.class">Rednose\FrameworkBundle\Context\OrganizationContext</parameter>
+        <parameter key="rednose_framework.session_context.class">Rednose\FrameworkBundle\Context\SessionContext</parameter>
     </parameters>
 
     <services>
         <service id="rednose_framework.organization_context" class="%rednose_framework.organization_context.class%">
             <argument type="service" id="security.token_storage" />
+        </service>
+
+        <service id="rednose_framework.session_context" class="%rednose_framework.session_context.class%">
+            <argument type="service" id="session" />
         </service>
 
         <!-- Exceptions -->

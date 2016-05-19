@@ -9,11 +9,11 @@
 
 namespace Rednose\FrameworkBundle\Assigner;
 
+use Rednose\FrameworkBundle\Context\SessionContext;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\OrganizationManagerInterface;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class OrganizationAssigner implements AssignerInterface
 {
@@ -28,18 +28,19 @@ class OrganizationAssigner implements AssignerInterface
     protected $language;
 
     /**
-     * @var SessionInterface
+     * @var SessionContext
      */
-    protected $session;
+    protected $context;
 
     /**
      * @param OrganizationManagerInterface $manager
-     * @param ExpressionLanguage           $language
+     * @param SessionContext               $context
+     * @param ExpressionLanguage|null      $language
      */
-    public function __construct(OrganizationManagerInterface $manager, SessionInterface $session, $language = null)
+    public function __construct(OrganizationManagerInterface $manager, SessionContext $context, ExpressionLanguage $language = null)
     {
         $this->language = $language ?: new ExpressionLanguage();
-        $this->session  = $session;
+        $this->context  = $context;
         $this->manager  = $manager;
     }
 
@@ -99,7 +100,7 @@ class OrganizationAssigner implements AssignerInterface
 
         foreach ($conditions['conditions'] as $offset => $condition) {
             try {
-                if ($this->language->evaluate($condition, $this->createContext($username))) {
+                if ($this->language->evaluate($condition, $this->context->get($username))) {
                     return $conditions['priority'][$offset];
                 }
             } catch (\Exception $e) {}
@@ -135,28 +136,5 @@ class OrganizationAssigner implements AssignerInterface
         }
 
         return [];
-    }
-
-    /**
-     * @param string $username
-     *
-     * @return array
-     */
-    protected function createContext($username)
-    {
-        $session = [];
-
-        foreach ($this->session->all() as $key => $sessionItem) {
-            if (is_object($sessionItem)) {
-                $session[$key] = $sessionItem;
-            }
-        }
-
-        return [
-            'user' => (object) [
-                'username' => $username
-            ],
-            'session' => (object) $session
-        ];
     }
 }

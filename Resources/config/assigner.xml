@@ -10,12 +10,12 @@
     <services>
         <service id="rednose_framework.assigner.organization" class="%rednose_framework.assigner.organization.class%">
             <argument type="service" id="rednose_framework.organization_manager" />
-            <argument type="service" id="session" />
+            <argument type="service" id="rednose_framework.session_context" />
         </service>
 
         <service id="rednose_framework.assigner.group" class="%rednose_framework.assigner.group.class%">
             <argument type="service" id="rednose_framework.group_manager" />
-            <argument type="service" id="session" />
+            <argument type="service" id="rednose_framework.session_context" />
         </service>
 
         <service id="rednose_framework.listener.assigner" class="%rednose_framework.listener.assigner.class%">

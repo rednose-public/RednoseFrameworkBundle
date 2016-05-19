@@ -21,6 +21,21 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 interface UserInterface extends BaseUserInterface, GroupableInterface, EquatableInterface
 {
     /**
+     * Gets the username
+     *
+     * Will automatically return the username in lowercase for
+     * framework compatibility.
+     *
+     * if forceLowercase is set to false it will return the
+     * username as it has been set by setUsername().
+     *
+     * @param $forceLowercase
+     *
+     * @return string
+     */
+    public function getUsername($forceLowercase = true);
+
+    /**
      * Gets the realname (full name)
      *
      * @return string
