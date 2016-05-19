@@ -108,6 +108,11 @@ class OrganizationAssigner implements AssignerInterface
         return false;
     }
 
+    /**
+     * @param array $conditions
+     *
+     * @return array
+     */
     protected function normalizeConditions($conditions)
     {
         if (count($conditions) !== 2) {

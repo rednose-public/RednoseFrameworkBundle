@@ -2,6 +2,7 @@
 
 namespace Rednose\FrameworkBundle\EventListener;
 
+use Rednose\FrameworkBundle\Assigner\GroupAssigner;
 use Rednose\FrameworkBundle\Assigner\OrganizationAssigner;
 use Rednose\FrameworkBundle\Event\UserEvent;
 use Rednose\FrameworkBundle\Events;
@@ -15,11 +16,18 @@ class AssignerListener implements EventSubscriberInterface
     protected $organizationAssigner;
 
     /**
-     * @param OrganizationAssigner $organizationAssigner
+     * @var GroupAssigner
      */
-    public function __construct(OrganizationAssigner $organizationAssigner)
+    protected $groupAssigner;
+
+    /**
+     * @param OrganizationAssigner $organizationAssigner
+     * @param GroupAssigner        $groupAssigner
+     */
+    public function __construct(OrganizationAssigner $organizationAssigner, GroupAssigner $groupAssigner)
     {
         $this->organizationAssigner = $organizationAssigner;
+        $this->groupAssigner = $groupAssigner;
     }
 
     /**
@@ -41,8 +49,13 @@ class AssignerListener implements EventSubscriberInterface
      */
     public function handleGroupAssign(UserEvent $event)
     {
-        // Check static
-//        $this->organizationAssigner->assign($event->getUser());
+        $user = $event->getUser();
+
+        if ($user->isStatic()) {
+            return;
+        }
+
+        $this->groupAssigner->assign($user);
     }
 
     /**
@@ -52,7 +65,7 @@ class AssignerListener implements EventSubscriberInterface
     {
         return [Events::USER_LOGIN => [
             ['handleOrganizationAssign', 128],
-//            ['handleGroupAssign', 0]
+            ['handleGroupAssign', 0]
         ]];
     }
 }

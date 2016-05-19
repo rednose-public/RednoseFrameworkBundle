@@ -15,7 +15,7 @@ class AssignerListenerTest extends \PHPUnit_Framework_TestCase
     protected $listener;
 
     protected $organizationAssigner;
-//    protected $groupAssigner;
+    protected $groupAssigner;
 
     public function setUp()
     {
@@ -23,14 +23,18 @@ class AssignerListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->listener = new AssignerListener($this->organizationAssigner);
+        $this->groupAssigner = $this->getMockBuilder('Rednose\FrameworkBundle\Assigner\GroupAssigner')
+            ->disableOriginalConstructor()
+            ->getMock();
+        
+        $this->listener = new AssignerListener($this->organizationAssigner, $this->groupAssigner);
     }
 
     public function testGetSubscriptions()
     {
         $expected = [Events::USER_LOGIN => [
-            ['handleOrganizationAssign', 128]
-//            ['handleGroupAssign', 0]
+            ['handleOrganizationAssign', 128],
+            ['handleGroupAssign', 0]
         ]];
 
         $events = $this->listener->getSubscribedEvents();
@@ -56,5 +60,25 @@ class AssignerListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->organizationAssigner->expects($this->never())->method('assign');
         $this->listener->handleOrganizationAssign($event);
+    }
+
+    public function testHandleGroupAssign()
+    {
+        $user = new User();
+        $event = new UserEvent($user);
+
+        $this->groupAssigner->expects($this->once())->method('assign');
+        $this->listener->handleGroupAssign($event);
+    }
+
+    public function testHandleGroupAssignStatic()
+    {
+        $user = new User();
+        $user->setStatic(true);
+
+        $event = new UserEvent($user);
+
+        $this->groupAssigner->expects($this->never())->method('assign');
+        $this->listener->handleGroupAssign($event);
     }
 }
