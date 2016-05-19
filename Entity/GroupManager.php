@@ -12,8 +12,23 @@
 namespace Rednose\FrameworkBundle\Entity;
 
 use FOS\UserBundle\Doctrine\GroupManager as BaseGroupManager;
+use Rednose\FrameworkBundle\Model\GroupInterface;
 use Rednose\FrameworkBundle\Model\GroupManagerInterface;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
 
 class GroupManager extends BaseGroupManager implements GroupManagerInterface
 {
+    /**
+     * Finds one asset by the given criteria filtered by organization.
+     *
+     * @param OrganizationInterface $organization
+     *
+     * @return GroupInterface[]
+     */
+    public function findGroupsByOrganization(OrganizationInterface $organization)
+    {
+        return $this->repository->findBy([
+            'organization' => $organization
+        ]);
+    }
 }
