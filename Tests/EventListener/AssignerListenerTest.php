@@ -1,6 +1,6 @@
 <?php
 
-namespace Doctanium\Bundle\DataProviderBundle\EventListener;
+namespace Rednose\FrameworkBundle\EventListener;
 
 use Rednose\FrameworkBundle\Entity\Organization;
 use Rednose\FrameworkBundle\Entity\User;
@@ -46,6 +46,7 @@ class AssignerListenerTest extends \PHPUnit_Framework_TestCase
     public function testHandleOrganizationAssign()
     {
         $user = new User();
+        $user->setStatic(false);
         $event = new UserEvent($user);
 
         $this->organizationAssigner->expects($this->once())->method('assign');
@@ -66,6 +67,7 @@ class AssignerListenerTest extends \PHPUnit_Framework_TestCase
     public function testHandleGroupAssign()
     {
         $user = new User();
+        $user->setStatic(false);
         $user->setOrganization(new Organization());
 
         $event = new UserEvent($user);
