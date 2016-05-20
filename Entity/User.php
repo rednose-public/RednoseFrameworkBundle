@@ -43,7 +43,7 @@ class User extends BaseUser implements UserInterface
     protected $realname;
 
     /**
-     * @@ORM\ManyToMany(targetEntity="Rednose\FrameworkBundle\Entity\Group", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="Rednose\FrameworkBundle\Entity\Group", inversedBy="users")
      *
      * @ORM\JoinTable(name="rednose_framework_user_group",
      *   joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
@@ -77,7 +77,7 @@ class User extends BaseUser implements UserInterface
      *
      * @ORM\Column(type="boolean", nullable=false)
      */
-    protected $static = false;
+    protected $static = true;
 
     /**
      * Gets the username

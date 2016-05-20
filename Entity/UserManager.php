@@ -53,7 +53,7 @@ class UserManager extends BaseUserManager implements UserManagerInterface
     }
 
     /**
-     * @return UserInterface
+     * @return User
      */
     public function createUser()
     {
@@ -90,9 +90,9 @@ class UserManager extends BaseUserManager implements UserManagerInterface
 
             $user->setUsername($username);
             $user->setEnabled(true);
+            $user->setStatic(false);
             $user->setEmail($username);
             $user->setPassword($this->randomPassword());
-//            $user->setStatic(false);
 
             $event = new UserEvent($user);
             $this->dispatcher->dispatch(Events::USER_AUTO_CREATE, $event);
