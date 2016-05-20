@@ -77,7 +77,7 @@ class User extends BaseUser implements UserInterface
      *
      * @ORM\Column(type="boolean", nullable=false)
      */
-    protected $static = true;
+    protected $static = false;
 
     /**
      * Gets the username
