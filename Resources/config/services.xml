@@ -74,13 +74,6 @@
             <tag name="doctrine.event_listener" event="postRemove" />
         </service>
 
-        <service id="rednose_framework.serializer_id_listener" class="Rednose\FrameworkBundle\EventListener\SerializerIdListener">
-            <argument type="service" id="annotation_reader" />
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <tag name="jms_serializer.event_subscriber" event="serializer.post_deserialize" method="onPostDeserialize" priority="-64" />
-            <tag name="jms_serializer.event_subscriber" event="serializer.pre_serialize" method="onPreSerialize" priority="-64" />
-        </service>
-
         <service id="rednose_framework.listener.locale" class="%rednose_framework.listener.locale.class%">
             <argument type="service" id="security.context" />
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest"/>
