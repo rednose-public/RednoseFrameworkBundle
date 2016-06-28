@@ -3,38 +3,76 @@
 namespace Rednose\FrameworkBundle\Test;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\ORM\EntityManager;
+use Rednose\FrameworkBundle\Entity\Organization;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
+use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class WebTestCase extends BaseWebTestCase
 {
     /**
+     * @var Client
+     */
+    protected $client;
+
+    /**
      * @var ContainerInterface
      */
     protected $container;
 
+    /**
+     * @var EntityManager
+     */
+    protected $em;
+
     public function setUp()
     {
-        $client = static::createClient();
-        $this->container = $client->getContainer();
+        $this->client = static::createClient();
+        $this->container = $this->client->getContainer();
 
         // Purge DB
-        $em = $this->container->get('doctrine.orm.entity_manager');
-        $em->getConnection()->getConfiguration()->setSQLLogger(null);
-        $em->getConnection()->executeUpdate("SET foreign_key_checks = 0;");
+        $this->em = $this->container->get('doctrine.orm.entity_manager');
+        $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
+        $this->em->getConnection()->executeUpdate("SET foreign_key_checks = 0;");
 
-        $purger = new ORMPurger($em);
+        $purger = new ORMPurger($this->em);
         $purger->purge();
 
-        $em->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
-        $em->clear();
+        $this->em->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
+        $this->em->clear();
 
         // Create required system user.
         $util = $this->container->get('fos_user.util.user_manipulator');
 
         /** @var UserInterface $admin */
         $admin = $util->create('admin', 'adminpasswd', 'info@rednose.nl', true, true);
-        $em->persist($admin);
+        $this->em->persist($admin);
+
+        $organization = new Organization();
+        $organization->setName('Test');
+        $organization->setLocale('en_GB');
+        $organization->setLocalizations(['en_GB', 'nl_NL']);
+        $this->em->persist($organization);
+
+        // Create test user.
+        /** @var UserInterface $admin */
+        $user = $util->create('user', 'userpasswd', 'user@rednose.nl', true, true);
+        $user->setOrganization($organization);
+        $this->em->persist($user);
+
+        $this->em->flush();
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return OrganizationInterface
+     */
+    protected function getOrganization($name)
+    {
+        return $this->em->getRepository('RednoseFrameworkBundle:Organization')->findOneBy(['name' => $name]);
     }
 }
