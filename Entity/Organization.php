@@ -54,11 +54,33 @@ class Organization extends BaseOrganization
     protected $localizations = ['nl_NL', 'en_GB'];
 
     /**
+     * @ORM\ManyToOne(targetEntity="Theme")
+     * @ORM\JoinColumn(name="theme_id", referencedColumnName="id", nullable=true)
+     **/
+    protected $theme;
+
+    /**
      * @param string $name
      */
     public function __construct($name = null)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return Theme
+     */
+    public function getTheme()
+    {
+        return $this->theme;
+    }
+
+    /**
+     * @param Theme $theme
+     */
+    public function setTheme(Theme $theme = null)
+    {
+        $this->theme = $theme;
     }
 
     /**

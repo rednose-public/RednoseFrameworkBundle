@@ -27,12 +27,12 @@ class OrganizationAdmin extends Admin
         return false;
     }
 
-    protected $datagridValues = array(
+    protected $datagridValues = [
         '_page'       => 1,
         '_per_page'   => 25,
         '_sort_order' => 'ASC',
         '_sort_by'    => 'name',
-    );
+    ];
 
     protected function configureRoutes(RouteCollection $collection)
     {
@@ -50,7 +50,7 @@ class OrganizationAdmin extends Admin
         $showMapper
             ->with('General')
                 ->add('name')
-                ->add('conditions', 'array', array('label' => 'User assignment conditions'));
+                ->add('conditions', 'array', ['label' => 'User assignment conditions']);
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -58,18 +58,26 @@ class OrganizationAdmin extends Admin
         $formMapper
             ->with('General')
                 ->add('name')
-                ->add('conditions', 'rednose_prioritized_collection', array(
+                ->add('conditions', 'rednose_prioritized_collection', [
                     'allow_add'    => true,
                     'allow_delete' => true,
                     'label'        => 'User assignment conditions',
                     'required'     => false,
-                ))
+                ])
             ->end()
             ->with('Localization')
                 ->add('locale', 'locale')
-                ->add('localizations', 'locale', array(
+                ->add('localizations', 'locale', [
                     'multiple' => true,
-                ))
+                ])
+            ->end()
+            ->with('Appearance')
+                ->add('theme', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [
+                    'class' => 'RednoseFrameworkBundle:Theme',
+                    'required' => false,
+                    'multiple' => false
+                ])
+            ->end()
         ;
     }
 }
