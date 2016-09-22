@@ -13,10 +13,6 @@
         <parameter key="rednose.framework.admin.organization.class">Rednose\FrameworkBundle\Admin\OrganizationAdmin</parameter>
         <parameter key="rednose.framework.admin.organization.controller">RednoseFrameworkBundle:Admin\OrganizationAdmin</parameter>
         <parameter key="rednose.framework.admin.organization.entity">Rednose\FrameworkBundle\Entity\Organization</parameter>
-
-        <parameter key="rednose.framework.admin.client.class">Rednose\FrameworkBundle\Admin\ClientAdmin</parameter>
-        <parameter key="rednose.framework.admin.client.controller">RednoseFrameworkBundle:Admin\ClientAdmin</parameter>
-        <parameter key="rednose.framework.admin.client.entity">Rednose\FrameworkBundle\Entity\Client</parameter>
     </parameters>
 
     <services>

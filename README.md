@@ -31,7 +31,6 @@ Configuration reference:
 
 		auto_account_creation: false # Auto creates user accounts on first login, useful for single-sign-on
 
-        oauth: false # Enables Oauth2 authentication
         acl:   false # Enables ACL services and permission maps
 
 * [Enable SAML support](Resources/doc/Enable SAML support.md)
