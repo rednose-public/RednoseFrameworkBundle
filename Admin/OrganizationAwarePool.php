@@ -19,7 +19,7 @@ class OrganizationAwarePool extends Pool
      */
     public function getOrganizations()
     {
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
 
         if ($user->hasRole('ROLE_ORGANIZATION_ADMIN')) {
             return array($user->getOrganization());

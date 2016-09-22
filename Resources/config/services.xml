@@ -75,7 +75,7 @@
         </service>
 
         <service id="rednose_framework.listener.locale" class="%rednose_framework.listener.locale.class%">
-            <argument type="service" id="security.context" />
+            <argument type="service" id="security.token_storage" />
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest"/>
         </service>
 
