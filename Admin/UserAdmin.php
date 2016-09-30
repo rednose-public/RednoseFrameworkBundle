@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManager;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Rednose\FrameworkBundle\Model\GroupInterface;
 use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -79,11 +80,13 @@ class UserAdmin extends Admin
         if (isset($params['organization_id'])) {
             $organization = $this->getConfigurationPool()->getContainer()->get('rednose_framework.organization_manager')->findOrganizationById($params['organization_id']);
 
-            $query->andWhere(
-                $query->expr()->eq($query->getRootAliases()[0].'.organization', ':organization')
-            );
+            if ($organization) {
+                $query->andWhere(
+                    $query->expr()->eq($query->getRootAliases()[0].'.organization', ':organization')
+                );
 
-            $query->setParameter('organization', $organization);
+                $query->setParameter('organization', $organization);
+            }
         }
 
         return $query;
@@ -97,6 +100,14 @@ class UserAdmin extends Admin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('export');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureDatagridFilters(DatagridMapper $filter)
+    {
+        $filter->add('username');
     }
 
     protected function configureListFields(ListMapper $listMapper)
