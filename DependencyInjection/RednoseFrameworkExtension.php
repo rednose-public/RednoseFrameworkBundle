@@ -37,15 +37,11 @@ class RednoseFrameworkExtension extends Extension
 
         $bundles = $container->getParameter('kernel.bundles');
 
-        if ($config['oauth']) {
-            $loader->load('oauth.xml');
-        }
-
         if ($config['acl']) {
             $loader->load('acl.xml');
         }
 
-        $serviceFiles = array('assigner', 'orm', 'services', 'twig');
+        $serviceFiles = ['assigner', 'orm', 'services', 'twig'];
 
         foreach ($serviceFiles as $basename) {
             $loader->load(sprintf('%s.xml', $basename));

@@ -11,10 +11,10 @@
 
 namespace Rednose\FrameworkBundle\EventListener;
 
+use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\Security\Core\SecurityContext;
-use Rednose\FrameworkBundle\Model\UserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 /**
  * Changes the current locale based on user preferences.
@@ -22,18 +22,18 @@ use Rednose\FrameworkBundle\Model\UserInterface;
 class LocaleListener
 {
     /**
-     * @var SecurityContext
+     * @var TokenStorage
      */
-    protected $context;
+    protected $storage;
 
     /**
      * Constructor.
      *
-     * @param SecurityContext $context
+     * @param TokenStorage $storage
      */
-    public function __construct(SecurityContext $context)
+    public function __construct(TokenStorage $storage)
     {
-        $this->context = $context;
+        $this->storage = $storage;
     }
 
     /**
@@ -48,11 +48,11 @@ class LocaleListener
         }
 
         // Anonymous has no locale state
-        if ($this->context->getToken() === null) {
+        if ($this->storage->getToken() === null) {
             return;
         }
 
-        $user    = $this->context->getToken()->getUser();
+        $user    = $this->storage->getToken()->getUser();
         $request = $event->getRequest();
 
         if (!$user instanceof UserInterface || $user->getLocale() === null || $user->getLocale() === $request->getLocale()) {

@@ -11,10 +11,6 @@
                 <source>administration</source>
                 <target>Administration</target>
             </trans-unit>
-            <trans-unit id="oauth">
-                <source>oauth</source>
-                <target>OAuth 2.0</target>
-            </trans-unit>
             <trans-unit id="data_sources">
                 <source>data_sources</source>
                 <target>Data Sources</target>

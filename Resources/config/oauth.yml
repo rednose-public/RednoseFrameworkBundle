@@ -1,9 +1,0 @@
-fos_oauth_server:
-    db_driver: orm
-    client_class: Rednose\FrameworkBundle\Entity\Client
-    access_token_class: Rednose\FrameworkBundle\Entity\AccessToken
-    refresh_token_class: Rednose\FrameworkBundle\Entity\RefreshToken
-    auth_code_class: Rednose\FrameworkBundle\Entity\AuthCode
-
-    service:
-        user_provider: rednose_framework.user_manager

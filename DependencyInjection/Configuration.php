@@ -11,10 +11,9 @@
 
 namespace Rednose\FrameworkBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Rednose\FrameworkBundle\Form\Type\EditorType;
 
 /**
  * Configuration for this bundle.
@@ -30,7 +29,6 @@ class Configuration implements ConfigurationInterface
         $rootNode    = $treeBuilder->root('rednose_framework', 'array');
 
         $this->addUserSection($rootNode);
-        $this->addOauthSection($rootNode);
         $this->addAclSection($rootNode);
         $this->addAccountSection($rootNode);
         $this->addSamlSection($rootNode);
@@ -43,14 +41,6 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->booleanNode('user')->defaultTrue()->end()
-            ->end();
-    }
-
-    private function addOauthSection(ArrayNodeDefinition $node)
-    {
-        $node
-            ->children()
-                ->booleanNode('oauth')->defaultFalse()->end()
             ->end();
     }
 

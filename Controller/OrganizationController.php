@@ -2,9 +2,9 @@
 
 namespace Rednose\FrameworkBundle\Controller;
 
+use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use JMS\Serializer\SerializationContext;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -17,19 +17,19 @@ class OrganizationController extends Controller
     {
         $organizations = $this->get('rednose_framework.organization_manager')->findOrganizations();
 
-        if ($this->get('security.context')->getToken()) {
-            $user = $this->get('security.context')->getToken()->getUser();
+        if ($this->get('security.token_storage')->getToken()) {
+            $user = $this->get('security.token_storage')->getToken()->getUser();
 
             if ($user->hasRole('ROLE_ORGANIZATION_ADMIN')) {
-                $organizations = array($user->getOrganization());
+                $organizations = [$user->getOrganization()];
             }
         }
 
-        $context = new SerializationContext();
-        $context->setGroups('list');
+        $context = new Context();
+        $context->addGroup('list');
 
         $view = new View();
-        $view->setSerializationContext($context);
+        $view->setContext($context);
         $view->setData($organizations);
         $view->setFormat('json');
 
@@ -48,7 +48,7 @@ class OrganizationController extends Controller
         }
 
         /** @var UserInterface $user */
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         $user->setOrganization($organization);
 
         $this->get('rednose_framework.user_manager')->updateUser($user);
