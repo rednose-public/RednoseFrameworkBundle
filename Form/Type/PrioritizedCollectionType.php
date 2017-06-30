@@ -9,22 +9,45 @@
 
 namespace Rednose\FrameworkBundle\Form\Type;
 
-use Rednose\FrameworkBundle\Form\DataEvent\PrioritizedArrayDataListener;
+use Rednose\FrameworkBundle\Form\DataTransformer\PrioritizedArrayDataTransformer;
+use Rednose\FrameworkBundle\Model\PrioritizedArray;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PrioritizedCollectionType extends AbstractType
 {
     /**
+     * @var Request
+     */
+    protected $request;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['allow_add']    = $options['allow_add'];
-        $view->vars['allow_delete'] = $options['allow_delete'];
+        $name = $form->getName();
+
+        $model = new PrioritizedArray($name);
+        $model->loadArray($form->getData());
+
+        foreach ($model as $offset => $item) {
+            $form->add($name . '_' . $offset, 'text');
+            $form->add('priority_' . $offset, 'choice', [ 'choices' => [
+                0 => 'Normal', 1 => 'High', 2 => 'Very High'
+            ]]);
+        }
     }
 
     /**
@@ -32,7 +55,22 @@ class PrioritizedCollectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventSubscriber(new PrioritizedArrayDataListener());
+        $builder->addModelTransformer(new PrioritizedArrayDataTransformer(
+            $builder->getForm()->getName(), $this->request
+        ));
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            // Add the form-fields before the data-mapper does its thing.
+            $form = $event->getForm();
+
+            if (is_array($event->getData()) === false) {
+                return null;
+            }
+
+            foreach ($event->getData() as $key => $data) {
+                $form->add($key, 'text', [ 'data' => $data ]);
+            }
+        }, 50);
     }
 
     /**
@@ -49,10 +87,7 @@ class PrioritizedCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'allow_add'          => false,
-            'allow_delete'       => false,
-            'by_reference'       => false,
-            'allow_extra_fields' => true
+            'allow_extra_fields' => false
         ));
     }
 }

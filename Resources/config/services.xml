@@ -101,8 +101,9 @@
             <tag name="form.type" alias="rednose_file" />
         </service>
 
-        <service id="rednose_framework.form.type.prioritized_collection" class="%rednose_framework.form.type.prioritized_collection.class%">
+        <service id="rednose_framework.form.type.prioritized_collection" class="%rednose_framework.form.type.prioritized_collection.class%" scope="request">
             <tag name="form.type" alias="rednose_prioritized_collection" />
+            <argument type="service" id="request" />
         </service>
 
         <service id="rednose_framework.organization_serialization_listener" class="Rednose\FrameworkBundle\EventListener\OrganizationSerializationListener">

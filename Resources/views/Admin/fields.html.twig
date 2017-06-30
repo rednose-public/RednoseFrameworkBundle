@@ -10,62 +10,46 @@
             {{ form_label(form) }}
 
             <div class="col-sm-9">
-                    {% for child in form %}
-                        {% if loop.index % 2 %}
-                            <div class="row sonata-collection-row">
+                {% for child in form %}
+                    {% if loop.index % 2 %}
+                        <div class="row sonata-collection-row">
 
-                            {% if allow_delete %}
-                                <div class="col-md-1">
-                                    <a href="#" class="btn btn-link sonata-collection-delete">
-                                        <i class="fa fa-minus-circle"></i>
-                                    </a>
-                                </div>
-                            {% endif %}
-                        {% endif %}
-
-                        <div class="col-md-5">
-                            {{ form_row(child, { label: false }) }}
+                        <div class="col-md-1">
+                            <a href="#" class="btn btn-link sonata-collection-delete">
+                                <i class="fa fa-minus-circle"></i>
+                            </a>
                         </div>
-
-                        {% if not loop.index % 2 %}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-
-                    {% if allow_add %}
-                        <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fa fa-plus-circle"></i></a></div>
                     {% endif %}
 
+                    <div class="col-md-5">
+                        {{ form_row(child, { label: false }) }}
+                    </div>
+
+                    {% if not loop.index % 2 %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fa fa-plus-circle"></i></a></div>
              </div>
             </div>
 
         <script>
             $('div[id={{ id }}]').on('sonata-collection-item-added', function() {
+                var fieldId = '{{ id }}';
 
-                var counter = $('.col-md-6').length,
-                    dataId  = null;
+                fieldId = fieldId.replace('_', '[') + ']';
+
+                var counter = $(this).find('select[name*=priority_]').length;
 
                 $(this).find('*[name]').each(function() {
-                    if (!dataId) {
-                        dataId = $(this).closest('[data-id]').attr('data-id');
-
-                        $(this).closest('[data-id]').removeAttr('data-id');
-                    }
-
                     if ($(this).attr('data-set-name')) {
-                        var name = $(this).attr('name'),
-                            nameId = null;
+                        var name = $(this).attr('name');
 
                         if (name === 'priority') {
-                            nameId = dataId.replace('_', '[');
-                            nameId = nameId.replace('_', '][priority_' + counter + '_');
-
-                            $(this).attr('name', nameId + ']');
+                            $(this).attr('name', fieldId + '[priority_' + counter + ']');
                         } else {
-                            nameId = dataId.replace('_', '[');
-                            nameId = nameId.replace('_', '][{{ name }}_' + counter + '_');
-
-                            $(this).attr('name', nameId + ']');
+                            $(this).attr('name', fieldId + '[' + name + '_' + counter + ']');
                         }
 
                         $(this).attr('data-set-name', null);
@@ -78,13 +62,11 @@
 
 {% block rednose_prioritized_collection_prototype_row %}
     <div class="row sonata-collection-row">
-        {% if allow_delete %}
-            <div class="col-md-1">
-                <a href="#" class="btn btn-link sonata-collection-delete">
-                    <i class="fa fa-minus-circle"></i>
-                </a>
-            </div>
-        {% endif %}
+        <div class="col-md-1">
+            <a href="#" class="btn btn-link sonata-collection-delete">
+                <i class="fa fa-minus-circle"></i>
+            </a>
+        </div>
 
         <div class="col-md-5" data-id="{{ id }}___name__">
             <div class="form-group">

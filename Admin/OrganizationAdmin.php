@@ -59,10 +59,8 @@ class OrganizationAdmin extends Admin
             ->with('General')
                 ->add('name')
                 ->add('conditions', 'rednose_prioritized_collection', [
-                    'allow_add'    => true,
-                    'allow_delete' => true,
-                    'label'        => 'User assignment conditions',
-                    'required'     => false,
+                    'label'    => 'User assignment conditions',
+                    'required' => false,
                 ])
             ->end()
             ->with('Localization')

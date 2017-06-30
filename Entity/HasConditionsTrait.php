@@ -14,7 +14,7 @@ trait HasConditionsTrait
      * @Serializer\Type("array<string>")
      * @Serializer\Groups({"file", "details"})
      */
-    protected $conditions;
+    protected $conditions = [];
 
     /**
      * A list of OR conditions to evaluate on a user object
@@ -47,9 +47,13 @@ trait HasConditionsTrait
      *
      * @param string $condition
      */
-    public function addCondition($condition)
+    public function addCondition($condition, $priority = null)
     {
-        $this->conditions[] = $condition;
+        if ($priority === null) {
+            $this->conditions[] = $condition;
+        } else {
+            die('?');
+        }
     }
 
     /**

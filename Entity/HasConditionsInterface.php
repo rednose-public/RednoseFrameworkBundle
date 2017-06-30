@@ -25,7 +25,7 @@ interface HasConditionsInterface
      *
      * @param string $condition
      */
-    public function addCondition($condition);
+    public function addCondition($condition, $priority = null);
 
     /**
      * Removes a condition.
