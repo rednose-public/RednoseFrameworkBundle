@@ -27,16 +27,21 @@ class AssignerListenerTest extends \PHPUnit_Framework_TestCase
         $this->groupAssigner = $this->getMockBuilder('Rednose\FrameworkBundle\Assigner\GroupAssigner')
             ->disableOriginalConstructor()
             ->getMock();
-        
+
         $this->listener = new AssignerListener($this->organizationAssigner, $this->groupAssigner);
     }
 
     public function testGetSubscriptions()
     {
-        $expected = [Events::USER_LOGIN => [
+        $events = [
             ['handleOrganizationAssign', 128],
             ['handleGroupAssign', 0]
-        ]];
+        ];
+
+        $expected = [
+            Events::USER_AUTO_CREATE => $events,
+            Events::USER_LOGIN => $events,
+        ];
 
         $events = $this->listener->getSubscribedEvents();
 

@@ -63,9 +63,14 @@ class AssignerListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [Events::USER_LOGIN => [
+        $events = [
             ['handleOrganizationAssign', 128],
             ['handleGroupAssign', 0]
-        ]];
+        ];
+
+        return [
+            Events::USER_AUTO_CREATE => $events,
+            Events::USER_LOGIN => $events,
+        ];
     }
 }
