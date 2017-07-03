@@ -49,12 +49,7 @@ class OrganizationAssigner extends AbstractAssigner implements AssignerInterface
      */
     public function assign(UserInterface $user)
     {
-        $organization = null;
-        $match = $this->resolve($user->getUsername(false));
-
-        if ($match) {
-            $organization = $this->manager->findOrganizationById($match['source']);
-        }
+        $organization = $this->resolve($user->getUsername());
 
         if ($organization) {
             $user->setOrganization($organization);
@@ -68,14 +63,22 @@ class OrganizationAssigner extends AbstractAssigner implements AssignerInterface
      */
     public function resolve($username)
     {
-        $conditions = [];
+        $organizations = [];
+        $conditions    = [];
 
         foreach ($this->manager->findOrganizations() as $organization) {
-            $conditions[$organization->getId()] = $organization->getConditions();
+            $conditions[$organization->getId()]    = $organization->getConditions();
+            $organizations[$organization->getId()] = $organization;
         }
 
-        return $this->shouldAssignPrioritized(
+        $match = $this->shouldAssignPrioritized(
             $username, $conditions, $this->context, $this->language
         );
+
+        if ($match) {
+            return $organizations[$match['source']];
+        }
+
+        return null;
     }
 }
