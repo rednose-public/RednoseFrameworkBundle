@@ -18,6 +18,7 @@ use Rednose\FrameworkBundle\Model\Organization as BaseOrganization;
 /**
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_organization")
+ * @ORM\HasLifecycleCallbacks()
  *
  * @Serializer\AccessorOrder("custom", custom = {"id", "name"})
  */

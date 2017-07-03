@@ -15,7 +15,7 @@ use Rednose\FrameworkBundle\Model\GroupManagerInterface;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
-class GroupAssigner implements AssignerInterface
+class GroupAssigner extends AbstractAssigner implements AssignerInterface
 {
     /**
      * @var GroupManagerInterface
@@ -55,32 +55,16 @@ class GroupAssigner implements AssignerInterface
 
         /** @var GroupInterface $group */
         foreach ($this->manager->findGroupsByOrganization($user->getOrganization()) as $group) {
-            if ($this->shouldAssign($group, $user)) {
+            $match = $this->shouldAssignPrioritized(
+                $user->getUsername(),
+                [ $group->getId() => $group->getConditions() ],
+                $this->context,
+                $this->language
+            );
+
+            if ($match) {
                 $user->addGroup($group);
             }
         }
-    }
-
-    /**
-     * @param GroupInterface $group
-     * @param UserInterface  $user
-     *
-     * @return bool
-     */
-    protected function shouldAssign(GroupInterface $group, UserInterface $user)
-    {
-        if (!$group->getConditions()) {
-            return false;
-        }
-
-        foreach ($group->getConditions() as $condition) {
-            try {
-                if ($this->language->evaluate($condition, $this->context->get($user->getUsername(false)))) {
-                    return true;
-                }
-            } catch (\Exception $e) {}
-        }
-
-        return false;
     }
 }

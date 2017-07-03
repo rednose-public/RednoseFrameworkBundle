@@ -38,25 +38,17 @@ class PrioritizedArrayDataTransformer implements DataTransformerInterface
 
     public function transform($data)
     {
-        if (!$data) {
-            return null;
+        if ($this->request->getMethod() === 'POST' && $data !== null) {
+            $data->clear();
         }
 
-        $prioritizedArray = new PrioritizedArray($this->formName);
-
-        if ($this->request->getMethod() !== 'POST') {
-            // In case of a post-request do not load the data, it makes it
-            // impossible to delete an item
-            $prioritizedArray->loadArray($data);
-        }
-
-        return $prioritizedArray;
+        return $data;
     }
 
     public function reverseTransform($data)
     {
         if ($data instanceof PrioritizedArray) {
-            return unserialize((string)$data);
+            return $data;
         }
 
         return null;

@@ -9,7 +9,7 @@
         <div {{ block('widget_container_attributes') }}>
             {{ form_label(form) }}
 
-            <div class="col-sm-9">
+            <div class="col-sm-9 prioritized-collection">
                 {% for child in form %}
                     {% if loop.index % 2 %}
                         <div class="row sonata-collection-row">
@@ -21,9 +21,16 @@
                         </div>
                     {% endif %}
 
-                    <div class="col-md-5">
-                        {{ form_row(child, { label: false }) }}
-                    </div>
+                    {% if priorities %}
+                        <div class="col-md-5">
+                            {{ form_row(child, { label: false }) }}
+                        </div>
+                    {% else %}
+                        <div class="col-md-10">
+                            {{ form_row(child, { label: false }) }}
+                            {{ form_row(child, { label: false }) }}
+                        </div>
+                    {% endif %}
 
                     {% if not loop.index % 2 %}
                         </div>
@@ -35,12 +42,14 @@
             </div>
 
         <script>
+            var counter = $('div[id={{ id }}]').find('[name*=priority_]').length;
+
             $('div[id={{ id }}]').on('sonata-collection-item-added', function() {
                 var fieldId = '{{ id }}';
 
                 fieldId = fieldId.replace('_', '[') + ']';
 
-                var counter = $(this).find('select[name*=priority_]').length;
+                counter++;
 
                 $(this).find('*[name]').each(function() {
                     if ($(this).attr('data-set-name')) {
@@ -68,23 +77,34 @@
             </a>
         </div>
 
-        <div class="col-md-5" data-id="{{ id }}___name__">
-            <div class="form-group">
-                <div class="col-sm-9 col-sm-offset-3">
-                    <input type="text" class="form-control" id="{{ id }}" data-set-name="true" name="{{ name }}" />
+        {% if priorities %}
+            <div class="col-md-5" data-id="{{ id }}___name__">
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <input type="text" class="form-control" id="{{ id }}" data-set-name="true" name="{{ name }}" />
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-5">
-            <div class="form-group">
-                <div class="col-sm-9 col-sm-offset-3">
-                    <select id="{{ id }}_priority" data-set-name="true" name="priority">
-                        <option value="0">Normal</option>
-                        <option value="1">High</option>
-                        <option value="2">Very High</option>
-                    </select>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <select id="{{ id }}_priority" data-set-name="true" name="priority">
+                            <option value="0">Normal</option>
+                            <option value="1">High</option>
+                            <option value="2">Very High</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
+        {% else %}
+            <div class="col-md-10" data-id="{{ id }}___name__">
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <input type="text" class="form-control" id="{{ id }}" data-set-name="true" name="{{ name }}" />
+                        <input type="hidden" class="form-control" id="{{ id }}_priority" data-set-name="true" value="0" name="priority" />
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock  %}

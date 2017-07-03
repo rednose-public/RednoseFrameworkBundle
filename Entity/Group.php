@@ -22,6 +22,7 @@ use Rednose\FrameworkBundle\Model\UserInterface;
  *
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_group")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Group extends BaseGroup implements GroupInterface
 {

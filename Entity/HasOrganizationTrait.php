@@ -16,7 +16,7 @@ trait HasOrganizationTrait
 {
     /**
      * @var OrganizationInterface
-    /**
+     *
      * @ORM\ManyToOne(
      *   targetEntity="Rednose\FrameworkBundle\Entity\Organization"
      * )

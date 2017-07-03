@@ -4,7 +4,13 @@ namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Rednose\FrameworkBundle\Model\PrioritizedArray;
 
+/**
+ * Class HasConditionsTrait
+ *
+ * @package Rednose\FrameworkBundle\Entity
+ */
 trait HasConditionsTrait
 {
     /**
@@ -14,21 +20,25 @@ trait HasConditionsTrait
      * @Serializer\Type("array<string>")
      * @Serializer\Groups({"file", "details"})
      */
-    protected $conditions = [];
+    protected $conditions = null;
 
     /**
      * A list of OR conditions to evaluate on a user object
      * when deciding to assign a user to this organization.
      *
-     * @return string[]
+     * @return PrioritizedArray
      */
     public function getConditions()
     {
+        $arr = new PrioritizedArray('conditions');
+
         if (!$this->conditions) {
-            return [];
+            return $arr;
         }
 
-        return $this->conditions;
+        $arr->load($this->conditions);
+
+        return $arr;
     }
 
     /**
@@ -37,36 +47,23 @@ trait HasConditionsTrait
      *
      * @param string[] $conditions
      */
-    public function setConditions($conditions)
+    public function setConditions(PrioritizedArray $conditions)
     {
         $this->conditions = $conditions;
     }
 
     /**
-     * Adds a condition.
-     *
-     * @param string $condition
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
      */
-    public function addCondition($condition, $priority = null)
+    public function prePersist()
     {
-        if ($priority === null) {
-            $this->conditions[] = $condition;
-        } else {
-            die('?');
-        }
-    }
+        if (!$this->conditions) {
+            $this->conditions = null;
 
-    /**
-     * Removes a condition.
-     *
-     * @param string $condition
-     */
-    public function removeCondition($condition)
-    {
-        $index = array_search($condition, $this->conditions);
-
-        if ($index !== false) {
-            unset($this->conditions[$index]);
+            return;
         }
+
+        $this->conditions  = unserialize((string)$this->conditions);
     }
 }

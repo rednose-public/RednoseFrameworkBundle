@@ -54,11 +54,13 @@ class PrioritizedArray implements \Iterator, \ArrayAccess
         $this->reIndex();
     }
 
-    public function load($serializedData)
+    public function load($data)
     {
-        $unserialized = @unserialize($serializedData);
+        if (is_array($data) === false) {
+            $data = @unserialize($data);
+        }
 
-        $this->loadArray($unserialized);
+        $this->loadArray($data);
     }
 
     public function clear()

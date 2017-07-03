@@ -10,7 +10,6 @@
 namespace Rednose\FrameworkBundle\Form\Type;
 
 use Rednose\FrameworkBundle\Form\DataTransformer\PrioritizedArrayDataTransformer;
-use Rednose\FrameworkBundle\Model\PrioritizedArray;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -39,14 +38,18 @@ class PrioritizedCollectionType extends AbstractType
     {
         $name = $form->getName();
 
-        $model = new PrioritizedArray($name);
-        $model->loadArray($form->getData());
+        $view->vars['priorities'] = $options['priorities'];
 
-        foreach ($model as $offset => $item) {
+        foreach ($form->getData() as $offset => $item) {
             $form->add($name . '_' . $offset, 'text');
-            $form->add('priority_' . $offset, 'choice', [ 'choices' => [
-                0 => 'Normal', 1 => 'High', 2 => 'Very High'
-            ]]);
+
+            if ($options['priorities'] === false) {
+                $form->add('priority_' . $offset, 'hidden', [ 'data' => '0' ]);
+            } else {
+                $form->add('priority_' . $offset, 'choice', ['choices' => [
+                    0 => 'Normal', 1 => 'High', 2 => 'Very High'
+                ]]);
+            }
         }
     }
 
@@ -87,7 +90,8 @@ class PrioritizedCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'allow_extra_fields' => false
+            'allow_extra_fields' => false,
+            'priorities' => true
         ));
     }
 }

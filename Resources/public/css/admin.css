@@ -40,3 +40,11 @@
     color: #444;
     background: #fff;
 }
+
+.prioritized-collection .col-sm-offset-3 {
+    margin: 0;
+}
+
+.prioritized-collection .col-sm-9 {
+    width: 110%;
+}

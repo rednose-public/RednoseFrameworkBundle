@@ -2,13 +2,15 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
+use Rednose\FrameworkBundle\Model\PrioritizedArray;
+
 interface HasConditionsInterface
 {
     /**
      * A list of OR conditions to evaluate on a user object
      * when deciding to assign a user to this organization.
      *
-     * @return string[]
+     * @return PrioritizedArray
      */
     public function getConditions();
 
@@ -16,21 +18,7 @@ interface HasConditionsInterface
      * A list of OR conditions to evaluate on a user object
      * when deciding to assign a user to this organization.
      *
-     * @param string[] $conditions
+     * @param PrioritizedArray $conditions
      */
-    public function setConditions($conditions);
-
-    /**
-     * Adds a condition.
-     *
-     * @param string $condition
-     */
-    public function addCondition($condition, $priority = null);
-
-    /**
-     * Removes a condition.
-     *
-     * @param string $condition
-     */
-    public function removeCondition($condition);
+    public function setConditions(PrioritizedArray $conditions);
 }
