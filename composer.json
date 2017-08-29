@@ -24,7 +24,6 @@
         "doctrine/doctrine-bundle": "~1.4",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "doctrine/orm": "2.5.*@stable",
-        "doctrine/instantiator": "1.0.*@stable",
         "symfony/swiftmailer-bundle": "~2.3",
         "symfony/monolog-bundle": "~2.4",
         "sensio/distribution-bundle": "~5.0",
