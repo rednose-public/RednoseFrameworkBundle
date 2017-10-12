@@ -55,11 +55,12 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
     private $redisSessionExpire = 0;
 
     /**
-     * RedisSessionHandler constructor.
+     * RedisSessionHandler constructor
      *
-     * @param string $redisHost
-     * @param string $redisAuth
-     * @param int    $redisSessionExpire
+     * @param RedisPredisFactory $predisFactory
+     * @param string             $redisHost
+     * @param string             $redisAuth
+     * @param int                $redisSessionExpire
      */
     public function __construct($predisFactory, $redisHost, $redisAuth, $redisSessionExpire)
     {
