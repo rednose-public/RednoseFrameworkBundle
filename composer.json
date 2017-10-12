@@ -22,7 +22,7 @@
         "php": ">=5.4.0",
         "symfony/symfony": "2.8.*",
         "doctrine/doctrine-bundle": "~1.4",
-        "doctrine/doctrine-migrations-bundle": "^1.0",
+        "doctrine/doctrine-migrations-bundle": "1.2.1",
         "doctrine/orm": "2.5.*@stable",
         "doctrine/instantiator": "1.0.*@stable",
         "symfony/swiftmailer-bundle": "~2.3",
