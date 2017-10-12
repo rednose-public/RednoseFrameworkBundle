@@ -35,13 +35,22 @@ class RednoseFrameworkExtension extends Extension
         $config = $processor->processConfiguration($configuration, $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
+
         $bundles = $container->getParameter('kernel.bundles');
 
         if ($config['acl']) {
             $loader->load('acl.xml');
         }
 
-        $serviceFiles = ['assigner', 'orm', 'services', 'twig'];
+        $serviceFiles = ['assigner', 'orm', 'services', 'twig', 'session'];
+
+        // Only load the redis session service if it is configured
+        try {
+            $redisConfig = $container->getParameter('redis_host');
+        } catch (\Exception $e) {
+            $container->setParameter('redis_host', '');
+            $container->setParameter('redis_auth', '');
+        }
 
         foreach ($serviceFiles as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
