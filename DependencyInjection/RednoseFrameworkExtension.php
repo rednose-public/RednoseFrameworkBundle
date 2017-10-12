@@ -50,6 +50,7 @@ class RednoseFrameworkExtension extends Extension
         } catch (\Exception $e) {
             $container->setParameter('redis_host', '');
             $container->setParameter('redis_auth', '');
+            $container->setParameter('redis_session_expire', 0);
         }
 
         foreach ($serviceFiles as $basename) {

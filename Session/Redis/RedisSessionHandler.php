@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Rednose\FrameworkBundle\Session;
+namespace Rednose\FrameworkBundle\Session\Redis;
 
 /**
  * Support storing sessions in a centralized redis.
@@ -20,23 +20,54 @@ namespace Rednose\FrameworkBundle\Session;
  */
 class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInterface
 {
+    /**
+     * Redis key prefix
+     */
+    const PREFIX = 'REDNOSE_SESS_';
+
+    /**
+     * @var bool
+     */
     private $redisActivated = false;
 
+    /**
+     * @var RedisPredisFactory
+     */
+    private $factory;
+
+    /**
+     * Expected pattern is host:port
+     *
+     * @var string
+     */
     private $redisHost = '';
 
+    /**
+     * @var string
+     */
     private $redisAuth = '';
+
+    /**
+     * Session expire in seconds
+     *
+     * @var int
+     */
+    private $redisSessionExpire = 0;
 
     /**
      * RedisSessionHandler constructor.
      *
      * @param string $redisHost
      * @param string $redisAuth
+     * @param int    $redisSessionExpire
      */
-    public function __construct($redisHost, $redisAuth)
+    public function __construct($predisFactory, $redisHost, $redisAuth, $redisSessionExpire)
     {
-        $this->redisActivated = ($redisHost !== '');
-        $this->redisHost = $redisHost;
-        $this->redisAuth = $redisAuth;
+        $this->redisActivated     = ($redisHost !== '');
+        $this->factory            = $predisFactory;
+        $this->redisHost          = $redisHost;
+        $this->redisAuth          = $redisAuth;
+        $this->redisSessionExpire = $redisSessionExpire;
     }
 
     /**
@@ -48,6 +79,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
             return parent::close();
         }
 
+        return true;
     }
 
     /**
@@ -58,6 +90,10 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
         if ($this->redisActivated === false) {
             return parent::destroy($sessId);
         }
+
+        $redisClient = $this->getClient();
+
+        return $redisClient->del([ $this::PREFIX . $sessId ]);
     }
 
     /**
@@ -69,6 +105,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
             return parent::gc($maxLifeTime);
         }
 
+        return true;
     }
 
     /**
@@ -76,11 +113,14 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function open($savePath, $name)
     {
-        $name = 'REDNOSE_SESS_';
-
         if ($this->redisActivated === false) {
             return parent::open($savePath, $name);
         }
+
+        // Check if the connection can be established
+        $this->getClient();
+
+        return true;
     }
 
     /**
@@ -92,6 +132,9 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
             return parent::read($sessId);
         }
 
+        $redisClient = $this->getClient();
+
+        return $redisClient->get($this::PREFIX . $sessId);
     }
 
     /**
@@ -102,5 +145,26 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
         if ($this->redisActivated === false) {
             return parent::write($sessId, $data);
         }
+
+        $redisClient = $this->getClient();
+
+        return $redisClient->set($this::PREFIX . $sessId, $data,"EX", $this->redisSessionExpire);
+    }
+
+    /**
+     * @return \Predis\Client
+     */
+    protected function getClient()
+    {
+        try {
+            $client = $this->factory->create( 'tcp://' . $this->redisHost);
+            $client->auth($this->redisAuth);
+        } catch (\Exception $e) {
+            // At this stage (session-open) exceptions are not catchable by the framework
+            // So lets do it the old-skool way.
+            die($e->getMessage());
+        }
+
+        return $client;
     }
 }

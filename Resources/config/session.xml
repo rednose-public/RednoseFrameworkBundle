@@ -2,9 +2,14 @@
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="session.handler.rednose_framework" class="Rednose\FrameworkBundle\Session\RedisSessionHandler" public="false">
+        <service id="session.client.rednose_framework_redis.factory" class="Rednose\FrameworkBundle\Session\Redis\RedisPredisFactory" public="false">
+        </service>
+        <service id="session.handler.rednose_framework_redis" class="Rednose\FrameworkBundle\Session\Redis\RedisSessionHandler" public="false">
+            <argument type="service" id="session.client.rednose_framework_redis.factory" />
+            <argument>%redis_host%</argument>
             <argument>%redis_host%</argument>
             <argument>%redis_auth%</argument>
+            <argument>%redis_session_expire%</argument>
         </service>
     </services>
 </container>
