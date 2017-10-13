@@ -64,7 +64,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function __construct($predisFactory, $redisHost, $redisAuth, $redisSessionExpire)
     {
-        $this->redisActivated     = ($redisHost !== '');
+        $this->redisActivated     = (bool)$redisHost;
         $this->factory            = $predisFactory;
         $this->redisHost          = $redisHost;
         $this->redisAuth          = $redisAuth;
