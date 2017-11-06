@@ -35,6 +35,7 @@
         "jms/serializer-bundle": "^1.1",
         "knplabs/knp-time-bundle": "^1.5",
         "sonata-project/doctrine-orm-admin-bundle": "^2.3",
+        "sonata-project/admin-bundle": "v3.18.2",
         "ezyang/htmlpurifier": "^4.7",
         "sonata-project/intl-bundle": "^2.2",
         "predis/predis": "v1.1.1"
