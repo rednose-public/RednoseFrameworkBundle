@@ -34,7 +34,7 @@
         "friendsofsymfony/rest-bundle": "^1.8",
         "jms/serializer-bundle": "^1.1",
         "knplabs/knp-time-bundle": "^1.5",
-        "sonata-project/doctrine-orm-admin-bundle": "^2.3",
+        "sonata-project/doctrine-orm-admin-bundle": "v3.1.6",
         "sonata-project/admin-bundle": "v3.18.2",
         "ezyang/htmlpurifier": "^4.7",
         "sonata-project/intl-bundle": "^2.2",
