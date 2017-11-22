@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Admin\Admin;
 abstract class AbstractAdmin extends Admin
 {
     /**
-     * Enable acl by default (to hide the edit ACL button)
+     * Disable ACL by default (to hide the edit ACL button)
      */
     public function isAclEnabled()
     {

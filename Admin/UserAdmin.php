@@ -57,6 +57,18 @@ class UserAdmin extends Admin
     /**
      * {@inheritdoc}
      */
+    public function getRequest()
+    {
+        if (!$this->request) {
+            $this->request = $this->getConfigurationPool()->getContainer()->get('request');
+        }
+
+        return $this->request;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPersistentParameters()
     {
         if (!$this->getRequest()) {
