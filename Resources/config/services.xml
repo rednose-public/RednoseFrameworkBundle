@@ -39,6 +39,15 @@
             <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" priority="-64" />
         </service>
 
+        <!-- Redis -->
+        <service id="session.client.rednose_framework_redis.factory" class="Rednose\FrameworkBundle\Redis\RedisPredisFactory" public="false">
+        </service>
+        <service id="session.client.rednose_framework_redis.service" class="Rednose\FrameworkBundle\Redis\RedisService" public="false">
+            <argument type="service" id="session.client.rednose_framework_redis.factory" />
+            <argument>%redis_host%</argument>
+            <argument>%redis_auth%</argument>
+        </service>
+
         <!-- Notifications -->
         <service id="rednose_framework.notification.factory" class="%rednose_framework.notification.factory.class%">
             <argument type="service" id="service_container"/>

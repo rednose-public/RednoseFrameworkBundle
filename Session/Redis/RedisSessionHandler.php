@@ -11,6 +11,8 @@
 
 namespace Rednose\FrameworkBundle\Session\Redis;
 
+use Rednose\FrameworkBundle\Redis\RedisService;
+
 /**
  * Support storing sessions in a centralized redis.
  *
@@ -26,28 +28,6 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
     const PREFIX = 'REDNOSE_SESS_';
 
     /**
-     * @var bool
-     */
-    private $redisActivated = false;
-
-    /**
-     * @var RedisPredisFactory
-     */
-    private $factory;
-
-    /**
-     * Expected pattern is host:port
-     *
-     * @var string
-     */
-    private $redisHost = '';
-
-    /**
-     * @var string
-     */
-    private $redisAuth = '';
-
-    /**
      * Session expire in seconds
      *
      * @var int
@@ -55,19 +35,19 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
     private $redisSessionExpire = 0;
 
     /**
-     * RedisSessionHandler constructor
-     *
-     * @param RedisPredisFactory $predisFactory
-     * @param string             $redisHost
-     * @param string             $redisAuth
-     * @param int                $redisSessionExpire
+     * @var RedisService
      */
-    public function __construct($predisFactory, $redisHost, $redisAuth, $redisSessionExpire)
+    private $redisService;
+
+    /**
+     * RedisSessionHandler constructor.
+     *
+     * @param RedisService $redisService
+     * @param int          $redisSessionExpire
+     */
+    public function __construct(RedisService $redisService, $redisSessionExpire)
     {
-        $this->redisActivated     = (bool)$redisHost;
-        $this->factory            = $predisFactory;
-        $this->redisHost          = $redisHost;
-        $this->redisAuth          = $redisAuth;
+        $this->redisService       = $redisService;
         $this->redisSessionExpire = $redisSessionExpire;
     }
 
@@ -76,7 +56,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function close()
     {
-        if ($this->redisActivated === false) {
+        if ($this->redisService->isConfigured() === false) {
             return parent::close();
         }
 
@@ -88,7 +68,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function destroy($sessId)
     {
-        if ($this->redisActivated === false) {
+        if ($this->redisService->isConfigured() === false) {
             return parent::destroy($sessId);
         }
 
@@ -102,7 +82,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function gc($maxLifeTime)
     {
-        if ($this->redisActivated === false) {
+        if ($this->redisService->isConfigured() === false) {
             return parent::gc($maxLifeTime);
         }
 
@@ -114,7 +94,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function open($savePath, $name)
     {
-        if ($this->redisActivated === false) {
+        if ($this->redisService->isConfigured() === false) {
             return parent::open($savePath, $name);
         }
 
@@ -129,7 +109,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function read($sessId)
     {
-        if ($this->redisActivated === false) {
+        if ($this->redisService->isConfigured() === false) {
             return parent::read($sessId);
         }
 
@@ -143,7 +123,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function write($sessId, $data)
     {
-        if ($this->redisActivated === false) {
+        if ($this->redisService->isConfigured() === false) {
             return parent::write($sessId, $data);
         }
 
@@ -157,15 +137,6 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     protected function getClient()
     {
-        try {
-            $client = $this->factory->create( 'tcp://' . $this->redisHost);
-            $client->auth($this->redisAuth);
-        } catch (\Exception $e) {
-            // At this stage (session-open) exceptions are not catchable by the framework
-            // So lets do it the old-skool way.
-            die($e->getMessage());
-        }
-
-        return $client;
+        return $this->redisService->getClient();
     }
 }

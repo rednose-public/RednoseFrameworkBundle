@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Rednose\FrameworkBundle\Session\Redis;
+namespace Rednose\FrameworkBundle\Redis;
 
 /**
  * Factory service for creating the Predis\Client

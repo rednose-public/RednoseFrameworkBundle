@@ -2,6 +2,7 @@
 
 namespace Rednose\FrameworkBundle\Tests\Model;
 
+use Rednose\FrameworkBundle\Redis\RedisService;
 use Rednose\FrameworkBundle\Session\Redis\RedisSessionHandler;
 
 class RedisSessionHandlerTest extends \PHPUnit_Framework_TestCase
@@ -48,9 +49,11 @@ class RedisSessionHandlerTest extends \PHPUnit_Framework_TestCase
         $this->predisClientMock->setMethods(['auth', 'set', 'get']);
         $this->predisClientMock = $this->predisClientMock->getMock();
 
-        $factoryMock = $this->getMock('Rednose\FrameworkBundle\Session\Redis\RedisPredisFactory');
+        $factoryMock = $this->getMock('Rednose\FrameworkBundle\Redis\RedisPredisFactory');
         $factoryMock->expects($this->once())->method('create')->with('tcp://localhost:6379')->willReturn($this->predisClientMock);
 
-        $this->sessionHandler = new RedisSessionHandler($factoryMock, 'localhost:6379', 'p4ssw0rd', 172800);
+        $redisService = new RedisService($factoryMock,'localhost:6379', 'p4ssw0rd');
+
+        $this->sessionHandler = new RedisSessionHandler($redisService, 172800);
     }
 }
