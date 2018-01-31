@@ -1,41 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="rednose.framework.admin.user.class">Rednose\FrameworkBundle\Admin\UserAdmin</parameter>
-        <parameter key="rednose.framework.admin.user.controller">RednoseFrameworkBundle:Admin\UserAdmin</parameter>
-        <parameter key="rednose.framework.admin.user.entity">Rednose\FrameworkBundle\Entity\User</parameter>
-
-        <parameter key="rednose.framework.admin.group.class">Rednose\FrameworkBundle\Admin\GroupAdmin</parameter>
-        <parameter key="rednose.framework.admin.group.controller">RednoseFrameworkBundle:Admin\GroupAdmin</parameter>
-        <parameter key="rednose.framework.admin.group.entity">Rednose\FrameworkBundle\Entity\Group</parameter>
-
-        <parameter key="rednose.framework.admin.organization.class">Rednose\FrameworkBundle\Admin\OrganizationAdmin</parameter>
-        <parameter key="rednose.framework.admin.organization.controller">RednoseFrameworkBundle:Admin\OrganizationAdmin</parameter>
-        <parameter key="rednose.framework.admin.organization.entity">Rednose\FrameworkBundle\Entity\Organization</parameter>
-    </parameters>
-
     <services>
-        <service id="rednose.framework.admin.user" class="%rednose.framework.admin.user.class%">
-            <tag name="sonata.admin" manager_type="orm" group="sonata_administration" label="users"/>
-            <argument/>
-            <argument>%rednose.framework.admin.user.entity%</argument>
-            <argument>%rednose.framework.admin.user.controller%</argument>
-            <call method="setUserManager">
-                <argument type="service" id="fos_user.user_manager"/>
+
+        <service id="rednose_framework.app.users" class="Rednose\FrameworkBundle\Admin\UserApp">
+            <tag name="doctanium_dashboard.app" alias="users"/>
+            <argument key="id">users</argument>
+            <argument key="name">Users</argument>
+            <argument key="section">Tenants</argument>
+            <argument key="template" />
+            <argument key="icon">fa fa-user</argument>
+            <argument key="buildFile" />
+
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.entity_manager" />
+            </call>
+
+            <call method="setFormFactory">
+                <argument type="service" id="form.factory" />
+            </call>
+
+            <call method="setRoleHierarchy">
+                <argument>%security.role_hierarchy.roles%</argument>
             </call>
         </service>
-        <service id="rednose.framework.admin.group" class="%rednose.framework.admin.group.class%">
-            <tag name="sonata.admin" manager_type="orm" group="sonata_administration" label="groups"/>
-            <argument/>
-            <argument>%rednose.framework.admin.group.entity%</argument>
-            <argument>%rednose.framework.admin.group.controller%</argument>
-        </service>
-        <service id="rednose.framework.admin.organization" class="%rednose.framework.admin.organization.class%">
-            <tag name="sonata.admin" manager_type="orm" group="sonata_administration" label="organizations"/>
-            <argument/>
-            <argument>%rednose.framework.admin.organization.entity%</argument>
-            <argument>%rednose.framework.admin.organization.controller%</argument>
-        </service>
+
     </services>
 </container>
