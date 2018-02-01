@@ -75,6 +75,7 @@ class User extends BaseUser implements UserInterface
     /**
      * Static users will never be automatically assigned
      *
+     * @Serializer\Groups({"list", "details"})
      * @ORM\Column(type="boolean", nullable=false)
      */
     protected $static = true;

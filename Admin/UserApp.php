@@ -14,11 +14,11 @@ namespace Rednose\FrameworkBundle\Admin;
 use Doctanium\Bundle\DashboardBundle\Datagrid\DatagridApp;
 use Doctanium\Bundle\DashboardBundle\Form\Definition\FormDefinition;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
 use Rednose\FrameworkBundle\Entity\User;
 use Rednose\FrameworkBundle\Model\GroupInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class UserApp extends DatagridApp
 {
@@ -38,9 +38,14 @@ class UserApp extends DatagridApp
     protected $roles = [];
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
      * {@inheritdoc}
      */
-    public function getData($start, $limit, $query = null, $itemId = null)
+    public function getData($itemId = null, $start = 0, $limit = 0, $sortBy = null, $sortOrder = 'ASC', $query = null)
     {
         $repo = $this->em->getRepository('RednoseFrameworkBundle:User');
 
@@ -49,10 +54,12 @@ class UserApp extends DatagridApp
         }
 
         if ($query) {
-            return $this->generateSearchQuery($repo, ['username', 'realname'], $query, $start, $limit)->getQuery()->getResult();
+            return $this->generateSearchQuery($repo, ['username', 'realname'], $query, $start, $limit)
+                ->orderBy('o.' . $sortBy, $sortOrder)
+                ->getQuery()->getResult();
         }
 
-        return $repo->findBy([], null, $limit, $start);
+        return $repo->findBy([], [ $sortBy => $sortOrder ], $limit, $start);
     }
 
 
@@ -99,19 +106,33 @@ class UserApp extends DatagridApp
     public function setRoleHierarchy($roleHierarchy)
     {
         foreach (array_keys($roleHierarchy) as $role) {
-            // TODO: translate
-
-            $this->roles[$role] = $role;
+            $this->roles[$role] = $this->translator->trans($role,[] , 'SonataAdminBundle');
         }
 
     }
 
     /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function getFormDefinition()
+    public function getSortableColumns()
     {
-        $formDefinition = new FormDefinition();
+        return ['id', 'username'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFormDefinition($subject)
+    {
+        $formDefinition = new FormDefinition($this->translator);
 
         $formDefinition
             // General
@@ -119,7 +140,7 @@ class UserApp extends DatagridApp
             ->addField('Username', 'text', [ 'required' => true ])
             ->addField('Realname', 'text', [ 'required' => false ])
             ->addField('Email', 'email', [ 'required' => true ])
-            ->addField('Plain_password', 'password', [ 'required' => false ])
+            ->addField('Plain_password', 'password', [ 'required' => !$subject->getId() ])
 
             // Details
             ->setSection('Details')
@@ -156,10 +177,10 @@ class UserApp extends DatagridApp
      */
     public function getForm($itemId)
     {
-        $user = $this->em->getRepository('RednoseFrameworkBundle:User')->findOneBy(['id' => $itemId]);
-
-        if ($user === null) {
+        if ($itemId === 'create') {
             $user = new User();
+        } else {
+            $user = $this->em->getRepository('RednoseFrameworkBundle:User')->findOneBy(['id' => $itemId]);
         }
 
         return $this->formFactory->create('Doctanium\Bundle\DashboardBundle\Form\Type\DataGridFormType', $user, [
@@ -183,7 +204,11 @@ class UserApp extends DatagridApp
      */
     public function getListColumns()
     {
-        return ['id', 'username'];
+        return [
+            'id'       => $this->translator->trans('__id'),
+            'username' => $this->translator->trans('__username'),
+            'static'   => $this->translator->trans('__static'),
+        ];
     }
 
     /**
