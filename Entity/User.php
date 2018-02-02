@@ -120,6 +120,12 @@ class User extends BaseUser implements UserInterface
     protected $email;
 
     /**
+     * @Serializer\Type("DateTime")
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $lastLogin;
+
+    /**
      * Gets the username
      *
      * Will automatically return the username in lowercase for

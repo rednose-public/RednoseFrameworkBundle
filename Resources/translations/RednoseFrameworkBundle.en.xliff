@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="">
+        <body>
+            <trans-unit id="username">
+                <source>Username</source>
+                <target>Username</target>
+            </trans-unit>
+            <trans-unit id="realname">
+                <source>Realname</source>
+                <target>Real name</target>
+            </trans-unit>
+            <trans-unit id="organization">
+                <source>Organization</source>
+                <target>Organization</target>
+            </trans-unit>
+            <trans-unit id="locale">
+                <source>Locale</source>
+                <target>Locale</target>
+            </trans-unit>
+            <trans-unit id="enabled">
+                <source>Enabled</source>
+                <target>Enabled</target>
+            </trans-unit>
+            <trans-unit id="static">
+                <source>Static</source>
+                <target>Static</target>
+            </trans-unit>
+            <trans-unit id="locked">
+                <source>Locked</source>
+                <target>Locked</target>
+            </trans-unit>
+            <trans-unit id="admin">
+                <source>Admin</source>
+                <target>Admin</target>
+            </trans-unit>
+            <trans-unit id="superAdmin">
+                <source>SuperAdmin</source>
+                <target>Super Admin</target>
+            </trans-unit>
+            <trans-unit id="lastLogin">
+                <source>LastLogin</source>
+                <target>Last login</target>
+            </trans-unit>
+            <trans-unit id="groups">
+                <source>Groups</source>
+                <target>Groups</target>
+            </trans-unit>
+            <trans-unit id="roles">
+                <source>Roles</source>
+                <target>Roles</target>
+            </trans-unit>
+            <trans-unit id="plain_password">
+                <source>Plain_password</source>
+                <target>Reset password</target>
+            </trans-unit>
+            <trans-unit id="general">
+                <source>General</source>
+                <target>General</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

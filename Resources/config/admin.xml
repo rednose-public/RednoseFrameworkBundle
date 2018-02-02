@@ -24,6 +24,10 @@
                 <argument type="service" id="translator" />
             </call>
 
+            <call method="setUserManager">
+                <argument type="service" id="rednose_framework.user_manager" />
+            </call>
+
             <call method="setRoleHierarchy">
                 <argument>%security.role_hierarchy.roles%</argument>
             </call>
