@@ -13,10 +13,10 @@ namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Entity\User as BaseUser;
-use JMS\Serializer\Annotation as Serializer;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\User\UserInterface as CoreUserInterface;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * A RedNose framework user
@@ -38,6 +38,13 @@ class User extends BaseUser implements UserInterface
     protected $id;
 
     /**
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $username;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     *
      * @ORM\Column(type="string", length=128, nullable=true)
      */
     protected $realname;
@@ -53,24 +60,24 @@ class User extends BaseUser implements UserInterface
     protected $groups;
 
     /**
+     * @Serializer\Groups({"list", "details"})
+     *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $locale;
 
     /**
      * @ORM\ManyToOne(targetEntity="Rednose\FrameworkBundle\Entity\Organization")
+     *
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      **/
     protected $organization;
 
     /**
-     * Transient API property.
-     *
-     * @Serializer\SerializedName("username")
-     * @Serializer\Accessor(getter="getBestName")
      * @Serializer\Groups({"list", "details"})
+     * @Serializer\Accessor("getOrganizationName")
      */
-    protected $bestName;
+    protected $organizationName;
 
     /**
      * Static users will never be automatically assigned
@@ -79,6 +86,38 @@ class User extends BaseUser implements UserInterface
      * @ORM\Column(type="boolean", nullable=false)
      */
     protected $static = true;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $enabled;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $locked;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $expired;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     * @Serializer\Accessor("isAdmin")
+     */
+    protected $admin;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     * @Serializer\Accessor("isSuperAdmin")
+     */
+    protected $superAdmin;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $email;
 
     /**
      * Gets the username
@@ -217,6 +256,21 @@ class User extends BaseUser implements UserInterface
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * Gets the name of the preferred organization for this user.
+     *
+     * @return string
+     */
+    public function getOrganizationName()
+    {
+        if (!$this->organization) {
+            return '';
+
+        }
+
+        return $this->organization->getName();
     }
 
     /**

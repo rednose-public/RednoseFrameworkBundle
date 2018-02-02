@@ -115,6 +115,13 @@ interface UserInterface extends BaseUserInterface, GroupableInterface, Equatable
     public function getOrganization();
 
     /**
+     * Gets the name of the preferred organization for this user.
+     *
+     * @return string
+     */
+    public function getOrganizationName();
+
+    /**
      * Sets the preferred organization for this user.
      *
      * @param OrganizationInterface $organization

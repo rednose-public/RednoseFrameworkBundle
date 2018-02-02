@@ -5,6 +5,3 @@ rednose_framework:
 
 rednose_framework_file:
     resource: "@RednoseFrameworkBundle/Resources/config/routing/file.yml"
-
-rednose_framework_user:
-    resource: "@RednoseFrameworkBundle/Resources/config/routing/user.xml"
