@@ -33,5 +33,57 @@
             </call>
         </service>
 
+        <service id="rednose_framework.app.groups" class="Rednose\FrameworkBundle\Admin\GroupApp">
+            <tag name="doctanium_dashboard.app" alias="groups"/>
+            <argument key="id">groups</argument>
+            <argument key="name">Groups</argument>
+            <argument key="section">Tenants</argument>
+            <argument key="template" />
+            <argument key="icon">fa fa-group</argument>
+            <argument key="buildFile" />
+
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.entity_manager" />
+            </call>
+
+            <call method="setFormFactory">
+                <argument type="service" id="form.factory" />
+            </call>
+
+            <call method="setTranslator">
+                <argument type="service" id="translator" />
+            </call>
+
+            <call method="setGroupManager">
+                <argument type="service" id="rednose_framework.group_manager" />
+            </call>
+        </service>
+
+        <service id="rednose_framework.app.organization" class="Rednose\FrameworkBundle\Admin\OrganizationApp">
+            <tag name="doctanium_dashboard.app" alias="organization"/>
+            <argument key="id">organization</argument>
+            <argument key="name">Organizations</argument>
+            <argument key="section">Tenants</argument>
+            <argument key="template" />
+            <argument key="icon">fa fa-briefcase</argument>
+            <argument key="buildFile" />
+
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.entity_manager" />
+            </call>
+
+            <call method="setFormFactory">
+                <argument type="service" id="form.factory" />
+            </call>
+
+            <call method="setTranslator">
+                <argument type="service" id="translator" />
+            </call>
+
+            <call method="setOrganizationManager">
+                <argument type="service" id="rednose_framework.organization_manager" />
+            </call>
+        </service>
+
     </services>
 </container>

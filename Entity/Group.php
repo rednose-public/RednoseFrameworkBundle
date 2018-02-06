@@ -16,6 +16,7 @@ use FOS\UserBundle\Entity\Group as BaseGroup;
 use Rednose\FrameworkBundle\Model\GroupInterface;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\UserInterface;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * A User-group
@@ -33,8 +34,15 @@ class Group extends BaseGroup implements GroupInterface
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
+     *
+     * @Serializer\Groups({"list", "details"})
      */
     protected $id;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="Rednose\FrameworkBundle\Entity\User", mappedBy="groups")

@@ -48,7 +48,7 @@ class PrioritizedCollectionType extends AbstractType
             } else {
                 $form->add('priority_' . $offset, 'choice', ['choices' => [
                     0 => 'Normal', 1 => 'High', 2 => 'Very High'
-                ]]);
+                ], 'attr' => ['select2-skip' => 'true']]);
             }
         }
     }

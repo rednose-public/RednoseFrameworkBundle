@@ -52,6 +52,14 @@ class UserApp extends DatagridApp
     /**
      * {@inheritdoc}
      */
+    public function getPrimaryColumn()
+    {
+        return 'username';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getData($itemId = null, $start = 0, $limit = 0, $sortBy = null, $sortOrder = 'ASC', $query = null)
     {
         $helper = new QueryBuilderHelper();
