@@ -140,7 +140,7 @@ class GroupApp extends DatagridApp
      */
     public function getFormTheme()
     {
-        return '@RednoseFramework/Admin/fields.html.twig';
+        return '@RednoseFramework/AdminForm/form.html.twig';
     }
 
     /**
