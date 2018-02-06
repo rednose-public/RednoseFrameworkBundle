@@ -239,7 +239,7 @@ class UserApp extends DatagridApp
     public function setRoleHierarchy($roleHierarchy)
     {
         foreach (array_keys($roleHierarchy) as $role) {
-            $this->roles[$role] = $this->translator->trans($role,[] , 'SonataAdminBundle');
+            $this->roles[$role] = $this->translator->trans($role,[] , 'RednoseFrameworkBundle');
         }
 
     }
