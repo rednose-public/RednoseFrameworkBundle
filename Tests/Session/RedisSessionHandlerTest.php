@@ -2,7 +2,7 @@
 
 namespace Rednose\FrameworkBundle\Tests\Model;
 
-use Rednose\FrameworkBundle\Redis\RedisService;
+use Rednose\FrameworkBundle\Redis\RedisFactory;
 use Rednose\FrameworkBundle\Session\Redis\RedisSessionHandler;
 
 class RedisSessionHandlerTest extends \PHPUnit_Framework_TestCase
@@ -46,14 +46,17 @@ class RedisSessionHandlerTest extends \PHPUnit_Framework_TestCase
         $this->predisClientMock = $this->getMockBuilder('\Predis\Client')->disableOriginalConstructor();
 
         // Predis uses magic function calls... (urght...)...
-        $this->predisClientMock->setMethods(['auth', 'set', 'get']);
+        $this->predisClientMock->setMethods(['auth', 'set', 'get', 'isConnected', 'connect']);
         $this->predisClientMock = $this->predisClientMock->getMock();
+        $this->predisClientMock->expects($this->once())->method('isConnected')->willReturn(false);
 
-        $factoryMock = $this->getMock('Rednose\FrameworkBundle\Redis\RedisPredisFactory');
-        $factoryMock->expects($this->once())->method('create')->with('tcp://localhost:6379')->willReturn($this->predisClientMock);
+        $redisFactory = new RedisFactory('localhost:6379', 'p4ssw0rd');
 
-        $redisService = new RedisService($factoryMock,'localhost:6379', 'p4ssw0rd');
+        $reflect = new \ReflectionProperty(get_class($redisFactory), 'client');
+        $reflect->setAccessible(true);
+        $reflect->setValue($redisFactory, $this->predisClientMock);
+        $reflect->setAccessible(false);
 
-        $this->sessionHandler = new RedisSessionHandler($redisService, 172800);
+        $this->sessionHandler = new RedisSessionHandler($redisFactory, 172800);
     }
 }

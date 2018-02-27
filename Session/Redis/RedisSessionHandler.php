@@ -11,7 +11,7 @@
 
 namespace Rednose\FrameworkBundle\Session\Redis;
 
-use Rednose\FrameworkBundle\Redis\RedisService;
+use Rednose\FrameworkBundle\Redis\RedisFactory;
 
 /**
  * Support storing sessions in a centralized redis.
@@ -35,19 +35,19 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
     private $redisSessionExpire = 0;
 
     /**
-     * @var RedisService
+     * @var RedisFactory
      */
-    private $redisService;
+    private $redisFactory;
 
     /**
      * RedisSessionHandler constructor.
      *
-     * @param RedisService $redisService
+     * @param RedisFactory $redisFactory
      * @param int          $redisSessionExpire
      */
-    public function __construct(RedisService $redisService, $redisSessionExpire)
+    public function __construct(RedisFactory $redisFactory, $redisSessionExpire)
     {
-        $this->redisService       = $redisService;
+        $this->redisFactory       = $redisFactory;
         $this->redisSessionExpire = $redisSessionExpire;
     }
 
@@ -56,7 +56,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function close()
     {
-        if ($this->redisService->isConfigured() === false) {
+        if ($this->redisFactory->isConfigured() === false) {
             return parent::close();
         }
 
@@ -68,7 +68,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function destroy($sessId)
     {
-        if ($this->redisService->isConfigured() === false) {
+        if ($this->redisFactory->isConfigured() === false) {
             return parent::destroy($sessId);
         }
 
@@ -82,7 +82,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function gc($maxLifeTime)
     {
-        if ($this->redisService->isConfigured() === false) {
+        if ($this->redisFactory->isConfigured() === false) {
             return parent::gc($maxLifeTime);
         }
 
@@ -94,7 +94,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function open($savePath, $name)
     {
-        if ($this->redisService->isConfigured() === false) {
+        if ($this->redisFactory->isConfigured() === false) {
             return parent::open($savePath, $name);
         }
 
@@ -109,7 +109,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function read($sessId)
     {
-        if ($this->redisService->isConfigured() === false) {
+        if ($this->redisFactory->isConfigured() === false) {
             return parent::read($sessId);
         }
 
@@ -123,7 +123,7 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     public function write($sessId, $data)
     {
-        if ($this->redisService->isConfigured() === false) {
+        if ($this->redisFactory->isConfigured() === false) {
             return parent::write($sessId, $data);
         }
 
@@ -137,6 +137,6 @@ class RedisSessionHandler extends \SessionHandler implements \SessionHandlerInte
      */
     protected function getClient()
     {
-        return $this->redisService->getClient();
+        return $this->redisFactory->getClient();
     }
 }
