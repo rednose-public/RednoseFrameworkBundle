@@ -3,7 +3,7 @@
 
     <services>
         <service id="session.handler.rednose_framework_redis" class="Rednose\FrameworkBundle\Session\Redis\RedisSessionHandler" public="false">
-            <argument type="service" id="rednose_framework.redis.factory" />
+            <argument type="service" id="session.client.rednose_framework_redis.service" />
             <argument>%redis_session_expire%</argument>
         </service>
     </services>

@@ -40,7 +40,10 @@
         </service>
 
         <!-- Redis -->
-        <service id="rednose_framework.redis.factory" class="Rednose\FrameworkBundle\Redis\RedisFactory" public="false">
+        <service id="session.client.rednose_framework_redis.factory" class="Rednose\FrameworkBundle\Redis\RedisPredisFactory" public="false">
+        </service>
+        <service id="session.client.rednose_framework_redis.service" class="Rednose\FrameworkBundle\Redis\RedisService" public="false">
+            <argument type="service" id="session.client.rednose_framework_redis.factory" />
             <argument>%redis_host%</argument>
             <argument>%redis_auth%</argument>
         </service>
