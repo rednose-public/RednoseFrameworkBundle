@@ -11,16 +11,13 @@
 
 namespace Rednose\FrameworkBundle\Redis;
 
+use Predis\Client;
+
 /**
  * A Redis service providing a connection client
  */
-class RedisService
+class RedisFactory
 {
-    /**
-     * @var RedisPredisFactory
-     */
-    protected $factory;
-
     /**
      * @var string
      */
@@ -41,13 +38,11 @@ class RedisService
     /**
      * RedisService constructor.
      *
-     * @param RedisPredisFactory $predisFactory
      * @param string             $redisHost
      * @param string             $redisAuth
      */
-    public function __construct(RedisPredisFactory $predisFactory, $redisHost, $redisAuth)
+    public function __construct($redisHost, $redisAuth)
     {
-        $this->factory   = $predisFactory;
         $this->redisHost = $redisHost;
         $this->redisAuth = $redisAuth;
     }
@@ -61,12 +56,21 @@ class RedisService
     }
 
     /**
-     * @return \Predis\Client|bool
+     * @return \Predis\Client|null
      */
     public function getClient()
     {
-        if ($this->client === null) {
-            $this->client = $this->factory->create( 'tcp://' . $this->redisHost);
+        if ($this->isConfigured() === false) {
+            return null;
+        }
+
+        if ($this->client === null || ($this->client && $this->client->isConnected() === false)) {
+            if ($this->client === null) {
+                $this->client = new Client( 'tcp://' . $this->redisHost);
+            } else {
+                $this->client->connect();
+            }
+
             $this->client->auth($this->redisAuth);
         }
 
