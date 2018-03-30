@@ -11,6 +11,7 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\UserBundle\Doctrine\GroupManager as BaseGroupManager;
 use Rednose\FrameworkBundle\Model\GroupInterface;
 use Rednose\FrameworkBundle\Model\GroupManagerInterface;
@@ -30,5 +31,20 @@ class GroupManager extends BaseGroupManager implements GroupManagerInterface
         return $this->repository->findBy([
             'organization' => $organization
         ]);
+    }
+
+    public function search($name, OrganizationInterface $organization = null)
+    {
+        // TODO: Implement organization filter
+
+        /** @var EntityManagerInterface $em */
+        $em = $this->objectManager;
+
+        $qb = $em->createQueryBuilder();
+        $qb->select('g')->from('RednoseFrameworkBundle:Group', 'g');
+        $qb->where($qb->expr()->like('g.name', ':name'));
+        $qb->setParameter('name', '%' . $name . '%');
+
+        return $qb->getQuery()->execute();
     }
 }

@@ -11,7 +11,7 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\UserBundle\Doctrine\UserManager as BaseUserManager;
 use FOS\UserBundle\Util\CanonicalizerInterface;
 use Rednose\FrameworkBundle\Event\UserEvent;
@@ -39,12 +39,12 @@ class UserManager extends BaseUserManager implements UserManagerInterface
      * @param EncoderFactoryInterface  $encoderFactory
      * @param CanonicalizerInterface   $usernameCanonicalizer
      * @param CanonicalizerInterface   $emailCanonicalizer
-     * @param ObjectManager            $om
+     * @param EntityManagerInterface    $om
      * @param string                   $class
      * @param EventDispatcherInterface $dispatcher
      * @param bool                     $autoAccountCreation
      */
-    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, EventDispatcherInterface $dispatcher, $autoAccountCreation = false)
+    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, EntityManagerInterface $om, $class, EventDispatcherInterface $dispatcher, $autoAccountCreation = false)
     {
         parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class);
 
@@ -76,6 +76,19 @@ class UserManager extends BaseUserManager implements UserManagerInterface
         }
 
         return $this->repository->findBy(array(), array('username' => $direction));
+    }
+
+    public function search($username)
+    {
+        /** @var EntityManagerInterface $em */
+        $em = $this->objectManager;
+
+        $qb = $em->createQueryBuilder();
+        $qb->select('u')->from('RednoseFrameworkBundle:User', 'u');
+        $qb->where($qb->expr()->like('u.username', ':username'));
+        $qb->setParameter('username', '%' . $username . '%');
+
+        return $qb->getQuery()->execute();
     }
 
     /**
