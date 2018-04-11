@@ -92,6 +92,6 @@ class UserController extends Controller
 
         $this->get('rednose_framework.user_manager')->updateUser($user);
 
-        return new Response('');
+        return $this->redirect($this->generateUrl('rednose_framework_get_user'));
     }
 }
