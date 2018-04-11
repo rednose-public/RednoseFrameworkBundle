@@ -15,6 +15,7 @@ use Doctanium\Bundle\DashboardBundle\Datagrid\DatagridApp;
 use Doctanium\Bundle\DashboardBundle\Form\Definition\FormDefinition;
 use Doctanium\Bundle\DashboardBundle\Query\QueryBuilderHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\OrganizationManagerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -53,25 +54,25 @@ class OrganizationApp extends DatagridApp
     /**
      * {@inheritdoc}
      */
-    public function getData($itemId = null, $start = 0, $limit = 0, $sortBy = null, $sortOrder = 'ASC', $query = null)
+    public function getData(OrganizationInterface $organization, $itemId = null, $start = 0, $limit = 0, $sortBy = null, $sortOrder = 'ASC', $query = null)
     {
         $helper = new QueryBuilderHelper();
         $repo   = $this->em->getRepository('RednoseFrameworkBundle:Organization');
 
         return $helper->generateRecordsQuery(
-            $repo, $itemId, $start, $limit, ['name'], $query, $sortBy , $sortOrder
+            $repo, $itemId, null, $start, $limit, ['name'], $query, $sortBy , $sortOrder
         )->getQuery()->getResult();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDataLength($query = null)
+    public function getDataLength(OrganizationInterface $organization, $query = null)
     {
         $repo = $this->em->getRepository('RednoseFrameworkBundle:Organization');
         $helper = new QueryBuilderHelper();
 
-        return $helper->generateRecordsCountQuery($repo, $query, ['name']);
+        return $helper->generateRecordsCountQuery($repo, null, $query, ['name']);
     }
 
     /**

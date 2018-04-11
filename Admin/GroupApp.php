@@ -16,6 +16,7 @@ use Doctanium\Bundle\DashboardBundle\Form\Definition\FormDefinition;
 use Doctanium\Bundle\DashboardBundle\Query\QueryBuilderHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Rednose\FrameworkBundle\Model\GroupManagerInterface;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -53,13 +54,13 @@ class GroupApp extends DatagridApp
     /**
      * {@inheritdoc}
      */
-    public function getData($itemId = null, $start = 0, $limit = 0, $sortBy = null, $sortOrder = 'ASC', $query = null)
+    public function getData(OrganizationInterface $organization, $itemId = null, $start = 0, $limit = 0, $sortBy = null, $sortOrder = 'ASC', $query = null)
     {
         $helper = new QueryBuilderHelper();
         $repo   = $this->em->getRepository('RednoseFrameworkBundle:Group');
 
         return $helper->generateRecordsQuery(
-            $repo, $itemId, $start, $limit, ['name'], $query, $sortBy , $sortOrder
+            $repo, $itemId, $organization, $start, $limit, ['name'], $query, $sortBy , $sortOrder
         )->getQuery()->getResult();
     }
 
@@ -67,12 +68,12 @@ class GroupApp extends DatagridApp
     /**
      * {@inheritdoc}
      */
-    public function getDataLength($query = null)
+    public function getDataLength(OrganizationInterface $organization, $query = null)
     {
         $repo = $this->em->getRepository('RednoseFrameworkBundle:Group');
         $helper = new QueryBuilderHelper();
 
-        return $helper->generateRecordsCountQuery($repo, $query, ['name']);
+        return $helper->generateRecordsCountQuery($repo, $organization, $query, ['name']);
     }
 
     /**
@@ -80,7 +81,7 @@ class GroupApp extends DatagridApp
      */
     public function getSortableColumns()
     {
-        return ['name', 'organization_name'];
+        return ['name'];
     }
 
     /**
