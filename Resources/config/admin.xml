@@ -61,7 +61,7 @@
 
         <service id="rednose_framework.app.organization" class="Rednose\FrameworkBundle\Admin\OrganizationApp">
             <tag name="doctanium_dashboard.app" alias="organization"/>
-            <argument key="id">organization</argument>
+            <argument key="id">organizations</argument>
             <argument key="name">Organizations</argument>
             <argument key="section">Tenants</argument>
             <argument key="template" />

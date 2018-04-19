@@ -54,7 +54,7 @@ class GroupApp extends DatagridApp
     /**
      * {@inheritdoc}
      */
-    public function getData(OrganizationInterface $organization, $itemId = null, $start = 0, $limit = 0, $sortBy = null, $sortOrder = 'ASC', $query = null)
+    public function getData(OrganizationInterface $organization, $itemId = null, $start = 0, $limit = 0, $sortBy = null, $sortOrder = 'ASC', $query = null, array $options = null)
     {
         $helper = new QueryBuilderHelper();
         $repo   = $this->em->getRepository('RednoseFrameworkBundle:Group');
@@ -68,7 +68,7 @@ class GroupApp extends DatagridApp
     /**
      * {@inheritdoc}
      */
-    public function getDataLength(OrganizationInterface $organization, $query = null)
+    public function getDataLength(OrganizationInterface $organization, $query = null, array $options = null)
     {
         $repo = $this->em->getRepository('RednoseFrameworkBundle:Group');
         $helper = new QueryBuilderHelper();
@@ -79,7 +79,7 @@ class GroupApp extends DatagridApp
     /**
      * {@inheritdoc}
      */
-    public function getSortableColumns()
+    public function getSortableColumns(array $options = null)
     {
         return ['name'];
     }
@@ -110,7 +110,7 @@ class GroupApp extends DatagridApp
     /**
      * {@inheritdoc}
      */
-    public function getForm($itemId)
+    public function getForm($itemId, array $options = null)
     {
         if ($itemId === 'create') {
 

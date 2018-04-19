@@ -59,7 +59,8 @@ class PrioritizedCollectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addModelTransformer(new PrioritizedArrayDataTransformer(
-            $builder->getForm()->getName(), $this->request
+            $this->request,
+            $builder->getForm()->getName()
         ));
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
