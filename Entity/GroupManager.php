@@ -35,8 +35,6 @@ class GroupManager extends BaseGroupManager implements GroupManagerInterface
 
     public function search($name, OrganizationInterface $organization = null)
     {
-        // TODO: Implement organization filter
-
         /** @var EntityManagerInterface $em */
         $em = $this->objectManager;
 
@@ -44,6 +42,11 @@ class GroupManager extends BaseGroupManager implements GroupManagerInterface
         $qb->select('g')->from('RednoseFrameworkBundle:Group', 'g');
         $qb->where($qb->expr()->like('g.name', ':name'));
         $qb->setParameter('name', '%' . $name . '%');
+
+        if ($organization !== null) {
+            $qb->andWhere('g.organization = :organization');
+            $qb->setParameter('organization', $organization);
+        }
 
         return $qb->getQuery()->execute();
     }

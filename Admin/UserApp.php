@@ -93,7 +93,7 @@ class UserApp extends DatagridApp
     /**
      * {@inheritdoc}
      */
-    public function getFormDefinition($subject)
+    public function getFormDefinition(OrganizationInterface $organization, $subject)
     {
         $formDefinition = new FormDefinition($this->translator, 'RednoseFrameworkBundle');
 
@@ -138,7 +138,7 @@ class UserApp extends DatagridApp
     /**
      * {@inheritdoc}
      */
-    public function getForm($itemId, array $options = null)
+    public function getForm(OrganizationInterface $organization, $itemId, array $options = null)
     {
         if ($itemId === 'create') {
             /** @var UserInterface $user */
@@ -153,7 +153,8 @@ class UserApp extends DatagridApp
         }
 
         return $this->formFactory->create('Doctanium\Bundle\DashboardBundle\Form\Type\DataGridFormType', $user, [
-            'app_class' => $this
+            'organization' => $organization,
+            'app_class'    => $this
         ]);
     }
 
