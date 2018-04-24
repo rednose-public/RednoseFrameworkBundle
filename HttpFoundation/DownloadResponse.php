@@ -15,8 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Injects the headers needed for a file download.
- *
- * @author Marc Bontje <marc@rednose.nl>
  */
 class DownloadResponse extends Response
 {

@@ -1,9 +1,6 @@
 {
   "name": "rednose-frameworkbundle",
   "version": "1.6.0",
-  "authors": [
-    "Marc Bontje <marc@rednose.nl>"
-  ],
   "private": true,
   "license": "MIT",
   "ignore": [

@@ -19,8 +19,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Loads the configuration files and injects them to the service container.
- *
- * @author Marc Bontje <marc@rednose.nl>
  */
 class RednoseFrameworkExtension extends Extension
 {
