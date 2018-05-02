@@ -47,14 +47,11 @@ class FileTransformer implements DataTransformerInterface
         }
 
         $file = new File();
-
         $file->setName($uploadedFile->getClientOriginalName());
         $file->setExtension($uploadedFile->getClientOriginalExtension());
         $file->setMimeType($uploadedFile->getMimeType());
-
         $file->setDateCreated(new \DateTime());
         $file->setDateModified(new \DateTime());
-
         $file->setContent(file_get_contents($uploadedFile->getRealPath()));
 
         return $file;

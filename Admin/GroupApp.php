@@ -113,7 +113,8 @@ class GroupApp extends DatagridApp
     public function getForm(OrganizationInterface $organization, $itemId, array $options = null)
     {
         if ($itemId === 'create') {
-
+            $group = $this->groupManager->createGroup('');
+            $group->setOrganization($organization);
         } else {
             $group = $this->groupManager->findGroupBy(['id' => $itemId]);
         }
