@@ -11,9 +11,11 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
+use Rednose\FrameworkBundle\Model\RoleCollectionInterface;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\User\UserInterface as CoreUserInterface;
 use JMS\Serializer\Annotation as Serializer;
@@ -74,6 +76,19 @@ class User extends BaseUser implements UserInterface
     protected $organization;
 
     /**
+     * @ORM\ManyToMany(targetEntity="RoleCollection")
+     *
+     * @ORM\JoinTable(
+     *      name="rednose_framework_user_role_collection",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="rolecollection_id", referencedColumnName="id", unique=true)}
+     * )
+     *
+     * @var RoleCollection[]
+     */
+    protected $roleCollections;
+
+    /**
      * @Serializer\Groups({"list", "details"})
      * @Serializer\Accessor("getOrganizationName")
      */
@@ -124,6 +139,16 @@ class User extends BaseUser implements UserInterface
      * @Serializer\Groups({"list", "details"})
      */
     protected $lastLogin;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->roleCollections = new ArrayCollection();
+
+        parent::__construct();
+    }
 
     /**
      * Gets the username
@@ -252,6 +277,38 @@ class User extends BaseUser implements UserInterface
     public function setLocale($locale)
     {
         $this->locale = $locale;
+    }
+
+    /**
+     * Get a combined list of roles from the roles and roleCollections properties
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        $roles = parent::getRoles();
+
+        foreach ($this->getRoleCollections() as $roleCollection) {
+            $roles = array_merge($roles, $roleCollection->getRoles());
+        }
+
+        return array_values(array_unique($roles));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addRoleCollection(RoleCollectionInterface $roleCollection)
+    {
+        $this->roleCollections->add($roleCollection);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoleCollections()
+    {
+        return $this->roleCollections;
     }
 
     /**

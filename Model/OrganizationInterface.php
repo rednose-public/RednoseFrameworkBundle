@@ -70,4 +70,14 @@ interface OrganizationInterface extends HasConditionsInterface
      * @return $localizations
      */
     public function getLocalizations();
+
+    /**
+     * @param RoleCollectionInterface $roleCollection
+     */
+    public function addRoleCollection(RoleCollectionInterface $roleCollection);
+
+    /**
+     * @return RoleCollectionInterface[]
+     */
+    public function getRoleCollections();
 }

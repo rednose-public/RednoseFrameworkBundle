@@ -127,4 +127,16 @@ interface UserInterface extends BaseUserInterface, GroupableInterface, Equatable
      * @param OrganizationInterface $organization
      */
     public function setOrganization($organization);
+
+    /**
+     * Connect a role collection to this user
+     *
+     * @param RoleCollectionInterface $roleCollection
+     */
+    public function addRoleCollection(RoleCollectionInterface $roleCollection);
+
+    /**
+     * @return RoleCollectionInterface[]
+     */
+    public function getRoleCollections();
 }
