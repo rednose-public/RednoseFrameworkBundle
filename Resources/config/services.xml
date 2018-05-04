@@ -15,6 +15,7 @@
         <parameter key="rednose_framework.listener.locale.class">Rednose\FrameworkBundle\EventListener\LocaleListener</parameter>
 
         <parameter key="rednose_framework.form.type.file.class">Rednose\FrameworkBundle\Form\Type\FileType</parameter>
+        <parameter key="rednose_framework.form.type.role_collection.class">Rednose\FrameworkBundle\Form\Type\RoleCollectionType</parameter>
         <parameter key="rednose_framework.form.type.prioritized_collection.class">Rednose\FrameworkBundle\Form\Type\PrioritizedCollectionType</parameter>
 
         <parameter key="rednose_framework.thumbnail_generator.class">Rednose\FrameworkBundle\Thumbnail\ThumbnailGenerator</parameter>
@@ -105,6 +106,10 @@
 
         <service id="rednose_framework.form.type.file.class" class="%rednose_framework.form.type.file.class%">
             <tag name="form.type" alias="rednose_file" />
+        </service>
+
+        <service id="rednose_framework.form.type.collection_type.class" class="%rednose_framework.form.type.role_collection.class%">
+            <tag name="form.type" alias="rednose_role_collection" />
         </service>
 
         <service id="rednose_framework.form.type.prioritized_collection" class="%rednose_framework.form.type.prioritized_collection.class%" scope="request">

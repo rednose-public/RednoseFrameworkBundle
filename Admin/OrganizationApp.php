@@ -11,10 +11,12 @@
 
 namespace Rednose\FrameworkBundle\Admin;
 
+use Doctanium\Bundle\DashboardBundle\App\AppChain;
 use Doctanium\Bundle\DashboardBundle\Datagrid\DatagridApp;
 use Doctanium\Bundle\DashboardBundle\Form\Definition\FormDefinition;
 use Doctanium\Bundle\DashboardBundle\Query\QueryBuilderHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Rednose\FrameworkBundle\Entity\RoleCollection;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\OrganizationManagerInterface;
 use Symfony\Component\Form\Form;
@@ -42,6 +44,11 @@ class OrganizationApp extends DatagridApp
      * @var OrganizationManagerInterface
      */
     protected $organizationManager;
+
+    /**
+     * @var AppChain
+     */
+    protected $appChain;
 
     /**
      * {@inheritdoc}
@@ -103,6 +110,12 @@ class OrganizationApp extends DatagridApp
                 'priorities' => true
             ])
 
+            // Role collection
+            ->setSection('Role_collections')
+            ->addField('role_collections', 'rednose_role_collection', [
+                'roles' => $this->getAppRoles()
+            ])
+
             // Localization
             ->setSection('Localization')
             ->addField('Locale', 'locale')
@@ -117,7 +130,6 @@ class OrganizationApp extends DatagridApp
                 'required' => false,
                 'multiple' => false
             ]);
-
 
         return $formDefinition;
     }
@@ -169,6 +181,14 @@ class OrganizationApp extends DatagridApp
         return '@RednoseFramework/AdminForm/form.html.twig';
     }
 
+    /**
+     * @return array
+     */
+    public function getAppRoles()
+    {
+        return $this->appChain->getRoles();
+    }
+
     // -- [ Dependency injection methods
 
     /**
@@ -179,6 +199,16 @@ class OrganizationApp extends DatagridApp
     public function setEntityManager(EntityManagerInterface $em)
     {
         $this->em = $em;
+    }
+
+    /**
+     * Provide the app chain service
+     *
+     * @param AppChain $appChain
+     */
+    public function setAppChain(AppChain $appChain)
+    {
+        $this->appChain = $appChain;
     }
 
     /**

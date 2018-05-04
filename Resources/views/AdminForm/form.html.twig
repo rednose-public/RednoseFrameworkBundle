@@ -2,7 +2,7 @@
 
 {% block rednose_prioritized_collection_row %}
     {% spaceless %}
-        {% set attr = attr|merge({'data-prototype': block('rednose_prioritized_collection_prototype_row'), 'class': attr.class|default('form-group') }) %}
+        {% set attr = attr|merge({'data-prototype': block('rednose_prioritized_collection_prototype_row'), 'class': attr.class|default('row') }) %}
 
         {{ form_errors(form) }}
 
@@ -13,16 +13,10 @@
                 {% for child in form %}
                     {% if loop.index % 2 %}
                         <div class="row collection-row">
-
-                        <div class="col-md-1">
-                            <a href="#" class="btn btn-link collection-delete">
-                                <i class="fa fa-minus-circle"></i>
-                            </a>
-                        </div>
                     {% endif %}
 
                     {% if priorities %}
-                        <div {% if loop.index % 2 %}class="col-md-8"{% else %}class="col-md-2"{% endif %}>
+                        <div {% if loop.index % 2 %}class="col-md-8"{% else %}class="col-md-3"{% endif %}>
                             <div class="form-group">
                                 {{ form_widget(child, { label: false }) }}
                             </div>
@@ -38,13 +32,21 @@
                     {% endif %}
 
                     {% if not loop.index % 2 %}
+                        <div class="col-md-1">
+                            <a href="#" class="btn btn-default collection-delete pull-right">
+                                <i class="fa fa-minus"></i>
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    {% if not loop.index % 2 %}
                         </div>
                     {% endif %}
                 {% endfor %}
 
                 <div class="row">
-                    <div class="col-md-1">
-                        <a href="#" class="btn btn-link collection-add"><i class="fa fa-plus-circle"></i></a>
+                    <div class="col-md-12">
+                        <button class="btn btn-default pull-right collection-add"><i class="fa fa-plus"></i></button>
                     </div>
                 </div>
             </div>
@@ -80,7 +82,7 @@
 
                     $(this).closest('.collection-row').remove();
                 });
-            }
+            };
 
             registerButtons();
 
@@ -109,20 +111,111 @@
     {% endspaceless %}
 {% endblock  %}
 
+{% block rednose_role_collection_row %}
+
+    <div class="role_collection_container" id="{{ full_name|replace({'[': '_', ']': '_'}) }}">
+        <div class="role_template" data-template="true" ng-hide="true">
+            <div class="datagrid-app-form-section">
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                            <input name="{{ full_name }}[name][__offset__]" class="form-control" value="" type="text">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    {% for role in all_roles %}
+                        <div class="col-md-3">
+                            <nobr><label><input name="{{ loop.index0 }}" value="{{ role }}" type="checkbox" />&nbsp;{{ role }}</label></nobr>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-11">
+                <ul class="nav nav-tabs" style="border-bottom: 0;">
+                </ul>
+            </div>
+
+            <div class="col-cs-1">
+                <button class="btn btn-default add pull-right" onclick="return false;"><i class="fa fa-plus"></i></button>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" role="tabpanel">
+        </div>
+    </div>
+    <script>
+        var containerId = '{{ full_name|replace({'[': '_', ']': '_'}) }}';
+        var container   = $('#' + containerId);
+        var tabData     = {};
+
+        function clickTab(tab) {
+            var template = container.find('[data-template]');
+            var data = tabData[tab.attr('data-name')];
+            
+            $.each(data, function(idx, role) {
+                var roleCheckbox = $('input[value=' + role + ']');
+
+                roleCheckbox.attr('checked', 'checked');
+            });
+
+            tab.addClass('active');
+
+            container.find('.tab-pane').html(template.html());
+            container.find('.tab-pane').css('opacity', 1);
+        }
+
+        function renderTab(name, data) {
+            data = data.replace(/&quot;/g, '"', data);
+
+            tabData[name] = JSON.parse(data);
+
+            var tab = $(
+                '<li class="nav-item" data-name="' + name +'">\n' +
+                '    <a onclick="return false;" href="#">' + name + '</a>\n' +
+                '</li>'
+            );
+
+            tab.on('click', function() {
+                clickTab($(this));
+            });
+
+            container.find('.nav-tabs').append(tab);
+
+            return tab;
+        }
+
+        $('form[method=POST]').on('submit', function () {
+            alert('submit?');
+        });
+
+        {% for name in names %}
+            var tab = renderTab('{{ name }}', '{{ roles[loop.index0] }}');
+
+            {% if loop.index0 == 0 %}
+                clickTab(tab);
+            {% endif %}
+
+        {% endfor %}
+    </script>
+{% endblock %}
+
 {% block rednose_prioritized_collection_prototype_row %}
     <div class="row collection-row">
-        <div class="col-md-1">
-            <a href="#" class="btn btn-link collection-delete">
-                <i class="fa fa-minus-circle"></i>
-            </a>
-        </div>
         {% if priorities %}
             <div class="col-md-8" data-id="{{ id }}___name__">
                 <div class="form-group">
                     <input type="text" class="form-control" id="{{ id }}" data-full-name="{{ full_name }}" data-set-name="true" name="{{ name }}" />
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group">
                     <select class="form-control" id="{{ id }}_priority" data-full-name="{{ full_name }}" data-set-name="true" name="priority">
                         <option value="0">Normal</option>
@@ -139,5 +232,11 @@
                 </div>
             </div>
         {% endif %}
+        <div class="col-md-1">
+            <a href="#" class="btn btn-default collection-delete pull-right">
+                <i class="fa fa-minus"></i>
+            </a>
+        </div>
+
     </div>
 {% endblock  %}

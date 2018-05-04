@@ -127,6 +127,8 @@ class Organization implements OrganizationInterface
      */
     public function addRoleCollection(RoleCollectionInterface $roleCollection)
     {
+        $roleCollection->setOrganization($this);
+
         $this->roleCollections->add($roleCollection);
     }
 

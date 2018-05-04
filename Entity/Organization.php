@@ -49,7 +49,6 @@ class Organization extends BaseOrganization
      *   mappedBy="organization",
      *   orphanRemoval=true,
      *   cascade={"persist", "remove"})
-     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $roleCollections;
 
