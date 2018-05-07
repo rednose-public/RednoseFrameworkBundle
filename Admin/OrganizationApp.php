@@ -112,8 +112,9 @@ class OrganizationApp extends DatagridApp
 
             // Role collection
             ->setSection('Role_collections')
-            ->addField('role_collections', 'rednose_role_collection', [
-                'roles' => $this->getAppRoles()
+            ->addField('RoleCollections', 'rednose_role_collection', [
+                'roles' => $this->getAppRoles(),
+                'organization' => $subject
             ])
 
             // Localization

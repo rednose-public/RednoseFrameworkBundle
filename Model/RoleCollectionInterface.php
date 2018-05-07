@@ -5,6 +5,13 @@ namespace Rednose\FrameworkBundle\Model;
 interface RoleCollectionInterface
 {
     /**
+     * Get the id
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
      * @param string $name
      */
     public function setName($name);

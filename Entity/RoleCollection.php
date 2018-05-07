@@ -24,8 +24,8 @@ class RoleCollection implements RoleCollectionInterface, HasOrganizationInterfac
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="guid")
+     * @ORM\GeneratedValue(strategy="UUID")
      */
     protected $id;
 
@@ -38,6 +38,16 @@ class RoleCollection implements RoleCollectionInterface, HasOrganizationInterfac
      * @ORM\Column(type="array")
      */
     protected $roles;
+
+    /**
+     * Get the id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+       return $this->id;
+    }
 
     /**
      * @param string $name

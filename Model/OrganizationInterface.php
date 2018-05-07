@@ -72,6 +72,11 @@ interface OrganizationInterface extends HasConditionsInterface
     public function getLocalizations();
 
     /**
+     * @param $roleCollections
+     */
+    public function setRoleCollections($roleCollections);
+
+    /**
      * @param RoleCollectionInterface $roleCollection
      */
     public function addRoleCollection(RoleCollectionInterface $roleCollection);
@@ -80,4 +85,15 @@ interface OrganizationInterface extends HasConditionsInterface
      * @return RoleCollectionInterface[]
      */
     public function getRoleCollections();
+
+    /**
+     * Find a role collection by id attached to this organization
+     *
+     * Return null if no role collection matches the criteria
+     *
+     * @param string $id
+     *
+     * @return RoleCollectionInterface|null
+     */
+    public function findRoleCollectionById($id);
 }

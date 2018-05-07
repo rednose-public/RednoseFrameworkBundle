@@ -20,7 +20,6 @@ class Organization implements OrganizationInterface
 
     protected $id;
     protected $name;
-    protected $dictionary;
     protected $locale;
     protected $localizations;
     protected $theme;
@@ -125,6 +124,16 @@ class Organization implements OrganizationInterface
     /**
      * {@inheritdoc}
      */
+    public function setRoleCollections($roleCollections)
+    {
+        foreach ($roleCollections as $rc) {
+            $this->addRoleCollection($rc);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addRoleCollection(RoleCollectionInterface $roleCollection)
     {
         $roleCollection->setOrganization($this);
@@ -138,5 +147,20 @@ class Organization implements OrganizationInterface
     public function getRoleCollections()
     {
         return $this->roleCollections;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findRoleCollectionById($id)
+    {
+        /** @var RoleCollectionInterface $rc */
+        foreach ($this->roleCollections as $rc) {
+            if ($rc->getId() === $id) {
+                return $rc;
+            }
+        }
+
+        return null;
     }
 }
