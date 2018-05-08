@@ -112,7 +112,7 @@ class OrganizationApp extends DatagridApp
 
             // Role collection
             ->setSection('Role_collections')
-            ->addField('RoleCollections', 'rednose_role_collection', [
+            ->addField('RoleCollections', 'rednose_role_collection_admin', [
                 'roles' => $this->getAppRoles(),
                 'organization' => $subject
             ])

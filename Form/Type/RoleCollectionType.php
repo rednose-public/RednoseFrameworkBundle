@@ -10,6 +10,7 @@
 namespace Rednose\FrameworkBundle\Form\Type;
 
 use Rednose\FrameworkBundle\Form\DataTransformer\RoleCollectionTransformer;
+use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\RoleCollectionInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,46 +25,12 @@ class RoleCollectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer(
-            new RoleCollectionTransformer($options['organization'])
-        );
-
-        $builder->add('ids', 'collection', [
-            'allow_add' => true
-        ]);
-
-        $builder->add('name', 'collection', [
-            'allow_add' => true
-        ]);
-
-        $builder->add('roles', 'collection', [
-            'allow_add' => true
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $ids   = [];
-        $roles = [];
-        $names = [];
-        $data  = $form->getData();
-
-        /** @var RoleCollectionInterface $rc */
-        foreach ($data as $rc) {
-            $ids[]   = $rc->getId();
-            $names[] = $rc->getName();
-            $roles[] = json_encode($rc->getRoles());
+        /** @var OrganizationInterface $organization */
+        foreach ($options['organizations'] as $organization) {
+            $builder->add($organization->getId(), 'choice', [
+                'choices' => $this->normalize($organization->getRoleCollections())
+            ]);
         }
-
-        $view->vars = array_merge([
-            'all_roles' => $options['roles'],
-            'ids'       => $ids,
-            'roles'     => $roles,
-            'names'     => $names
-        ], $view->vars);
     }
 
     /**
@@ -72,13 +39,32 @@ class RoleCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'organization' => null,
-            'roles' => []
+            'organizations' => null,
+            'system_roles' => []
         ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'rednose_role_collection';
+    }
+
+    /**
+     * @param $roleCollections
+     *
+     * @return array
+     */
+    private function normalize($roleCollections)
+    {
+        $array = [];
+
+        foreach ($roleCollections as $roleCollection) {
+            $array[$roleCollection->getId()] = $roleCollection->getName();
+        }
+
+        return $array;
     }
 }

@@ -54,20 +54,23 @@ class RoleCollectionTransformer implements DataTransformerInterface
      */
     public function reverseTransform($formData)
     {
-        $roleCollection = new ArrayCollection();
+        $roleCollection = $this->organization->getRoleCollections();
+        $roleCollection->clear(); // Mark everything as deleted
 
         foreach ($formData['ids'] as $offset => $collectionId) {
             $rc = $this->organization->findRoleCollectionById($collectionId);
 
             if ($rc === null) {
                 $rc = new RoleCollection();
-
-                $roleCollection->add($rc);
+                $rc->setOrganization($this->organization);
             }
 
             $rc->setName($formData['name'][$offset]);
             $rc->setRoles(explode(',', $formData['roles'][$offset]));
+
+            $roleCollection->add($rc);
         }
+
 
         return $roleCollection;
     }

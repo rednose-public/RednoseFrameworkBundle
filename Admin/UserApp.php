@@ -17,6 +17,7 @@ use Doctanium\Bundle\DashboardBundle\Query\QueryBuilderHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Rednose\FrameworkBundle\Model\GroupInterface;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
+use Rednose\FrameworkBundle\Model\OrganizationManagerInterface;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Rednose\FrameworkBundle\Model\UserManagerInterface;
 use Symfony\Component\Form\Form;
@@ -49,6 +50,11 @@ class UserApp extends DatagridApp
      * @var UserManagerInterface
      */
     protected $userManager;
+
+    /**
+     * @var OrganizationManagerInterface
+     */
+    protected $organizationManager;
 
     /**
      * {@inheritdoc}
@@ -125,11 +131,9 @@ class UserApp extends DatagridApp
 
             // Roles
             ->setSection('Roles')
-            ->addField('Roles', 'choice', [
-                'expanded' => true,
-                'multiple' => true,
-                'required' => false,
-                'choices'  => $this->roles
+            ->addField('Roles', 'rednose_role_collection', [
+                'organizations' => $this->organizationManager->findOrganizations(),
+                'system_roles'  => $this->roles
             ]);
 
         return $formDefinition;
@@ -223,6 +227,16 @@ class UserApp extends DatagridApp
     }
 
     /**
+     * Provide the organization manager
+     *
+     * @param OrganizationManagerInterface $orgaManager
+     */
+    public function setOrganizationManager(OrganizationManagerInterface $orgaManager)
+    {
+        $this->organizationManager = $orgaManager;
+    }
+
+    /**
      * Provide a form factory
      *
      * @param FormFactoryInterface $ff
@@ -233,7 +247,7 @@ class UserApp extends DatagridApp
     }
 
     /**
-     * Inject the available user roles
+     * Inject the default user roles
      *
      * @param $roleHierarchy
      */
