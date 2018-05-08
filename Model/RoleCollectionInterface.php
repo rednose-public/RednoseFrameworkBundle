@@ -2,7 +2,9 @@
 
 namespace Rednose\FrameworkBundle\Model;
 
-interface RoleCollectionInterface
+use Rednose\FrameworkBundle\Entity\HasOrganizationInterface;
+
+interface RoleCollectionInterface extends HasOrganizationInterface
 {
     /**
      * Get the id

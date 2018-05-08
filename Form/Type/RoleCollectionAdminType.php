@@ -9,7 +9,7 @@
 
 namespace Rednose\FrameworkBundle\Form\Type;
 
-use Rednose\FrameworkBundle\Form\DataTransformer\RoleCollectionTransformer;
+use Rednose\FrameworkBundle\Form\DataTransformer\RoleCollectionAdminTransformer;
 use Rednose\FrameworkBundle\Model\RoleCollectionInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,7 +25,7 @@ class RoleCollectionAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addModelTransformer(
-            new RoleCollectionTransformer($options['organization'])
+            new RoleCollectionAdminTransformer($options['organization'])
         );
 
         $builder->add('ids', 'collection', [

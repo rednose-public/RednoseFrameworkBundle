@@ -15,8 +15,8 @@ use Doctanium\Bundle\DashboardBundle\App\AppChain;
 use Doctanium\Bundle\DashboardBundle\Datagrid\DatagridApp;
 use Doctanium\Bundle\DashboardBundle\Form\Definition\FormDefinition;
 use Doctanium\Bundle\DashboardBundle\Query\QueryBuilderHelper;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
-use Rednose\FrameworkBundle\Entity\RoleCollection;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\OrganizationManagerInterface;
 use Symfony\Component\Form\Form;
@@ -159,7 +159,18 @@ class OrganizationApp extends DatagridApp
     {
         $organization = $form->getData();
 
-        $this->organizationManager->updateOrganization($organization);
+        try {
+            $this->organizationManager->updateOrganization($organization);
+        } catch (\Exception $e) {
+            if ($e instanceOf ForeignKeyConstraintViolationException) {
+                throw new \Exception(
+                    'Unable to update this organization. Most likely you tried to remove a ' .
+                    'role collection that is still connected to a user.'
+                );
+            }
+
+            throw $e; // Rethrow other exceptions.
+        }
     }
 
     /**

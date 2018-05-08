@@ -12,7 +12,6 @@
 namespace Rednose\FrameworkBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Rednose\FrameworkBundle\Entity\RoleCollection;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
 use Rednose\FrameworkBundle\Model\RoleCollectionInterface;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -20,58 +19,74 @@ use Symfony\Component\Form\DataTransformerInterface;
 class RoleCollectionTransformer implements DataTransformerInterface
 {
     /**
-     * @var OrganizationInterface
+     * @var array
      */
-    protected $organization;
+    protected $organizations;
 
     /**
      * RoleCollectionTransformer constructor
      *
-     * @param OrganizationInterface $organization
+     * @param array $organizations
      */
-    public function __construct(OrganizationInterface $organization)
+    public function __construct(array $organizations)
     {
-        $this->organization = $organization;
+        $this->organizations = $organizations;
     }
 
     /**
-     * Transform to empty array, values will be passed by the view-builder.
-     *
-     * @param RoleCollectionInterface $roleCollection
-     * @return array
+     * {@inheritdoc}
      */
-    public function transform($roleCollection)
+    public function transform($roleCollections)
     {
-        return [];
+        $formData = [];
+
+        /** @var RoleCollectionInterface $roleCollection */
+        foreach ($roleCollections as $roleCollection) {
+            $organizationId = $roleCollection->getOrganization()->getId();
+
+            if (isset($formData[$organizationId]) === false) {
+                $formData[$organizationId] = [];
+            }
+
+            $formData[$organizationId][] = $roleCollection->getId();
+        }
+
+        return $formData;
     }
 
     /**
-     * Transform the post-data array into the expected ArrayCollection.
-     *
-     * @param array $formData
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function reverseTransform($formData)
     {
-        $roleCollection = $this->organization->getRoleCollections();
-        $roleCollection->clear(); // Mark everything as deleted
+        $roleCollections = new ArrayCollection();
 
-        foreach ($formData['ids'] as $offset => $collectionId) {
-            $rc = $this->organization->findRoleCollectionById($collectionId);
+        foreach ($formData as $organizationId => $selectedRoleCollections) {
+            $organization = $this->findOrganization($organizationId);
 
-            if ($rc === null) {
-                $rc = new RoleCollection();
-                $rc->setOrganization($this->organization);
+            foreach ($selectedRoleCollections as $roleCollectionId) {
+                $roleCollection = $organization->findRoleCollectionById($roleCollectionId);
+                $roleCollections->add($roleCollection);
             }
-
-            $rc->setName($formData['name'][$offset]);
-            $rc->setRoles(explode(',', $formData['roles'][$offset]));
-
-            $roleCollection->add($rc);
         }
 
+        return $roleCollections;
+    }
 
-        return $roleCollection;
+    /**
+     * @param $organizationId
+     *
+     * @return OrganizationInterface|null
+     */
+    protected function findOrganization($organizationId)
+    {
+        foreach ($this->organizations as $organization) {
+            if ($organization->getId() === $organizationId) {
+                return $organization;
+            }
+        }
+
+        return null;
     }
 }
+

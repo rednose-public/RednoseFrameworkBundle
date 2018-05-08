@@ -37,11 +37,6 @@ class UserApp extends DatagridApp
     protected $formFactory;
 
     /**
-     * @var []
-     */
-    protected $roles = [];
-
-    /**
      * @var TranslatorInterface
      */
     protected $translator;
@@ -131,9 +126,8 @@ class UserApp extends DatagridApp
 
             // Roles
             ->setSection('Roles')
-            ->addField('Roles', 'rednose_role_collection', [
-                'organizations' => $this->organizationManager->findOrganizations(),
-                'system_roles'  => $this->roles
+            ->addField('RoleCollections', 'rednose_role_collection', [
+                'organizations' => $this->organizationManager->findOrganizations()
             ]);
 
         return $formDefinition;
@@ -244,19 +238,6 @@ class UserApp extends DatagridApp
     public function setFormFactory(FormFactoryInterface $ff)
     {
         $this->formFactory = $ff;
-    }
-
-    /**
-     * Inject the default user roles
-     *
-     * @param $roleHierarchy
-     */
-    public function setRoleHierarchy($roleHierarchy)
-    {
-        foreach (array_keys($roleHierarchy) as $role) {
-            $this->roles[$role] = $this->translator->trans($role,[] , 'RednoseFrameworkBundle');
-        }
-
     }
 
     /**

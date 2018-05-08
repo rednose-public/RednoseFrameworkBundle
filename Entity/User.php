@@ -306,6 +306,14 @@ class User extends BaseUser implements UserInterface
     /**
      * {@inheritdoc}
      */
+    public function setRoleCollections($roleCollections)
+    {
+        $this->roleCollections = $roleCollections;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRoleCollections()
     {
         return $this->roleCollections;

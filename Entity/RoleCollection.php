@@ -18,7 +18,7 @@ use Rednose\FrameworkBundle\Model\RoleCollectionInterface;
  * @ORM\Entity
  * @ORM\Table(name="rednose_framework_role_collection")
  */
-class RoleCollection implements RoleCollectionInterface, HasOrganizationInterface
+class RoleCollection implements RoleCollectionInterface
 {
     use HasOrganizationTrait;
 

@@ -11,11 +11,8 @@ namespace Rednose\FrameworkBundle\Form\Type;
 
 use Rednose\FrameworkBundle\Form\DataTransformer\RoleCollectionTransformer;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
-use Rednose\FrameworkBundle\Model\RoleCollectionInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RoleCollectionType extends AbstractType
@@ -25,11 +22,20 @@ class RoleCollectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addModelTransformer(
+            new RoleCollectionTransformer($options['organizations'])
+        );
+
         /** @var OrganizationInterface $organization */
         foreach ($options['organizations'] as $organization) {
-            $builder->add($organization->getId(), 'choice', [
-                'choices' => $this->normalize($organization->getRoleCollections())
-            ]);
+            if ($organization->getRoleCollections()->count()) {
+                $builder->add($organization->getId(), 'choice', [
+                    'label'    => $organization->getName(),
+                    'choices'  => $this->normalize($organization->getRoleCollections()),
+                    'expanded' => true,
+                    'multiple' => true
+                ]);
+            }
         }
     }
 
@@ -39,8 +45,7 @@ class RoleCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'organizations' => null,
-            'system_roles' => []
+            'organizations' => null
         ));
     }
 
