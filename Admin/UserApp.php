@@ -128,6 +128,12 @@ class UserApp extends DatagridApp
             ->setSection('Roles')
             ->addField('RoleCollections', 'rednose_role_collection', [
                 'organizations' => $this->organizationManager->findOrganizations()
+            ])
+            ->addField('Roles', 'choice', [
+                'expanded' => true,
+                'multiple' => true,
+                'choices'  => ['ROLE_SUPER_ADMIN' => false],
+                'label'    => $this->translator->trans('ROLE_SUPER_ADMIN', [], 'RednoseFrameworkBundle')
             ]);
 
         return $formDefinition;

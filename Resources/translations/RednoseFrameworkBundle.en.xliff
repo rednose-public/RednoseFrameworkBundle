@@ -50,6 +50,14 @@
                 <source>Roles</source>
                 <target>Roles</target>
             </trans-unit>
+            <trans-unit id="ROLE_SUPER_ADMIN">
+                <source>ROLE_SUPER_ADMIN</source>
+                <target>System administrator</target>
+            </trans-unit>
+            <trans-unit id="RoleCollections">
+                <source>RoleCollections</source>
+                <target>Role collections</target>
+            </trans-unit>
             <trans-unit id="plain_password">
                 <source>Plain_password</source>
                 <target>Reset password</target>

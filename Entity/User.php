@@ -29,6 +29,7 @@ use JMS\Serializer\Annotation as Serializer;
 class User extends BaseUser implements UserInterface
 {
     const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_ADMIN_CHECK_PREFIX = 'ROLE_ADMIN_';
 
     /**
      * @ORM\Id
@@ -282,17 +283,50 @@ class User extends BaseUser implements UserInterface
     /**
      * Get a combined list of roles from the roles and roleCollections properties
      *
+     * The roles that are inherited by the role collection are decided based on current organization context.
+     *
+     * When a user inherits a role from a roleCollection from any organization that starts with ROLE_ADMIN_
+     * it will automatically have the ROLE_ADMIN role and vice versa.
+     *
      * @return array
      */
     public function getRoles()
     {
-        $roles = parent::getRoles();
+        $roles   = parent::getRoles();
+        $isAdmin = false;
 
         foreach ($this->getRoleCollections() as $roleCollection) {
-            $roles = array_merge($roles, $roleCollection->getRoles());
+            $collectionRoles = $roleCollection->getRoles();
+
+            foreach ($collectionRoles as $role) {
+                if (substr(strtoupper($role), 0, strlen(self::ROLE_ADMIN_CHECK_PREFIX)) === self::ROLE_ADMIN_CHECK_PREFIX) {
+                    $isAdmin = true;
+
+                    break;
+                }
+            }
+
+            if ($roleCollection->getOrganization() === null || $this->getOrganization() === null) {
+                continue;
+            }
+
+            if ($roleCollection->getOrganization()->getId() === $this->getOrganization()->getId()) {
+                $roles = array_merge($roles, $collectionRoles);
+            }
         }
 
-        return array_values(array_unique($roles));
+        // When a user has a role that starts with the ROLE_ADMIN_ prefix, automatically add the ROLE_ADMIN role.
+        // used for firewall configs etc...
+        if ($isAdmin === true) {
+            $roles[] = self::ROLE_ADMIN;
+        } else {
+            // Remove ROLE_ADMIN
+            if (($adminRole = array_search(self::ROLE_ADMIN, $roles)) !== false) {
+                unset($roles[$adminRole]);
+            }
+        }
+
+        return array_values(array_filter(array_unique($roles)));
     }
 
     /**
@@ -359,6 +393,12 @@ class User extends BaseUser implements UserInterface
      */
     public function isEqualTo(CoreUserInterface $user)
     {
-        return $this->getUsername() === $user->getUsername();
+        if ($user instanceOf UserInterface) {
+            return
+                $this->getUsername() === $user->getUsername() &&
+                $this->getOrganizationName() === $user->getOrganizationName();
+        }
+
+        return false;
     }
 }

@@ -44,7 +44,7 @@
         var containerId = '{{ full_name|replace({'[': '_', ']': '_'}) }}';
         var container   = $('#' + containerId);
         var tabNames    = [];
-        var tabRoles     = {};
+        var tabRoles    = {};
 
         function nameChange() {
             var nameField  = $(this),
@@ -189,11 +189,11 @@
         });
 
         {% for name in names %}
-        var tab = renderTab('{{ name }}', '{{ roles[loop.index0] }}', '{{ ids[loop.index0] }}');
+            var tab = renderTab('{{ name }}', '{{ roles[loop.index0] }}', '{{ ids[loop.index0] }}');
 
-        {% if loop.index0 == 0 %}
-        clickTab(tab);
-        {% endif %}
+            {% if loop.index0 == 0 %}
+                clickTab(tab);
+            {% endif %}
         {% endfor %}
     };
 

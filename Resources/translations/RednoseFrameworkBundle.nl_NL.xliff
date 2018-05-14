@@ -50,6 +50,14 @@
                 <source>Roles</source>
                 <target>Gebruikersrollen</target>
             </trans-unit>
+            <trans-unit id="ROLE_SUPER_ADMIN">
+                <source>ROLE_SUPER_ADMIN</source>
+                <target>Systeem beheerder</target>
+            </trans-unit>
+            <trans-unit id="RoleCollections">
+                <source>RoleCollections</source>
+                <target>Rol collectie</target>
+            </trans-unit>
             <trans-unit id="Plain_password">
                 <source>Plain_password</source>
                 <target>Reset wachtwoord</target>
