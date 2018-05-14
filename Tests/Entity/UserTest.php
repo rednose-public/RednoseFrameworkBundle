@@ -35,7 +35,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Oscar', $this->user->getUsername(false));
     }
 
-    public function testGetBestname()
+    public function testGetBestName()
     {
         $this->assertSame('oscar', $this->user->getBestname());
 
@@ -134,5 +134,28 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $user = clone $this->user;
         $this->assertTrue($this->user->isEqualTo($user));
+    }
+
+    public function testAvailableOrganizations()
+    {
+        $organization = new Organization();
+        $organization->setId('123');
+        $organization->setName('Test');
+
+        $organization2 = new Organization();
+        $organization->setId('456');
+        $organization2->setName('Test2');
+
+        $rc1 = clone $this->roleCollection;
+        $rc1->setOrganization($organization);
+
+        $rc2 = clone $this->roleCollection;
+        $rc2->setOrganization($organization2);
+
+        $this->assertSame([], $this->user->getAvailableOrganizations());
+        $this->user->addRoleCollection($rc1);
+        $this->assertSame([$organization], $this->user->getAvailableOrganizations());
+        $this->user->addRoleCollection($rc2);
+        $this->assertSame([$organization, $organization2], $this->user->getAvailableOrganizations());
     }
 }

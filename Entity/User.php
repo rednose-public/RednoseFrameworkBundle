@@ -354,13 +354,25 @@ class User extends BaseUser implements UserInterface
     }
 
     /**
-     * Gets the preferred organization for this user.
-     *
-     * @return OrganizationInterface
+     * {@inheritdoc}
      */
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableOrganizations()
+    {
+        $organizations = [];
+
+        foreach ($this->getRoleCollections() as $roleCollection) {
+            $organizations[] = $roleCollection->getOrganization();
+        }
+
+        return $organizations;
     }
 
     /**

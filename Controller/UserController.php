@@ -80,11 +80,22 @@ class UserController extends Controller
 
         // Set user organization
         if (array_key_exists('organization', $params)) {
+            // Get a list of available organizations for security checking.
+            if ($this->isGranted('ROLE_SUPER_ADMIN')) {
+                $organizations = $this->get('rednose_framework.organization_manager')->findOrganizations();
+            } else {
+                $organizations = $this->getUser()->getAvailableOrganizations();
+            }
+
             $manager      = $this->get('rednose_framework.organization_manager');
             $organization = $manager->findOrganizationById($params['organization']);
 
             if (!$organization) {
                 throw $this->createNotFoundException('Organization not found');
+            }
+
+            if (in_array($organization, $organizations) === false) {
+                throw $this->createAccessDeniedException();
             }
 
             $user->setOrganization($organization);

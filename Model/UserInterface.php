@@ -115,6 +115,13 @@ interface UserInterface extends BaseUserInterface, GroupableInterface, Equatable
     public function getOrganization();
 
     /**
+     * Get a list of organizations available to this user.
+     *
+     * @return OrganizationInterface[]
+     */
+    public function getAvailableOrganizations();
+
+    /**
      * Gets the name of the preferred organization for this user.
      *
      * @return string
