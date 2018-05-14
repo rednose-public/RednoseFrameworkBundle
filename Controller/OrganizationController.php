@@ -5,7 +5,6 @@ namespace Rednose\FrameworkBundle\Controller;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use Rednose\FrameworkBundle\Model\RoleCollectionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class OrganizationController extends Controller
@@ -15,8 +14,6 @@ class OrganizationController extends Controller
      */
     public function getOrganizationsAction()
     {
-        $organizations = [];
-
         if ($this->isGranted('ROLE_SUPER_ADMIN')) {
             $organizations = $this->get('rednose_framework.organization_manager')->findOrganizations();
         } else {
