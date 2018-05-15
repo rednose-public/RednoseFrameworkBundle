@@ -26,7 +26,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->user->setUsername('Oscar');
 
         $this->roleCollection = new RoleCollection();
-        $this->roleCollection->setRoles(['ROLE_ADMIN_APP_SOMETHING', 'ROLE_ADMIN_APP_SOMETHING', 'ROLE_ADMIN_APP_SOMETHING_ELSE']);
+        $this->roleCollection->setRoles(['PERMISSION_ADMIN_APP_SOMETHING', 'PERMISSION_ADMIN_APP_SOMETHING', 'PERMISSION_ADMIN_APP_SOMETHING_ELSE']);
     }
 
     public function testUsername()
@@ -67,7 +67,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(['ROLE_TEST', 'ROLE_USER'], $this->user->getRoles());
     }
 
-    public function testRolesWithRoleCollectionWithMatchingOrganization()
+    public function testPermissionsWithRoleCollectionWithMatchingOrganization()
     {
         $organization = new Organization();
         $organization->setId('123');
@@ -76,19 +76,16 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->user->setOrganization($organization);
         $this->roleCollection->setOrganization($organization);
 
-        $this->user->addRole('ROLE_TEST');
-        $this->user->addRole('ROLE_TEST');
-
         $this->user->addRoleCollection($this->roleCollection);
 
-        $this->assertSame(['ROLE_TEST', 'ROLE_USER', 'ROLE_ADMIN_APP_SOMETHING', 'ROLE_ADMIN_APP_SOMETHING_ELSE', 'ROLE_ADMIN'], $this->user->getRoles());
+        $this->assertSame(['PERMISSION_ADMIN_APP_SOMETHING', 'PERMISSION_ADMIN_APP_SOMETHING_ELSE'], $this->user->getPermissions());
 
         $this->user->setRoleCollections(new ArrayCollection());
 
-        $this->assertSame(['ROLE_TEST', 'ROLE_USER'], $this->user->getRoles());
+        $this->assertSame([], $this->user->getPermissions());
     }
 
-    public function testRolesWithRoleCollectionWithNonMatchingOrganization()
+    public function testPermissionsWithRoleCollectionWithNonMatchingOrganization()
     {
         $organization = new Organization();
         $organization->setId('123');
@@ -101,35 +98,15 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->user->setOrganization($organization);
         $this->roleCollection->setOrganization($organization2);
 
-        $this->user->addRole('ROLE_TEST');
-        $this->user->addRole('ROLE_TEST');
-
         $this->user->addRoleCollection($this->roleCollection);
 
-        $this->assertSame(['ROLE_TEST', 'ROLE_USER', 'ROLE_ADMIN'], $this->user->getRoles());
-
-        $this->user->setRoleCollections(new ArrayCollection());
-
-        $this->assertSame(['ROLE_TEST', 'ROLE_USER'], $this->user->getRoles());
+        $this->assertSame([], $this->user->getPermissions());
     }
 
     public function testIsEqualTo()
     {
-        $organization = new Organization();
-        $organization->setName('RobCo electronics');
-
-        $organization2 = new Organization();
-        $organization2->setName('Red Rocket Gas');
-
-        $this->user->setUsername('JohnDoe');
-        $this->user->setOrganization($organization);
-
         $user = clone $this->user;
         $user->setUsername('JaneDoe');
-        $this->assertFalse($this->user->isEqualTo($user));
-
-        $user = clone $this->user;
-        $user->setOrganization($organization2);
         $this->assertFalse($this->user->isEqualTo($user));
 
         $user = clone $this->user;

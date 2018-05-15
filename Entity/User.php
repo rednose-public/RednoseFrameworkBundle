@@ -29,7 +29,7 @@ use JMS\Serializer\Annotation as Serializer;
 class User extends BaseUser implements UserInterface
 {
     const ROLE_ADMIN = 'ROLE_ADMIN';
-    const ROLE_ADMIN_CHECK_PREFIX = 'ROLE_ADMIN_';
+    const ROLE_ADMIN_CHECK_PREFIX = 'PERMISSION_ADMIN_';
 
     /**
      * @ORM\Id
@@ -281,12 +281,11 @@ class User extends BaseUser implements UserInterface
     }
 
     /**
-     * Get a combined list of roles from the roles and roleCollections properties
+     * Get the roles for this user.
      *
-     * The roles that are inherited by the role collection are decided based on current organization context.
+     * ROLE_ADMIN will automatically be added or removed depending on the PERMISSIONS this user has.
      *
-     * When a user inherits a role from a roleCollection from any organization that starts with ROLE_ADMIN_
-     * it will automatically have the ROLE_ADMIN role and vice versa.
+     * If the user has at least one PERMISSION in any organization it will be considered an ROLE_ADMIN.
      *
      * @return array
      */
@@ -305,28 +304,39 @@ class User extends BaseUser implements UserInterface
                     break;
                 }
             }
-
-            if ($roleCollection->getOrganization() === null || $this->getOrganization() === null) {
-                continue;
-            }
-
-            if ($roleCollection->getOrganization()->getId() === $this->getOrganization()->getId()) {
-                $roles = array_merge($roles, $collectionRoles);
-            }
         }
 
-        // When a user has a role that starts with the ROLE_ADMIN_ prefix, automatically add the ROLE_ADMIN role.
-        // used for firewall configs etc...
         if ($isAdmin === true) {
             $roles[] = self::ROLE_ADMIN;
         } else {
-            // Remove ROLE_ADMIN
             if (($adminRole = array_search(self::ROLE_ADMIN, $roles)) !== false) {
                 unset($roles[$adminRole]);
             }
         }
 
         return array_values(array_filter(array_unique($roles)));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPermissions()
+    {
+        $permissions = [];
+
+        foreach ($this->getRoleCollections() as $roleCollection) {
+            $collectionRoles = $roleCollection->getRoles();
+
+            if ($roleCollection->getOrganization() === null || $this->getOrganization() === null) {
+                continue;
+            }
+
+            if ($roleCollection->getOrganization()->getId() === $this->getOrganization()->getId()) {
+                $permissions = array_merge($permissions, $collectionRoles);
+            }
+        }
+
+        return array_values(array_filter(array_unique($permissions)));
     }
 
     /**
@@ -405,12 +415,6 @@ class User extends BaseUser implements UserInterface
      */
     public function isEqualTo(CoreUserInterface $user)
     {
-        if ($user instanceOf UserInterface) {
-            return
-                $this->getUsername() === $user->getUsername() &&
-                $this->getOrganizationName() === $user->getOrganizationName();
-        }
-
-        return false;
+        return $this->getUsername() === $user->getUsername();
     }
 }

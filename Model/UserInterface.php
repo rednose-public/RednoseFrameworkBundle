@@ -155,4 +155,12 @@ interface UserInterface extends BaseUserInterface, GroupableInterface, Equatable
      * @return RoleCollectionInterface[]
      */
     public function getRoleCollections();
+
+    /**
+     * Create a list of my current permissions based on the combination of the current organization context and
+     * the connected role collections.
+     *
+     * @return mixed
+     */
+    public function getPermissions();
 }
