@@ -3,7 +3,6 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="security.access.has_permission_voter" class="Rednose\FrameworkBundle\Security\Authorization\Voter\PermissionVoter" public="false">
-            <argument type="service" id="security.token_storage" />
             <tag name="security.voter"/>
         </service>
 

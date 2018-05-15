@@ -3,6 +3,7 @@
 namespace Rednose\FrameworkBundle\Security\Authorization\Voter;
 
 use Rednose\FrameworkBundle\Entity\HasOrganizationInterface;
+use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -16,11 +17,6 @@ class PermissionVoter implements VoterInterface
      */
     protected $tokenStorage;
 
-    public function __construct(TokenStorageInterface $tokenStorage)
-    {
-        $this->tokenStorage = $tokenStorage;
-    }
-
     public function supportsAttribute($attribute)
     {
         return (strpos($attribute, self::PREFIX_) !== false);
@@ -31,9 +27,6 @@ class PermissionVoter implements VoterInterface
         return false;
     }
 
-    /**
-     * @var HasOrganizationInterface $object
-     */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
 
@@ -43,14 +36,15 @@ class PermissionVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        if (!$this->tokenStorage->getToken()) {
+        $user = $token->getUser();
+
+        if (($user instanceof UserInterface) === false) {
             return VoterInterface::ACCESS_DENIED;
         }
 
-        $user        = $this->tokenStorage->getToken()->getUser();
         $permissions = $user->getPermissions();
 
-        if (array_search($attribute, $permissions, true)) {
+        if (array_search($attribute, $permissions, true) !== false) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
