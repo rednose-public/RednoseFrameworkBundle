@@ -27,7 +27,8 @@ class CacheFactoryTest extends \PHPUnit_Framework_TestCase
                 return '/'.$path;
             }));
 
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+            ->getMock();
 
         $container->expects($this->any())
             ->method('get')

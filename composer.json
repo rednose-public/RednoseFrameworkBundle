@@ -5,18 +5,6 @@
     "keywords": ["framework"],
     "homepage": "http://www.rednose.nl",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Marc Bontje",
-            "email": "marc@rednose.nl",
-            "homepage": "http://www.rednose.nl"
-        },
-        {
-            "name": "Sven Hagemann",
-            "email": "sven@rednose.nl",
-            "homepage": "http://www.rednose.nl"
-        }
-    ],
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.0.0",
