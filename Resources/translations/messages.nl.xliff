@@ -3,6 +3,10 @@
     <file source-language="en" datatype="plaintext" original="">
         <body>
             <!-- Login screen -->
+            <trans-unit id="sign_in_title">
+                <source>sign_in_title</source>
+                <target>Inloggen</target>
+            </trans-unit>
             <trans-unit id="sign_in">
                 <source>sign_in</source>
                 <target>Inloggen</target>
