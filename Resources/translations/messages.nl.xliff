@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="">
+        <body>
+            <!-- Login screen -->
+            <trans-unit id="sign_in">
+                <source>sign_in</source>
+                <target>Inloggen</target>
+            </trans-unit>
+            <trans-unit id="sign_in_username">
+                <source>sign_in_username</source>
+                <target>Gebruikersnaam</target>
+            </trans-unit>
+            <trans-unit id="sign_in_password">
+                <source>sign_in_password</source>
+                <target>Wachtwoord</target>
+            </trans-unit>
+            <trans-unit id="remember_me">
+                <source>remember_me</source>
+                <target>Herinner mij</target>
+            </trans-unit>
+            <trans-unit id="sign_in_button">
+                <source>sign_in_button</source>
+                <target>Login</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
