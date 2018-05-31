@@ -55,6 +55,11 @@ class RednoseFrameworkExtension extends Extension
             $loader->load(sprintf('%s.xml', $basename));
         }
 
+
+        if (isset($config['redis']['maintenance_path'])) {
+            $container->setParameter('rednose_framework.redis.maintenance_path', $config['redis']['maintenance_path']);
+        }
+
         if ($config['user']) {
             $loader->load('admin.xml');
 

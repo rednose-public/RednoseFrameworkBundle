@@ -45,6 +45,10 @@
             <argument>%redis_auth%</argument>
         </service>
 
+        <service id="rednose_framework.redis.maintenance" class="Rednose\FrameworkBundle\Redis\RedisMaintenance">
+            <argument type="service" id="rednose_framework.redis.factory" />
+        </service>
+
         <!-- Notifications -->
         <service id="rednose_framework.notification.factory" class="%rednose_framework.notification.factory.class%">
             <argument type="service" id="service_container"/>

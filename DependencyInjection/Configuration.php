@@ -29,6 +29,7 @@ class Configuration implements ConfigurationInterface
         $rootNode    = $treeBuilder->root('rednose_framework', 'array');
 
         $this->addUserSection($rootNode);
+        $this->addRedisSection($rootNode);
         $this->addAclSection($rootNode);
         $this->addAccountSection($rootNode);
         $this->addSamlSection($rootNode);
@@ -41,6 +42,20 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->booleanNode('user')->defaultTrue()->end()
+            ->end();
+    }
+
+    private function addRedisSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('redis')
+                    ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('maintenance_path')->defaultValue('app/redis_maintenance')->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
     }
 
