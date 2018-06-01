@@ -32,13 +32,13 @@ class RedisMaintenanceTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->connectionMock->expects($this->once())->method('executeUpdate')->with(
-            'INSERT INTO ' . $this->redisMaintenance::MUTEX_TABLE_NAME . ' set version = \'RedisMaintenanceTaskOnce\''
+            'INSERT INTO ' . $this->redisMaintenance::EXECUTED_TABLE_NAME . ' SET taskName = \'RedisMaintenanceTaskOnce\''
         );
 
         $this->connectionMock->expects($this->exactly(4))->method('fetchColumn')->with(
             $this->logicalOr(
-                'SELECT version FROM ' . $this->redisMaintenance::MUTEX_TABLE_NAME,
-                'SELECT version FROM ' . $this->redisMaintenance::MUTEX_TABLE_NAME . ' WHERE version = \'RedisMaintenanceTaskOnce\''
+                'SELECT taskName FROM ' . $this->redisMaintenance::EXECUTED_TABLE_NAME,
+                'SELECT taskName FROM ' . $this->redisMaintenance::EXECUTED_TABLE_NAME . ' WHERE taskName = \'RedisMaintenanceTaskOnce\''
             )
 
         )->willReturnCallback(function($where) {

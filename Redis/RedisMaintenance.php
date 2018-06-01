@@ -20,7 +20,7 @@ use Doctrine\DBAL\Schema\Schema;
  */
 class RedisMaintenance
 {
-    const MUTEX_TABLE_NAME = 'rednose_framework_redis_maintenance_mutex';
+    const EXECUTED_TABLE_NAME = 'rednose_framework_redis_maintenance_executed';
 
     /**
      * @var RedisFactory
@@ -72,12 +72,12 @@ class RedisMaintenance
                 continue;
             }
 
-            if ($this->checkMutex($this->getClassName($file, false)) === false) {
+            if ($this->checkExecuted($this->getClassName($file, false)) === false) {
                 $taskClass->up($this->factory);
 
                 $count++;
 
-                $this->createMutex($this->getClassName($file, false));
+                $this->createExecuted($this->getClassName($file, false));
 
                 continue;
             }
@@ -99,7 +99,7 @@ class RedisMaintenance
         $className = $this->getClassName($file);
 
         if (class_exists($className) === false) {
-            require($file);
+            require $file;
         }
 
         $class = new $className();
@@ -114,20 +114,20 @@ class RedisMaintenance
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function createMutex(string $className)
+    private function createExecuted(string $className)
     {
         $this->connection->executeUpdate(
-            'INSERT INTO ' . self::MUTEX_TABLE_NAME . ' set version = \'' . $className .'\''
+            'INSERT INTO ' . self::EXECUTED_TABLE_NAME . ' SET taskName = \'' . $className .'\''
         );
     }
 
-    private function checkMutex(string $className) : bool
+    private function checkExecuted(string $className) : bool
     {
-        if ($this->mutexTableExists() === false) {
-            $this->createMutexTable();
+        if ($this->executedTableExists() === false) {
+            $this->createExecutedTable();
         }
 
-        $exists = $this->connection->fetchColumn('SELECT version FROM ' . self::MUTEX_TABLE_NAME . ' WHERE version = \'' . $className .'\'');
+        $exists = $this->connection->fetchColumn('SELECT taskName FROM ' . self::EXECUTED_TABLE_NAME . ' WHERE taskName = \'' . $className .'\'');
 
         return is_string($exists);
     }
@@ -155,16 +155,16 @@ class RedisMaintenance
     }
 
     /**
-     * Query the mutex table to determine if it exists
+     * Query the 'executed' table to determine if it exists
      *
      * @return bool
      *
      * @throws \Exception
      */
-    private function mutexTableExists() : bool
+    private function executedTableExists() : bool
     {
         try {
-            $this->connection->fetchColumn('SELECT version FROM ' . self::MUTEX_TABLE_NAME . '');
+            $this->connection->fetchColumn('SELECT taskName FROM ' . self::EXECUTED_TABLE_NAME);
         } catch (TableNotFoundException $e) {
             return false;
         } catch (\Exception $e) {
@@ -175,17 +175,17 @@ class RedisMaintenance
     }
 
     /**
-     * Create a mutex table
+     * Create a 'executed' table
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function createMutexTable()
+    private function createExecutedTable()
     {
         $tableBuilder = new Schema();
         $connection   = $this->connection;
 
-        $tblMutex = $tableBuilder->createTable(self::MUTEX_TABLE_NAME);
-        $tblMutex->addColumn('version', 'text', ['length' => 16]);
+        $tblExecuted = $tableBuilder->createTable(self::EXECUTED_TABLE_NAME);
+        $tblExecuted->addColumn('taskName', 'text', ['length' => 16]);
 
         $sql = $tableBuilder->toSQL($connection->getDatabasePlatform());
 

@@ -33,7 +33,7 @@ class RedisMaintenanceGenerateCommand extends ContainerAwareCommand
             $maintenancePath = $kernelPath . '/' . $container->getParameter('rednose_framework.redis.maintenance_path');
         }
 
-        $generatedName   = 'Version' . date('YmdHis');
+        $generatedName   = 'Task' . date('YmdHis');
 
         $classTemplate = file_get_contents(__DIR__ . '/../DataFixtures/Redis/RedisMaintenanceTaskOnce.phps');
         $classTemplate = str_replace(' RedisMaintenanceTaskOnce ', ' ' . $generatedName . ' ', $classTemplate);

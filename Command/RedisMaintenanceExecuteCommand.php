@@ -34,7 +34,7 @@ class RedisMaintenanceExecuteCommand extends ContainerAwareCommand
         }
 
         $maintenanceService = $container->get('rednose_framework.redis.maintenance');
-        $maintenanceFiles   = glob($maintenancePath . '/Version*.php');
+        $maintenanceFiles   = glob($maintenancePath . '/Task*.php');
 
         $count = $maintenanceService->process($maintenanceFiles);
 

@@ -25,14 +25,14 @@ class RedisMaintenanceCommandTest extends \PHPUnit_Framework_TestCase
     {
         $command = $this->application->find('rednose:framework:redis-execute');
 
-        touch($this->path . '/Version1234.php');
+        touch($this->path . '/Task1234.php');
 
-        $this->expectExceptionMessage('Unable to determine namespace of class ' . $this->path . '/Version1234.php');
+        $this->expectExceptionMessage('Unable to determine namespace of class ' . $this->path . '/Task1234.php');
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
 
-        unlink($this->path . '/Version1234.php');
+        unlink($this->path . '/Task1234.php');
     }
 
     public function testGenerateCommand()
@@ -44,18 +44,18 @@ class RedisMaintenanceCommandTest extends \PHPUnit_Framework_TestCase
 
         $output = $commandTester->getDisplay();
 
-        $this->assertRegExp('/Generated new maintenance class to ".*Version.*.php"/i', $output);
+        $this->assertRegExp('/Generated new maintenance class to ".*Task.*.php"/i', $output);
 
         $fileName = [];
         $className = [];
 
-        preg_match('/Generated new maintenance class to "(.*Version.*.php)"/i', $output, $fileName);
-        preg_match('/Generated new maintenance class to ".*(Version.*).php"/i', $output, $className);
+        preg_match('/Generated new maintenance class to "(.*Task.*.php)"/i', $output, $fileName);
+        preg_match('/Generated new maintenance class to ".*(Task.*).php"/i', $output, $className);
 
         $this->assertContains($this->path, $output);
 
         // Test php syntax validity of generated class
-        require($fileName[1]);
+        require $fileName[1];
 
         // Cleanup
         unlink($fileName[1]);
