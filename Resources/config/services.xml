@@ -47,6 +47,7 @@
 
         <service id="rednose_framework.redis.maintenance" class="Rednose\FrameworkBundle\Redis\RedisMaintenance">
             <argument type="service" id="rednose_framework.redis.factory" />
+            <argument type="service" id="doctrine.dbal.default_connection" />
         </service>
 
         <!-- Notifications -->

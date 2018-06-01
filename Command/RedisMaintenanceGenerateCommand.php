@@ -15,8 +15,8 @@ class RedisMaintenanceGenerateCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('rednose:framework:redis-maintenance:generate')
-            ->setDescription('Command generates a blank maintenance class');
+            ->setName('rednose:framework:redis-generate')
+            ->setDescription('Command generates a blank maintenance task class');
     }
 
     /**
@@ -27,36 +27,17 @@ class RedisMaintenanceGenerateCommand extends ContainerAwareCommand
         $container  = $this->getContainer();
         $kernelPath = realpath($container->getParameter('kernel.root_dir') . '/../');
 
-        $maintenancePath = $kernelPath . '/' . $container->getParameter('rednose_framework.redis.maintenance_path');
+        $maintenancePath = $container->getParameter('rednose_framework.redis.maintenance_path');
+
+        if ($maintenancePath[0] !== '/') {
+            $maintenancePath = $kernelPath . '/' . $container->getParameter('rednose_framework.redis.maintenance_path');
+        }
+
         $generatedName   = 'Version' . date('YmdHis');
 
-        $classTemplate = '
-<?php
-
-namespace Rednose\FrameworkBundle\Redis;
-
-class ' . $generatedName . '
-{
-    /**
-     * @var RedisFactory $factory 
-     */
-    public function up(RedisFactory $factory)
-    {
-        $redis = $factory->getClient();
-        
-        if ($redis !== null) {
-            /** Your implementation here */
-        }
-    }
-
-    /**
-     * @return bool 
-     */
-    public function runOnce()
-    {
-        return true;
-    }
-}';
+        $classTemplate = file_get_contents(__DIR__ . '/../DataFixtures/Redis/RedisMaintenanceTaskOnce.phps');
+        $classTemplate = str_replace(' RedisMaintenanceTaskOnce ', ' ' . $generatedName . ' ', $classTemplate);
+        $classTemplate = str_replace('Rednose\FrameworkBundle\DataFixtures\Redis', 'Rednose\FrameworkBundle\Redis\Maintenance', $classTemplate);
 
         if (is_writable($maintenancePath) === false) {
             throw new \Exception('Unable to write file ' . $maintenancePath . ' does not exist');

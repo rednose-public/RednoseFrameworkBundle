@@ -15,7 +15,7 @@ class RedisMaintenanceExecuteCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('rednose:framework:redis-maintenance:execute')
+            ->setName('rednose:framework:redis-execute')
             ->setDescription('Executes redis maintenance classes');
     }
 
@@ -27,13 +27,17 @@ class RedisMaintenanceExecuteCommand extends ContainerAwareCommand
         $container  = $this->getContainer();
         $kernelPath = realpath($container->getParameter('kernel.root_dir') . '/../');
 
-        $kernelPath         = realpath($container->getParameter('kernel.root_dir') . '/../');
+        $maintenancePath = $container->getParameter('rednose_framework.redis.maintenance_path');
+
+        if ($maintenancePath[0] !== '/') {
+            $maintenancePath = $kernelPath . '/' . $container->getParameter('rednose_framework.redis.maintenance_path');
+        }
+
         $maintenanceService = $container->get('rednose_framework.redis.maintenance');
-        $maintenancePath    = $kernelPath . '/' . $container->getParameter('rednose_framework.redis.maintenance_path');
         $maintenanceFiles   = glob($maintenancePath . '/Version*.php');
 
         $count = $maintenanceService->process($maintenanceFiles);
 
-        $output->writeln($count . ' maintenance classes executed.');
+        $output->writeln('<info>' . $count . '</info> redis maintenance tasks executed.');
     }
 }

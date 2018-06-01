@@ -1,6 +1,6 @@
 <?php
 
-namespace Rednose\FrameworkBundle\Tests\Model;
+namespace Rednose\FrameworkBundle\Tests\Session;
 
 use Rednose\FrameworkBundle\Redis\RedisFactory;
 use Rednose\FrameworkBundle\Session\Redis\RedisSessionHandler;
