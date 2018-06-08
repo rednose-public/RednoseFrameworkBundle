@@ -2,7 +2,6 @@
 
 namespace Rednose\FrameworkBundle\Test;
 
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
 use Rednose\FrameworkBundle\Entity\Organization;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
@@ -36,12 +35,10 @@ abstract class WebTestCase extends BaseWebTestCase
         // Purge DB
         $this->em = $this->container->get('doctrine.orm.entity_manager');
         $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
-        $this->em->getConnection()->executeUpdate("SET foreign_key_checks = 0;");
 
-        $purger = new ORMPurger($this->em);
-        $purger->purge();
+        $purger = new ORMPurger();
+        $purger->purge($this->em->getConnection());
 
-        $this->em->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
         $this->em->clear();
 
         // Create required system user.
@@ -64,6 +61,7 @@ abstract class WebTestCase extends BaseWebTestCase
         $this->em->persist($user);
 
         $this->em->flush();
+        $this->em->clear();
     }
 
     /**
