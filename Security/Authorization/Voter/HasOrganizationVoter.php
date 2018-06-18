@@ -11,22 +11,26 @@ class HasOrganizationVoter implements VoterInterface
 {
     const VIEW = 'VIEW';
 
-    public function supportsAttribute($attribute)
+    public function supportsAttribute($attribute): bool
     {
         return in_array($attribute, [self::VIEW]);
     }
 
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
+        if ($class === null) {
+            return false;
+        }
+
         return is_subclass_of($class, 'Rednose\FrameworkBundle\Entity\HasOrganizationInterface');
     }
 
     /**
      * @var HasOrganizationInterface $object
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $object, array $attributes): int
     {
-        if (!$this->supportsClass(get_class($object))) {
+        if ($this->supportsClass($object) === false) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
