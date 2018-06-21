@@ -11,12 +11,14 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Entity\User as BaseUser;
-use JMS\Serializer\Annotation as Serializer;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
+use Rednose\FrameworkBundle\Model\RoleCollectionInterface;
 use Rednose\FrameworkBundle\Model\UserInterface;
 use Symfony\Component\Security\Core\User\UserInterface as CoreUserInterface;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * A RedNose framework user
@@ -27,6 +29,7 @@ use Symfony\Component\Security\Core\User\UserInterface as CoreUserInterface;
 class User extends BaseUser implements UserInterface
 {
     const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_ADMIN_CHECK_PREFIX = 'PERMISSION_ADMIN_';
 
     /**
      * @ORM\Id
@@ -38,6 +41,13 @@ class User extends BaseUser implements UserInterface
     protected $id;
 
     /**
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $username;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     *
      * @ORM\Column(type="string", length=128, nullable=true)
      */
     protected $realname;
@@ -53,31 +63,93 @@ class User extends BaseUser implements UserInterface
     protected $groups;
 
     /**
+     * @Serializer\Groups({"list", "details"})
+     *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $locale;
 
     /**
      * @ORM\ManyToOne(targetEntity="Rednose\FrameworkBundle\Entity\Organization")
+     *
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
      **/
     protected $organization;
 
     /**
-     * Transient API property.
+     * @ORM\ManyToMany(targetEntity="RoleCollection")
      *
-     * @Serializer\SerializedName("username")
-     * @Serializer\Accessor(getter="getBestName")
-     * @Serializer\Groups({"list", "details"})
+     * @ORM\JoinTable(
+     *      name="rednose_framework_user_role_collection",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="rolecollection_id", referencedColumnName="id", unique=true)}
+     * )
+     *
+     * @var RoleCollection[]
      */
-    protected $bestName;
+    protected $roleCollections;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     * @Serializer\Accessor("getOrganizationName")
+     */
+    protected $organizationName;
 
     /**
      * Static users will never be automatically assigned
      *
+     * @Serializer\Groups({"list", "details"})
      * @ORM\Column(type="boolean", nullable=false)
      */
     protected $static = true;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $enabled;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $locked;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $expired;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     * @Serializer\Accessor("isAdmin")
+     */
+    protected $admin;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     * @Serializer\Accessor("isSuperAdmin")
+     */
+    protected $superAdmin;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $email;
+
+    /**
+     * @Serializer\Type("DateTime")
+     * @Serializer\Groups({"list", "details"})
+     */
+    protected $lastLogin;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->roleCollections = new ArrayCollection();
+
+        parent::__construct();
+    }
 
     /**
      * Gets the username
@@ -209,13 +281,123 @@ class User extends BaseUser implements UserInterface
     }
 
     /**
-     * Gets the preferred organization for this user.
+     * Get the roles for this user.
      *
-     * @return OrganizationInterface
+     * ROLE_ADMIN will automatically be added or removed depending on the PERMISSIONS this user has.
+     *
+     * If the user has at least one PERMISSION in any organization it will be considered an ROLE_ADMIN.
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        $roles   = parent::getRoles();
+        $isAdmin = false;
+
+        foreach ($this->getRoleCollections() as $roleCollection) {
+            $collectionRoles = $roleCollection->getRoles();
+
+            foreach ($collectionRoles as $role) {
+                if (substr(strtoupper($role), 0, strlen(self::ROLE_ADMIN_CHECK_PREFIX)) === self::ROLE_ADMIN_CHECK_PREFIX) {
+                    $isAdmin = true;
+
+                    break;
+                }
+            }
+        }
+
+        if ($isAdmin === true) {
+            $roles[] = self::ROLE_ADMIN;
+        } else {
+            if (($adminRole = array_search(self::ROLE_ADMIN, $roles)) !== false) {
+                unset($roles[$adminRole]);
+            }
+        }
+
+        return array_values(array_filter(array_unique($roles)));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPermissions()
+    {
+        $permissions = [];
+
+        foreach ($this->getRoleCollections() as $roleCollection) {
+            $collectionRoles = $roleCollection->getRoles();
+
+            if ($roleCollection->getOrganization() === null || $this->getOrganization() === null) {
+                continue;
+            }
+
+            if ($roleCollection->getOrganization()->getId() === $this->getOrganization()->getId()) {
+                $permissions = array_merge($permissions, $collectionRoles);
+            }
+        }
+
+        return array_values(array_filter(array_unique($permissions)));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addRoleCollection(RoleCollectionInterface $roleCollection)
+    {
+        $this->roleCollections->add($roleCollection);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRoleCollections($roleCollections)
+    {
+        $this->roleCollections = $roleCollections;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoleCollections()
+    {
+        return $this->roleCollections;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableOrganizations()
+    {
+        $organizations = [];
+
+        foreach ($this->getRoleCollections() as $roleCollection) {
+            $organizations[] = $roleCollection->getOrganization();
+        }
+
+        return $organizations;
+    }
+
+    /**
+     * Gets the name of the preferred organization for this user.
+     *
+     * @return string
+     */
+    public function getOrganizationName()
+    {
+        if (!$this->organization) {
+            return '';
+
+        }
+
+        return $this->organization->getName();
     }
 
     /**

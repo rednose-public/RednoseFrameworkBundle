@@ -48,7 +48,7 @@ class PrioritizedCollectionType extends AbstractType
             } else {
                 $form->add('priority_' . $offset, 'choice', ['choices' => [
                     0 => 'Normal', 1 => 'High', 2 => 'Very High'
-                ]]);
+                ], 'attr' => ['select2-skip' => 'true']]);
             }
         }
     }
@@ -59,7 +59,8 @@ class PrioritizedCollectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addModelTransformer(new PrioritizedArrayDataTransformer(
-            $builder->getForm()->getName(), $this->request
+            $this->request,
+            $builder->getForm()->getName()
         ));
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {

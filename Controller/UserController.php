@@ -12,9 +12,13 @@
 namespace Rednose\FrameworkBundle\Controller;
 
 use FOS\RestBundle\View\View;
+use FOS\RestBundle\Controller\Annotations as Rest;
+
 use Rednose\FrameworkBundle\Model\UserInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * User API Controller
@@ -24,9 +28,10 @@ class UserController extends Controller
     /**
      * Returns information about the current user.
      *
-     * @param Request $request
+     * @Rest\Get("/user", name="rednose_framework_get_user")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Request $request
+     * @return Response
      */
     public function getUserAction(Request $request)
     {
@@ -54,9 +59,13 @@ class UserController extends Controller
     }
 
     /**
-     * @param Request $request
+     * Update current user properties.
+     * Currently supported: locale, organization
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Rest\Post("/user", name="rednose_framework_set_user")
+     *
+     * @param Request $request
+     * @return Response
      */
     public function postUserAction(Request $request)
     {
@@ -64,12 +73,31 @@ class UserController extends Controller
         $user   = $this->get('security.token_storage')->getToken()->getUser();
         $params = json_decode($request->getContent(), true);
 
+        // Set user locale
         if (array_key_exists('locale', $params)) {
             $user->setLocale($params['locale']);
         }
 
+        // Set user organization
         if (array_key_exists('organization', $params)) {
-            $organization = $this->get('rednose_framework.organization_manager')->findOrganizationById($params['organization']);
+            // Get a list of available organizations for security checking.
+            if ($this->isGranted('ROLE_SUPER_ADMIN')) {
+                $organizations = $this->get('rednose_framework.organization_manager')->findOrganizations();
+            } else {
+                $organizations = $this->getUser()->getAvailableOrganizations();
+            }
+
+            $manager      = $this->get('rednose_framework.organization_manager');
+            $organization = $manager->findOrganizationById($params['organization']);
+
+            if (!$organization) {
+                throw $this->createNotFoundException('Organization not found');
+            }
+
+            if (in_array($organization, $organizations) === false) {
+                throw $this->createAccessDeniedException();
+            }
+
             $user->setOrganization($organization);
         }
 

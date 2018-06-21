@@ -32,6 +32,5 @@ class RednoseFrameworkBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new AdminPoolCompilerPass());
     }
 }

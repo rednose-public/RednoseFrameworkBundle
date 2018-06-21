@@ -12,6 +12,7 @@
 namespace Rednose\FrameworkBundle\Model;
 
 use Rednose\FrameworkBundle\Entity\HasConditionsTrait;
+use Rednose\FrameworkBundle\Entity\Theme;
 
 class Organization implements OrganizationInterface
 {
@@ -19,9 +20,10 @@ class Organization implements OrganizationInterface
 
     protected $id;
     protected $name;
-    protected $dictionary;
     protected $locale;
     protected $localizations;
+    protected $theme;
+    protected $roleCollections;
 
     /**
      * Set the id
@@ -84,6 +86,22 @@ class Organization implements OrganizationInterface
     }
 
     /**
+     * @return Theme
+     */
+    public function getTheme()
+    {
+        return $this->theme;
+    }
+
+    /**
+     * @param Theme $theme
+     */
+    public function setTheme(Theme $theme = null)
+    {
+        $this->theme = $theme;
+    }
+
+    /**
      * Set available localizations
      *
      * @param array $localizations
@@ -101,5 +119,48 @@ class Organization implements OrganizationInterface
     public function getLocalizations()
     {
         return $this->localizations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRoleCollections($roleCollections)
+    {
+        foreach ($roleCollections as $rc) {
+            $this->addRoleCollection($rc);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addRoleCollection(RoleCollectionInterface $roleCollection)
+    {
+        $roleCollection->setOrganization($this);
+
+        $this->roleCollections->add($roleCollection);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoleCollections()
+    {
+        return $this->roleCollections;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findRoleCollectionById($id)
+    {
+        /** @var RoleCollectionInterface $rc */
+        foreach ($this->roleCollections as $rc) {
+            if ($rc->getId() === $id) {
+                return $rc;
+            }
+        }
+
+        return null;
     }
 }

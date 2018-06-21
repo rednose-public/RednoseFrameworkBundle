@@ -11,6 +11,7 @@
 
 namespace Rednose\FrameworkBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Rednose\FrameworkBundle\Model\Organization as BaseOrganization;
@@ -43,6 +44,15 @@ class Organization extends BaseOrganization
     protected $name;
 
     /**
+     * @ORM\OneToMany(
+     *   targetEntity="RoleCollection",
+     *   mappedBy="organization",
+     *   orphanRemoval=true,
+     *   cascade={"persist", "remove"})
+     */
+    protected $roleCollections;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      *
      * @Serializer\Groups({"list", "details"})
@@ -65,23 +75,8 @@ class Organization extends BaseOrganization
      */
     public function __construct($name = null)
     {
-        $this->name = $name;
-    }
-
-    /**
-     * @return Theme
-     */
-    public function getTheme()
-    {
-        return $this->theme;
-    }
-
-    /**
-     * @param Theme $theme
-     */
-    public function setTheme(Theme $theme = null)
-    {
-        $this->theme = $theme;
+        $this->name            = $name;
+        $this->roleCollections = new ArrayCollection();
     }
 
     /**

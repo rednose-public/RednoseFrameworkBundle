@@ -5,6 +5,7 @@
         <parameter key="rednose_framework.assigner.organization.class">Rednose\FrameworkBundle\Assigner\OrganizationAssigner</parameter>
         <parameter key="rednose_framework.assigner.group.class">Rednose\FrameworkBundle\Assigner\GroupAssigner</parameter>
 
+        <parameter key="rednose_framework.listener.admin_role_assigner.class">Rednose\FrameworkBundle\EventListener\AdminRoleAssignerListener</parameter>
         <parameter key="rednose_framework.listener.assigner.class">Rednose\FrameworkBundle\EventListener\AssignerListener</parameter>
     </parameters>
     <services>

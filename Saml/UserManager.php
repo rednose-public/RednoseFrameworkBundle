@@ -12,8 +12,8 @@
 namespace Rednose\FrameworkBundle\Saml;
 
 use AerialShip\SamlSPBundle\Bridge\SamlSpInfo;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Util\CanonicalizerInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Rednose\FrameworkBundle\Entity\UserManager as BaseUserManager;
@@ -32,13 +32,13 @@ class UserManager extends BaseUserManager implements SamlUserManagerInterface
      * @param EncoderFactoryInterface  $encoderFactory
      * @param CanonicalizerInterface   $usernameCanonicalizer
      * @param CanonicalizerInterface   $emailCanonicalizer
-     * @param ObjectManager            $om
+     * @param EntityManagerInterface   $om
      * @param string                   $class
      * @param EventDispatcherInterface $dispatcher
      * @param bool                     $autoAccountCreation
      * @param string|null              $samlUserAttr
      */
-    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, ObjectManager $om, $class, EventDispatcherInterface $dispatcher, $autoAccountCreation = false, $samlUserAttr = null)
+    public function __construct(EncoderFactoryInterface $encoderFactory, CanonicalizerInterface $usernameCanonicalizer, CanonicalizerInterface $emailCanonicalizer, EntityManagerInterface $om, $class, EventDispatcherInterface $dispatcher, $autoAccountCreation = false, $samlUserAttr = null)
     {
         parent::__construct($encoderFactory, $usernameCanonicalizer, $emailCanonicalizer, $om, $class, $dispatcher, $autoAccountCreation);
 

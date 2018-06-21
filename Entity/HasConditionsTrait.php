@@ -15,10 +15,6 @@ trait HasConditionsTrait
 {
     /**
      * @ORM\Column(type="array", nullable=true)
-     *
-     * @Serializer\XmlList(inline = false, entry = "conditions")
-     * @Serializer\Type("array<string>")
-     * @Serializer\Groups({"file", "details"})
      */
     protected $conditions = null;
 

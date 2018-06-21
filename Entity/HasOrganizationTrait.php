@@ -11,6 +11,7 @@ namespace Rednose\FrameworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Rednose\FrameworkBundle\Model\OrganizationInterface;
+use JMS\Serializer\Annotation as Serializer;
 
 trait HasOrganizationTrait
 {
@@ -27,6 +28,28 @@ trait HasOrganizationTrait
      *   referencedColumnName="id")
      */
     protected $organization;
+
+    /**
+     * @Serializer\Groups({"list", "details"})
+     *
+     * @Serializer\Accessor("getOrganizationName")
+     */
+    protected $organizationName;
+
+    /**
+     * Gets the name of the organization for this entity.
+     *
+     * @return string
+     */
+    public function getOrganizationName()
+    {
+        if (!$this->organization) {
+            return '';
+
+        }
+
+        return $this->organization->getName();
+    }
 
     /**
      * @param OrganizationInterface $organization

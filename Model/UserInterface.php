@@ -115,9 +115,52 @@ interface UserInterface extends BaseUserInterface, GroupableInterface, Equatable
     public function getOrganization();
 
     /**
+     * Get a list of organizations available to this user.
+     *
+     * @return OrganizationInterface[]
+     */
+    public function getAvailableOrganizations();
+
+    /**
+     * Gets the name of the preferred organization for this user.
+     *
+     * @return string
+     */
+    public function getOrganizationName();
+
+    /**
      * Sets the preferred organization for this user.
      *
      * @param OrganizationInterface $organization
      */
     public function setOrganization($organization);
+
+    /**
+     * Set the RoleCollections for this user
+     *
+     * @param RoleCollectionInterface[] $roleCollections
+     *
+     * @return mixed
+     */
+    public function setRoleCollections($roleCollections);
+
+    /**
+     * Connect a role collection to this user
+     *
+     * @param RoleCollectionInterface $roleCollection
+     */
+    public function addRoleCollection(RoleCollectionInterface $roleCollection);
+
+    /**
+     * @return RoleCollectionInterface[]
+     */
+    public function getRoleCollections();
+
+    /**
+     * Create a list of my current permissions based on the combination of the current organization context and
+     * the connected role collections.
+     *
+     * @return mixed
+     */
+    public function getPermissions();
 }

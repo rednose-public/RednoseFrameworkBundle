@@ -1,22 +1,15 @@
 <?xml version="1.0"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file datatype="plaintext" original="" source-language="en">
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="">
         <body>
+            <!-- Login screen -->
             <trans-unit id="sign_in_title">
                 <source>sign_in_title</source>
-                <target>Sign in</target>
+                <target>Please sign in</target>
             </trans-unit>
             <trans-unit id="sign_in">
                 <source>sign_in</source>
-                <target>Sign in</target>
-            </trans-unit>
-            <trans-unit id="not_found">
-                <source>not_found</source>
-                <target>Not found</target>
-            </trans-unit>
-            <trans-unit id="error">
-                <source>error</source>
-                <target>Error</target>
+                <target>Please sign in</target>
             </trans-unit>
             <trans-unit id="sign_in_username">
                 <source>sign_in_username</source>
@@ -30,33 +23,9 @@
                 <source>remember_me</source>
                 <target>Remember me</target>
             </trans-unit>
-            <trans-unit id="forgot_password">
-                <source>forgot_password</source>
-                <target>Forgot your password?</target>
-            </trans-unit>
             <trans-unit id="sign_in_button">
                 <source>sign_in_button</source>
                 <target>Sign in</target>
-            </trans-unit>
-            <trans-unit id="users">
-                <source>users</source>
-                <target>Users</target>
-            </trans-unit>
-            <trans-unit id="groups">
-                <source>groups</source>
-                <target>Groups</target>
-            </trans-unit>
-            <trans-unit id="organizations">
-                <source>organizations</source>
-                <target>Organizations</target>
-            </trans-unit>
-            <trans-unit id="languages">
-                <source>languages</source>
-                <target>Languages</target>
-            </trans-unit>
-            <trans-unit id="language_choice_label">
-                <source>language_choice_label</source>
-                <target>Language</target>
             </trans-unit>
         </body>
     </file>

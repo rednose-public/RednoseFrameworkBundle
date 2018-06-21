@@ -11,11 +11,8 @@
 
 namespace Rednose\FrameworkBundle\Form\DataTransformer;
 
-use Rednose\FrameworkBundle\Entity\File;
-use Rednose\FrameworkBundle\Model\FileInterface;
 use Rednose\FrameworkBundle\Model\PrioritizedArray;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
 class PrioritizedArrayDataTransformer implements DataTransformerInterface
@@ -30,16 +27,36 @@ class PrioritizedArrayDataTransformer implements DataTransformerInterface
      */
     protected $formName;
 
-    public function __construct($formName, Request $request)
+    public function __construct(Request $request, $formName)
     {
-        $this->request = $request;
+        $this->request  = $request;
         $this->formName = $formName;
     }
 
     public function transform($data)
     {
         if ($this->request->getMethod() === 'POST' && $data !== null) {
-            $data->clear();
+            // Clear the form data only when it is actually posted.
+            // Otherwise we may accidentally remove all items.
+
+            $getKeys = function ($ar, &$keys) use (&$getKeys) {
+                foreach ($ar as $k => $v) {
+                    $keys[$k] = true;
+
+                    if (is_array($v) === true) {
+                        $getKeys($v, $keys);
+                    }
+                }
+            };
+
+            $postVariables = $this->request->request->all();
+
+            $postKeys = [];
+            $getKeys($postVariables, $postKeys);
+
+            if (isset($postKeys[$this->formName]) && $postKeys[$this->formName] === true) {
+                $data->clear();
+            }
         }
 
         return $data;
